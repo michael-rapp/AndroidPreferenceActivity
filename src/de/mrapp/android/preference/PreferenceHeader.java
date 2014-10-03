@@ -17,8 +17,6 @@
  */
 package de.mrapp.android.preference;
 
-import java.io.Serializable;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,12 +27,7 @@ import android.os.Bundle;
  * 
  * @since 1.0.0
  */
-public class PreferenceHeader implements Serializable {
-
-	/**
-	 * The constant serial version UID.
-	 */
-	private static final long serialVersionUID = 1L;
+public class PreferenceHeader {
 
 	/**
 	 * The title of the navigation item.
@@ -283,68 +276,6 @@ public class PreferenceHeader implements Serializable {
 	 */
 	public final void setExtras(final Bundle extras) {
 		this.extras = extras;
-	}
-
-	@Override
-	public final int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime
-				* result
-				+ ((breadCrumbShortTitle == null) ? 0 : breadCrumbShortTitle
-						.hashCode());
-		result = prime * result
-				+ ((breadCrumbTitle == null) ? 0 : breadCrumbTitle.hashCode());
-		result = prime * result + ((extras == null) ? 0 : extras.hashCode());
-		result = prime * result + fragment.hashCode();
-		result = prime * result + iconId;
-		result = prime * result + ((intent == null) ? 0 : intent.hashCode());
-		result = prime * result + ((summary == null) ? 0 : summary.hashCode());
-		result = prime * result + title.hashCode();
-		return result;
-	}
-
-	@Override
-	public final boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PreferenceHeader other = (PreferenceHeader) obj;
-		if (breadCrumbShortTitle == null) {
-			if (other.breadCrumbShortTitle != null)
-				return false;
-		} else if (!breadCrumbShortTitle.equals(other.breadCrumbShortTitle))
-			return false;
-		if (breadCrumbTitle == null) {
-			if (other.breadCrumbTitle != null)
-				return false;
-		} else if (!breadCrumbTitle.equals(other.breadCrumbTitle))
-			return false;
-		if (extras == null) {
-			if (other.extras != null)
-				return false;
-		} else if (!extras.equals(other.extras))
-			return false;
-		if (!fragment.equals(other.fragment))
-			return false;
-		if (iconId != other.iconId)
-			return false;
-		if (intent == null) {
-			if (other.intent != null)
-				return false;
-		} else if (!intent.equals(other.intent))
-			return false;
-		if (summary == null) {
-			if (other.summary != null)
-				return false;
-		} else if (!summary.equals(other.summary))
-			return false;
-		if (!title.equals(other.title))
-			return false;
-		return true;
 	}
 
 }
