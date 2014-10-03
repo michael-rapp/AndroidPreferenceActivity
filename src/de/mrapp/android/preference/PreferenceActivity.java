@@ -20,10 +20,13 @@ package de.mrapp.android.preference;
 import java.util.Collection;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
+import de.mrapp.android.preference.fragment.FragmentListener;
 import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.parser.PreferenceHeaderParser;
 
@@ -40,7 +43,8 @@ import de.mrapp.android.preference.parser.PreferenceHeaderParser;
  *
  * @since 1.0.0
  */
-public abstract class PreferenceActivity extends Activity {
+public abstract class PreferenceActivity extends Activity implements
+		FragmentListener {
 
 	/**
 	 * The fragment, which contains the preference headers and provides the
@@ -59,6 +63,50 @@ public abstract class PreferenceActivity extends Activity {
 	 * the currently selected preference header on devices with a large screen.
 	 */
 	private ViewGroup preferenceScreenParentView;
+
+	/**
+	 * The full qualified class name of the fragment, which is currently shown
+	 * or null, if no preference header is currently selected.
+	 */
+	private String currentlyShownFragment;
+
+	/**
+	 * Shows the fragment, which provides the navigation to each preference
+	 * header's fragment.
+	 */
+	private void showPreferenceHeaders() {
+		int transition = 0;
+
+		if (currentlyShownFragment != null) {
+			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
+			currentlyShownFragment = null;
+		}
+
+		replacePreferenceHeaderFragment(preferenceHeaderFragment, transition);
+	}
+
+	/**
+	 * Replaces the fragment, which is currently contained by the parent view of
+	 * the fragment, which provides the navigation to each preference header's
+	 * fragment, by an other fragment.
+	 * 
+	 * @param fragment
+	 *            The fragment, which should replace the current fragment, as an
+	 *            instance of the class {@link Fragment}. The fragment may not
+	 *            be null
+	 * @param transition
+	 *            The transition, which should be shown when replacing the
+	 *            fragment, as an {@link Integer} value or 0, if no transition
+	 *            should be shown
+	 */
+	private void replacePreferenceHeaderFragment(final Fragment fragment,
+			final int transition) {
+		FragmentTransaction transaction = getFragmentManager()
+				.beginTransaction();
+		transaction.setTransition(transition);
+		transaction.replace(R.id.preference_header_parent, fragment);
+		transaction.commit();
+	}
 
 	/**
 	 * Returns the parent view of the fragment, which provides the navigation to
@@ -186,12 +234,10 @@ public abstract class PreferenceActivity extends Activity {
 		return getPreferenceScreenParentView() != null;
 	}
 
-	/**
-	 * The method, which is invoked, when the preference headers should be
-	 * created. This method has to be overridden by implementing subclasses to
-	 * add the preference headers.
-	 */
-	protected abstract void onCreatePreferenceHeaders();
+	@Override
+	public final void onFragmentCreated(final Fragment fragment) {
+		onCreatePreferenceHeaders();
+	}
 
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -200,6 +246,15 @@ public abstract class PreferenceActivity extends Activity {
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
+		preferenceHeaderFragment.addFragmentListener(this);
+		showPreferenceHeaders();
 	}
+
+	/**
+	 * The method, which is invoked, when the preference headers should be
+	 * created. This method has to be overridden by implementing subclasses to
+	 * add the preference headers.
+	 */
+	protected abstract void onCreatePreferenceHeaders();
 
 }
