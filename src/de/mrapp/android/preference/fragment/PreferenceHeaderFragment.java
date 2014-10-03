@@ -17,15 +17,14 @@
  */
 package de.mrapp.android.preference.fragment;
 
+import static de.mrapp.android.preference.util.Condition.ensureNotNull;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.widget.ListView;
 import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
-
-import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 
 /**
  * A list fragment, which shows multiple preference headers and provides
@@ -87,7 +86,6 @@ public class PreferenceHeaderFragment extends ListFragment {
 	@Override
 	public final void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		preferenceHeaderAdapter = new PreferenceHeaderAdapter(getActivity());
 		setListAdapter(preferenceHeaderAdapter);
 		notifyFragmentCreated();
