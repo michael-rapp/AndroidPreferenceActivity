@@ -17,7 +17,9 @@
  */
 package de.mrapp.android.preference;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 /**
@@ -53,9 +55,9 @@ public class PreferenceHeader {
 	private CharSequence breadCrumbShortTitle;
 
 	/**
-	 * The resource id of the navigation item's icon.
+	 * The icon of the navigation item.
 	 */
-	private int iconId;
+	private Drawable icon;
 
 	/**
 	 * The full qualified class name of the fragment, which is shown, when the
@@ -112,6 +114,22 @@ public class PreferenceHeader {
 	}
 
 	/**
+	 * Sets the title of the navigation item.
+	 * 
+	 * @param context
+	 *            The context, which should be used to retrieve the string
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param resourceId
+	 *            The resource id of the title, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void setTitle(final Context context, final int resourceId) {
+		setTitle(context.getString(resourceId));
+	}
+
+	/**
 	 * Returns the summary, which describes the preferences, which belong to the
 	 * navigation item.
 	 * 
@@ -136,6 +154,23 @@ public class PreferenceHeader {
 	}
 
 	/**
+	 * Sets the summary, which describes the preferences, which belong to the
+	 * navigation item.
+	 * 
+	 * @param context
+	 *            The context, which should be used to retrieve the string
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param resourceId
+	 *            The resource id of the summary, which should be set as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void setSummary(final Context context, final int resourceId) {
+		setSummary(context.getString(resourceId));
+	}
+
+	/**
 	 * Returns the text, which is shown as the title in the navigation item's
 	 * bread crumb.
 	 * 
@@ -157,6 +192,24 @@ public class PreferenceHeader {
 	 */
 	public final void setBreadCrumbTitle(final CharSequence breadCrumbTitle) {
 		this.breadCrumbTitle = breadCrumbTitle;
+	}
+
+	/**
+	 * Sets the text, which should be shown as the title in the navigation
+	 * item's bread crumb.
+	 * 
+	 * @param context
+	 *            The context, which should be used to retrieve the string
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param resourceId
+	 *            The resource if of the title, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void setBreadCrumbTitle(final Context context,
+			final int resourceId) {
+		setBreadCrumbTitle(context.getString(resourceId));
 	}
 
 	/**
@@ -186,24 +239,58 @@ public class PreferenceHeader {
 	}
 
 	/**
-	 * Returns the resource id of the navigation item's icon.
+	 * Sets the text, which should be shown as the short title of the navigation
+	 * item's bread crumb.
 	 * 
-	 * @return The resource id of the navigation item's icon as an
-	 *         {@link Integer} value or 0, if no resource id has been set
+	 * @param context
+	 *            The context, which should be used to retrieve the string
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param resourceId
+	 *            The resource id of the short title, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
 	 */
-	public final int getIconId() {
-		return iconId;
+	public final void setBreadCrumbShortTitle(final Context context,
+			final int resourceId) {
+		setBreadCrumbShortTitle(context.getString(resourceId));
 	}
 
 	/**
-	 * Sets the resource id of the navigation item's icon.
+	 * Returns the icon of the navigation item.
 	 * 
-	 * @param iconId
-	 *            The resource id, which should be set, as an {@link Integer}
-	 *            value or 0, if no resource id should be set
+	 * @return The icon of the navigation item as an instance of the class
+	 *         {@link Drawable} or null, if no icon has been set
 	 */
-	public final void setIconId(final int iconId) {
-		this.iconId = iconId;
+	public final Drawable getIcon() {
+		return icon;
+	}
+
+	/**
+	 * Sets the icon of the navigation item.
+	 * 
+	 * @param icon
+	 *            The icon, which should be set, as an instance of the class
+	 *            {@link Drawable} or null, if no item should be set
+	 */
+	public final void setIcon(final Drawable icon) {
+		this.icon = icon;
+	}
+
+	/**
+	 * Sets the icon of the navigation item.
+	 * 
+	 * @param context
+	 *            The context, which should be used to retrieve the drawable
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param resourceId
+	 *            The resource id of the icon, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 */
+	public final void setIcon(final Context context, final int resourceId) {
+		setIcon(context.getResources().getDrawable(resourceId));
 	}
 
 	/**
