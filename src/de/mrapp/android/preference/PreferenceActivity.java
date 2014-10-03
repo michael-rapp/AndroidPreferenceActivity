@@ -256,8 +256,12 @@ public abstract class PreferenceActivity extends Activity implements
 
 	@Override
 	public final void onFragmentCreated(final Fragment fragment) {
-		getListView().setOnItemClickListener(this);
 		onCreatePreferenceHeaders();
+		getListView().setOnItemClickListener(this);
+
+		if (!isSplitScreen()) {
+			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		}
 	}
 
 	@Override
