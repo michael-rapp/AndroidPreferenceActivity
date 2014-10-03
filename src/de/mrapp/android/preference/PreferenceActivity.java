@@ -18,12 +18,15 @@
 package de.mrapp.android.preference;
 
 import java.util.Collection;
-
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -82,6 +85,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private String currentFragment;
 
 	/**
+	 * True, if the back button of the action bar should be shown, false
+	 * otherwise.
+	 */
+	private boolean displayHomeAsUp;
+
+	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -106,6 +115,10 @@ public abstract class PreferenceActivity extends Activity implements
 		Fragment fragment = Fragment.instantiate(this, fragmentName);
 		replacePreferenceHeaderFragment(fragment,
 				FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+		if (!isSplitScreen() && getActionBar() != null) {
+			showActionBarBackButton();
+		}
 	}
 
 	/**
@@ -144,6 +157,48 @@ public abstract class PreferenceActivity extends Activity implements
 		transaction.setTransition(transition);
 		transaction.replace(R.id.preference_header_parent, fragment);
 		transaction.commit();
+	}
+
+	/**
+	 * Shows the back button in the activity's action bar.
+	 */
+	private void showActionBarBackButton() {
+		if (getActionBar() != null) {
+			displayHomeAsUp = isDisplayHomeAsUpEnabled();
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
+
+	/**
+	 * Hides the back button in the activity's action bar, if it was not
+	 * previously shown.
+	 */
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private void hideActionBarBackButton() {
+		if (getActionBar() != null) {
+			if (!displayHomeAsUp) {
+				getActionBar().setDisplayHomeAsUpEnabled(false);
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					getActionBar().setHomeButtonEnabled(false);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns, whether the back button of the action bar is currently shown, or
+	 * not.
+	 * 
+	 * @return True, if the back button of the action bar is currently shown,
+	 *         false otherwise
+	 */
+	private boolean isDisplayHomeAsUpEnabled() {
+		if (getActionBar() != null) {
+			return (getActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) == ActionBar.DISPLAY_HOME_AS_UP;
+		}
+
+		return false;
 	}
 
 	/**
@@ -297,6 +352,18 @@ public abstract class PreferenceActivity extends Activity implements
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public final boolean onOptionsItemSelected(final MenuItem item) {
+		if (item.getItemId() == android.R.id.home && !isSplitScreen()
+				&& currentFragment != null) {
+			showPreferenceHeaders();
+			hideActionBarBackButton();
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
