@@ -175,13 +175,11 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	private void hideActionBarBackButton() {
-		if (getActionBar() != null) {
-			if (!displayHomeAsUp) {
-				getActionBar().setDisplayHomeAsUpEnabled(false);
+		if (getActionBar() != null && !displayHomeAsUp) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-					getActionBar().setHomeButtonEnabled(false);
-				}
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				getActionBar().setHomeButtonEnabled(false);
 			}
 		}
 	}
