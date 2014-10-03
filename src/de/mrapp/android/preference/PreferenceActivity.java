@@ -72,7 +72,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 * The full qualified class name of the fragment, which is currently shown
 	 * or null, if no preference header is currently selected.
 	 */
-	private String currentlyShownFragment;
+	private String currentFragment;
 
 	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
@@ -84,8 +84,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            null
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader) {
-		currentlyShownFragment = preferenceHeader.getFragment();
-		Fragment fragment = Fragment.instantiate(this, currentlyShownFragment);
+		currentFragment = preferenceHeader.getFragment();
+		Fragment fragment = Fragment.instantiate(this, currentFragment);
 		replacePreferenceHeaderFragment(fragment,
 				FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	}
@@ -97,9 +97,9 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceHeaders() {
 		int transition = 0;
 
-		if (currentlyShownFragment != null) {
+		if (currentFragment != null) {
 			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
-			currentlyShownFragment = null;
+			currentFragment = null;
 		}
 
 		replacePreferenceHeaderFragment(preferenceHeaderFragment, transition);
@@ -273,7 +273,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
-				&& currentlyShownFragment != null) {
+				&& currentFragment != null) {
 			showPreferenceHeaders();
 			return true;
 		}
