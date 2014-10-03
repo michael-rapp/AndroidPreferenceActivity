@@ -56,18 +56,20 @@ public final class Condition {
 	}
 
 	/**
-	 * Ensures, that a string is not empty. Otherwise an
+	 * Ensures, that a char sequence is not empty. Otherwise an
 	 * {@link IllegalArgumentException} with a specific message will be thrown.
 	 * 
-	 * @param string
-	 *            The string, which should be checked, as a {@link String}
+	 * @param charSequence
+	 *            The char sequence, which should be checked, as an instance of
+	 *            the class {@link CharSequence}
 	 * @param exceptionMessage
 	 *            The message of the {@link IllegalArgumentException}, which is
-	 *            thrown, if the given string is empty, as a {@link String}
+	 *            thrown, if the given char sequence is empty, as a
+	 *            {@link String}
 	 */
-	public static void ensureNotEmpty(final String string,
+	public static void ensureNotEmpty(final CharSequence charSequence,
 			final String exceptionMessage) {
-		if (string.length() == 0) {
+		if (charSequence.length() == 0) {
 			throw new IllegalArgumentException(exceptionMessage);
 		}
 	}
