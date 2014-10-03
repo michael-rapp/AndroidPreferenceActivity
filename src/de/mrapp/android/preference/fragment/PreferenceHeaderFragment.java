@@ -17,10 +17,15 @@
  */
 package de.mrapp.android.preference.fragment;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.widget.ListView;
 import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
+
+import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 
 /**
  * A list fragment, which shows multiple preference headers and provides
@@ -38,12 +43,54 @@ public class PreferenceHeaderFragment extends ListFragment {
 	 */
 	private PreferenceHeaderAdapter preferenceHeaderAdapter;
 
+	/**
+	 * A set, which contains the listeners, which should be notified on events
+	 * concerning the fragment.
+	 */
+	private Set<FragmentListener> listeners = new LinkedHashSet<>();
+
+	/**
+	 * Notifies all registered listeners, that the fragment has been created.
+	 */
+	private void notifyFragmentCreated() {
+		for (FragmentListener listener : listeners) {
+			listener.onFragmentCreated(this);
+		}
+	}
+
+	/**
+	 * Adds a new listener, which should be notified on events concerning the
+	 * fragment.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link FragmentListener}. The listener may not be null
+	 */
+	public final void addFragmentListener(final FragmentListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified on events
+	 * concerning the fragment, anymore.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            type {@link FragmentListener}. The listener may not be null
+	 */
+	public final void removeFragmentListener(final FragmentListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.remove(listener);
+	}
+
 	@Override
 	public final void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		preferenceHeaderAdapter = new PreferenceHeaderAdapter(getActivity());
 		setListAdapter(preferenceHeaderAdapter);
+		notifyFragmentCreated();
 	}
 
 	@Override
