@@ -22,7 +22,7 @@ License along with this program. If not, see
     android:layout_height="wrap_content"
     android:background="?android:attr/activatedBackgroundIndicator"
     android:gravity="center_vertical"
-    android:minHeight="@dimen/min_preference_header_height"
+    android:minHeight="@dimen/preference_header_min_height"
     android:paddingEnd="?android:attr/scrollbarSize"
     android:paddingLeft="0dp"
     android:paddingRight="?android:attr/scrollbarSize"
@@ -33,19 +33,19 @@ License along with this program. If not, see
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginEnd="6dp"
-        android:layout_marginStart="6dp"
+        android:layout_marginEnd="@dimen/preference_header_margin"
+        android:layout_marginStart="@dimen/preference_header_margin"
         android:contentDescription="@null" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginBottom="@dimen/preference_header_margin"
+        android:layout_marginEnd="@dimen/preference_header_margin"
+        android:layout_marginLeft="@dimen/preference_header_icon_margin"
+        android:layout_marginRight="@dimen/preference_header_margin"
+        android:layout_marginStart="@dimen/preference_header_icon_margin"
+        android:layout_marginTop="@dimen/preference_header_margin"
         android:layout_weight="1" >
 
         <TextView
