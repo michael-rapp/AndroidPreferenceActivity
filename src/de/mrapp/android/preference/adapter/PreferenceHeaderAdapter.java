@@ -33,8 +33,8 @@ import de.mrapp.android.preference.R;
 import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 
 /**
- * An adapter, which provides instances of the class {@link PreferenceHeader} to
- * be used for visualization via a list view.
+ * An adapter, which provides instances of the class {@link PreferenceHeader}
+ * for visualization using a list view.
  * 
  * @author Michael Rapp
  * 
