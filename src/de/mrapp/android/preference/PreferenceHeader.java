@@ -22,6 +22,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import static de.mrapp.android.preference.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.util.Condition.ensureNotEmpty;
+
 /**
  * A navigation item, which categorizes multiple preferences.
  * 
@@ -110,6 +113,8 @@ public class PreferenceHeader {
 	 *            {@link CharSequence}. The title may neither be null, nor empty
 	 */
 	public final void setTitle(final CharSequence title) {
+		ensureNotNull(title, "The title may not be null");
+		ensureNotEmpty(title, "The title may not be empty");
 		this.title = title;
 	}
 
@@ -314,6 +319,8 @@ public class PreferenceHeader {
 	 *            class name may neither be null, nor empty
 	 */
 	public final void setFragment(final String fragment) {
+		ensureNotNull(fragment, "The fragment class name may not be null");
+		ensureNotEmpty(fragment, "The fragment class name may not be empty");
 		this.fragment = fragment;
 	}
 
