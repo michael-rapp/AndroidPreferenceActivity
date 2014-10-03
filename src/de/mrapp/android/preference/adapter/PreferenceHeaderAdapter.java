@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,14 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private void visualizePreferenceHeader(final ViewHolder viewHolder,
 			final PreferenceHeader preferenceHeader) {
 		viewHolder.titleTextView.setText(preferenceHeader.getTitle());
-		viewHolder.summaryTextView.setText(preferenceHeader.getSummary());
+
+		if (TextUtils.isEmpty(preferenceHeader.getSummary())) {
+			viewHolder.summaryTextView.setVisibility(View.GONE);
+		} else {
+			viewHolder.summaryTextView.setVisibility(View.VISIBLE);
+			viewHolder.summaryTextView.setText(preferenceHeader.getSummary());
+		}
+
 		viewHolder.iconImageView.setImageDrawable(preferenceHeader.getIcon());
 	}
 
