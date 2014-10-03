@@ -51,6 +51,13 @@ public abstract class PreferenceActivity extends Activity implements
 		FragmentListener, OnItemClickListener {
 
 	/**
+	 * The name of the extra, which is used to save the class name of the
+	 * fragment, which is currently shown, within a bundle.
+	 */
+	private static final String CURRENT_FRAGMENT_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::CurrentFragment";
+
+	/**
 	 * The fragment, which contains the preference headers and provides the
 	 * navigation to each header's fragment.
 	 */
@@ -85,7 +92,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader) {
 		currentFragment = preferenceHeader.getFragment();
-		Fragment fragment = Fragment.instantiate(this, currentFragment);
+		showPreferenceScreen(currentFragment);
+	}
+
+	/**
+	 * Shows the fragment, which corresponds to a specific class name.
+	 * 
+	 * @param fragmentName
+	 *            The full qualified class name of the fragment, which should be
+	 *            shown, as a {@link String}
+	 */
+	private void showPreferenceScreen(final String fragmentName) {
+		Fragment fragment = Fragment.instantiate(this, fragmentName);
 		replacePreferenceHeaderFragment(fragment,
 				FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	}
@@ -290,6 +308,22 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		showPreferenceHeaders();
+	}
+
+	@Override
+	protected final void onSaveInstanceState(final Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(CURRENT_FRAGMENT_EXTRA, currentFragment);
+	}
+
+	@Override
+	protected final void onRestoreInstanceState(final Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT_EXTRA);
+
+		if (currentFragment != null) {
+			showPreferenceScreen(currentFragment);
+		}
 	}
 
 	/**
