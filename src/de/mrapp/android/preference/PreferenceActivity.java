@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -263,6 +264,17 @@ public abstract class PreferenceActivity extends Activity implements
 	public final void onItemClick(final AdapterView<?> parent, final View view,
 			final int position, final long id) {
 		showPreferenceScreen(getListAdapter().getItem(position));
+	}
+
+	@Override
+	public final boolean onKeyDown(final int keyCode, final KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
+				&& currentlyShownFragment != null) {
+			showPreferenceHeaders();
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
