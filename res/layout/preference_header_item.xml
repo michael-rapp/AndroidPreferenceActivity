@@ -22,7 +22,7 @@ License along with this program. If not, see
     android:layout_height="wrap_content"
     android:background="?android:attr/activatedBackgroundIndicator"
     android:gravity="center_vertical"
-    android:minHeight="48dp"
+    android:minHeight="@dimen/min_preference_header_height"
     android:paddingEnd="?android:attr/scrollbarSize"
     android:paddingLeft="0dp"
     android:paddingRight="?android:attr/scrollbarSize"
