@@ -17,6 +17,7 @@
  */
 package de.mrapp.android.preference.adapter;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.mrapp.android.preference.PreferenceHeader;
 import de.mrapp.android.preference.R;
-
 import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 
 /**
@@ -150,6 +150,25 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	}
 
 	/**
+	 * Adds all preference headers, which are contained by a specific
+	 * collection, to the adapter.
+	 * 
+	 * @param preferenceHeaders
+	 *            The collection, which contains the preference headers, which
+	 *            should be added, as an instance of the type {@link Collection}
+	 *            or an empty collection, if no preference headers should be
+	 *            added
+	 */
+	public final void addAllItems(
+			final Collection<PreferenceHeader> preferenceHeaders) {
+		ensureNotNull(preferenceHeaders, "The collection may not be null");
+
+		for (PreferenceHeader preferenceHeader : preferenceHeaders) {
+			addItem(preferenceHeader);
+		}
+	}
+
+	/**
 	 * Removes a specific preference header from the adapter.
 	 * 
 	 * @param preferenceHeader
@@ -161,6 +180,13 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	public final boolean removeItem(final PreferenceHeader preferenceHeader) {
 		ensureNotNull(preferenceHeader, "The preference header may not be null");
 		return preferenceHeaders.remove(preferenceHeader);
+	}
+
+	/**
+	 * Removes all preference headers from the adapter.
+	 */
+	public final void clear() {
+		preferenceHeaders.clear();
 	}
 
 	@Override
