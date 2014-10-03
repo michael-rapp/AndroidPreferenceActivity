@@ -82,11 +82,11 @@ public final class PreferenceHeaderParser {
 	private static Collection<PreferenceHeader> parsePreferenceHeaders(
 			final Context context, final XmlResourceParser parser)
 			throws XmlPullParserException, IOException {
+		parseUntilStartTag(parser);
+
 		Collection<PreferenceHeader> preferenceHeaders = new LinkedList<>();
 		int outerDepth = parser.getDepth();
 		int tagType = parser.next();
-
-		parseUntilStartTag(parser);
 
 		while (tagType != XmlPullParser.END_DOCUMENT
 				&& (tagType != XmlPullParser.END_TAG || parser.getDepth() > outerDepth)) {
