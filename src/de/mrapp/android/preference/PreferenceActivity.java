@@ -259,7 +259,7 @@ public abstract class PreferenceActivity extends Activity implements
 		onCreatePreferenceHeaders();
 		getListView().setOnItemClickListener(this);
 
-		if (!isSplitScreen()) {
+		if (isSplitScreen()) {
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		}
 	}
