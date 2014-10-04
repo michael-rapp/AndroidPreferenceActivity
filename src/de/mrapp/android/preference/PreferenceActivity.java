@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Build;
@@ -376,6 +377,44 @@ public abstract class PreferenceActivity extends Activity implements
 		}
 	}
 
+	/**
+	 * Sets the background of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the background, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 */
+	public final void setNavigationBackground(final int resourceId) {
+		getPreferenceHeaderParentView().setBackgroundResource(resourceId);
+	}
+
+	/**
+	 * Sets the background color of the parent view of the fragment, which
+	 * provides navigation to each preference header's fragment.
+	 * 
+	 * @param color
+	 *            The background color, which should be set, as an
+	 *            {@link Integer} value
+	 */
+	public final void setNavigationBackgroundColor(final int color) {
+		getPreferenceHeaderParentView().setBackgroundColor(color);
+	}
+
+	/**
+	 * Sets the background of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment.
+	 * 
+	 * @param drawable
+	 *            The background, which should be set, as an instance of the
+	 *            class {@link Drawable} or null, if no background should be set
+	 */
+	@SuppressWarnings("deprecation")
+	public final void setNavigationBackground(final Drawable drawable) {
+		getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+	}
+
 	@Override
 	public final void onFragmentCreated(final Fragment fragment) {
 		onCreatePreferenceHeaders();
@@ -427,10 +466,14 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		shadowView = findViewById(R.id.shadow_view);
-		setShadowColor(getResources().getColor(R.color.shadow));
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		showPreferenceHeaders();
+		setShadowColor(getResources().getColor(R.color.shadow));
+
+		if (isSplitScreen()) {
+			setNavigationBackground(R.drawable.navigation_background_light);
+		}
 	}
 
 	@Override
