@@ -18,6 +18,7 @@
 package de.mrapp.android.preference;
 
 import java.util.Collection;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -30,8 +31,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.fragment.FragmentListener;
 import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
@@ -113,10 +114,12 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final String fragmentName) {
 		Fragment fragment = Fragment.instantiate(this, fragmentName);
-		replacePreferenceHeaderFragment(fragment,
-				FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-		if (!isSplitScreen() && getActionBar() != null) {
+		if (isSplitScreen()) {
+			replaceFragment(fragment, R.id.preference_screen_parent, 0);
+		} else {
+			replaceFragment(fragment, R.id.preference_header_parent,
+					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			showActionBarBackButton();
 		}
 	}
@@ -126,36 +129,39 @@ public abstract class PreferenceActivity extends Activity implements
 	 * header's fragment.
 	 */
 	private void showPreferenceHeaders() {
+		int transition = 0;
+
 		if (currentFragment != null) {
-			replacePreferenceHeaderFragment(preferenceHeaderFragment,
-					FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
 			currentFragment = null;
-		} else {
-			replacePreferenceHeaderFragment(preferenceHeaderFragment, 0);
 		}
 
+		replaceFragment(preferenceHeaderFragment,
+				R.id.preference_header_parent, transition);
 	}
 
 	/**
-	 * Replaces the fragment, which is currently contained by the parent view of
-	 * the fragment, which provides the navigation to each preference header's
-	 * fragment, by an other fragment.
+	 * Replaces the fragment, which is currently contained by a specific parent
+	 * view, by an other fragment.
 	 * 
 	 * @param fragment
 	 *            The fragment, which should replace the current fragment, as an
 	 *            instance of the class {@link Fragment}. The fragment may not
 	 *            be null
+	 * @param parentViewId
+	 *            The id of the parent view, which contains the fragment, that
+	 *            should be replaced, as an {@link Integer} value
 	 * @param transition
 	 *            The transition, which should be shown when replacing the
 	 *            fragment, as an {@link Integer} value or 0, if no transition
 	 *            should be shown
 	 */
-	private void replacePreferenceHeaderFragment(final Fragment fragment,
-			final int transition) {
+	private void replaceFragment(final Fragment fragment,
+			final int parentViewId, final int transition) {
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		transaction.setTransition(transition);
-		transaction.replace(R.id.preference_header_parent, fragment);
+		transaction.replace(parentViewId, fragment);
 		transaction.commit();
 	}
 
@@ -335,6 +341,7 @@ public abstract class PreferenceActivity extends Activity implements
 
 			if (!getListAdapter().isEmpty()) {
 				getListView().setItemChecked(0, true);
+				showPreferenceScreen(getListAdapter().getItem(0));
 			}
 		}
 	}
