@@ -24,12 +24,22 @@ License along with this program. If not, see
 
     <RelativeLayout
         android:id="@id/preference_header_parent"
-        android:layout_width="316dp"
+        android:layout_width="@dimen/default_navigation_width"
         android:layout_height="match_parent" />
 
-    <RelativeLayout
-        android:id="@id/preference_screen_parent"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <View
+            android:id="@id/shadow_view"
+            android:layout_width="@dimen/default_shadow_width"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@id/preference_screen_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
 </LinearLayout>

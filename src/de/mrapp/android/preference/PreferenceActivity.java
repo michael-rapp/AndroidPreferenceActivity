@@ -87,6 +87,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private ViewGroup preferenceScreenParentView;
 
 	/**
+	 * The view, which is used to draw a shadow besides the navigation on
+	 * devices with a large screen.
+	 */
+	private View shadowView;
+
+	/**
 	 * The full qualified class name of the fragment, which is currently shown
 	 * or null, if no preference header is currently selected.
 	 */
@@ -241,6 +247,18 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns the view, which is used to draw a shadow besides the navigation
+	 * on devices with a large screen.
+	 * 
+	 * @return The view, which is used to draw a shadow besides the navigation,
+	 *         as an instance of the class {@link View} or null, if the device
+	 *         has a small screen
+	 */
+	public final View getShadowView() {
+		return shadowView;
+	}
+
+	/**
 	 * Returns the list view, which is used to show the preference headers.
 	 * 
 	 * @return The list view, which is used to show the preference header, as an
@@ -388,6 +406,7 @@ public abstract class PreferenceActivity extends Activity implements
 		setContentView(R.layout.preference_activity);
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
+		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		showPreferenceHeaders();
