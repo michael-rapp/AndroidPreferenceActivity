@@ -21,5 +21,6 @@ License along with this program. If not, see
 
     <item name="preference_header_parent" type="id"/>
     <item name="preference_screen_parent" type="id"/>
+    <item name="shadow_view" type="id"/>
 
 </resources>
