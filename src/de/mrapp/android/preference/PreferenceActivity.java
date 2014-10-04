@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
@@ -107,6 +108,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 * otherwise.
 	 */
 	private boolean displayHomeAsUp;
+
+	/**
+	 * The color of the shadow, which is drawn besides the navigation on devices
+	 * with a large screen.
+	 */
+	private int shadowColor;
+
+	/**
+	 * The background of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment.
+	 */
+	private Drawable navigationBackground;
 
 	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
@@ -361,6 +374,17 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns the color of the shadow, which is drawn besides the navigation on
+	 * devices with a large screen.
+	 * 
+	 * @return The color of the shadow, which is drawn besides the navigation,
+	 *         an {@link Integer} value
+	 */
+	public final int getShadowColor() {
+		return shadowColor;
+	}
+
+	/**
 	 * Sets the color of the shadow, which is drawn besides the navigation on
 	 * devices with a large screen.
 	 * 
@@ -369,12 +393,27 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	@SuppressWarnings("deprecation")
 	public final void setShadowColor(final int shadowColor) {
+		this.shadowColor = shadowColor;
+
 		if (getShadowView() != null) {
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
 			getShadowView().setBackgroundDrawable(gradient);
 		}
+	}
+
+	/**
+	 * Returns the background of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment.
+	 * 
+	 * @return The background of the parent view of the fragment, which provides
+	 *         navigation to each preference header's fragment, as an instance
+	 *         of the class {@link Drawable} or null, if no background has been
+	 *         set
+	 */
+	public final Drawable getNavigationBackground() {
+		return navigationBackground;
 	}
 
 	/**
@@ -387,7 +426,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            valid drawable resource
 	 */
 	public final void setNavigationBackground(final int resourceId) {
-		getPreferenceHeaderParentView().setBackgroundResource(resourceId);
+		setNavigationBackground(getResources().getDrawable(resourceId));
 	}
 
 	/**
@@ -399,7 +438,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            {@link Integer} value
 	 */
 	public final void setNavigationBackgroundColor(final int color) {
-		getPreferenceHeaderParentView().setBackgroundColor(color);
+		setNavigationBackground(new ColorDrawable(color));
 	}
 
 	/**
@@ -412,6 +451,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	@SuppressWarnings("deprecation")
 	public final void setNavigationBackground(final Drawable drawable) {
+		this.navigationBackground = drawable;
 		getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
 	}
 
