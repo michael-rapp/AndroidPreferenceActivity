@@ -126,14 +126,14 @@ public abstract class PreferenceActivity extends Activity implements
 	 * header's fragment.
 	 */
 	private void showPreferenceHeaders() {
-		int transition = 0;
-
 		if (currentFragment != null) {
-			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
+			replacePreferenceHeaderFragment(preferenceHeaderFragment,
+					FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
 			currentFragment = null;
+		} else {
+			replacePreferenceHeaderFragment(preferenceHeaderFragment, 0);
 		}
 
-		replacePreferenceHeaderFragment(preferenceHeaderFragment, transition);
 	}
 
 	/**
