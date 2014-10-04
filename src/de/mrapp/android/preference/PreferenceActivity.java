@@ -332,6 +332,10 @@ public abstract class PreferenceActivity extends Activity implements
 
 		if (isSplitScreen()) {
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+			if (!getListAdapter().isEmpty()) {
+				getListView().setItemChecked(0, true);
+			}
 		}
 	}
 
