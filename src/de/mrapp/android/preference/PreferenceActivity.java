@@ -24,6 +24,9 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -356,6 +359,23 @@ public abstract class PreferenceActivity extends Activity implements
 		return getPreferenceScreenParentView() != null;
 	}
 
+	/**
+	 * Sets the color of the shadow, which is drawn besides the navigation on
+	 * devices with a large screen.
+	 * 
+	 * @param shadowColor
+	 *            The color, which should be set, as an {@link Integer} value
+	 */
+	@SuppressWarnings("deprecation")
+	public final void setShadowColor(final int shadowColor) {
+		if (getShadowView() != null) {
+			GradientDrawable gradient = new GradientDrawable(
+					Orientation.LEFT_RIGHT, new int[] { shadowColor,
+							Color.TRANSPARENT });
+			getShadowView().setBackgroundDrawable(gradient);
+		}
+	}
+
 	@Override
 	public final void onFragmentCreated(final Fragment fragment) {
 		onCreatePreferenceHeaders();
@@ -407,6 +427,7 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		shadowView = findViewById(R.id.shadow_view);
+		setShadowColor(getResources().getColor(R.color.shadow));
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		showPreferenceHeaders();
