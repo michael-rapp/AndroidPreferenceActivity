@@ -62,6 +62,13 @@ public abstract class PreferenceActivity extends Activity implements
 			.getSimpleName() + "::CurrentFragment";
 
 	/**
+	 * The name of the extra, which is used to save the index of the currently
+	 * selected preference header, within a bundle.
+	 */
+	private static final String SELECTED_PREFERENCE_HEADER_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::SelectedPreferenceHeader";
+
+	/**
 	 * The fragment, which contains the preference headers and provides the
 	 * navigation to each header's fragment.
 	 */
@@ -390,15 +397,23 @@ public abstract class PreferenceActivity extends Activity implements
 	protected final void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(CURRENT_FRAGMENT_EXTRA, currentFragment);
+		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA, getListView()
+				.getCheckedItemPosition());
 	}
 
 	@Override
 	protected final void onRestoreInstanceState(final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT_EXTRA);
+		int selectedPreferenceHeader = savedInstanceState
+				.getInt(SELECTED_PREFERENCE_HEADER_EXTRA);
 
 		if (currentFragment != null) {
 			showPreferenceScreen(currentFragment);
+		}
+
+		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
+			getListView().setItemChecked(selectedPreferenceHeader, true);
 		}
 	}
 
