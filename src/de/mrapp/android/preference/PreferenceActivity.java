@@ -43,6 +43,8 @@ import de.mrapp.android.preference.fragment.FragmentListener;
 import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.parser.PreferenceHeaderParser;
 
+import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
+
 /**
  * An activity, which provides a navigation for multiple groups of preferences,
  * in which each group is represented by an instance of the class
@@ -446,6 +448,36 @@ public abstract class PreferenceActivity extends Activity implements
 	@SuppressWarnings("deprecation")
 	public final void setNavigationBackground(final Drawable drawable) {
 		getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+	}
+
+	/**
+	 * Returns the width of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment.
+	 * 
+	 * @return The width of the parent view of the fragment, which provides
+	 *         navigation to each preference header's fragment, in dp as an
+	 *         {@link Integer} value
+	 */
+	public final int getNavigationWidth() {
+		return getPreferenceHeaderParentView().getLayoutParams().width;
+	}
+
+	/**
+	 * Sets the width of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment. The width is only set on
+	 * devices with a large screen.
+	 * 
+	 * @param width
+	 *            The width, which should be set, in dp as an {@link Integer}
+	 *            value. The width must be greater than 0
+	 */
+	public final void setNavigationWidth(final int width) {
+		ensureGreaterThan(width, 0, "The width must be greater than 0");
+
+		if (isSplitScreen()) {
+			getPreferenceHeaderParentView().getLayoutParams().width = width;
+			getPreferenceHeaderParentView().requestLayout();
+		}
 	}
 
 	@Override
