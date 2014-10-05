@@ -54,6 +54,12 @@ License along with this program. If not, see
                 android:paddingBottom="8dp"
                 android:paddingTop="16dp" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:contentDescription="@null"
+                android:src="@color/bread_crumb_border" />
+
             <RelativeLayout
                 android:id="@id/preference_screen_parent"
                 android:layout_width="match_parent"
