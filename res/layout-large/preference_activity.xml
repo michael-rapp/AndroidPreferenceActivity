@@ -44,6 +44,8 @@ License along with this program. If not, see
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/preference_screen_horizontal_padding"
+            android:layout_marginStart="@dimen/preference_screen_horizontal_padding"
             android:orientation="vertical" >
 
             <android.app.FragmentBreadCrumbs
