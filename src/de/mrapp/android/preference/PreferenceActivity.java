@@ -44,6 +44,7 @@ import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.parser.PreferenceHeaderParser;
 
 import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
+import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences,
@@ -396,6 +397,38 @@ public abstract class PreferenceActivity extends Activity implements
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
 			getShadowView().setBackgroundDrawable(gradient);
+		}
+	}
+
+	/**
+	 * Returns the width of the shadow, which is drawn besides the navigation on
+	 * devices with a large screen.
+	 * 
+	 * @return The width of the shadow, which is drawn besides the navigation,
+	 *         in dp as an {@link Integer} value
+	 */
+	public final int getShadowWidth() {
+		if (getShadowView() != null) {
+			return getShadowView().getLayoutParams().width;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Sets the width of the shadow, which is drawn besides the navigation on
+	 * devices with a large screen.
+	 * 
+	 * @param width
+	 *            The width, which should be set, in dp as an {@link Integer}
+	 *            value. The width must be at least 0
+	 */
+	public final void setShadowWidth(final int width) {
+		ensureAtLeast(width, 0, "The width must be at least 0");
+
+		if (getShadowView() != null) {
+			getShadowView().getLayoutParams().width = width;
+			getShadowView().requestLayout();
 		}
 	}
 
