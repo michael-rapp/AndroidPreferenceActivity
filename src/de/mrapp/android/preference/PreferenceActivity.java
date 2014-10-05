@@ -116,12 +116,6 @@ public abstract class PreferenceActivity extends Activity implements
 	private int shadowColor;
 
 	/**
-	 * The background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment.
-	 */
-	private Drawable navigationBackground;
-
-	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -413,7 +407,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *         set
 	 */
 	public final Drawable getNavigationBackground() {
-		return navigationBackground;
+		return getPreferenceHeaderParentView().getBackground();
 	}
 
 	/**
@@ -451,7 +445,6 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	@SuppressWarnings("deprecation")
 	public final void setNavigationBackground(final Drawable drawable) {
-		this.navigationBackground = drawable;
 		getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
 	}
 
