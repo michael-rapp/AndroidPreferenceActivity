@@ -375,10 +375,15 @@ public abstract class PreferenceActivity extends Activity implements
 	 * devices with a large screen.
 	 * 
 	 * @return The color of the shadow, which is drawn besides the navigation,
-	 *         an {@link Integer} value
+	 *         as an {@link Integer} value or -1, if the device has a small
+	 *         screen
 	 */
 	public final int getShadowColor() {
-		return shadowColor;
+		if (isSplitScreen()) {
+			return shadowColor;
+		} else {
+			return -1;
+		}
 	}
 
 	/**
