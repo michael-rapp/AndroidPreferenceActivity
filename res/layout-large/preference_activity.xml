@@ -51,10 +51,10 @@ License along with this program. If not, see
             <android.app.FragmentBreadCrumbs
                 android:id="@android:id/title"
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
+                android:layout_height="@dimen/bread_crumb_height"
                 android:gravity="center_vertical|start"
-                android:paddingBottom="8dp"
-                android:paddingTop="16dp" />
+                android:paddingBottom="@dimen/bread_crumb_padding_bottom"
+                android:paddingTop="@dimen/bread_crumb_padding_top" />
 
             <ImageView
                 android:layout_width="match_parent"
