@@ -414,7 +414,8 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Sets the background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment.
+	 * navigation to each preference header's fragment. The background is only
+	 * set on devices with a large screen.
 	 * 
 	 * @param resourceId
 	 *            The resource id of the background, which should be set, as an
@@ -427,7 +428,8 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Sets the background color of the parent view of the fragment, which
-	 * provides navigation to each preference header's fragment.
+	 * provides navigation to each preference header's fragment. The background
+	 * is only set on devices with a large screen.
 	 * 
 	 * @param color
 	 *            The background color, which should be set, as an
@@ -439,7 +441,8 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Sets the background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment.
+	 * navigation to each preference header's fragment. The background is only
+	 * set on devices with a large screen.
 	 * 
 	 * @param drawable
 	 *            The background, which should be set, as an instance of the
@@ -447,7 +450,9 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	@SuppressWarnings("deprecation")
 	public final void setNavigationBackground(final Drawable drawable) {
-		getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+		if (isSplitScreen()) {
+			getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+		}
 	}
 
 	/**
