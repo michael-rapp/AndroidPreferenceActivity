@@ -41,10 +41,24 @@ License along with this program. If not, see
             android:layout_width="@dimen/default_shadow_width"
             android:layout_height="match_parent" />
 
-        <RelativeLayout
-            android:id="@id/preference_screen_parent"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <android.app.FragmentBreadCrumbs
+                android:id="@android:id/title"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:gravity="center_vertical|start"
+                android:paddingBottom="8dp"
+                android:paddingTop="16dp" />
+
+            <RelativeLayout
+                android:id="@id/preference_screen_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>
