@@ -405,7 +405,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 * devices with a large screen.
 	 * 
 	 * @return The width of the shadow, which is drawn besides the navigation,
-	 *         in dp as an {@link Integer} value
+	 *         in dp as an {@link Integer} value or -1, if the device has a
+	 *         small screen
 	 */
 	public final int getShadowWidth() {
 		if (getShadowView() != null) {
