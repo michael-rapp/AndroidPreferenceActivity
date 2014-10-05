@@ -293,7 +293,7 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showBreadCrumbs(final CharSequence title,
 			final CharSequence shortTitle) {
 		if (fragmentBreadCrumbs == null) {
-			View breadCrumbsView = findViewById(android.R.id.title);
+			View breadCrumbsView = findViewById(R.id.bread_crumbs_view);
 
 			try {
 				fragmentBreadCrumbs = (FragmentBreadCrumbs) breadCrumbsView;

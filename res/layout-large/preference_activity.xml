@@ -49,7 +49,7 @@ License along with this program. If not, see
             android:orientation="vertical" >
 
             <android.app.FragmentBreadCrumbs
-                android:id="@android:id/title"
+                android:id="@id/bread_crumbs_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bread_crumb_height"
                 android:gravity="center_vertical|start"
