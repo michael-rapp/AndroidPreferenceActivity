@@ -388,21 +388,25 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Sets the color of the shadow, which is drawn besides the navigation on
-	 * devices with a large screen.
+	 * devices with a large screen. The color is only set on devices with a
+	 * large screen.
 	 * 
 	 * @param shadowColor
 	 *            The color, which should be set, as an {@link Integer} value
+	 * @return True, if the color has been set, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
-	public final void setShadowColor(final int shadowColor) {
-		this.shadowColor = shadowColor;
-
+	public final boolean setShadowColor(final int shadowColor) {
 		if (getShadowView() != null) {
+			this.shadowColor = shadowColor;
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
 			getShadowView().setBackgroundDrawable(gradient);
+			return true;
 		}
+
+		return false;
 	}
 
 	/**
@@ -423,32 +427,42 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Sets the width of the shadow, which is drawn besides the navigation on
-	 * devices with a large screen.
+	 * devices with a large screen. The width is only set on devices with a
+	 * large screen.
 	 * 
 	 * @param width
 	 *            The width, which should be set, in dp as an {@link Integer}
 	 *            value. The width must be at least 0
+	 * @return True, if the width has been set, false otherwise
 	 */
-	public final void setShadowWidth(final int width) {
+	public final boolean setShadowWidth(final int width) {
 		ensureAtLeast(width, 0, "The width must be at least 0");
 
 		if (getShadowView() != null) {
 			getShadowView().getLayoutParams().width = width;
 			getShadowView().requestLayout();
+			return true;
 		}
+
+		return false;
 	}
 
 	/**
 	 * Returns the background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment.
+	 * navigation to each preference header's fragment on devices with a large
+	 * screen.
 	 * 
 	 * @return The background of the parent view of the fragment, which provides
 	 *         navigation to each preference header's fragment, as an instance
 	 *         of the class {@link Drawable} or null, if no background has been
-	 *         set
+	 *         set or the device has a small screen
 	 */
 	public final Drawable getNavigationBackground() {
-		return getPreferenceHeaderParentView().getBackground();
+		if (isSplitScreen()) {
+			return getPreferenceHeaderParentView().getBackground();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -460,9 +474,10 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            The resource id of the background, which should be set, as an
 	 *            {@link Integer} value. The resource id must correspond to a
 	 *            valid drawable resource
+	 * @return True, if the background has been set, false otherwise
 	 */
-	public final void setNavigationBackground(final int resourceId) {
-		setNavigationBackground(getResources().getDrawable(resourceId));
+	public final boolean setNavigationBackground(final int resourceId) {
+		return setNavigationBackground(getResources().getDrawable(resourceId));
 	}
 
 	/**
@@ -473,9 +488,10 @@ public abstract class PreferenceActivity extends Activity implements
 	 * @param color
 	 *            The background color, which should be set, as an
 	 *            {@link Integer} value
+	 * @return True, if the background has been set, false otherwise
 	 */
-	public final void setNavigationBackgroundColor(final int color) {
-		setNavigationBackground(new ColorDrawable(color));
+	public final boolean setNavigationBackgroundColor(final int color) {
+		return setNavigationBackground(new ColorDrawable(color));
 	}
 
 	/**
@@ -486,24 +502,33 @@ public abstract class PreferenceActivity extends Activity implements
 	 * @param drawable
 	 *            The background, which should be set, as an instance of the
 	 *            class {@link Drawable} or null, if no background should be set
+	 * @return True, if the background has been set, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
-	public final void setNavigationBackground(final Drawable drawable) {
+	public final boolean setNavigationBackground(final Drawable drawable) {
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+			return true;
 		}
+
+		return false;
 	}
 
 	/**
 	 * Returns the width of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment.
+	 * navigation to each preference header's fragment on devices with a large
+	 * screen.
 	 * 
 	 * @return The width of the parent view of the fragment, which provides
 	 *         navigation to each preference header's fragment, in dp as an
-	 *         {@link Integer} value
+	 *         {@link Integer} value or -1, if the device has a small screen
 	 */
 	public final int getNavigationWidth() {
-		return getPreferenceHeaderParentView().getLayoutParams().width;
+		if (isSplitScreen()) {
+			return getPreferenceHeaderParentView().getLayoutParams().width;
+		} else {
+			return -1;
+		}
 	}
 
 	/**
@@ -514,14 +539,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 * @param width
 	 *            The width, which should be set, in dp as an {@link Integer}
 	 *            value. The width must be greater than 0
+	 * @return True, if the width has been set, false otherwise
 	 */
-	public final void setNavigationWidth(final int width) {
+	public final boolean setNavigationWidth(final int width) {
 		ensureGreaterThan(width, 0, "The width must be greater than 0");
 
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().getLayoutParams().width = width;
 			getPreferenceHeaderParentView().requestLayout();
+			return true;
 		}
+
+		return false;
 	}
 
 	@Override
