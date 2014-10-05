@@ -23,6 +23,7 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentBreadCrumbs;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -42,7 +43,6 @@ import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.fragment.FragmentListener;
 import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.parser.PreferenceHeaderParser;
-
 import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.util.DisplayUtil.convertDpToPixels;
@@ -121,6 +121,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private int shadowColor;
 
 	/**
+	 * The bread crumbs, which are used to show the title of the currently
+	 * selected fragment.
+	 */
+	private FragmentBreadCrumbs fragmentBreadCrumbs;
+
+	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -132,6 +138,7 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader) {
 		currentFragment = preferenceHeader.getFragment();
 		showPreferenceScreen(currentFragment);
+		showBreadCrumbs(preferenceHeader);
 	}
 
 	/**
@@ -232,6 +239,75 @@ public abstract class PreferenceActivity extends Activity implements
 		}
 
 		return false;
+	}
+
+	/**
+	 * Shows the bread crumbs for a specific preference header, depending on
+	 * whether the device has a large screen or not. On devices with a large
+	 * screen the bread crumbs will be shown above the currently shown fragment,
+	 * on devices with a small screen the bread crumbs will be shown as the
+	 * action bar's title instead.
+	 * 
+	 * @param preferenceHeader
+	 *            The preference header, the bread crumbs should be shown for,
+	 *            as an instance of the class {@link PreferenceHeader}. The
+	 *            preference header may not be null
+	 */
+	private void showBreadCrumbs(final PreferenceHeader preferenceHeader) {
+		CharSequence title = preferenceHeader.getBreadCrumbTitle();
+
+		if (title == null) {
+			title = preferenceHeader.getTitle();
+		}
+
+		if (title == null) {
+			title = getTitle();
+		}
+
+		showBreadCrumbs(title, preferenceHeader.getBreadCrumbShortTitle());
+	}
+
+	/**
+	 * Shows the bread crumbs using a specific title and short title, depending
+	 * on whether the device has a large screen or not. On devices with a large
+	 * screen the bread crumbs will be shown above the currently shown fragment,
+	 * on devices with a small screen the bread crumbs will be shown as the
+	 * action bar's title instead.
+	 * 
+	 * @param title
+	 *            The title, which should be used by the bread crumbs, as an
+	 *            instance of the class {@link CharSequence} or null, if no
+	 *            title should be used
+	 * @param shortTitle
+	 *            The short title, which should be used by the bread crumbs, as
+	 *            an instance of the class {@link CharSequence} or null, if no
+	 *            short title should be used
+	 */
+	private void showBreadCrumbs(final CharSequence title,
+			final CharSequence shortTitle) {
+		if (fragmentBreadCrumbs == null) {
+			View breadCrumbsView = findViewById(android.R.id.title);
+
+			try {
+				fragmentBreadCrumbs = (FragmentBreadCrumbs) breadCrumbsView;
+			} catch (ClassCastException e) {
+				return;
+			}
+
+			if (fragmentBreadCrumbs == null) {
+				if (title != null) {
+					setTitle(title);
+				}
+
+				return;
+			}
+
+			fragmentBreadCrumbs.setMaxVisible(2);
+			fragmentBreadCrumbs.setActivity(this);
+		}
+
+		fragmentBreadCrumbs.setTitle(title, shortTitle);
+		fragmentBreadCrumbs.setParentTitle(null, null, null);
 	}
 
 	/**
