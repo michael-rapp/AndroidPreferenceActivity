@@ -713,6 +713,7 @@ public abstract class PreferenceActivity extends Activity implements
 
 		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
 			getListView().setItemChecked(selectedPreferenceHeader, true);
+			showBreadCrumbs(getListAdapter().getItem(selectedPreferenceHeader));
 		}
 	}
 
