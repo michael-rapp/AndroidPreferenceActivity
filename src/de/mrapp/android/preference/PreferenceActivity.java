@@ -115,6 +115,13 @@ public abstract class PreferenceActivity extends Activity implements
 	private boolean displayHomeAsUp;
 
 	/**
+	 * True, if the behavior of the action bar's back button is overridden to
+	 * return to the navigation when a preference header is currently selected
+	 * on devices with a small screen.
+	 */
+	private boolean overrideBackButton;
+
+	/**
 	 * The color of the shadow, which is drawn besides the navigation on devices
 	 * with a large screen.
 	 */
@@ -635,6 +642,35 @@ public abstract class PreferenceActivity extends Activity implements
 		return false;
 	}
 
+	/**
+	 * Returns, whether the behavior of the action bar's back button is
+	 * overridden to return to the navigation when a preference header is
+	 * currently selected on devices with a small screen, or not.
+	 * 
+	 * @return True, if the behavior of the action bar's back button is
+	 *         overridden, false otherwise
+	 */
+	public final boolean isBackButtonOverridden() {
+		return overrideBackButton;
+	}
+
+	/**
+	 * Sets, whether the behavior of the action bar's back button should be
+	 * overridden to return to the navigation when a preference header is
+	 * currently selected on devices with a small screen, or not.
+	 * 
+	 * @param overrideBackButton
+	 *            True, if the behavior of the action bar's back button should
+	 *            be overridden, false otherwise
+	 */
+	public final void overrideBackButton(final boolean overrideBackButton) {
+		this.overrideBackButton = overrideBackButton;
+
+		if (currentFragment != null) {
+			showActionBarBackButton();
+		}
+	}
+
 	@Override
 	public final void onFragmentCreated(final Fragment fragment) {
 		onCreatePreferenceHeaders();
@@ -670,7 +706,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home && !isSplitScreen()
-				&& currentFragment != null) {
+				&& currentFragment != null && isBackButtonOverridden()) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
 			return true;
@@ -688,6 +724,7 @@ public abstract class PreferenceActivity extends Activity implements
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
+		overrideBackButton(true);
 		showPreferenceHeaders();
 		setShadowColor(getResources().getColor(R.color.shadow));
 	}
