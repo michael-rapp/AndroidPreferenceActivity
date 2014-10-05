@@ -45,6 +45,8 @@ import de.mrapp.android.preference.parser.PreferenceHeaderParser;
 
 import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
+import static de.mrapp.android.preference.util.DisplayUtil.convertDpToPixels;
+import static de.mrapp.android.preference.util.DisplayUtil.convertPixelsToDp;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences,
@@ -419,7 +421,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final int getShadowWidth() {
 		if (getShadowView() != null) {
-			return getShadowView().getLayoutParams().width;
+			return convertPixelsToDp(this,
+					getShadowView().getLayoutParams().width);
 		} else {
 			return -1;
 		}
@@ -439,7 +442,8 @@ public abstract class PreferenceActivity extends Activity implements
 		ensureAtLeast(width, 0, "The width must be at least 0");
 
 		if (getShadowView() != null) {
-			getShadowView().getLayoutParams().width = width;
+			getShadowView().getLayoutParams().width = convertDpToPixels(this,
+					width);
 			getShadowView().requestLayout();
 			return true;
 		}
@@ -525,7 +529,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final int getNavigationWidth() {
 		if (isSplitScreen()) {
-			return getPreferenceHeaderParentView().getLayoutParams().width;
+			return convertPixelsToDp(this, getPreferenceHeaderParentView()
+					.getLayoutParams().width);
 		} else {
 			return -1;
 		}
@@ -545,7 +550,8 @@ public abstract class PreferenceActivity extends Activity implements
 		ensureGreaterThan(width, 0, "The width must be greater than 0");
 
 		if (isSplitScreen()) {
-			getPreferenceHeaderParentView().getLayoutParams().width = width;
+			getPreferenceHeaderParentView().getLayoutParams().width = convertPixelsToDp(
+					this, width);
 			getPreferenceHeaderParentView().requestLayout();
 			return true;
 		}
