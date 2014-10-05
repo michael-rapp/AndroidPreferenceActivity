@@ -510,10 +510,6 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderFragment.addFragmentListener(this);
 		showPreferenceHeaders();
 		setShadowColor(getResources().getColor(R.color.shadow));
-
-		if (isSplitScreen()) {
-			setNavigationBackground(R.drawable.navigation_background_light);
-		}
 	}
 
 	@Override

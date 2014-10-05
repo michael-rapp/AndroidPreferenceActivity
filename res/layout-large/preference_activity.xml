@@ -25,7 +25,12 @@ License along with this program. If not, see
     <RelativeLayout
         android:id="@id/preference_header_parent"
         android:layout_width="@dimen/default_navigation_width"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/navigation_background_light"
+        android:paddingEnd="1dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="1dp"
+        android:paddingStart="0dp" />
 
     <FrameLayout
         android:layout_width="match_parent"
