@@ -273,7 +273,7 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceHeaders() {
 		int transition = 0;
 
-		if (currentPreferenceHeader != null) {
+		if (isPreferenceHeaderSelected()) {
 			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
 			currentPreferenceHeader = null;
 		}
@@ -577,6 +577,16 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final boolean isSplitScreen() {
 		return getPreferenceScreenParentView() != null;
+	}
+
+	/**
+	 * Returns, whether a preference header is currently selected, or not.
+	 * 
+	 * @return True, if a preference header is currently selected, false
+	 *         otherwise
+	 */
+	public final boolean isPreferenceHeaderSelected() {
+		return currentPreferenceHeader != null;
 	}
 
 	/**
@@ -891,7 +901,7 @@ public abstract class PreferenceActivity extends Activity implements
 	public final void overrideBackButton(final boolean overrideBackButton) {
 		this.overrideBackButton = overrideBackButton;
 
-		if (currentPreferenceHeader != null) {
+		if (isPreferenceHeaderSelected()) {
 			showActionBarBackButton();
 		}
 	}
@@ -922,7 +932,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
-				&& currentPreferenceHeader != null) {
+				&& isPreferenceHeaderSelected()) {
 			showPreferenceHeaders();
 			return true;
 		}
@@ -933,7 +943,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home && !isSplitScreen()
-				&& currentPreferenceHeader != null && isBackButtonOverridden()) {
+				&& isPreferenceHeaderSelected() && isBackButtonOverridden()) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
 			return true;
