@@ -177,7 +177,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 * The preference header, which is currently selected, or null, if no
 	 * preference header is currently selected.
 	 */
-	private PreferenceHeader currentPreferenceHeader;
+	private PreferenceHeader currentHeader;
 
 	/**
 	 * The title, which is currently used by the bread crumbs or null, if no
@@ -283,7 +283,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
-		currentPreferenceHeader = preferenceHeader;
+		currentHeader = preferenceHeader;
 
 		if (preferenceHeader.getIntent() != null) {
 			startActivity(preferenceHeader.getIntent());
@@ -328,7 +328,7 @@ public abstract class PreferenceActivity extends Activity implements
 
 		if (isPreferenceHeaderSelected()) {
 			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
-			currentPreferenceHeader = null;
+			currentHeader = null;
 		}
 
 		replaceFragment(preferenceHeaderFragment,
@@ -672,7 +672,7 @@ public abstract class PreferenceActivity extends Activity implements
 					hideNavigation ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					hideNavigation ? View.GONE : View.VISIBLE);
-		} else if (hideNavigation) {
+		} else if (hideNavigation && !isPreferenceHeaderSelected()) {
 			onBackPressed();
 		}
 	}
@@ -684,7 +684,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *         otherwise
 	 */
 	public final boolean isPreferenceHeaderSelected() {
-		return currentPreferenceHeader != null;
+		return currentHeader != null;
 	}
 
 	/**
@@ -1083,9 +1083,9 @@ public abstract class PreferenceActivity extends Activity implements
 	protected final void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(CURRENT_FRAGMENT_EXTRA,
-				currentPreferenceHeader.getFragment());
+				(currentHeader != null) ? currentHeader.getFragment() : null);
 		outState.putBundle(CURRENT_BUNDLE_EXTRA,
-				currentPreferenceHeader.getExtras());
+				(currentHeader != null) ? currentHeader.getExtras() : null);
 		outState.putCharSequence(CURRENT_TITLE_EXTRA, currentTitle);
 		outState.putCharSequence(CURRENT_SHORT_TITLE_EXTRA, currentShortTitle);
 		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA,
@@ -1115,7 +1115,7 @@ public abstract class PreferenceActivity extends Activity implements
 				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
 
 				if (preferenceHeader.getFragment().equals(currentFragment)) {
-					currentPreferenceHeader = preferenceHeader;
+					currentHeader = preferenceHeader;
 				}
 			}
 		}
