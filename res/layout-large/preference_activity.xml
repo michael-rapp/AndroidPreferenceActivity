@@ -42,6 +42,7 @@ License along with this program. If not, see
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:id="@id/preference_screen_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/preference_screen_horizontal_padding"
@@ -54,17 +55,17 @@ License along with this program. If not, see
                 android:layout_height="@dimen/bread_crumb_height"
                 android:gravity="center_vertical|start"
                 android:paddingBottom="@dimen/bread_crumb_padding_bottom"
-                android:paddingTop="@dimen/bread_crumb_padding_top" 
                 android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
-                android:paddingRight="@dimen/bread_crumb_horizontal_padding" />
+                android:paddingRight="@dimen/bread_crumb_horizontal_padding"
+                android:paddingTop="@dimen/bread_crumb_padding_top" />
 
             <ImageView
                 android:id="@id/bread_crumbs_separator"
-                android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
-                android:paddingRight="@dimen/bread_crumb_horizontal_padding"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:contentDescription="@null"
+                android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
+                android:paddingRight="@dimen/bread_crumb_horizontal_padding"
                 android:src="@color/bread_crumb_border" />
 
             <RelativeLayout
