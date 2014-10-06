@@ -968,7 +968,7 @@ public abstract class PreferenceActivity extends Activity implements
 		ensureGreaterThan(width, 0, "The width must be greater than 0");
 
 		if (isSplitScreen()) {
-			getPreferenceHeaderParentView().getLayoutParams().width = convertPixelsToDp(
+			getPreferenceHeaderParentView().getLayoutParams().width = convertDpToPixels(
 					this, width);
 			getPreferenceHeaderParentView().requestLayout();
 			return true;
