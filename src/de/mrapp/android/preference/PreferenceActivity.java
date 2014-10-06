@@ -104,6 +104,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private ViewGroup preferenceScreenContainer;
 
 	/**
+	 * The view, which is used to draw a separator between the bread crumbs and
+	 * the preferences on devices with a large screen.
+	 */
+	private View breadCrumsSeperator;
+
+	/**
 	 * The view, which is used to draw a shadow besides the navigation on
 	 * devices with a large screen.
 	 */
@@ -358,11 +364,23 @@ public abstract class PreferenceActivity extends Activity implements
 	 * selected on devices with a large screen.
 	 * 
 	 * @return The view group, which contains all views, which are shown when a
-	 *         preference header is selected, or null, if the device has a small
-	 *         screen
+	 *         preference header is selected, as an instance of the class
+	 *         {@link ViewGroup} or null, if the device has a small screen
 	 */
 	public final ViewGroup getPreferenceScreenContainer() {
 		return preferenceScreenContainer;
+	}
+
+	/**
+	 * Returns the view, which is used to draw a separator between the bread
+	 * crumbs and the preferences on devices with a large screen.
+	 * 
+	 * @return The view, which is used to draw a separator between the bread
+	 *         crumbs and the preferences, as an instance of the class
+	 *         {@link View} or null, if the device has a small display
+	 */
+	public final View getBreadCrumsSeparator() {
+		return breadCrumsSeperator;
 	}
 
 	/**
@@ -742,6 +760,7 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
+		breadCrumsSeperator = findViewById(R.id.bread_crumbs_separator);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
