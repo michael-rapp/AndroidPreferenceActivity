@@ -234,8 +234,7 @@ public abstract class PreferenceActivity extends Activity implements
 			}
 		}
 
-		navigationHidden = getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false);
-		hideNavigation(isNavigationHidden());
+		hideNavigation(getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false));
 	}
 
 	/**
@@ -604,24 +603,18 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Returns, whether the fragment, which provides navigation to each
-	 * preference header's fragment on devices with a large screen, is currently
-	 * hidden or not.
+	 * preference header's fragment, is currently hidden or not.
 	 * 
 	 * @return True, if the fragment, which provides navigation to each
-	 *         preference header's fragment is hidden or false, if the fragment
-	 *         is currently not hidden or the device has a small screen
+	 *         preference header's fragment is currently hidden, false otherwise
 	 */
 	public final boolean isNavigationHidden() {
-		if (isSplitScreen()) {
-			return navigationHidden;
-		}
-
-		return false;
+		return navigationHidden;
 	}
 
 	/**
 	 * Hides or shows the fragment, which provides navigation to each preference
-	 * header's fragment on devices with a large screen.
+	 * header's fragment.
 	 * 
 	 * @param hideNavigation
 	 *            True, if the fragment, which provides navigation to each
@@ -629,11 +622,15 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            otherwise
 	 */
 	public final void hideNavigation(final boolean hideNavigation) {
+		this.navigationHidden = hideNavigation;
+
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setVisibility(
 					hideNavigation ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					hideNavigation ? View.GONE : View.VISIBLE);
+		} else {
+			onBackPressed();
 		}
 	}
 
@@ -990,7 +987,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
-				&& isPreferenceHeaderSelected()) {
+				&& isPreferenceHeaderSelected() && !isNavigationHidden()) {
 			showPreferenceHeaders();
 			return true;
 		}
@@ -1001,7 +998,8 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home && !isSplitScreen()
-				&& isPreferenceHeaderSelected() && isBackButtonOverridden()) {
+				&& isPreferenceHeaderSelected() && isBackButtonOverridden()
+				&& !isNavigationHidden()) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
 			return true;
