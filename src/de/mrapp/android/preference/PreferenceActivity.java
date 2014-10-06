@@ -102,6 +102,47 @@ public abstract class PreferenceActivity extends Activity implements
 	public static final String EXTRA_NO_HEADERS = ":android:no_headers";
 
 	/**
+	 * When starting this activity, the invoking intent can contain this extra
+	 * boolean to display back and next buttons in order to use the activity as
+	 * a wizard.
+	 */
+	public static final String EXTRA_SHOW_BUTTON_BAR = "extra_prefs_show_button_bar";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
+	 * the invoking intent can contain this extra boolean to show a skip button.
+	 */
+	public static final String EXTRA_SHOW_SKIP_BUTTON = "extra_prefs_show_skip";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
+	 * the invoking intent can contain this extra string to specify a custom
+	 * text for the next button.
+	 */
+	public static final String EXTRA_NEXT_BUTTON_TEXT = "extra_prefs_set_next_text";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
+	 * the invoking intent can contain this extra string to specify a custom
+	 * text for the back button.
+	 */
+	public static final String EXTRA_BACK_BUTTON_TEXT = "extra_prefs_set_back_text";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>
+	 * and <code>EXTRA_SHOW_SKIP_BUTTON</code>, the invoking intent can contain
+	 * this extra string to specify a custom text for the skip button.
+	 */
+	public static final String EXTRA_SKIP_BUTTON_TEXT = "extra_prefs_set_skip_text";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
+	 * the invoking intent can contain this extra string to specify a custom
+	 * text for the back button when the last preference header is shown.
+	 */
+	public static final String EXTRA_FINISH_BUTTON_TEXT = "extra_prefs_set_finish_text";
+
+	/**
 	 * The name of the extra, which is used to save the class name of the
 	 * fragment, which is currently shown, within a bundle.
 	 */
