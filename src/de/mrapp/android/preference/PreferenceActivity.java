@@ -1040,8 +1040,12 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
 		breadCrumbs = (FragmentBreadCrumbs) findViewById(R.id.bread_crumbs_view);
-		breadCrumbs.setMaxVisible(2);
-		breadCrumbs.setActivity(this);
+
+		if (breadCrumbs != null) {
+			breadCrumbs.setMaxVisible(2);
+			breadCrumbs.setActivity(this);
+		}
+
 		breadCrumbsSeperator = findViewById(R.id.bread_crumbs_separator);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
