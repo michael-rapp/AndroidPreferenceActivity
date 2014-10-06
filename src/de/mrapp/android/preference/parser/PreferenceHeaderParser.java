@@ -90,8 +90,6 @@ public final class PreferenceHeaderParser {
 
 		while (tagType != XmlPullParser.END_DOCUMENT
 				&& (tagType != XmlPullParser.END_TAG || parser.getDepth() > outerDepth)) {
-			tagType = parser.next();
-
 			if (tagType == XmlPullParser.END_TAG
 					|| tagType == XmlPullParser.TEXT) {
 				continue;
@@ -102,6 +100,8 @@ public final class PreferenceHeaderParser {
 			} else {
 				skipCurrentTag(parser);
 			}
+			
+			tagType = parser.next();
 		}
 
 		return preferenceHeaders;
@@ -396,8 +396,6 @@ public final class PreferenceHeaderParser {
 
 		while (type != XmlPullParser.END_DOCUMENT
 				&& (type != XmlPullParser.END_TAG || parser.getDepth() > innerDepth)) {
-			type = parser.next();
-
 			if (type == XmlPullParser.END_TAG || type == XmlPullParser.TEXT) {
 				continue;
 			}
@@ -409,10 +407,11 @@ public final class PreferenceHeaderParser {
 			} else if (parser.getName().equals(INTENT_TAG_NAME)) {
 				intent = Intent.parseIntent(context.getResources(), parser,
 						attributeSet);
-
 			} else {
 				skipCurrentTag(parser);
 			}
+
+			type = parser.next();
 		}
 
 		if (bundle.isEmpty()) {
