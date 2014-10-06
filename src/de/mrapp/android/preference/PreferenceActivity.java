@@ -65,6 +65,42 @@ public abstract class PreferenceActivity extends Activity implements
 		FragmentListener, OnItemClickListener {
 
 	/**
+	 * When starting this activity, the invoking Intent can contain this extra
+	 * string to specify which fragment should be initially displayed.
+	 */
+	public static final String EXTRA_SHOW_FRAGMENT = ":android:show_fragment";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>,
+	 * this extra can also be specified to supply a bundle of arguments to pass
+	 * to that fragment when it is instantiated during the initial creation of
+	 * the activity.
+	 */
+	public static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":android:show_fragment_args";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>,
+	 * this extra can also be specify to supply the title to be shown for that
+	 * fragment.
+	 */
+	public static final String EXTRA_SHOW_FRAGMENT_TITLE = ":android:show_fragment_title";
+
+	/**
+	 * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>,
+	 * this extra can also be specify to supply the short title to be shown for
+	 * that fragment.
+	 */
+	public static final String EXTRA_SHOW_FRAGMENT_SHORT_TITLE = ":android:show_fragment_short_title";
+
+	/**
+	 * When starting this activity, the invoking intent can contain this extra
+	 * boolean that the header list should not be displayed. This is most often
+	 * used in conjunction with <code>EXTRA_SHOW_FRAGMENT</code> to launch the
+	 * activity to display a specific fragment that the user has navigated to.
+	 */
+	public static final String EXTRA_NO_HEADERS = ":android:no_headers";
+
+	/**
 	 * The name of the extra, which is used to save the class name of the
 	 * fragment, which is currently shown, within a bundle.
 	 */
