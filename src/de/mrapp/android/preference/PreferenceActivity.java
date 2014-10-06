@@ -613,6 +613,73 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns the background of the view group, which contains all views, which
+	 * are shown when a preference header is selected on devices with a large
+	 * screen.
+	 * 
+	 * @return The background of the view group, which contains all views, which
+	 *         are shown when a preference header is selected or null, if no
+	 *         background has been set or device has a small screen
+	 */
+	public final Drawable getPreferenceScreenBackground() {
+		if (getPreferenceScreenContainer() != null) {
+			return getPreferenceScreenContainer().getBackground();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Sets the background of the view group, which contains all views, which
+	 * are shown when a preference header is selected. The background is only
+	 * set on devices with a large screen.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the background, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 * @return True, if the background has been set, false otherwise
+	 */
+	public final boolean setPreferenceScreenBackground(final int resourceId) {
+		return setPreferenceScreenBackground(getResources().getDrawable(
+				resourceId));
+	}
+
+	/**
+	 * Sets the background color of the view group, which contains all views,
+	 * which are shown when a preference header is selected. The background is
+	 * only set on devices with a large screen.
+	 * 
+	 * @param color
+	 *            The background color, which should be set, as an
+	 *            {@link Integer} value
+	 * @return True, if the background has been set, false otherwise
+	 */
+	public final boolean setPreferenceScreenBackgroundColor(final int color) {
+		return setPreferenceScreenBackground(new ColorDrawable(color));
+	}
+
+	/**
+	 * Sets the background of the view group, which contains all views, which
+	 * are shown when a preference header is selected. The background is only
+	 * set on devices with a large screen.
+	 * 
+	 * @param drawable
+	 *            The background, which should be set, as an instance of the
+	 *            class {@link Drawable} or null, if no background should be set
+	 * @return True, if the background has been set, false otherwise
+	 */
+	@SuppressWarnings("deprecation")
+	public final boolean setPreferenceScreenBackground(final Drawable drawable) {
+		if (getPreferenceScreenContainer() != null) {
+			getPreferenceScreenContainer().setBackgroundDrawable(drawable);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns the background of the parent view of the fragment, which provides
 	 * navigation to each preference header's fragment on devices with a large
 	 * screen.
