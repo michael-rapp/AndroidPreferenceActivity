@@ -672,6 +672,8 @@ public abstract class PreferenceActivity extends Activity implements
 					hideNavigation ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					hideNavigation ? View.GONE : View.VISIBLE);
+		} else if (hideNavigation && isPreferenceHeaderSelected()) {
+			hideActionBarBackButton();
 		} else if (hideNavigation && !isPreferenceHeaderSelected()) {
 			onBackPressed();
 		}
