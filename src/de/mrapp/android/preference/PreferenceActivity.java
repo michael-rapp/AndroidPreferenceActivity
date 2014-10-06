@@ -1110,6 +1110,14 @@ public abstract class PreferenceActivity extends Activity implements
 		if (currentFragment != null) {
 			showPreferenceScreen(currentFragment, currentBundle);
 			showBreadCrumbs(title, shortTitle);
+
+			for (int i = 0; i < getListAdapter().getCount(); i++) {
+				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
+
+				if (preferenceHeader.getFragment().equals(currentFragment)) {
+					currentPreferenceHeader = preferenceHeader;
+				}
+			}
 		}
 
 		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
