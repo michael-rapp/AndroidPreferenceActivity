@@ -17,17 +17,10 @@ You should have received a copy of the GNU Lesser General Public
 License along with this program. If not, see
 <http://www.gnu.org/licenses/>. 
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-    <item name="preference_header_parent" type="id"/>
-    <item name="preference_screen_parent" type="id"/>
-    <item name="preference_screen_container" type="id"/>
-    <item name="shadow_view" type="id"/>
-    <item name="bread_crumbs_view" type="id"/>
-    <item name="bread_crumbs_separator" type="id"/>
-    <item name="button_bar" type="id"/>
-    <item name="back_button" type="id"/>
-    <item name="next_button" type="id"/>
-    <item name="skip_button" type="id"/>
+    <string name="back_button_label">>Zurück</string>
+    <string name="next_button_label">Weiter</string>
+    <string name="skip_button_label">Abbrechen</string>
 
 </resources>
