@@ -1001,8 +1001,10 @@ public abstract class PreferenceActivity extends Activity implements
 	public final void overrideBackButton(final boolean overrideBackButton) {
 		this.overrideBackButton = overrideBackButton;
 
-		if (isPreferenceHeaderSelected()) {
+		if (isPreferenceHeaderSelected() && overrideBackButton) {
 			showActionBarBackButton();
+		} else if (isPreferenceHeaderSelected() && !overrideBackButton) {
+			hideActionBarBackButton();
 		}
 	}
 
