@@ -1088,8 +1088,9 @@ public abstract class PreferenceActivity extends Activity implements
 				currentPreferenceHeader.getExtras());
 		outState.putCharSequence(CURRENT_TITLE_EXTRA, currentTitle);
 		outState.putCharSequence(CURRENT_SHORT_TITLE_EXTRA, currentShortTitle);
-		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA, getListView()
-				.getCheckedItemPosition());
+		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA,
+				isSplitScreen() ? getListView().getCheckedItemPosition()
+						: ListView.INVALID_POSITION);
 	}
 
 	@Override
