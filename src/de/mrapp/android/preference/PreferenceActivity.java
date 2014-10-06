@@ -97,6 +97,13 @@ public abstract class PreferenceActivity extends Activity implements
 	private ViewGroup preferenceScreenParentView;
 
 	/**
+	 * The view group, which contains all views, e.g. the preferences itself and
+	 * the bread crumbs, which are shown when a preference header is selected on
+	 * devices with a large screen.
+	 */
+	private ViewGroup preferenceScreenContainer;
+
+	/**
 	 * The view, which is used to draw a shadow besides the navigation on
 	 * devices with a large screen.
 	 */
@@ -343,6 +350,19 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final ViewGroup getPreferenceScreenParentView() {
 		return preferenceScreenParentView;
+	}
+
+	/**
+	 * Returns the view group, which contains all views, e.g. the preferences
+	 * itself and the bread crumbs, which are shown when a preference header is
+	 * selected on devices with a large screen.
+	 * 
+	 * @return The view group, which contains all views, which are shown when a
+	 *         preference header is selected, or null, if the device has a small
+	 *         screen
+	 */
+	public final ViewGroup getPreferenceScreenContainer() {
+		return preferenceScreenContainer;
 	}
 
 	/**
@@ -721,6 +741,7 @@ public abstract class PreferenceActivity extends Activity implements
 		setContentView(R.layout.preference_activity);
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
+		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
