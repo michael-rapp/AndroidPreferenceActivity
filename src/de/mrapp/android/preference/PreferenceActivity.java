@@ -152,10 +152,10 @@ public abstract class PreferenceActivity extends Activity implements
 	private View shadowView;
 
 	/**
-	 * The full qualified class name of the fragment, which is currently shown
-	 * or null, if no preference header is currently selected.
+	 * The preference header, which is currently selected, or null, if no
+	 * preference header is currently selected.
 	 */
-	private String currentFragment;
+	private PreferenceHeader currentPreferenceHeader;
 
 	/**
 	 * True, if the back button of the action bar should be shown, false
@@ -235,10 +235,10 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
-		currentFragment = preferenceHeader.getFragment();
+		currentPreferenceHeader = preferenceHeader;
 		Bundle parameters = (params != null) ? params : preferenceHeader
 				.getExtras();
-		showPreferenceScreen(currentFragment, parameters);
+		showPreferenceScreen(preferenceHeader.getFragment(), parameters);
 		showBreadCrumbs(preferenceHeader);
 	}
 
@@ -273,9 +273,9 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceHeaders() {
 		int transition = 0;
 
-		if (currentFragment != null) {
+		if (currentPreferenceHeader != null) {
 			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
-			currentFragment = null;
+			currentPreferenceHeader = null;
 		}
 
 		replaceFragment(preferenceHeaderFragment,
@@ -891,7 +891,7 @@ public abstract class PreferenceActivity extends Activity implements
 	public final void overrideBackButton(final boolean overrideBackButton) {
 		this.overrideBackButton = overrideBackButton;
 
-		if (currentFragment != null) {
+		if (currentPreferenceHeader != null) {
 			showActionBarBackButton();
 		}
 	}
@@ -922,7 +922,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
-				&& currentFragment != null) {
+				&& currentPreferenceHeader != null) {
 			showPreferenceHeaders();
 			return true;
 		}
@@ -933,7 +933,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public final boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home && !isSplitScreen()
-				&& currentFragment != null && isBackButtonOverridden()) {
+				&& currentPreferenceHeader != null && isBackButtonOverridden()) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
 			return true;
@@ -963,7 +963,8 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	protected final void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString(CURRENT_FRAGMENT_EXTRA, currentFragment);
+		outState.putString(CURRENT_FRAGMENT_EXTRA,
+				currentPreferenceHeader.getFragment());
 		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA, getListView()
 				.getCheckedItemPosition());
 	}
@@ -971,7 +972,8 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	protected final void onRestoreInstanceState(final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT_EXTRA);
+		String currentFragment = savedInstanceState
+				.getString(CURRENT_FRAGMENT_EXTRA);
 		int selectedPreferenceHeader = savedInstanceState
 				.getInt(SELECTED_PREFERENCE_HEADER_EXTRA);
 
