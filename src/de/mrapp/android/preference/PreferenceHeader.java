@@ -303,8 +303,8 @@ public class PreferenceHeader {
 	 * when the navigation item is selected.
 	 * 
 	 * @return The full qualified class name of the fragment, which is shown,
-	 *         when the navigation item is selected. The class name may neither
-	 *         be null, nor empty
+	 *         when the navigation item is selected or null, if no fragment has
+	 *         been set
 	 */
 	public final String getFragment() {
 		return fragment;
@@ -315,12 +315,10 @@ public class PreferenceHeader {
 	 * shown, when the navigation item is selected.
 	 * 
 	 * @param fragment
-	 *            The class name, which should be set, as a {@link String}. The
-	 *            class name may neither be null, nor empty
+	 *            The class name, which should be set, as a {@link String} or
+	 *            null, if no fragment should be shown
 	 */
 	public final void setFragment(final String fragment) {
-		ensureNotNull(fragment, "The fragment class name may not be null");
-		ensureNotEmpty(fragment, "The fragment class name may not be empty");
 		this.fragment = fragment;
 	}
 
