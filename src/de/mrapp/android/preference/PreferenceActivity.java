@@ -653,7 +653,7 @@ public abstract class PreferenceActivity extends Activity implements
 					hideNavigation ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					hideNavigation ? View.GONE : View.VISIBLE);
-		} else {
+		} else if (hideNavigation) {
 			onBackPressed();
 		}
 	}
