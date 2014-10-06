@@ -251,7 +251,9 @@ public abstract class PreferenceActivity extends Activity implements
 			for (int i = 0; i < getListAdapter().getCount(); i++) {
 				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
 
-				if (preferenceHeader.getFragment().equals(initialFragment)) {
+				if (preferenceHeader.getFragment() != null
+						&& preferenceHeader.getFragment().equals(
+								initialFragment)) {
 					showPreferenceScreen(preferenceHeader, initialArguments);
 					getListView().setItemChecked(i, true);
 
