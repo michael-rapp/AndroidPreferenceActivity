@@ -1013,6 +1013,7 @@ public abstract class PreferenceActivity extends Activity implements
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
 				&& isPreferenceHeaderSelected() && !isNavigationHidden()) {
 			showPreferenceHeaders();
+			hideActionBarBackButton();
 			return true;
 		}
 
