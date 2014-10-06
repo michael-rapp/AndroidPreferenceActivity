@@ -198,6 +198,11 @@ public abstract class PreferenceActivity extends Activity implements
 	private boolean displayHomeAsUp;
 
 	/**
+	 * The default title of the activity.
+	 */
+	private CharSequence defaultTitle;
+
+	/**
 	 * True, if the behavior of the action bar's back button is overridden to
 	 * return to the navigation when a preference header is currently selected
 	 * on devices with a small screen.
@@ -446,7 +451,21 @@ public abstract class PreferenceActivity extends Activity implements
 			getBreadCrumbs().setTitle(title, shortTitle);
 			getBreadCrumbs().setParentTitle(null, null, null);
 		} else if (title != null) {
+			this.defaultTitle = getTitle();
 			setTitle(title);
+		}
+	}
+
+	/**
+	 * Resets the title of the activity to the default title, if it has been
+	 * previously changed.
+	 */
+	private void resetTitle() {
+		if (defaultTitle != null) {
+			setTitle(defaultTitle);
+			defaultTitle = null;
+			currentTitle = null;
+			currentShortTitle = null;
 		}
 	}
 
@@ -1014,6 +1033,7 @@ public abstract class PreferenceActivity extends Activity implements
 				&& isPreferenceHeaderSelected() && !isNavigationHidden()) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
+			resetTitle();
 			return true;
 		}
 
@@ -1027,6 +1047,7 @@ public abstract class PreferenceActivity extends Activity implements
 				&& !isNavigationHidden()) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
+			resetTitle();
 			return true;
 		}
 
