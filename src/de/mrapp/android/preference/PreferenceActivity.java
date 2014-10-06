@@ -285,13 +285,13 @@ public abstract class PreferenceActivity extends Activity implements
 			final Bundle params) {
 		currentHeader = preferenceHeader;
 
-		if (preferenceHeader.getIntent() != null) {
-			startActivity(preferenceHeader.getIntent());
-		} else {
+		if (preferenceHeader.getFragment() != null) {
 			Bundle parameters = (params != null) ? params : preferenceHeader
 					.getExtras();
 			showPreferenceScreen(preferenceHeader.getFragment(), parameters);
 			showBreadCrumbs(preferenceHeader);
+		} else if (preferenceHeader.getIntent() != null) {
+			startActivity(preferenceHeader.getIntent());
 		}
 	}
 
