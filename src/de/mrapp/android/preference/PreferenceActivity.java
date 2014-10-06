@@ -108,6 +108,14 @@ public abstract class PreferenceActivity extends Activity implements
 			.getSimpleName() + "::CurrentFragment";
 
 	/**
+	 * The name of the extra, which is used to saved the parameters, which have
+	 * been passed when the currently shown fragment has been created, within a
+	 * bundle.
+	 */
+	private static final String CURRENT_BUNDLE_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::CurrentBundle";
+
+	/**
 	 * The name of the extra, which is used to save the index of the currently
 	 * selected preference header, within a bundle.
 	 */
@@ -975,6 +983,8 @@ public abstract class PreferenceActivity extends Activity implements
 		super.onSaveInstanceState(outState);
 		outState.putString(CURRENT_FRAGMENT_EXTRA,
 				currentPreferenceHeader.getFragment());
+		outState.putBundle(CURRENT_BUNDLE_EXTRA,
+				currentPreferenceHeader.getExtras());
 		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA, getListView()
 				.getCheckedItemPosition());
 	}
@@ -984,12 +994,13 @@ public abstract class PreferenceActivity extends Activity implements
 		super.onRestoreInstanceState(savedInstanceState);
 		String currentFragment = savedInstanceState
 				.getString(CURRENT_FRAGMENT_EXTRA);
+		Bundle currentBundle = savedInstanceState
+				.getBundle(CURRENT_BUNDLE_EXTRA);
 		int selectedPreferenceHeader = savedInstanceState
 				.getInt(SELECTED_PREFERENCE_HEADER_EXTRA);
 
 		if (currentFragment != null) {
-			// TODO: Restore parameters
-			showPreferenceScreen(currentFragment, null);
+			showPreferenceScreen(currentFragment, currentBundle);
 		}
 
 		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
