@@ -54,9 +54,14 @@ License along with this program. If not, see
                 android:layout_height="@dimen/bread_crumb_height"
                 android:gravity="center_vertical|start"
                 android:paddingBottom="@dimen/bread_crumb_padding_bottom"
-                android:paddingTop="@dimen/bread_crumb_padding_top" />
+                android:paddingTop="@dimen/bread_crumb_padding_top" 
+                android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
+                android:paddingRight="@dimen/bread_crumb_horizontal_padding" />
 
             <ImageView
+                android:id="@id/bread_crumbs_separator"
+                android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
+                android:paddingRight="@dimen/bread_crumb_horizontal_padding"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:contentDescription="@null"
