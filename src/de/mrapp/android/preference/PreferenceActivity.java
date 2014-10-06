@@ -164,25 +164,22 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * The view group, which contains the buttons, which are shown, if the
-	 * activity is used as part of a wizard.
+	 * activity is used as a wizard.
 	 */
 	private ViewGroup buttonBar;
 
 	/**
-	 * The back button, which is shown, if the activity is used as part of a
-	 * wizard.
+	 * The back button, which is shown, if the activity is used as a wizard.
 	 */
 	private Button backButton;
 
 	/**
-	 * The next button, which is shown, if the activity is used as part of a
-	 * wizard.
+	 * The next button, which is shown, if the activity is used as a wizard.
 	 */
 	private Button nextButton;
 
 	/**
-	 * The skip button, which is shown, if the activity is used as part of a
-	 * wizard.
+	 * The skip button, which is shown, if the activity is used as a wizard.
 	 */
 	private Button skipButton;
 
@@ -539,43 +536,43 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Returns the view group, which contains the buttons, which are shown, if
-	 * the activity is used as part of a wizard.
+	 * the activity is used as a wizard.
 	 * 
 	 * @return The view group as an instance of the class {@link ViewGroup} or
-	 *         null, if the activity is not used as part of a wizard
+	 *         null, if the activity is not used as a wizard
 	 */
 	public final ViewGroup getButtonBar() {
 		return buttonBar;
 	}
 
 	/**
-	 * Returns the next button, which is shown, if the activity is used as part
-	 * of a wizard.
+	 * Returns the next button, which is shown, if the activity is used as a
+	 * wizard.
 	 * 
 	 * @return The next button as an instance of the class {@link Button} or
-	 *         null, if the activity is not used as part of a wizard
+	 *         null, if the activity is not used as a wizard
 	 */
 	public final Button getNextButton() {
 		return nextButton;
 	}
 
 	/**
-	 * Returns the back button, which is shown, if the activity is used as part
-	 * of a wizard.
+	 * Returns the back button, which is shown, if the activity is used as a
+	 * wizard.
 	 * 
 	 * @return The back button as an instance of the class {@link Button} or
-	 *         null, if the activity is not used as part of a wizard
+	 *         null, if the activity is not used as a wizard
 	 */
 	public final Button getBackButton() {
 		return backButton;
 	}
 
 	/**
-	 * Returns the skip button, which is shown, if the activity is used as part
-	 * of a wizard.
+	 * Returns the skip button, which is shown, if the activity is used as a
+	 * wizard.
 	 * 
 	 * @return The skip button as an instance of the class {@link Button} or
-	 *         null, if the activity is not used as part of a wizard
+	 *         null, if the activity is not used as a wizard
 	 */
 	public final Button getSkipButton() {
 		return skipButton;
