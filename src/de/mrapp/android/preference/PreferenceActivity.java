@@ -135,6 +135,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private boolean overrideBackButton;
 
 	/**
+	 * The color of the separator, which is drawn between the bread crumbs and
+	 * the preferences on devices with a large screen.
+	 */
+	private int breadCrumbsSeparatorColor;
+
+	/**
 	 * The color of the shadow, which is drawn besides the navigation on devices
 	 * with a large screen.
 	 */
@@ -494,6 +500,40 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns the color of the separator, which is drawn between the bread
+	 * crumbs and the preferences on devices with a large screen.
+	 * 
+	 * @return The color of the separator as an {@link Integer} value or -1, if
+	 *         the device has a small screen
+	 */
+	public final int getBreadCrumbsSeparatorColor() {
+		if (getBreadCrumsSeparator() != null) {
+			return breadCrumbsSeparatorColor;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Sets the color of the separator, which is drawn between the bread crumbs
+	 * and the preferences on devices with a large screen. The color is only set
+	 * on devices with a large screen.
+	 * 
+	 * @param separatorColor
+	 *            The color, which should be set, as an {@link Integer} value
+	 * @return True, if the color has been set, false otherwise
+	 */
+	public final boolean setBreadCrumbsSeparatorColor(final int separatorColor) {
+		if (getBreadCrumsSeparator() != null) {
+			this.breadCrumbsSeparatorColor = separatorColor;
+			getBreadCrumsSeparator().setBackgroundColor(separatorColor);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns the color of the shadow, which is drawn besides the navigation on
 	 * devices with a large screen.
 	 * 
@@ -766,6 +806,8 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderFragment.addFragmentListener(this);
 		overrideBackButton(true);
 		showPreferenceHeaders();
+		setBreadCrumbsSeparatorColor(getResources().getColor(
+				R.color.bread_crumb_separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
 	}
 

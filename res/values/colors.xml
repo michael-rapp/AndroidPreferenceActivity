@@ -19,7 +19,7 @@ License along with this program. If not, see
 -->
 <resources>
 
-    <color name="bread_crumb_border">#ff404040</color>
+    <color name="bread_crumb_separator">#ff404040</color>
     <color name="border_light">#ffd4d4d4</color>
     <color name="border_dark">#ff050606</color>
     <color name="background_light">#ffeeeeee</color>
