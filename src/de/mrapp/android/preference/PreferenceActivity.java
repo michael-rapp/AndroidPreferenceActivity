@@ -189,6 +189,38 @@ public abstract class PreferenceActivity extends Activity implements
 	private FragmentBreadCrumbs fragmentBreadCrumbs;
 
 	/**
+	 * Handles the intent, which has been used to start the activity.
+	 */
+	private void handleIntent() {
+		String initialFragment = getIntent()
+				.getStringExtra(EXTRA_SHOW_FRAGMENT);
+		Bundle initialArguments = getIntent().getBundleExtra(
+				EXTRA_SHOW_FRAGMENT_ARGUMENTS);
+		int initialTitle = getIntent()
+				.getIntExtra(EXTRA_SHOW_FRAGMENT_TITLE, 0);
+		int initialShortTitle = getIntent().getIntExtra(
+				EXTRA_SHOW_FRAGMENT_SHORT_TITLE, 0);
+
+		if (initialFragment != null) {
+			for (int i = 0; i < getListAdapter().getCount(); i++) {
+				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
+
+				if (preferenceHeader.getFragment().equals(initialFragment)) {
+					showPreferenceScreen(preferenceHeader, initialArguments);
+					getListView().setItemChecked(i, true);
+
+					if (initialTitle != 0) {
+						CharSequence title = getText(initialTitle);
+						CharSequence shortTitle = (initialShortTitle != 0) ? getText(initialShortTitle)
+								: null;
+						showBreadCrumbs(title, shortTitle);
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -196,10 +228,17 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            corresponds to, as an instance of the class
 	 *            {@link PreferenceHeader}. The preference header may not be
 	 *            null
+	 * @param params
+	 *            Optional parameters, which are passed to the fragment, as an
+	 *            instance of the class Bundle or null, if the preference
+	 *            header's extras should be used instead
 	 */
-	private void showPreferenceScreen(final PreferenceHeader preferenceHeader) {
+	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
+			final Bundle params) {
 		currentFragment = preferenceHeader.getFragment();
-		showPreferenceScreen(currentFragment);
+		Bundle parameters = (params != null) ? params : preferenceHeader
+				.getExtras();
+		showPreferenceScreen(currentFragment, parameters);
 		showBreadCrumbs(preferenceHeader);
 	}
 
@@ -209,9 +248,14 @@ public abstract class PreferenceActivity extends Activity implements
 	 * @param fragmentName
 	 *            The full qualified class name of the fragment, which should be
 	 *            shown, as a {@link String}
+	 * @param params
+	 *            Optional parameters, which are passed to the fragment, as an
+	 *            instance of the class {@link Bundle} or null, if no parameters
+	 *            should be passed
 	 */
-	private void showPreferenceScreen(final String fragmentName) {
-		Fragment fragment = Fragment.instantiate(this, fragmentName);
+	private void showPreferenceScreen(final String fragmentName,
+			final Bundle params) {
+		Fragment fragment = Fragment.instantiate(this, fragmentName, params);
 
 		if (isSplitScreen()) {
 			replaceFragment(fragment, R.id.preference_screen_parent, 0);
@@ -862,15 +906,17 @@ public abstract class PreferenceActivity extends Activity implements
 
 			if (!getListAdapter().isEmpty()) {
 				getListView().setItemChecked(0, true);
-				showPreferenceScreen(getListAdapter().getItem(0));
+				showPreferenceScreen(getListAdapter().getItem(0), null);
 			}
 		}
+
+		handleIntent();
 	}
 
 	@Override
 	public final void onItemClick(final AdapterView<?> parent, final View view,
 			final int position, final long id) {
-		showPreferenceScreen(getListAdapter().getItem(position));
+		showPreferenceScreen(getListAdapter().getItem(position), null);
 	}
 
 	@Override
@@ -930,7 +976,8 @@ public abstract class PreferenceActivity extends Activity implements
 				.getInt(SELECTED_PREFERENCE_HEADER_EXTRA);
 
 		if (currentFragment != null) {
-			showPreferenceScreen(currentFragment);
+			// TODO: Restore parameters
+			showPreferenceScreen(currentFragment, null);
 		}
 
 		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
