@@ -20,57 +20,66 @@ License along with this program. If not, see
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@id/preference_header_parent"
-        android:layout_width="@dimen/default_navigation_width"
-        android:layout_height="match_parent"
-        android:background="@drawable/navigation_background_light"
-        android:paddingEnd="1dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="1dp"
-        android:paddingStart="0dp" />
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
 
-        <View
-            android:id="@id/shadow_view"
-            android:layout_width="@dimen/default_shadow_width"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:id="@id/preference_screen_container"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@id/preference_header_parent"
+            android:layout_width="@dimen/default_navigation_width"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/preference_screen_horizontal_padding"
-            android:layout_marginStart="@dimen/preference_screen_horizontal_padding"
-            android:orientation="vertical" >
+            android:background="@drawable/navigation_background_light"
+            android:paddingEnd="1dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="1dp"
+            android:paddingStart="0dp" />
 
-            <android.app.FragmentBreadCrumbs
-                android:id="@id/bread_crumbs_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/bread_crumb_height"
-                android:gravity="center_vertical|start"
-                android:paddingBottom="@dimen/bread_crumb_padding_bottom"
-                android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
-                android:paddingRight="@dimen/bread_crumb_horizontal_padding"
-                android:paddingTop="@dimen/bread_crumb_padding_top" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
             <View
-                android:id="@id/bread_crumbs_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/bread_crumb_horizontal_padding"
-                android:layout_marginRight="@dimen/bread_crumb_horizontal_padding" />
-
-            <RelativeLayout
-                android:id="@id/preference_screen_parent"
-                android:layout_width="match_parent"
+                android:id="@id/shadow_view"
+                android:layout_width="@dimen/default_shadow_width"
                 android:layout_height="match_parent" />
-        </LinearLayout>
-    </FrameLayout>
+
+            <LinearLayout
+                android:id="@id/preference_screen_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/preference_screen_horizontal_padding"
+                android:layout_marginStart="@dimen/preference_screen_horizontal_padding"
+                android:orientation="vertical" >
+
+                <android.app.FragmentBreadCrumbs
+                    android:id="@id/bread_crumbs_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/bread_crumb_height"
+                    android:gravity="center_vertical|start"
+                    android:paddingBottom="@dimen/bread_crumb_padding_bottom"
+                    android:paddingLeft="@dimen/bread_crumb_horizontal_padding"
+                    android:paddingRight="@dimen/bread_crumb_horizontal_padding"
+                    android:paddingTop="@dimen/bread_crumb_padding_top" />
+
+                <View
+                    android:id="@id/bread_crumbs_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/bread_crumb_horizontal_padding"
+                    android:layout_marginRight="@dimen/bread_crumb_horizontal_padding" />
+
+                <RelativeLayout
+                    android:id="@id/preference_screen_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <include layout="@layout/button_bar" />
 
 </LinearLayout>
