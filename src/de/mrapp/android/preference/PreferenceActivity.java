@@ -108,12 +108,26 @@ public abstract class PreferenceActivity extends Activity implements
 			.getSimpleName() + "::CurrentFragment";
 
 	/**
-	 * The name of the extra, which is used to saved the parameters, which have
+	 * The name of the extra, which is used to save the parameters, which have
 	 * been passed when the currently shown fragment has been created, within a
 	 * bundle.
 	 */
 	private static final String CURRENT_BUNDLE_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentBundle";
+
+	/**
+	 * The name of the extra, which is used to save the title, which is
+	 * currently used by the bread crumbs, within a bundle.
+	 */
+	private static final String CURRENT_TITLE_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::CurrentTitle";
+
+	/**
+	 * The name of the extra, which is used to save the short title, which is
+	 * currently used by the bread crumbs, within a bundle.
+	 */
+	private static final String CURRENT_SHORT_TITLE_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::CurrentShortTitle";
 
 	/**
 	 * The name of the extra, which is used to save the index of the currently
@@ -164,6 +178,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 * preference header is currently selected.
 	 */
 	private PreferenceHeader currentPreferenceHeader;
+
+	/**
+	 * The title, which is currently used by the bread crumbs or null, if no
+	 * bread crumbs are currently shown.
+	 */
+	private CharSequence currentTitle;
+
+	/**
+	 * The short title, which is currently used by the bread crumbs or null, if
+	 * no bread crumbs are currently shown.
+	 */
+	private CharSequence currentShortTitle;
 
 	/**
 	 * True, if the back button of the action bar should be shown, false
@@ -413,6 +439,9 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showBreadCrumbs(final CharSequence title,
 			final CharSequence shortTitle) {
+		this.currentTitle = title;
+		this.currentShortTitle = title;
+
 		if (getBreadCrumbs() != null) {
 			getBreadCrumbs().setTitle(title, shortTitle);
 			getBreadCrumbs().setParentTitle(null, null, null);
@@ -1031,6 +1060,8 @@ public abstract class PreferenceActivity extends Activity implements
 				currentPreferenceHeader.getFragment());
 		outState.putBundle(CURRENT_BUNDLE_EXTRA,
 				currentPreferenceHeader.getExtras());
+		outState.putCharSequence(CURRENT_TITLE_EXTRA, currentTitle);
+		outState.putCharSequence(CURRENT_SHORT_TITLE_EXTRA, currentShortTitle);
 		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA, getListView()
 				.getCheckedItemPosition());
 	}
@@ -1042,16 +1073,20 @@ public abstract class PreferenceActivity extends Activity implements
 				.getString(CURRENT_FRAGMENT_EXTRA);
 		Bundle currentBundle = savedInstanceState
 				.getBundle(CURRENT_BUNDLE_EXTRA);
+		CharSequence title = savedInstanceState
+				.getCharSequence(CURRENT_TITLE_EXTRA);
+		CharSequence shortTitle = savedInstanceState
+				.getCharSequence(CURRENT_SHORT_TITLE_EXTRA);
 		int selectedPreferenceHeader = savedInstanceState
 				.getInt(SELECTED_PREFERENCE_HEADER_EXTRA);
 
 		if (currentFragment != null) {
 			showPreferenceScreen(currentFragment, currentBundle);
+			showBreadCrumbs(title, shortTitle);
 		}
 
 		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
 			getListView().setItemChecked(selectedPreferenceHeader, true);
-			showBreadCrumbs(getListAdapter().getItem(selectedPreferenceHeader));
 		}
 	}
 
