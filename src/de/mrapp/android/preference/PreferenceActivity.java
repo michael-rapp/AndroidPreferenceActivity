@@ -151,7 +151,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 * The view, which is used to draw a separator between the bread crumbs and
 	 * the preferences on devices with a large screen.
 	 */
-	private View breadCrumsSeperator;
+	private View breadCrumbsSeperator;
 
 	/**
 	 * The view, which is used to draw a shadow besides the navigation on
@@ -199,9 +199,9 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * The bread crumbs, which are used to show the title of the currently
-	 * selected fragment.
+	 * selected fragment on devices with a large screen.
 	 */
-	private FragmentBreadCrumbs fragmentBreadCrumbs;
+	private FragmentBreadCrumbs breadCrumbs;
 
 	/**
 	 * Handles the intent, which has been used to start the activity.
@@ -413,29 +413,12 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showBreadCrumbs(final CharSequence title,
 			final CharSequence shortTitle) {
-		if (fragmentBreadCrumbs == null) {
-			View breadCrumbsView = findViewById(R.id.bread_crumbs_view);
-
-			try {
-				fragmentBreadCrumbs = (FragmentBreadCrumbs) breadCrumbsView;
-			} catch (ClassCastException e) {
-				return;
-			}
-
-			if (fragmentBreadCrumbs == null) {
-				if (title != null) {
-					setTitle(title);
-				}
-
-				return;
-			}
-
-			fragmentBreadCrumbs.setMaxVisible(2);
-			fragmentBreadCrumbs.setActivity(this);
+		if (getBreadCrumbs() != null) {
+			getBreadCrumbs().setTitle(title, shortTitle);
+			getBreadCrumbs().setParentTitle(null, null, null);
+		} else if (title != null) {
+			setTitle(title);
 		}
-
-		fragmentBreadCrumbs.setTitle(title, shortTitle);
-		fragmentBreadCrumbs.setParentTitle(null, null, null);
 	}
 
 	/**
@@ -488,7 +471,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *         {@link View} or null, if the device has a small display
 	 */
 	public final View getBreadCrumsSeparator() {
-		return breadCrumsSeperator;
+		return breadCrumbsSeperator;
 	}
 
 	/**
@@ -501,6 +484,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final View getShadowView() {
 		return shadowView;
+	}
+
+	/**
+	 * Returns the bread crumbs, which are used to show the title of the
+	 * currently selected fragment on devices with a large screen.
+	 * 
+	 * @return The bread crumbs, which are used to show the title of the
+	 *         currently selected fragment or null, if the device has a small
+	 *         screen
+	 */
+	public final FragmentBreadCrumbs getBreadCrumbs() {
+		return breadCrumbs;
 	}
 
 	/**
@@ -1015,7 +1010,10 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
-		breadCrumsSeperator = findViewById(R.id.bread_crumbs_separator);
+		breadCrumbs = (FragmentBreadCrumbs) findViewById(R.id.bread_crumbs_view);
+		breadCrumbs.setMaxVisible(2);
+		breadCrumbs.setActivity(this);
+		breadCrumbsSeperator = findViewById(R.id.bread_crumbs_separator);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
