@@ -244,10 +244,15 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
 		currentPreferenceHeader = preferenceHeader;
-		Bundle parameters = (params != null) ? params : preferenceHeader
-				.getExtras();
-		showPreferenceScreen(preferenceHeader.getFragment(), parameters);
-		showBreadCrumbs(preferenceHeader);
+
+		if (preferenceHeader.getIntent() != null) {
+			startActivity(preferenceHeader.getIntent());
+		} else {
+			Bundle parameters = (params != null) ? params : preferenceHeader
+					.getExtras();
+			showPreferenceScreen(preferenceHeader.getFragment(), parameters);
+			showBreadCrumbs(preferenceHeader);
+		}
 	}
 
 	/**
