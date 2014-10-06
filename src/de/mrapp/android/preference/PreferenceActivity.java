@@ -179,6 +179,13 @@ public abstract class PreferenceActivity extends Activity implements
 	private boolean overrideBackButton;
 
 	/**
+	 * True, if the fragment, which provides navigation to each preference
+	 * header's fragment on devices with a large screen, is currently hidden or
+	 * not.
+	 */
+	private boolean navigationHidden;
+
+	/**
 	 * The color of the separator, which is drawn between the bread crumbs and
 	 * the preferences on devices with a large screen.
 	 */
@@ -226,6 +233,9 @@ public abstract class PreferenceActivity extends Activity implements
 				}
 			}
 		}
+
+		navigationHidden = getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false);
+		hideNavigation(isNavigationHidden());
 	}
 
 	/**
@@ -590,6 +600,41 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final boolean isSplitScreen() {
 		return getPreferenceScreenParentView() != null;
+	}
+
+	/**
+	 * Returns, whether the fragment, which provides navigation to each
+	 * preference header's fragment on devices with a large screen, is currently
+	 * hidden or not.
+	 * 
+	 * @return True, if the fragment, which provides navigation to each
+	 *         preference header's fragment is hidden or false, if the fragment
+	 *         is currently not hidden or the device has a small screen
+	 */
+	public final boolean isNavigationHidden() {
+		if (isSplitScreen()) {
+			return navigationHidden;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Hides or shows the fragment, which provides navigation to each preference
+	 * header's fragment on devices with a large screen.
+	 * 
+	 * @param hideNavigation
+	 *            True, if the fragment, which provides navigation to each
+	 *            preference header's fragment, should be hidden, false
+	 *            otherwise
+	 */
+	public final void hideNavigation(final boolean hideNavigation) {
+		if (isSplitScreen()) {
+			getPreferenceHeaderParentView().setVisibility(
+					hideNavigation ? View.GONE : View.VISIBLE);
+			getShadowView().setVisibility(
+					hideNavigation ? View.GONE : View.VISIBLE);
+		}
 	}
 
 	/**
