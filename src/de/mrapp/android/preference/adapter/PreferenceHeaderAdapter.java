@@ -107,7 +107,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * 
 	 * @param viewHolder
 	 *            The view holder, which contains the children of the view,
-	 *            which should be adapter, as an instance of the class
+	 *            which should be adapted, as an instance of the class
 	 *            {@link ViewHolder}. The view holder may not be null
 	 * @param preferenceHeader
 	 *            The preference header, which should be visualized, as an
@@ -116,16 +116,73 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 */
 	private void visualizePreferenceHeader(final ViewHolder viewHolder,
 			final PreferenceHeader preferenceHeader) {
-		viewHolder.titleTextView.setText(preferenceHeader.getTitle());
+		visualizePreferenceHeaderTitle(viewHolder, preferenceHeader);
+		visualizePreferenceHeaderSummary(viewHolder, preferenceHeader);
+		visualizePreferenceHeaderIcon(viewHolder, preferenceHeader);
+	}
 
-		if (TextUtils.isEmpty(preferenceHeader.getSummary())) {
-			viewHolder.summaryTextView.setVisibility(View.GONE);
-		} else {
-			viewHolder.summaryTextView.setVisibility(View.VISIBLE);
-			viewHolder.summaryTextView.setText(preferenceHeader.getSummary());
+	/**
+	 * Adapts a view to visualize a specific preference header's title.
+	 * 
+	 * @param viewHolder
+	 *            The view holder, which contains the children of the view,
+	 *            which should be adapted, as an instance of the class
+	 *            {@link ViewHolder}. The view holder may not be null
+	 * @param preferenceHeader
+	 *            The preference header, whose title should be visualized, as an
+	 *            instance of the class {@link PreferenceHeader}. The preference
+	 *            header may not be null
+	 */
+	private void visualizePreferenceHeaderTitle(final ViewHolder viewHolder,
+			final PreferenceHeader preferenceHeader) {
+		if (viewHolder.titleTextView != null) {
+			viewHolder.titleTextView.setText(preferenceHeader.getTitle());
 		}
+	}
 
-		viewHolder.iconImageView.setImageDrawable(preferenceHeader.getIcon());
+	/**
+	 * Adapts a view to visualize a specific preference header's summary.
+	 * 
+	 * @param viewHolder
+	 *            The view holder, which contains the children of the view,
+	 *            which should be adapted, as an instance of the class
+	 *            {@link ViewHolder}. The view holder may not be null
+	 * @param preferenceHeader
+	 *            The preference header, whose summary should be visualized, as
+	 *            an instance of the class {@link PreferenceHeader}. The
+	 *            preference header may not be null
+	 */
+	private void visualizePreferenceHeaderSummary(final ViewHolder viewHolder,
+			final PreferenceHeader preferenceHeader) {
+		if (viewHolder.summaryTextView != null) {
+			if (TextUtils.isEmpty(preferenceHeader.getSummary())) {
+				viewHolder.summaryTextView.setVisibility(View.GONE);
+			} else {
+				viewHolder.summaryTextView.setVisibility(View.VISIBLE);
+				viewHolder.summaryTextView.setText(preferenceHeader
+						.getSummary());
+			}
+		}
+	}
+
+	/**
+	 * Adapts a view to visualize a specific preference header's icon.
+	 * 
+	 * @param viewHolder
+	 *            The view holder, which contains the children of the view,
+	 *            which should be adapted, as an instance of the class
+	 *            {@link ViewHolder}. The view holder may not be null
+	 * @param preferenceHeader
+	 *            The preference header, whose icon should be visualized, as an
+	 *            instance of the class {@link PreferenceHeader}. The preference
+	 *            header may not be null
+	 */
+	private void visualizePreferenceHeaderIcon(final ViewHolder viewHolder,
+			final PreferenceHeader preferenceHeader) {
+		if (viewHolder.iconImageView != null) {
+			viewHolder.iconImageView.setImageDrawable(preferenceHeader
+					.getIcon());
+		}
 	}
 
 	/**
