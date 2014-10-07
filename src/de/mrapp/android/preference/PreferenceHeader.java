@@ -91,6 +91,22 @@ public class PreferenceHeader {
 	}
 
 	/**
+	 * Creates a new navigation item, which categorizes multiple preferences.
+	 * 
+	 * @param context
+	 *            The context, which should be used to retrieve the string
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param titleId
+	 *            The resource id of the title of the navigation item as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public PreferenceHeader(final Context context, final int titleId) {
+		setTitle(context, titleId);
+	}
+
+	/**
 	 * Returns the title of the navigation item.
 	 * 
 	 * @return The title of the navigation item as an instance of the class
