@@ -76,6 +76,12 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private List<PreferenceHeader> preferenceHeaders;
 
 	/**
+	 * The resource id of the view, which is used to visualize the adapter's
+	 * items.
+	 */
+	private int viewId;
+
+	/**
 	 * Inflates and returns the view, which is used to visualize a preference
 	 * header. Furthermore, the view holder is initialized.
 	 * 
@@ -89,8 +95,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private View inflateView(final ViewGroup parent) {
 		LayoutInflater layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = layoutInflater.inflate(R.layout.preference_header_item,
-				parent, false);
+		View view = layoutInflater.inflate(getViewId(), parent, false);
 		ViewHolder viewHolder = new ViewHolder();
 		viewHolder.titleTextView = (TextView) view
 				.findViewById(android.R.id.title);
@@ -198,6 +203,30 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		ensureNotNull(context, "The context may not be null");
 		this.context = context;
 		this.preferenceHeaders = new LinkedList<>();
+		setViewId(R.layout.preference_header_item);
+	}
+
+	/**
+	 * Returns the resource id, which is used to visualize the adapter's items.
+	 * 
+	 * @return The resource id, which is used to visualize the adapter's items,
+	 *         as an {@link Integer} value
+	 */
+	public final int getViewId() {
+		return viewId;
+	}
+
+	/**
+	 * Sets the resource id, which should be used to visualize the adapter's
+	 * items.
+	 * 
+	 * @param viewId
+	 *            The resource id, which should be set, as an {@link Integer}
+	 *            value. The resource id must correspond to a valid layout
+	 *            resource
+	 */
+	public final void setViewId(final int viewId) {
+		this.viewId = viewId;
 	}
 
 	/**
