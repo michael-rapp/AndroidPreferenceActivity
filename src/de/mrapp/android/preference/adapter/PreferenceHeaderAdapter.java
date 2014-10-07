@@ -203,7 +203,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		ensureNotNull(context, "The context may not be null");
 		this.context = context;
 		this.preferenceHeaders = new LinkedList<>();
-		setViewId(R.layout.preference_header_item);
+		this.viewId = R.layout.preference_header_item;
 	}
 
 	/**
@@ -227,6 +227,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 */
 	public final void setViewId(final int viewId) {
 		this.viewId = viewId;
+		notifyDataSetChanged();
 	}
 
 	/**
