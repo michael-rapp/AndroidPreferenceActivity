@@ -100,7 +100,7 @@ public final class PreferenceHeaderParser {
 			} else {
 				skipCurrentTag(parser);
 			}
-			
+
 			tagType = parser.next();
 		}
 
@@ -199,8 +199,8 @@ public final class PreferenceHeaderParser {
 				parser, attributeSet);
 		typedArray.recycle();
 
-		PreferenceHeader preferenceHeader = new PreferenceHeader(title,
-				fragment);
+		PreferenceHeader preferenceHeader = new PreferenceHeader(title);
+		preferenceHeader.setFragment(fragment);
 		preferenceHeader.setSummary(summary);
 		preferenceHeader.setBreadCrumbTitle(breadCrumbTitle);
 		preferenceHeader.setBreadCrumbShortTitle(breadCrumbShortTitle);
