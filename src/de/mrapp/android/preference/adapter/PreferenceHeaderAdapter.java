@@ -367,7 +367,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 *         if the adapter does not contain any items
 	 */
 	public final Collection<PreferenceHeader> getAllItems() {
-		return preferenceHeaders;
+		return new LinkedList<>(preferenceHeaders);
 	}
 
 	@Override
