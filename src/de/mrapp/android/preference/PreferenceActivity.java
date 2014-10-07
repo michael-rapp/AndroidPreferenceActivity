@@ -185,6 +185,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private PreferenceHeaderFragment preferenceHeaderFragment;
 
 	/**
+	 * The fragment, which is currently shown as the preference screen or null,
+	 * if no preference header is currently selected.
+	 */
+	private Fragment preferenceScreenFragment;
+
+	/**
 	 * The parent view of the fragment, which provides the navigation to each
 	 * preference header's fragment.
 	 */
@@ -349,13 +355,19 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
 		currentHeader = preferenceHeader;
-
+		
 		if (preferenceHeader.getFragment() != null) {
+			showBreadCrumbs(preferenceHeader);
 			Bundle parameters = (params != null) ? params : preferenceHeader
 					.getExtras();
 			showPreferenceScreen(preferenceHeader.getFragment(), parameters);
+		} else if (isSplitScreen() && preferenceScreenFragment != null) {
 			showBreadCrumbs(preferenceHeader);
-		} else if (preferenceHeader.getIntent() != null) {
+			removeFragment(preferenceScreenFragment);
+			preferenceScreenFragment = null;
+		}
+
+		if (preferenceHeader.getIntent() != null) {
 			startActivity(preferenceHeader.getIntent());
 		}
 	}
@@ -373,12 +385,15 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final String fragmentName,
 			final Bundle params) {
-		Fragment fragment = Fragment.instantiate(this, fragmentName, params);
+		preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
+				params);
 
 		if (isSplitScreen()) {
-			replaceFragment(fragment, R.id.preference_screen_parent, 0);
+			replaceFragment(preferenceScreenFragment,
+					R.id.preference_screen_parent, 0);
 		} else {
-			replaceFragment(fragment, R.id.preference_header_parent,
+			replaceFragment(preferenceScreenFragment,
+					R.id.preference_header_parent,
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			showActionBarBackButton();
 		}
@@ -394,6 +409,7 @@ public abstract class PreferenceActivity extends Activity implements
 		if (isPreferenceHeaderSelected()) {
 			transition = FragmentTransaction.TRANSIT_FRAGMENT_CLOSE;
 			currentHeader = null;
+			preferenceScreenFragment = null;
 		}
 
 		replaceFragment(preferenceHeaderFragment,
@@ -422,6 +438,20 @@ public abstract class PreferenceActivity extends Activity implements
 				.beginTransaction();
 		transaction.setTransition(transition);
 		transaction.replace(parentViewId, fragment);
+		transaction.commit();
+	}
+
+	/**
+	 * Removes a specific fragment from its parent view.
+	 * 
+	 * @param fragment
+	 *            The fragment, which should be removed, as an instance of the
+	 *            class {@link Fragment}. The fragment may not be null
+	 */
+	private void removeFragment(final Fragment fragment) {
+		FragmentTransaction transaction = getFragmentManager()
+				.beginTransaction();
+		transaction.remove(fragment);
 		transaction.commit();
 	}
 
