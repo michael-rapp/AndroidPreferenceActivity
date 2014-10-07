@@ -209,7 +209,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private void notifyOnPreferenceHeaderAdded(
 			final PreferenceHeader preferenceHeader) {
 		for (AdapterListener listener : listeners) {
-			listener.onPreferenceHeaderAdded(preferenceHeader);
+			listener.onPreferenceHeaderAdded(this, preferenceHeader);
 		}
 	}
 
@@ -224,7 +224,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private void notifyOnPreferenceHeaderRemoved(
 			final PreferenceHeader preferenceHeader) {
 		for (AdapterListener listener : listeners) {
-			listener.onPreferenceHeaderRemoved(preferenceHeader);
+			listener.onPreferenceHeaderRemoved(this, preferenceHeader);
 		}
 	}
 
