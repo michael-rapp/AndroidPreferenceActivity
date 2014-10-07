@@ -85,14 +85,9 @@ public class PreferenceHeader {
 	 * @param title
 	 *            The title of the navigation item as an instance of the class
 	 *            {@link CharSequence}. The title may neither be null, nor empty
-	 * @param fragment
-	 *            The full qualified class name of the fragment, which should be
-	 *            shown, when the navigation item is selected, as a
-	 *            {@link String}. The class name may neither be null, nor empty
 	 */
-	public PreferenceHeader(final CharSequence title, final String fragment) {
+	public PreferenceHeader(final CharSequence title) {
 		setTitle(title);
-		setFragment(fragment);
 	}
 
 	/**
