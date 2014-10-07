@@ -355,7 +355,7 @@ public abstract class PreferenceActivity extends Activity implements
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
 		currentHeader = preferenceHeader;
-		
+
 		if (preferenceHeader.getFragment() != null) {
 			showBreadCrumbs(preferenceHeader);
 			Bundle parameters = (params != null) ? params : preferenceHeader
@@ -543,6 +543,14 @@ public abstract class PreferenceActivity extends Activity implements
 		this.currentShortTitle = title;
 
 		if (getBreadCrumbs() != null) {
+			if (title != null || shortTitle != null) {
+				getBreadCrumbs().setVisibility(View.VISIBLE);
+				getBreadCrumsSeparator().setVisibility(View.VISIBLE);
+			} else {
+				getBreadCrumbs().setVisibility(View.GONE);
+				getBreadCrumsSeparator().setVisibility(View.GONE);
+			}
+
 			getBreadCrumbs().setTitle(title, shortTitle);
 			getBreadCrumbs().setParentTitle(null, null, null);
 		} else if (title != null) {
