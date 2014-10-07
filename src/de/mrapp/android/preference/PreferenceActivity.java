@@ -1174,7 +1174,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	public final boolean onKeyDown(final int keyCode, final KeyEvent event) {
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
 				&& isPreferenceHeaderSelected() && !isNavigationHidden()) {
 			showPreferenceHeaders();
@@ -1187,7 +1187,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	public final boolean onOptionsItemSelected(final MenuItem item) {
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home && !isSplitScreen()
 				&& isPreferenceHeaderSelected() && isBackButtonOverridden()
 				&& !isNavigationHidden()) {
@@ -1201,7 +1201,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	protected final void onCreate(final Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preference_activity);
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
@@ -1226,7 +1226,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	protected final void onSaveInstanceState(final Bundle outState) {
+	protected void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(CURRENT_FRAGMENT_EXTRA,
 				(currentHeader != null) ? currentHeader.getFragment() : null);
@@ -1240,7 +1240,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	protected final void onRestoreInstanceState(final Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		String currentFragment = savedInstanceState
 				.getString(CURRENT_FRAGMENT_EXTRA);
