@@ -354,8 +354,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * Removes all preference headers from the adapter.
 	 */
 	public final void clear() {
-		for (PreferenceHeader preferenceHeader : preferenceHeaders) {
-			removeItem(preferenceHeader);
+		for (int i = preferenceHeaders.size() - 1; i >= 0; i--) {
+			removeItem(preferenceHeaders.get(i));
 		}
 	}
 
