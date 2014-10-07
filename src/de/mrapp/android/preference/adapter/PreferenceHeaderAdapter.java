@@ -359,6 +359,17 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		}
 	}
 
+	/**
+	 * Returns a collection, which contains all items of the adapter.
+	 * 
+	 * @return A collection, which contains all items of the adapter, as an
+	 *         instance of the type {@link Collection} or an empty collection,
+	 *         if the adapter does not contain any items
+	 */
+	public final Collection<PreferenceHeader> getAllItems() {
+		return preferenceHeaders;
+	}
+
 	@Override
 	public final int getCount() {
 		return preferenceHeaders.size();
