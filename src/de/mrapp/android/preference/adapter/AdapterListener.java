@@ -33,20 +33,28 @@ public interface AdapterListener {
 	 * The method, which is invoked, when a preference header has been added to
 	 * the adapter.
 	 * 
+	 * @param adapter
+	 *            The obtained adapter as an instance of the class
+	 *            {@link PreferenceHeaderAdapter}
 	 * @param preferenceHeader
 	 *            The preference header, which has been added to the adapter, as
 	 *            an instance of the class {@link PreferenceHeader}
 	 */
-	void onPreferenceHeaderAdded(PreferenceHeader preferenceHeader);
+	void onPreferenceHeaderAdded(PreferenceHeaderAdapter adapter,
+			PreferenceHeader preferenceHeader);
 
 	/**
 	 * The method, which is invoked, when a preference header has been removed
 	 * from the adapter.
 	 * 
+	 * @param adapter
+	 *            The obtained adapter as an instance of the class
+	 *            {@link PreferenceHeaderAdapter}
 	 * @param preferenceHeader
 	 *            The preference header, which has been removed from the
 	 *            adapter, as an instance of the class {@link PreferenceHeader}
 	 */
-	void onPreferenceHeaderRemoved(PreferenceHeader preferenceHeader);
+	void onPreferenceHeaderRemoved(PreferenceHeaderAdapter adapter,
+			PreferenceHeader preferenceHeader);
 
 }

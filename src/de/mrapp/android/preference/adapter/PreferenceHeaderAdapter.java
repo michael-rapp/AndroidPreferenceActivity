@@ -18,8 +18,10 @@
 package de.mrapp.android.preference.adapter;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -80,6 +82,12 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * items.
 	 */
 	private int viewId;
+
+	/**
+	 * A set, which contains the listeners, which have been registered to be
+	 * notified, when the adapter's underlying data has been changed.
+	 */
+	private Set<AdapterListener> listeners;
 
 	/**
 	 * Inflates and returns the view, which is used to visualize a preference
@@ -191,6 +199,36 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	}
 
 	/**
+	 * Notifies all registered listeners about a preference header, which has
+	 * been added to the adapter.
+	 * 
+	 * @param preferenceHeader
+	 *            The preference header, which has been added to the adapter, as
+	 *            an instance of the class {@link PreferenceHeader}
+	 */
+	private void notifyOnPreferenceHeaderAdded(
+			final PreferenceHeader preferenceHeader) {
+		for (AdapterListener listener : listeners) {
+			listener.onPreferenceHeaderAdded(preferenceHeader);
+		}
+	}
+
+	/**
+	 * Notifies all registered listeners about a preference header, which has
+	 * been removed from the adapter.
+	 * 
+	 * @param preferenceHeader
+	 *            The preference header, which has been removed from the
+	 *            adapter, as an instance of the class {@link PreferenceHeader}
+	 */
+	private void notifyOnPreferenceHeaderRemoved(
+			final PreferenceHeader preferenceHeader) {
+		for (AdapterListener listener : listeners) {
+			listener.onPreferenceHeaderRemoved(preferenceHeader);
+		}
+	}
+
+	/**
 	 * Creates a new adapter, which provides instances of the class
 	 * {@link PreferenceHeader} to be used for visualization via a list view.
 	 * 
@@ -204,6 +242,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		this.context = context;
 		this.preferenceHeaders = new LinkedList<>();
 		this.viewId = R.layout.preference_header_item;
+		this.listeners = new LinkedHashSet<>();
 	}
 
 	/**
@@ -231,6 +270,32 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	}
 
 	/**
+	 * Adds a new listener, which should be notified, when the underlying data
+	 * of the adapter has been changed, to the adapter.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link AdapterListener}. The listener may not be null
+	 */
+	public final void addListener(final AdapterListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified anymore, when
+	 * the underlying data of the adapter has been changed, from the adapter.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            type {@link AdapterListener}. The listener may not be null
+	 */
+	public final void removeListener(final AdapterListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.remove(listener);
+	}
+
+	/**
 	 * Adds a new preference header to the adapter.
 	 * 
 	 * @param preferenceHeader
@@ -241,6 +306,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	public final void addItem(final PreferenceHeader preferenceHeader) {
 		ensureNotNull(preferenceHeader, "The preference header may not be null");
 		preferenceHeaders.add(preferenceHeader);
+		notifyOnPreferenceHeaderAdded(preferenceHeader);
 		notifyDataSetChanged();
 	}
 
@@ -274,14 +340,23 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 */
 	public final boolean removeItem(final PreferenceHeader preferenceHeader) {
 		ensureNotNull(preferenceHeader, "The preference header may not be null");
-		return preferenceHeaders.remove(preferenceHeader);
+		boolean removed = preferenceHeaders.remove(preferenceHeader);
+
+		if (removed) {
+			notifyOnPreferenceHeaderRemoved(preferenceHeader);
+			notifyDataSetChanged();
+		}
+
+		return removed;
 	}
 
 	/**
 	 * Removes all preference headers from the adapter.
 	 */
 	public final void clear() {
-		preferenceHeaders.clear();
+		for (PreferenceHeader preferenceHeader : preferenceHeaders) {
+			removeItem(preferenceHeader);
+		}
 	}
 
 	@Override
