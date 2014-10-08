@@ -476,7 +476,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 * Shows the back button in the activity's action bar.
 	 */
 	private void showActionBarBackButton() {
-		if (getActionBar() != null) {
+		if (getActionBar() != null && !isNavigationHidden()) {
 			displayHomeAsUp = isDisplayHomeAsUpEnabled();
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
