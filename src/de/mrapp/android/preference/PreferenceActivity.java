@@ -1390,6 +1390,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 * created. This method has to be overridden by implementing subclasses to
 	 * add the preference headers.
 	 */
-	protected abstract void onCreatePreferenceHeaders();
+	protected void onCreatePreferenceHeaders() {
+		return;
+	}
 
 }
