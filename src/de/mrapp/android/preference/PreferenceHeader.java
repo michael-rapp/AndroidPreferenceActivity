@@ -17,13 +17,14 @@
  */
 package de.mrapp.android.preference;
 
+import static de.mrapp.android.preference.util.Condition.ensureNotEmpty;
+import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import static de.mrapp.android.preference.util.Condition.ensureNotNull;
-import static de.mrapp.android.preference.util.Condition.ensureNotEmpty;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
 
 /**
  * A navigation item, which categorizes multiple preferences.
@@ -32,7 +33,25 @@ import static de.mrapp.android.preference.util.Condition.ensureNotEmpty;
  * 
  * @since 1.0.0
  */
-public class PreferenceHeader {
+public class PreferenceHeader implements Parcelable {
+
+	/**
+	 * A creator, which allows to create instances of the class
+	 * {@link PreferenceHeader} from parcels.
+	 */
+	public static final Creator<PreferenceHeader> CREATOR = new Creator<PreferenceHeader>() {
+
+		@Override
+		public PreferenceHeader createFromParcel(final Parcel source) {
+			return new PreferenceHeader(source);
+		}
+
+		@Override
+		public PreferenceHeader[] newArray(final int size) {
+			return new PreferenceHeader[size];
+		}
+
+	};
 
 	/**
 	 * The title of the navigation item.
@@ -58,9 +77,9 @@ public class PreferenceHeader {
 	private CharSequence breadCrumbShortTitle;
 
 	/**
-	 * The icon of the navigation item.
+	 * The resource id of the the navigation item's icon.
 	 */
-	private Drawable icon;
+	private int iconId;
 
 	/**
 	 * The full qualified class name of the fragment, which is shown, when the
@@ -88,6 +107,7 @@ public class PreferenceHeader {
 	 */
 	public PreferenceHeader(final CharSequence title) {
 		setTitle(title);
+		setIconId(-1);
 	}
 
 	/**
@@ -104,6 +124,31 @@ public class PreferenceHeader {
 	 */
 	public PreferenceHeader(final Context context, final int titleId) {
 		setTitle(context, titleId);
+		setIconId(-1);
+	}
+
+	/**
+	 * Creates a new navigation item, which categorizes multiple preferences.
+	 * 
+	 * @param source
+	 *            The parcel, the navigation item should be created from, as an
+	 *            instance of the class {@link Parcel}. The parcel may not be
+	 *            null
+	 */
+	public PreferenceHeader(final Parcel source) {
+		setTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
+		setSummary(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
+		setBreadCrumbTitle(TextUtils.CHAR_SEQUENCE_CREATOR
+				.createFromParcel(source));
+		setBreadCrumbShortTitle(TextUtils.CHAR_SEQUENCE_CREATOR
+				.createFromParcel(source));
+		setIconId(source.readInt());
+		setFragment(source.readString());
+		setExtras(source.readBundle());
+
+		if (source.readInt() != 0) {
+			setIntent(Intent.CREATOR.createFromParcel(source));
+		}
 	}
 
 	/**
@@ -273,40 +318,24 @@ public class PreferenceHeader {
 	}
 
 	/**
-	 * Returns the icon of the navigation item.
+	 * Returns the resource id of the navigation item's icon.
 	 * 
-	 * @return The icon of the navigation item as an instance of the class
-	 *         {@link Drawable} or null, if no icon has been set
+	 * @return The resource id of the navigation item's icon as an
+	 *         {@link Integer} value or -1, if no icon has been set
 	 */
-	public final Drawable getIcon() {
-		return icon;
+	public final int getIconId() {
+		return iconId;
 	}
 
 	/**
-	 * Sets the icon of the navigation item.
+	 * Sets the resource id of the navigation item's icon.
 	 * 
-	 * @param icon
-	 *            The icon, which should be set, as an instance of the class
-	 *            {@link Drawable} or null, if no item should be set
-	 */
-	public final void setIcon(final Drawable icon) {
-		this.icon = icon;
-	}
-
-	/**
-	 * Sets the icon of the navigation item.
-	 * 
-	 * @param context
-	 *            The context, which should be used to retrieve the drawable
-	 *            resource, as an instance of the class {@link Context}. The
-	 *            context may not be null
 	 * @param resourceId
-	 *            The resource id of the icon, which should be set, as an
-	 *            {@link Integer} value. The resource id must correspond to a
-	 *            valid drawable resource
+	 *            The resource id, which should be set, as an {@link Integer}
+	 *            value or -1, if no icon should be set
 	 */
-	public final void setIcon(final Context context, final int resourceId) {
-		setIcon(context.getResources().getDrawable(resourceId));
+	public final void setIconId(final int resourceId) {
+		this.iconId = resourceId;
 	}
 
 	/**
@@ -379,6 +408,29 @@ public class PreferenceHeader {
 	 */
 	public final void setExtras(final Bundle extras) {
 		this.extras = extras;
+	}
+
+	@Override
+	public final int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public final void writeToParcel(final Parcel dest, final int flags) {
+		TextUtils.writeToParcel(getTitle(), dest, flags);
+		TextUtils.writeToParcel(getSummary(), dest, flags);
+		TextUtils.writeToParcel(getBreadCrumbTitle(), dest, flags);
+		TextUtils.writeToParcel(getBreadCrumbShortTitle(), dest, flags);
+		dest.writeInt(getIconId());
+		dest.writeString(getFragment());
+		dest.writeBundle(getExtras());
+
+		if (getIntent() != null) {
+			dest.writeInt(1);
+			getIntent().writeToParcel(dest, flags);
+		} else {
+			dest.writeInt(0);
+		}
 	}
 
 }
