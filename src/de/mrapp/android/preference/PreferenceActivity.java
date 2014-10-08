@@ -370,9 +370,9 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
-		currentHeader = preferenceHeader;
 
 		if (preferenceHeader.getFragment() != null) {
+			currentHeader = preferenceHeader;
 			showBreadCrumbs(preferenceHeader);
 			Bundle parameters = (params != null) ? params : preferenceHeader
 					.getExtras();
@@ -381,6 +381,7 @@ public abstract class PreferenceActivity extends Activity implements
 			showBreadCrumbs(preferenceHeader);
 			removeFragment(preferenceScreenFragment);
 			preferenceScreenFragment = null;
+			currentHeader = null;
 		}
 
 		if (preferenceHeader.getIntent() != null) {
