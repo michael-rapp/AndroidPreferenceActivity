@@ -606,6 +606,18 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns the adapter, which provides the preference headers for
+	 * visualization using the list view.
+	 * 
+	 * @return The adapter, which provides the preference headers for
+	 *         visualization using the list view, as an instance of the class
+	 *         {@link PreferenceHeaderAdapter}. The adapter may not be null
+	 */
+	private PreferenceHeaderAdapter getListAdapter() {
+		return preferenceHeaderFragment.getListAdapter();
+	}
+
+	/**
 	 * Returns the parent view of the fragment, which provides the navigation to
 	 * each preference header's fragment. On devices with a small screen this
 	 * parent view is also used to show a preference header's fragment, when a
@@ -738,20 +750,8 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns the adapter, which provides the preference headers for
-	 * visualization using the list view.
-	 * 
-	 * @return The adapter, which provides the preference headers for
-	 *         visualization using the list view, as an instance of the class
-	 *         {@link PreferenceHeaderAdapter}. The adapter may not be null
-	 */
-	public final PreferenceHeaderAdapter getListAdapter() {
-		return preferenceHeaderFragment.getListAdapter();
-	}
-
-	/**
 	 * Adds all preference headers, which are specified by a specific XML
-	 * resource.
+	 * resource, to the activity.
 	 * 
 	 * @param resourceId
 	 *            The resource id of the XML file, which specifies the
@@ -764,7 +764,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Adds a new preference header.
+	 * Adds a new preference header to the activity.
 	 * 
 	 * @param preferenceHeader
 	 *            The preference header, which should be added, as an instance
@@ -779,7 +779,7 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Adds all preference headers, which are contained by a specific
-	 * collection.
+	 * collection, to the activity.
 	 * 
 	 * @param preferenceHeaders
 	 *            The collection, which contains the preference headers, which
@@ -793,7 +793,7 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Removes a specific preference header.
+	 * Removes a specific preference header from the activity.
 	 * 
 	 * @param preferenceHeader
 	 *            The preference header, which should be removed, as an instance
@@ -807,7 +807,8 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns a collection, which contains all preference headers.
+	 * Returns a collection, which contains all preference headers, which are
+	 * currently added to the activity.
 	 * 
 	 * @return A collection, which contains all preference headers, as an
 	 *         instance of the type {@link Collection} or an empty collection,
@@ -818,7 +819,33 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Removes all preference headers.
+	 * Returns the preference header, which belongs to a specific position.
+	 * 
+	 * @param position
+	 *            The position of the preference header, which should be
+	 *            returned, as an {@link Integer} value
+	 * @return The preference header, which belongs to the given position, as an
+	 *         instance of the class {@link PreferenceHeader}. The preference
+	 *         header may not be null
+	 */
+	public final PreferenceHeader getPreferenceHeader(final int position) {
+		return getListAdapter().getItem(position);
+	}
+
+	/**
+	 * Returns the number of preference headers, which are currently added to
+	 * the activity.
+	 * 
+	 * @return The number of preference header, which are currently added to the
+	 *         activity, as an {@link Integer} value
+	 */
+	public final int getNumberOfPreferenceHeaders() {
+		return getListAdapter().getCount();
+	}
+
+	/**
+	 * Removes all preference headers, which are currently added to the
+	 * activity.
 	 */
 	public final void clearPreferenceHeaders() {
 		getListAdapter().clear();
