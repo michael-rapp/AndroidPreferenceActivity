@@ -30,10 +30,10 @@ import android.app.Fragment;
 public interface FragmentListener {
 
 	/**
-	 * The method, which is invoked, after the fragment has been created.
+	 * The method, which is invoked, when the fragment has been created.
 	 * 
 	 * @param fragment
-	 *            The observed fragment, as an instance of the class
+	 *            The observed fragment as an instance of the class
 	 *            {@link Fragment}
 	 */
 	void onFragmentCreated(Fragment fragment);
