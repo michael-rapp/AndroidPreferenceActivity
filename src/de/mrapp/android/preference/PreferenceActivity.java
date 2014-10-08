@@ -606,18 +606,6 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns the adapter, which provides the preference headers for
-	 * visualization using the list view.
-	 * 
-	 * @return The adapter, which provides the preference headers for
-	 *         visualization using the list view, as an instance of the class
-	 *         {@link PreferenceHeaderAdapter}. The adapter may not be null
-	 */
-	private PreferenceHeaderAdapter getListAdapter() {
-		return preferenceHeaderFragment.getListAdapter();
-	}
-
-	/**
 	 * Returns the parent view of the fragment, which provides the navigation to
 	 * each preference header's fragment. On devices with a small screen this
 	 * parent view is also used to show a preference header's fragment, when a
@@ -747,6 +735,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final ListView getListView() {
 		return preferenceHeaderFragment.getListView();
+	}
+
+	/**
+	 * Returns the adapter, which provides the preference headers for
+	 * visualization using the list view.
+	 * 
+	 * @return The adapter, which provides the preference headers for
+	 *         visualization using the list view, as an instance of the class
+	 *         {@link PreferenceHeaderAdapter}. The adapter may not be null
+	 */
+	public final PreferenceHeaderAdapter getListAdapter() {
+		return preferenceHeaderFragment.getListAdapter();
 	}
 
 	/**
