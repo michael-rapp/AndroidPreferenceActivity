@@ -332,7 +332,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		this.context = context;
 		this.preferenceHeaders = new LinkedList<>();
 		this.viewId = R.layout.preference_header_item;
-		this.selectorId = android.R.attr.activatedBackgroundIndicator;
+		this.selectorId = R.drawable.preference_header_selector;
 		this.listeners = new LinkedHashSet<>();
 		this.decorators = new LinkedHashSet<>();
 	}
