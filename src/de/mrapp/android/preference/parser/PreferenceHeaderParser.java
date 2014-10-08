@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -193,7 +192,7 @@ public final class PreferenceHeaderParser {
 		CharSequence breadCrumbTitle = parseBreadCrumbTitle(context, typedArray);
 		CharSequence breadCrumbShortTitle = parseBreadCrumbShortTitle(context,
 				typedArray);
-		Drawable icon = parseIcon(typedArray);
+		int iconId = parseIconId(typedArray);
 		String fragment = parseFragment(typedArray);
 		Pair<Intent, Bundle> intentAndBundle = parseIntentAndBundle(context,
 				parser, attributeSet);
@@ -204,7 +203,7 @@ public final class PreferenceHeaderParser {
 		preferenceHeader.setSummary(summary);
 		preferenceHeader.setBreadCrumbTitle(breadCrumbTitle);
 		preferenceHeader.setBreadCrumbShortTitle(breadCrumbShortTitle);
-		preferenceHeader.setIcon(icon);
+		preferenceHeader.setIconId(iconId);
 		preferenceHeader.setIntent(intentAndBundle.first);
 		preferenceHeader.setExtras(intentAndBundle.second);
 		return preferenceHeader;
@@ -329,20 +328,18 @@ public final class PreferenceHeaderParser {
 	}
 
 	/**
-	 * Parses and returns the icon of a preference header from a specific typed
-	 * array.
+	 * Parses and returns the icon id of a preference header from a specific
+	 * typed array.
 	 * 
 	 * @param typedArray
-	 *            The typed array, the icon should be parsed from, as an
+	 *            The typed array, the icon id should be parsed from, as an
 	 *            instance of the class {@link TypedArray}. The typed array may
 	 *            not be null
-	 * @return The icon, which has been parsed, as an instance of the class
-	 *         {@link Drawable} or null, if no icon is defined by the given
-	 *         typed array
+	 * @return The icon id, which has been parsed, as an {@link Integer} value
+	 *         or -1, if no icon id is defined by the given typed array
 	 */
-	private static Drawable parseIcon(final TypedArray typedArray) {
-		return typedArray
-				.getDrawable(R.styleable.PreferenceHeader_android_icon);
+	private static int parseIconId(final TypedArray typedArray) {
+		return typedArray.getInt(R.styleable.PreferenceHeader_android_icon, -1);
 	}
 
 	/**

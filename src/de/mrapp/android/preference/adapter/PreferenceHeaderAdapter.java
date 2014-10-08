@@ -17,6 +17,7 @@
  */
 package de.mrapp.android.preference.adapter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -193,8 +194,12 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private void visualizePreferenceHeaderIcon(final ViewHolder viewHolder,
 			final PreferenceHeader preferenceHeader) {
 		if (viewHolder.iconImageView != null) {
-			viewHolder.iconImageView.setImageDrawable(preferenceHeader
-					.getIcon());
+			int iconId = preferenceHeader.getIconId();
+
+			if (iconId != -1) {
+				viewHolder.iconImageView.setImageDrawable(context
+						.getResources().getDrawable(iconId));
+			}
 		}
 	}
 
@@ -205,11 +210,14 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * @param preferenceHeader
 	 *            The preference header, which has been added to the adapter, as
 	 *            an instance of the class {@link PreferenceHeader}
+	 * @param position
+	 *            The position of the preference header, which has been added,
+	 *            as an {@link Integer} value
 	 */
 	private void notifyOnPreferenceHeaderAdded(
-			final PreferenceHeader preferenceHeader) {
+			final PreferenceHeader preferenceHeader, final int position) {
 		for (AdapterListener listener : listeners) {
-			listener.onPreferenceHeaderAdded(this, preferenceHeader);
+			listener.onPreferenceHeaderAdded(this, preferenceHeader, position);
 		}
 	}
 
@@ -220,11 +228,14 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * @param preferenceHeader
 	 *            The preference header, which has been removed from the
 	 *            adapter, as an instance of the class {@link PreferenceHeader}
+	 * @param position
+	 *            The position of the preference header, which has been removed,
+	 *            as an {@link Integer} value
 	 */
 	private void notifyOnPreferenceHeaderRemoved(
-			final PreferenceHeader preferenceHeader) {
+			final PreferenceHeader preferenceHeader, final int position) {
 		for (AdapterListener listener : listeners) {
-			listener.onPreferenceHeaderRemoved(this, preferenceHeader);
+			listener.onPreferenceHeaderRemoved(this, preferenceHeader, position);
 		}
 	}
 
@@ -306,7 +317,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	public final void addItem(final PreferenceHeader preferenceHeader) {
 		ensureNotNull(preferenceHeader, "The preference header may not be null");
 		preferenceHeaders.add(preferenceHeader);
-		notifyOnPreferenceHeaderAdded(preferenceHeader);
+		int position = preferenceHeaders.indexOf(preferenceHeader);
+		notifyOnPreferenceHeaderAdded(preferenceHeader, position);
 		notifyDataSetChanged();
 	}
 
@@ -340,10 +352,11 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 */
 	public final boolean removeItem(final PreferenceHeader preferenceHeader) {
 		ensureNotNull(preferenceHeader, "The preference header may not be null");
+		int position = preferenceHeaders.indexOf(preferenceHeader);
 		boolean removed = preferenceHeaders.remove(preferenceHeader);
 
 		if (removed) {
-			notifyOnPreferenceHeaderRemoved(preferenceHeader);
+			notifyOnPreferenceHeaderRemoved(preferenceHeader, position);
 			notifyDataSetChanged();
 		}
 
@@ -366,8 +379,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 *         instance of the type {@link Collection} or an empty collection,
 	 *         if the adapter does not contain any items
 	 */
-	public final Collection<PreferenceHeader> getAllItems() {
-		return new LinkedList<>(preferenceHeaders);
+	public final ArrayList<PreferenceHeader> getAllItems() {
+		return new ArrayList<>(preferenceHeaders);
 	}
 
 	@Override

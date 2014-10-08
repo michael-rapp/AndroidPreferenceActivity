@@ -17,6 +17,12 @@
  */
 package de.mrapp.android.preference;
 
+import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
+import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
+import static de.mrapp.android.preference.util.DisplayUtil.convertDpToPixels;
+import static de.mrapp.android.preference.util.DisplayUtil.convertPixelsToDp;
+
+import java.util.ArrayList;
 import java.util.Collection;
 
 import android.annotation.TargetApi;
@@ -37,17 +43,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
+import de.mrapp.android.preference.adapter.AdapterListener;
 import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.fragment.FragmentListener;
 import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.parser.PreferenceHeaderParser;
-import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
-import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
-import static de.mrapp.android.preference.util.DisplayUtil.convertDpToPixels;
-import static de.mrapp.android.preference.util.DisplayUtil.convertPixelsToDp;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences,
@@ -63,7 +66,7 @@ import static de.mrapp.android.preference.util.DisplayUtil.convertPixelsToDp;
  * @since 1.0.0
  */
 public abstract class PreferenceActivity extends Activity implements
-		FragmentListener, OnItemClickListener {
+		FragmentListener, OnItemClickListener, AdapterListener {
 
 	/**
 	 * When starting this activity, the invoking Intent can contain this extra
@@ -175,8 +178,21 @@ public abstract class PreferenceActivity extends Activity implements
 	 * The name of the extra, which is used to save the index of the currently
 	 * selected preference header, within a bundle.
 	 */
-	private static final String SELECTED_PREFERENCE_HEADER_EXTRA = PreferenceActivity.class
-			.getSimpleName() + "::SelectedPreferenceHeader";
+	private static final String SELECTED_INDEX_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::SelectedIndex";
+
+	/**
+	 * The name of the extra, which is used to saved the preference headers
+	 * within a bundle.
+	 */
+	private static final String PREFERENCE_HEADERS_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::PreferenceHeaders";
+
+	/**
+	 * The saved instance state, which has been passed to the activity, when it
+	 * has been created.
+	 */
+	private Bundle savedInstanceState;
 
 	/**
 	 * The fragment, which contains the preference headers and provides the
@@ -392,6 +408,7 @@ public abstract class PreferenceActivity extends Activity implements
 			replaceFragment(preferenceScreenFragment,
 					R.id.preference_screen_parent, 0);
 		} else {
+			updateSavedInstanceState();
 			replaceFragment(preferenceScreenFragment,
 					R.id.preference_header_parent,
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -570,6 +587,21 @@ public abstract class PreferenceActivity extends Activity implements
 			currentTitle = null;
 			currentShortTitle = null;
 		}
+	}
+
+	/**
+	 * Adds the preference headers, which are currently added to the activity,
+	 * to the bundle, which has been passed to the activity, when it has been
+	 * created. If no bundle has been passed to the activity, a new bundle will
+	 * be created.
+	 */
+	private void updateSavedInstanceState() {
+		if (savedInstanceState == null) {
+			savedInstanceState = new Bundle();
+		}
+
+		savedInstanceState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA,
+				getListAdapter().getAllItems());
 	}
 
 	/**
@@ -774,6 +806,17 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns a collection, which contains all preference headers.
+	 * 
+	 * @return A collection, which contains all preference headers, as an
+	 *         instance of the type {@link Collection} or an empty collection,
+	 *         if the activity does not contain any preference headers
+	 */
+	public final Collection<PreferenceHeader> getAllPreferenceHeaders() {
+		return getListAdapter().getAllItems();
+	}
+
+	/**
 	 * Removes all preference headers.
 	 */
 	public final void clearPreferenceHeaders() {
@@ -822,7 +865,7 @@ public abstract class PreferenceActivity extends Activity implements
 		} else if (hideNavigation && isPreferenceHeaderSelected()) {
 			hideActionBarBackButton();
 		} else if (hideNavigation && !isPreferenceHeaderSelected()) {
-			onBackPressed();
+			finish();
 		}
 	}
 
@@ -1156,29 +1199,61 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	public final void onFragmentCreated(final Fragment fragment) {
-		onCreatePreferenceHeaders();
-		getListView().setOnItemClickListener(this);
-
-		if (isSplitScreen()) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-			if (!getListAdapter().isEmpty()) {
-				getListView().setItemChecked(0, true);
-				showPreferenceScreen(getListAdapter().getItem(0), null);
-			}
-		}
-
-		int padding = getResources().getDimensionPixelSize(
-				R.dimen.preference_header_horizontal_padding);
-		getListView().setPadding(padding, 0, padding, 0);
-		handleIntent();
-	}
-
-	@Override
 	public final void onItemClick(final AdapterView<?> parent, final View view,
 			final int position, final long id) {
 		showPreferenceScreen(getListAdapter().getItem(position), null);
+	}
+
+	@Override
+	public final void onPreferenceHeaderAdded(
+			final PreferenceHeaderAdapter adapter,
+			final PreferenceHeader preferenceHeader, final int position) {
+		if (isSplitScreen()) {
+			if (adapter.getCount() == 1) {
+				getListView().setItemChecked(0, true);
+				showPreferenceScreen(getListAdapter().getItem(0), null);
+			}
+		} else {
+			updateSavedInstanceState();
+		}
+	}
+
+	@Override
+	public final void onPreferenceHeaderRemoved(
+			final PreferenceHeaderAdapter adapter,
+			final PreferenceHeader preferenceHeader, final int position) {
+		if (isSplitScreen()) {
+			if (adapter.isEmpty()) {
+				removeFragment(preferenceScreenFragment);
+				showBreadCrumbs(null, null);
+				preferenceScreenFragment = null;
+			} else {
+				int selectedIndex = getListView().getCheckedItemPosition();
+
+				if (selectedIndex == position) {
+					PreferenceHeader selectedPreferenceHeader;
+
+					try {
+						selectedPreferenceHeader = getListAdapter().getItem(
+								selectedIndex);
+					} catch (IndexOutOfBoundsException e) {
+						getListView().setItemChecked(selectedIndex - 1, true);
+						selectedPreferenceHeader = getListAdapter().getItem(
+								selectedIndex - 1);
+					}
+
+					showPreferenceScreen(selectedPreferenceHeader, null);
+				}
+			}
+		} else {
+			if (currentHeader == preferenceHeader) {
+				showPreferenceHeaders();
+				hideActionBarBackButton();
+				resetTitle();
+			}
+
+			updateSavedInstanceState();
+		}
 	}
 
 	@Override
@@ -1211,6 +1286,7 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.savedInstanceState = savedInstanceState;
 		setContentView(R.layout.preference_activity);
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
@@ -1227,10 +1303,38 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		overrideBackButton(true);
-		showPreferenceHeaders();
 		setBreadCrumbsSeparatorColor(getResources().getColor(
 				R.color.bread_crumb_separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
+		showPreferenceHeaders();
+	}
+
+	@Override
+	public void onFragmentCreated(final Fragment fragment) {
+		getListView().setOnItemClickListener(PreferenceActivity.this);
+		getListAdapter().addListener(PreferenceActivity.this);
+
+		if (savedInstanceState == null) {
+			onCreatePreferenceHeaders();
+		} else {
+			ArrayList<PreferenceHeader> preferenceHeaders = savedInstanceState
+					.getParcelableArrayList(PREFERENCE_HEADERS_EXTRA);
+			getListAdapter().addAllItems(preferenceHeaders);
+		}
+
+		if (isSplitScreen()) {
+			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+			if (!getListAdapter().isEmpty()) {
+				getListView().setItemChecked(0, true);
+				showPreferenceScreen(getListAdapter().getItem(0), null);
+			}
+		}
+
+		int padding = getResources().getDimensionPixelSize(
+				R.dimen.preference_header_horizontal_padding);
+		getListView().setPadding(padding, 0, padding, 0);
+		handleIntent();
 	}
 
 	@Override
@@ -1242,9 +1346,10 @@ public abstract class PreferenceActivity extends Activity implements
 				(currentHeader != null) ? currentHeader.getExtras() : null);
 		outState.putCharSequence(CURRENT_TITLE_EXTRA, currentTitle);
 		outState.putCharSequence(CURRENT_SHORT_TITLE_EXTRA, currentShortTitle);
-		outState.putInt(SELECTED_PREFERENCE_HEADER_EXTRA,
-				isSplitScreen() ? getListView().getCheckedItemPosition()
-						: ListView.INVALID_POSITION);
+		outState.putInt(SELECTED_INDEX_EXTRA, isSplitScreen() ? getListView()
+				.getCheckedItemPosition() : ListView.INVALID_POSITION);
+		outState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA,
+				getListAdapter().getAllItems());
 	}
 
 	@Override
@@ -1258,8 +1363,7 @@ public abstract class PreferenceActivity extends Activity implements
 				.getCharSequence(CURRENT_TITLE_EXTRA);
 		CharSequence shortTitle = savedInstanceState
 				.getCharSequence(CURRENT_SHORT_TITLE_EXTRA);
-		int selectedPreferenceHeader = savedInstanceState
-				.getInt(SELECTED_PREFERENCE_HEADER_EXTRA);
+		int selectedIndex = savedInstanceState.getInt(SELECTED_INDEX_EXTRA);
 
 		if (currentFragment != null) {
 			showPreferenceScreen(currentFragment, currentBundle);
@@ -1276,8 +1380,8 @@ public abstract class PreferenceActivity extends Activity implements
 			}
 		}
 
-		if (selectedPreferenceHeader != ListView.INVALID_POSITION) {
-			getListView().setItemChecked(selectedPreferenceHeader, true);
+		if (selectedIndex != ListView.INVALID_POSITION) {
+			getListView().setItemChecked(selectedIndex, true);
 		}
 	}
 
