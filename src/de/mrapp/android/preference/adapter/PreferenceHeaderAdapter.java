@@ -33,6 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.mrapp.android.preference.PreferenceHeader;
+import de.mrapp.android.preference.PreferenceHeaderDecorator;
 import de.mrapp.android.preference.R;
 import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 
@@ -49,7 +50,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	/**
 	 * The view holder, which is used by the adapter.
 	 */
-	private static class ViewHolder {
+	public static class ViewHolder {
 
 		/**
 		 * The text view, which is used to show the preference header's title.
@@ -65,6 +66,42 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		 * The image view, which is used to show the preference header's icon.
 		 */
 		private ImageView iconImageView;
+
+		/**
+		 * Returns the text view, which is used to show the preference header's
+		 * title.
+		 * 
+		 * @return The text view, which is used to show the preference header's
+		 *         title, as an instance of the class {@link TextView} or null,
+		 *         if the text view is not available
+		 */
+		public final TextView getTitleTextView() {
+			return titleTextView;
+		}
+
+		/**
+		 * Returns the text view, which is used to show the preference header's
+		 * summary.
+		 * 
+		 * @return The text view, which is used to show the preference header's
+		 *         summary, as an instance of the class {@link TextView} or
+		 *         null, if the text view is not available
+		 */
+		public final TextView getSummaryTextView() {
+			return summaryTextView;
+		}
+
+		/**
+		 * Returns the image view, which is used to show the preference header's
+		 * icon.
+		 * 
+		 * @return The image view, which is used to show the preference header's
+		 *         icon, as an instance of the class {@link ImageView} or null,
+		 *         if the image view is not available
+		 */
+		public final ImageView getIconImageView() {
+			return iconImageView;
+		}
 
 	};
 
@@ -89,6 +126,12 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * notified, when the adapter's underlying data has been changed.
 	 */
 	private Set<AdapterListener> listeners;
+
+	/**
+	 * A set, which contains all decorators, which should be applied, when an
+	 * item of the adapter is visualized.
+	 */
+	private Set<PreferenceHeaderDecorator> decorators;
 
 	/**
 	 * Inflates and returns the view, which is used to visualize a preference
@@ -240,6 +283,36 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	}
 
 	/**
+	 * Applies all registered decorators to modify the visualization of a
+	 * specific preference header.
+	 * 
+	 * @param position
+	 *            The position of the preference header, which should be
+	 *            visualized, as an {@link Integer} value
+	 * @param preferenceHeader
+	 *            The preference header, which should be visualized, as an
+	 *            instance of the class {@link PreferenceHeader}. The preference
+	 *            header may not be null
+	 * @param view
+	 *            The view, which is used to visualize the preference header, as
+	 *            an instance of the class {@link View}. The view may not be
+	 *            null
+	 * @param viewHolder
+	 *            The view holder, which contains the child views of the view,
+	 *            which is used to visualize the preference header, as an
+	 *            instance of the class {@link ViewHolder}. The view holder may
+	 *            not be null
+	 */
+	private void applyDecorators(final int position,
+			final PreferenceHeader preferenceHeader, final View view,
+			final ViewHolder viewHolder) {
+		for (PreferenceHeaderDecorator decorator : decorators) {
+			decorator.onApplyDecorator(position, preferenceHeader, view,
+					viewHolder);
+		}
+	}
+
+	/**
 	 * Creates a new adapter, which provides instances of the class
 	 * {@link PreferenceHeader} to be used for visualization via a list view.
 	 * 
@@ -254,6 +327,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		this.preferenceHeaders = new LinkedList<>();
 		this.viewId = R.layout.preference_header_item;
 		this.listeners = new LinkedHashSet<>();
+		this.decorators = new LinkedHashSet<>();
 	}
 
 	/**
@@ -304,6 +378,34 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	public final void removeListener(final AdapterListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		listeners.remove(listener);
+	}
+
+	/**
+	 * Adds a new decorator, which should be applied, when an item of the
+	 * adapter is visualized, to the adapter.
+	 * 
+	 * @param decorator
+	 *            The decorator, which should be added, as an instance of the
+	 *            type {@link PreferenceHeaderDecorator}. The decorator may not
+	 *            be null
+	 */
+	public final void addDecorator(final PreferenceHeaderDecorator decorator) {
+		ensureNotNull(decorator, "The decorator may not be null");
+		decorators.add(decorator);
+	}
+
+	/**
+	 * Removes a specific decorator, which should not be applied anymore, when
+	 * an item of the adapter is visualized, from the adapter.
+	 * 
+	 * @param decorator
+	 *            The decorator, which should be removed, as an instance of the
+	 *            type {@link PreferenceHeaderDecorator}. The decorator may not
+	 *            be null
+	 */
+	public final void removeDecorator(final PreferenceHeaderDecorator decorator) {
+		ensureNotNull(decorator, "The decorator may not be null");
+		decorators.remove(decorator);
 	}
 
 	/**
@@ -408,8 +510,10 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		}
 
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
+		PreferenceHeader preferenceHeader = getItem(position);
 		visualizePreferenceHeader(viewHolder, getItem(position));
 
+		applyDecorators(position, preferenceHeader, view, viewHolder);
 		return view;
 	}
 
