@@ -122,6 +122,12 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private int viewId;
 
 	/**
+	 * The resource id of the selector, which is used as the background of the
+	 * view, which is used to visualize the adapter's items.
+	 */
+	private int selectorId;
+
+	/**
 	 * A set, which contains the listeners, which have been registered to be
 	 * notified, when the adapter's underlying data has been changed.
 	 */
@@ -326,23 +332,25 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		this.context = context;
 		this.preferenceHeaders = new LinkedList<>();
 		this.viewId = R.layout.preference_header_item;
+		this.selectorId = android.R.attr.activatedBackgroundIndicator;
 		this.listeners = new LinkedHashSet<>();
 		this.decorators = new LinkedHashSet<>();
 	}
 
 	/**
-	 * Returns the resource id, which is used to visualize the adapter's items.
+	 * Returns the resource id of the view, which is used to visualize the
+	 * adapter's items.
 	 * 
-	 * @return The resource id, which is used to visualize the adapter's items,
-	 *         as an {@link Integer} value
+	 * @return The resource id of the view, which is used to visualize the
+	 *         adapter's items, as an {@link Integer} value
 	 */
 	public final int getViewId() {
 		return viewId;
 	}
 
 	/**
-	 * Sets the resource id, which should be used to visualize the adapter's
-	 * items.
+	 * Sets the resource id of the view, which should be used to visualize the
+	 * adapter's items.
 	 * 
 	 * @param viewId
 	 *            The resource id, which should be set, as an {@link Integer}
@@ -351,6 +359,31 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 */
 	public final void setViewId(final int viewId) {
 		this.viewId = viewId;
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * Returns the resource id of the selector, which is used as the background
+	 * of the view, which is used to visualize the adapter's items.
+	 * 
+	 * @return The resource id of the selector, which is used as the background
+	 *         of the view, which is used to visualize the adapter's items, as
+	 *         an {@link Integer} value or -1, if no selector is used
+	 */
+	public final int getSelectorId() {
+		return selectorId;
+	}
+
+	/**
+	 * Sets the resource id of the selector, which should be used as the
+	 * background of the view, which is used to visualize the adapter's items.
+	 * 
+	 * @param selectorId
+	 *            The resource id, which should be set, as an {@link Integer}
+	 *            value or -1, if no selector should be used
+	 */
+	public final void setSelectorId(final int selectorId) {
+		this.selectorId = selectorId;
 		notifyDataSetChanged();
 	}
 
@@ -507,6 +540,10 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 
 		if (view == null) {
 			view = inflateView(parent);
+		}
+
+		if (getSelectorId() != -1) {
+			view.setBackgroundResource(getSelectorId());
 		}
 
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
