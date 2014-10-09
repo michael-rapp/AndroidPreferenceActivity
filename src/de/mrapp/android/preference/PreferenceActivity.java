@@ -69,7 +69,7 @@ public abstract class PreferenceActivity extends Activity implements
 		FragmentListener, OnItemClickListener, AdapterListener {
 
 	/**
-	 * When starting this activity, the invoking Intent can contain this extra
+	 * When starting this activity, the invoking intent can contain this extra
 	 * string to specify which fragment should be initially displayed.
 	 */
 	public static final String EXTRA_SHOW_FRAGMENT = ":android:show_fragment";
@@ -332,6 +332,37 @@ public abstract class PreferenceActivity extends Activity implements
 		int initialShortTitle = getIntent().getIntExtra(
 				EXTRA_SHOW_FRAGMENT_SHORT_TITLE, 0);
 
+		handleInitialFragmentIntent(initialFragment, initialArguments,
+				initialTitle, initialShortTitle);
+		hideNavigation(getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false));
+	}
+
+	/**
+	 * Handles extras of the intent, which has been used to start the activity,
+	 * that allow to initially display a specific fragment.
+	 * 
+	 * @param initialFragment
+	 *            The full qualified class name of the fragment, which should be
+	 *            initially displayed, as a {@link String} or null, if no
+	 *            fragment should be initially displayed
+	 * @param initialArguments
+	 *            The parameters which should be passed to the initially
+	 *            displayed fragment, as an instance of the class {@link Bundle}
+	 *            or null, if no parameters should be passed to the fragment
+	 * @param initialTitle
+	 *            The resource id of the alternative title, which should be
+	 *            shown when displaying the initial fragment, as an
+	 *            {@link Integer} value or 0, if no alternative title should be
+	 *            shown
+	 * @param initialShortTitle
+	 *            The resource id of the alternative short title, which should
+	 *            be shown when displaying the initial fragment, as an
+	 *            {@link Integer} value or 0, if no alternative short title
+	 *            should be shown
+	 */
+	private void handleInitialFragmentIntent(final String initialFragment,
+			final Bundle initialArguments, final int initialTitle,
+			final int initialShortTitle) {
 		if (initialFragment != null) {
 			for (int i = 0; i < getListAdapter().getCount(); i++) {
 				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
@@ -351,8 +382,6 @@ public abstract class PreferenceActivity extends Activity implements
 				}
 			}
 		}
-
-		hideNavigation(getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false));
 	}
 
 	/**
