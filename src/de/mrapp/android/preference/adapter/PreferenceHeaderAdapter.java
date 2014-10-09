@@ -368,7 +368,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * 
 	 * @return The resource id of the selector, which is used as the background
 	 *         of the view, which is used to visualize the adapter's items, as
-	 *         an {@link Integer} value or -1, if no selector is used
+	 *         an {@link Integer} value or 0, if no selector is used
 	 */
 	public final int getSelectorId() {
 		return selectorId;
@@ -380,7 +380,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * 
 	 * @param selectorId
 	 *            The resource id, which should be set, as an {@link Integer}
-	 *            value or -1, if no selector should be used
+	 *            value or 0, if no selector should be used
 	 */
 	public final void setSelectorId(final int selectorId) {
 		this.selectorId = selectorId;
@@ -542,9 +542,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 			view = inflateView(parent);
 		}
 
-		if (getSelectorId() != -1) {
-			view.setBackgroundResource(getSelectorId());
-		}
+		view.setBackgroundResource(getSelectorId());
 
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
 		PreferenceHeader preferenceHeader = getItem(position);
