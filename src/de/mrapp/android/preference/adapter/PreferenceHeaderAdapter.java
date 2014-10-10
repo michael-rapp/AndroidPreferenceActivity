@@ -116,6 +116,11 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	private List<PreferenceHeader> preferenceHeaders;
 
 	/**
+	 * True, if the items of the adapter should be enabled, false otherwise.
+	 */
+	private boolean enabled;
+
+	/**
 	 * The resource id of the view, which is used to visualize the adapter's
 	 * items.
 	 */
@@ -331,6 +336,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		ensureNotNull(context, "The context may not be null");
 		this.context = context;
 		this.preferenceHeaders = new LinkedList<>();
+		this.enabled = true;
 		this.viewId = R.layout.preference_header_item;
 		this.selectorId = R.drawable.preference_header_selector;
 		this.listeners = new LinkedHashSet<>();
@@ -516,6 +522,38 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 */
 	public final ArrayList<PreferenceHeader> getAllItems() {
 		return new ArrayList<>(preferenceHeaders);
+	}
+
+	/**
+	 * Returns the index, a specific preference header belongs to.
+	 * 
+	 * @param item
+	 *            The preference header, whose index should be returned, as an
+	 *            instance of the class {@link PreferenceHeader}. The preference
+	 *            header may not be null
+	 * @return The index of the given preference header as an {@link Integer}
+	 *         value or -1 , if the adapter does not contain the preference
+	 *         header
+	 */
+	public final int indexOf(final PreferenceHeader item) {
+		ensureNotNull(item, "The preference header may not be null");
+		return preferenceHeaders.indexOf(item);
+	}
+
+	/**
+	 * Sets, whether the items of the adapter should be enabled, or not.
+	 * 
+	 * @param enabled
+	 *            True, if the items of the adapter should be enabled, false
+	 *            otherwise
+	 */
+	public final void setEnabled(final boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	@Override
+	public final boolean isEnabled(final int position) {
+		return enabled;
 	}
 
 	@Override

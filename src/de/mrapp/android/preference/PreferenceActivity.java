@@ -19,11 +19,14 @@ package de.mrapp.android.preference;
 
 import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
+import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 import static de.mrapp.android.preference.util.DisplayUtil.convertDpToPixels;
 import static de.mrapp.android.preference.util.DisplayUtil.convertPixelsToDp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -41,6 +44,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -84,15 +88,15 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>,
-	 * this extra can also be specify to supply the title to be shown for that
+	 * this extra can also be specified to supply the title to be shown for that
 	 * fragment.
 	 */
 	public static final String EXTRA_SHOW_FRAGMENT_TITLE = ":android:show_fragment_title";
 
 	/**
 	 * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>,
-	 * this extra can also be specify to supply the short title to be shown for
-	 * that fragment.
+	 * this extra can also be specified to supply the short title to be shown
+	 * for that fragment.
 	 */
 	public static final String EXTRA_SHOW_FRAGMENT_SHORT_TITLE = ":android:show_fragment_short_title";
 
@@ -113,44 +117,24 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
-	 * the invoking intent can contain this extra boolean to show a skip button.
-	 */
-	public static final String EXTRA_SHOW_SKIP_BUTTON = "extra_prefs_show_skip";
-
-	/**
-	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
-	 * the invoking intent can contain this extra string to specify a custom
-	 * text for the next button.
+	 * this extra can also be specified to supply a custom text for the next
+	 * button.
 	 */
 	public static final String EXTRA_NEXT_BUTTON_TEXT = "extra_prefs_set_next_text";
 
 	/**
 	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
-	 * the invoking intent can contain this extra string to specify a custom
-	 * text for the back button.
+	 * this extra can also be specified to supply a custom text for the back
+	 * button.
 	 */
 	public static final String EXTRA_BACK_BUTTON_TEXT = "extra_prefs_set_back_text";
 
 	/**
-	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>
-	 * and <code>EXTRA_SHOW_SKIP_BUTTON</code>, the invoking intent can contain
-	 * this extra string to specify a custom text for the skip button.
-	 */
-	public static final String EXTRA_SKIP_BUTTON_TEXT = "extra_prefs_set_skip_text";
-
-	/**
 	 * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>,
-	 * the invoking intent can contain this extra string to specify a custom
-	 * text for the back button when the last preference header is shown.
+	 * this extra can also be specified to supply a custom text for the back
+	 * button when the last preference header is shown.
 	 */
 	public static final String EXTRA_FINISH_BUTTON_TEXT = "extra_prefs_set_finish_text";
-
-	/**
-	 * The name of the extra, which is used to save the class name of the
-	 * fragment, which is currently shown, within a bundle.
-	 */
-	private static final String CURRENT_FRAGMENT_EXTRA = PreferenceActivity.class
-			.getSimpleName() + "::CurrentFragment";
 
 	/**
 	 * The name of the extra, which is used to save the parameters, which have
@@ -175,11 +159,11 @@ public abstract class PreferenceActivity extends Activity implements
 			.getSimpleName() + "::CurrentShortTitle";
 
 	/**
-	 * The name of the extra, which is used to save the index of the currently
-	 * selected preference header, within a bundle.
+	 * The name of the extra, which is used to save the currently selected
+	 * preference header, within a bundle.
 	 */
-	private static final String SELECTED_INDEX_EXTRA = PreferenceActivity.class
-			.getSimpleName() + "::SelectedIndex";
+	private static final String CURRENT_PREFERENCE_HEADER_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::CurrentPreferenceHeader";
 
 	/**
 	 * The name of the extra, which is used to saved the preference headers
@@ -226,7 +210,7 @@ public abstract class PreferenceActivity extends Activity implements
 	private ViewGroup preferenceScreenContainer;
 
 	/**
-	 * The view group, which contains the buttons, which are shown, if the
+	 * The view group, which contains the buttons, which are shown when the
 	 * activity is used as a wizard.
 	 */
 	private ViewGroup buttonBar;
@@ -237,14 +221,16 @@ public abstract class PreferenceActivity extends Activity implements
 	private Button backButton;
 
 	/**
-	 * The next button, which is shown, if the activity is used as a wizard.
+	 * The next button, which is shown, if the activity is used as a wizard and
+	 * the last preference header is currently not selected.
 	 */
 	private Button nextButton;
 
 	/**
-	 * The skip button, which is shown, if the activity is used as a wizard.
+	 * The finish button, which is shown, if the activity is used as a wizard
+	 * and the last preference header is currently selected.
 	 */
-	private Button skipButton;
+	private Button finishButton;
 
 	/**
 	 * The view, which is used to draw a separator between the bread crumbs and
@@ -320,9 +306,25 @@ public abstract class PreferenceActivity extends Activity implements
 	private FragmentBreadCrumbs breadCrumbs;
 
 	/**
+	 * A set, which contains the listeners, which have registered to be notified
+	 * when the user navigates within the activity, if it used as a wizard.
+	 */
+	private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
+
+	/**
 	 * Handles the intent, which has been used to start the activity.
 	 */
 	private void handleIntent() {
+		handleInitialFragmentIntent();
+		handleShowButtonBarIntent();
+		handleHideNavigationIntent();
+	}
+
+	/**
+	 * Handles extras of the intent, which has been used to start the activity,
+	 * that allow to initially display a specific fragment.
+	 */
+	private void handleInitialFragmentIntent() {
 		String initialFragment = getIntent()
 				.getStringExtra(EXTRA_SHOW_FRAGMENT);
 		Bundle initialArguments = getIntent().getBundleExtra(
@@ -332,37 +334,6 @@ public abstract class PreferenceActivity extends Activity implements
 		int initialShortTitle = getIntent().getIntExtra(
 				EXTRA_SHOW_FRAGMENT_SHORT_TITLE, 0);
 
-		handleInitialFragmentIntent(initialFragment, initialArguments,
-				initialTitle, initialShortTitle);
-		hideNavigation(getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false));
-	}
-
-	/**
-	 * Handles extras of the intent, which has been used to start the activity,
-	 * that allow to initially display a specific fragment.
-	 * 
-	 * @param initialFragment
-	 *            The full qualified class name of the fragment, which should be
-	 *            initially displayed, as a {@link String} or null, if no
-	 *            fragment should be initially displayed
-	 * @param initialArguments
-	 *            The parameters which should be passed to the initially
-	 *            displayed fragment, as an instance of the class {@link Bundle}
-	 *            or null, if no parameters should be passed to the fragment
-	 * @param initialTitle
-	 *            The resource id of the alternative title, which should be
-	 *            shown when displaying the initial fragment, as an
-	 *            {@link Integer} value or 0, if no alternative title should be
-	 *            shown
-	 * @param initialShortTitle
-	 *            The resource id of the alternative short title, which should
-	 *            be shown when displaying the initial fragment, as an
-	 *            {@link Integer} value or 0, if no alternative short title
-	 *            should be shown
-	 */
-	private void handleInitialFragmentIntent(final String initialFragment,
-			final Bundle initialArguments, final int initialTitle,
-			final int initialShortTitle) {
 		if (initialFragment != null) {
 			for (int i = 0; i < getListAdapter().getCount(); i++) {
 				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
@@ -385,6 +356,176 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Handles extras of the intent, which has been used to start the activity,
+	 * that allow to show the button bar in order to use the activity as a
+	 * wizard.
+	 */
+	private void handleShowButtonBarIntent() {
+		boolean showButtonBar = getIntent().getBooleanExtra(
+				EXTRA_SHOW_BUTTON_BAR, false);
+		int nextButtonText = getIntent().getIntExtra(EXTRA_NEXT_BUTTON_TEXT, 0);
+		int backButtonText = getIntent().getIntExtra(EXTRA_BACK_BUTTON_TEXT, 0);
+		int finishButtonText = getIntent().getIntExtra(
+				EXTRA_FINISH_BUTTON_TEXT, 0);
+
+		if (showButtonBar) {
+			showButtonBar(true);
+
+			if (nextButtonText != 0) {
+				setNextButtonText(nextButtonText);
+			}
+
+			if (backButtonText != 0) {
+				setBackButtonText(backButtonText);
+			}
+
+			if (finishButtonText != 0) {
+				setFinishButtonText(finishButtonText);
+			}
+		}
+	}
+
+	/**
+	 * Handles the extra of the intent, which has been used to start the
+	 * activity, that allows to hide the navigation.
+	 */
+	private void handleHideNavigationIntent() {
+		boolean noHeaders = getIntent()
+				.getBooleanExtra(EXTRA_NO_HEADERS, false);
+		hideNavigation(noHeaders);
+	}
+
+	/**
+	 * Returns a listener, which allows to proceed to the next step, when the
+	 * activity is used as a wizard.
+	 * 
+	 * @return The listener, which has been created, as an instance of the type
+	 *         {@link OnClickListener}
+	 */
+	private OnClickListener createNextButtonListener() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				int currentIndex = getListAdapter().indexOf(currentHeader);
+
+				if (currentIndex < getNumberOfPreferenceHeaders() - 1
+						&& notifyOnNextStep()) {
+					showPreferenceScreen(
+							getListAdapter().getItem(currentIndex + 1), null);
+
+					if (isSplitScreen()) {
+						getListView().setItemChecked(currentIndex + 1, true);
+					}
+				}
+			}
+
+		};
+	}
+
+	/**
+	 * Returns a listener, which allows to resume to the previous step, when the
+	 * activity is used as a wizard.
+	 * 
+	 * @return The listener, which has been created, as an instance of the type
+	 *         {@link OnClickListener}
+	 */
+	private OnClickListener createBackButtonListener() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				int currentIndex = getListAdapter().indexOf(currentHeader);
+
+				if (currentIndex > 0 && notifyOnPreviousStep()) {
+					showPreferenceScreen(
+							getListAdapter().getItem(currentIndex - 1), null);
+
+					if (isSplitScreen()) {
+						getListView().setItemChecked(currentIndex - 1, true);
+					}
+				}
+			}
+
+		};
+	}
+
+	/**
+	 * Returns a listener, which allows to finish the last step, when the
+	 * activity is used as a wizard.
+	 * 
+	 * @return The listener, which has been created, as an instance of the type
+	 *         {@link OnClickListener}
+	 */
+	private OnClickListener createFinishButtonListener() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				notifyOnFinish();
+			}
+
+		};
+	}
+
+	/**
+	 * Notifies all registered listeners that the user wants to navigate to the
+	 * next step of the wizard.
+	 * 
+	 * @return True, if navigating to the next step of the wizard should be
+	 *         allowed, false otherwise
+	 */
+	private boolean notifyOnNextStep() {
+		boolean accepted = true;
+
+		for (WizardListener listener : wizardListeners) {
+			accepted &= listener.onNextStep(
+					getListAdapter().indexOf(currentHeader), currentHeader,
+					preferenceScreenFragment);
+		}
+
+		return accepted;
+	}
+
+	/**
+	 * Notifies all registered listeners that the user wants to navigate to the
+	 * previous step of the wizard.
+	 * 
+	 * @return True, if navigating to the previous step of the wizard should be
+	 *         allowed, false otherwise
+	 */
+	private boolean notifyOnPreviousStep() {
+		boolean accepted = true;
+
+		for (WizardListener listener : wizardListeners) {
+			accepted &= listener.onPreviousStep(
+					getListAdapter().indexOf(currentHeader), currentHeader,
+					preferenceScreenFragment);
+		}
+
+		return accepted;
+	}
+
+	/**
+	 * Notifies all registered listeners that the user wants to finish the last
+	 * step of the wizard.
+	 * 
+	 * @return True, if finishing the last step of the wizard should be allowed,
+	 *         false otherwise
+	 */
+	private boolean notifyOnFinish() {
+		boolean accepted = true;
+
+		for (WizardListener listener : wizardListeners) {
+			accepted &= listener.onNextStep(
+					getListAdapter().indexOf(currentHeader), currentHeader,
+					preferenceScreenFragment);
+		}
+
+		return accepted;
+	}
+
+	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -399,18 +540,18 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
+		currentHeader = preferenceHeader;
+		adaptWizardButtons();
 
 		if (preferenceHeader.getFragment() != null) {
-			currentHeader = preferenceHeader;
 			showBreadCrumbs(preferenceHeader);
 			Bundle parameters = (params != null) ? params : preferenceHeader
 					.getExtras();
 			showPreferenceScreen(preferenceHeader.getFragment(), parameters);
-		} else if (isSplitScreen() && preferenceScreenFragment != null) {
+		} else if (preferenceScreenFragment != null) {
 			showBreadCrumbs(preferenceHeader);
 			removeFragment(preferenceScreenFragment);
 			preferenceScreenFragment = null;
-			currentHeader = null;
 		}
 
 		if (preferenceHeader.getIntent() != null) {
@@ -443,6 +584,24 @@ public abstract class PreferenceActivity extends Activity implements
 					R.id.preference_header_parent,
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			showActionBarBackButton();
+		}
+	}
+
+	/**
+	 * Adapts the buttons which are shown, when the activity is used as a
+	 * wizard, depending on the currently selected preference header.
+	 */
+	private void adaptWizardButtons() {
+		if (currentHeader != null && isButtonBarShown()) {
+			int index = getListAdapter().indexOf(currentHeader);
+			getBackButton().setVisibility(
+					(index != 0) ? View.VISIBLE : View.GONE);
+			getNextButton().setVisibility(
+					(index != getListAdapter().getCount() - 1) ? View.VISIBLE
+							: View.GONE);
+			getFinishButton().setVisibility(
+					(index == getListAdapter().getCount() - 1) ? View.VISIBLE
+							: View.GONE);
 		}
 	}
 
@@ -592,10 +751,10 @@ public abstract class PreferenceActivity extends Activity implements
 		if (getBreadCrumbs() != null) {
 			if (title != null || shortTitle != null) {
 				getBreadCrumbs().setVisibility(View.VISIBLE);
-				getBreadCrumsSeparator().setVisibility(View.VISIBLE);
+				getBreadCrumbsSeparator().setVisibility(View.VISIBLE);
 			} else {
 				getBreadCrumbs().setVisibility(View.GONE);
-				getBreadCrumsSeparator().setVisibility(View.GONE);
+				getBreadCrumbsSeparator().setVisibility(View.GONE);
 			}
 
 			getBreadCrumbs().setTitle(title, shortTitle);
@@ -632,6 +791,33 @@ public abstract class PreferenceActivity extends Activity implements
 
 		savedInstanceState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA,
 				getListAdapter().getAllItems());
+	}
+
+	/**
+	 * Adds a new listener, which should be notified, when the user navigates
+	 * within the activity, if it is used as a wizard, to the activity.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link WizardListener}. The listener may not be null
+	 */
+	public final void addWizardListener(final WizardListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		wizardListeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified, when the user
+	 * navigates within the activity, if it is used as a wizard, from the
+	 * activity.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            type {@link WizardListener}. The listener may not be null
+	 */
+	public final void removeWizardListener(final WizardListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		wizardListeners.remove(wizardListeners);
 	}
 
 	/**
@@ -676,19 +862,20 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns the view group, which contains the buttons, which are shown, if
+	 * Returns the view group, which contains the buttons, which are shown when
 	 * the activity is used as a wizard.
 	 * 
-	 * @return The view group as an instance of the class {@link ViewGroup} or
-	 *         null, if the activity is not used as a wizard
+	 * @return The view group, which contains the buttons, which are shown when
+	 *         the activity is used as a wizard, as an instance of the class
+	 *         {@link ViewGroup} or null, if the wizard is not used as a wizard
 	 */
 	public final ViewGroup getButtonBar() {
 		return buttonBar;
 	}
 
 	/**
-	 * Returns the next button, which is shown, if the activity is used as a
-	 * wizard.
+	 * Returns the next button, which is shown, when the activity is used as a
+	 * wizard and the last preference header is currently not selected.
 	 * 
 	 * @return The next button as an instance of the class {@link Button} or
 	 *         null, if the activity is not used as a wizard
@@ -698,7 +885,106 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns the back button, which is shown, if the activity is used as a
+	 * Returns the text of the next button, which is shown, when the activity is
+	 * used as a wizard.
+	 * 
+	 * @return The text of the next button as an instance of the class
+	 *         {@link CharSequence} or null, if the activity is not used as a
+	 *         wizard
+	 */
+	public final CharSequence getNextButtonText() {
+		if (nextButton != null) {
+			return nextButton.getText();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Sets the text of the next button, which is shown, when the activity is
+	 * used as a wizard. The text is only set, if the activity is used as a
+	 * wizard.
+	 * 
+	 * @param text
+	 *            The text, which should be set, as an instance of the class
+	 *            {@link CharSequence}. The text may not be null
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setNextButtonText(final CharSequence text) {
+		ensureNotNull(text, "The text may not be null");
+
+		if (nextButton != null) {
+			nextButton.setText(text);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the text of the next button, which is shown, when the activity is
+	 * used as a wizard. The text is only set, if the activity is used as a
+	 * wizard.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the text, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setNextButtonText(final int resourceId) {
+		return setNextButtonText(getText(resourceId));
+	}
+
+	/**
+	 * Returns the finish button, which is shown, when the activity is used as a
+	 * wizard and the last preference header is currently selected.
+	 * 
+	 * @return The finish button as an instance of the class {@link Button} or
+	 *         null, if the activity is not used as a wizard
+	 */
+	public final Button getFinishButton() {
+		return finishButton;
+	}
+
+	/**
+	 * Sets the text of the next button, which is shown, when the activity is
+	 * used as a wizard and the last preference header is currently selected.
+	 * The text is only set, if the activity is used as a wizard.
+	 * 
+	 * @param text
+	 *            The text, which should be set, as an instance of the class
+	 *            {@link CharSequence}. The text may not be null
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setFinishButtonText(final CharSequence text) {
+		ensureNotNull(text, "The text may not be null");
+
+		if (nextButton != null) {
+			nextButton.setText(text);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the text of the next button, which is shown, when the activity is
+	 * used as a wizard and the last preference header is currently selected.
+	 * The text is only set, if the activity is used as a wizard.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the text, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setFinishButtonText(final int resourceId) {
+		return setFinishButtonText(getText(resourceId));
+	}
+
+	/**
+	 * Returns the back button, which is shown, when the activity is used as a
 	 * wizard.
 	 * 
 	 * @return The back button as an instance of the class {@link Button} or
@@ -709,14 +995,55 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns the skip button, which is shown, if the activity is used as a
+	 * Returns the text of the back button, which is shown, when the activity is
+	 * used as a wizard.
+	 * 
+	 * @return The text of the back button as an instance of the class
+	 *         {@link CharSequence} or null, if the activity is not used as a
+	 *         wizard
+	 */
+	public final CharSequence getBackButtonText() {
+		if (backButton != null) {
+			return backButton.getText();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Sets the text of the back button, which is shown, when the activity is
+	 * used as a wizard. The text is only set, if the activity is used as a
 	 * wizard.
 	 * 
-	 * @return The skip button as an instance of the class {@link Button} or
-	 *         null, if the activity is not used as a wizard
+	 * @param text
+	 *            The text, which should be set, as an instance of the class
+	 *            {@link CharSequence}. The text may not be null
+	 * @return True, if the text has been set, false otherwise
 	 */
-	public final Button getSkipButton() {
-		return skipButton;
+	public final boolean setBackButtonText(final CharSequence text) {
+		ensureNotNull(text, "The text may not be null");
+
+		if (backButton != null) {
+			backButton.setText(text);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the text of the back button, which is shown, when the activity is
+	 * used as a wizard. The text is only set, if the activity is used as a
+	 * wizard.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the text, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setBackButtonText(final int resourceId) {
+		return setBackButtonText(getText(resourceId));
 	}
 
 	/**
@@ -727,7 +1054,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *         crumbs and the preferences, as an instance of the class
 	 *         {@link View} or null, if the device has a small display
 	 */
-	public final View getBreadCrumsSeparator() {
+	public final View getBreadCrumbsSeparator() {
 		return breadCrumbsSeperator;
 	}
 
@@ -904,7 +1231,8 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * Hides or shows the fragment, which provides navigation to each preference
-	 * header's fragment.
+	 * header's fragment. When the activity is used as a wizard on devices with
+	 * a small screen, the navigation is always hidden.
 	 * 
 	 * @param hideNavigation
 	 *            True, if the fragment, which provides navigation to each
@@ -912,18 +1240,65 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            otherwise
 	 */
 	public final void hideNavigation(final boolean hideNavigation) {
-		this.navigationHidden = hideNavigation;
+		this.navigationHidden = hideNavigation
+				|| (!isSplitScreen() && isButtonBarShown());
 
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setVisibility(
-					hideNavigation ? View.GONE : View.VISIBLE);
+					navigationHidden ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
-					hideNavigation ? View.GONE : View.VISIBLE);
-		} else if (hideNavigation && isPreferenceHeaderSelected()) {
+					navigationHidden ? View.GONE : View.VISIBLE);
+		} else if (navigationHidden && isPreferenceHeaderSelected()) {
 			hideActionBarBackButton();
-		} else if (hideNavigation && !isPreferenceHeaderSelected()) {
-			finish();
+		} else if (navigationHidden && !isPreferenceHeaderSelected()) {
+			if (!getListAdapter().isEmpty()) {
+				showPreferenceScreen(getListAdapter().getItem(0), null);
+			} else {
+				finish();
+			}
 		}
+	}
+
+	/**
+	 * Returns, whether the activity is used as a wizard, or not.
+	 * 
+	 * @return True, if the activity is used as a wizard, false otherwise
+	 */
+	public final boolean isButtonBarShown() {
+		return buttonBar != null;
+	}
+
+	/**
+	 * Shows or hides the view group, which contains the buttons, which are
+	 * shown when the activity is used as a wizard.
+	 * 
+	 * @param showButtonBar
+	 *            True, if the button bar should be shown, false otherwise
+	 */
+	public final void showButtonBar(final boolean showButtonBar) {
+		if (showButtonBar) {
+			buttonBar = (ViewGroup) findViewById(R.id.button_bar);
+			buttonBar.setVisibility(View.VISIBLE);
+			nextButton = (Button) findViewById(R.id.next_button);
+			nextButton.setOnClickListener(createNextButtonListener());
+			finishButton = (Button) findViewById(R.id.finish_button);
+			finishButton.setOnClickListener(createFinishButtonListener());
+			backButton = (Button) findViewById(R.id.back_button);
+			backButton.setOnClickListener(createBackButtonListener());
+
+			if (!isSplitScreen()) {
+				hideNavigation(true);
+			}
+		} else if (buttonBar != null) {
+			buttonBar.setVisibility(View.GONE);
+			buttonBar = null;
+			finishButton = null;
+			nextButton = null;
+			backButton = null;
+		}
+
+		getListAdapter().setEnabled(!showButtonBar);
+		adaptWizardButtons();
 	}
 
 	/**
@@ -933,7 +1308,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *         otherwise
 	 */
 	public final boolean isPreferenceHeaderSelected() {
-		return currentHeader != null;
+		return currentHeader != null && currentHeader.getFragment() != null;
 	}
 
 	/**
@@ -944,7 +1319,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 *         the device has a small screen
 	 */
 	public final int getBreadCrumbsSeparatorColor() {
-		if (getBreadCrumsSeparator() != null) {
+		if (getBreadCrumbsSeparator() != null) {
 			return breadCrumbsSeparatorColor;
 		} else {
 			return -1;
@@ -961,9 +1336,9 @@ public abstract class PreferenceActivity extends Activity implements
 	 * @return True, if the color has been set, false otherwise
 	 */
 	public final boolean setBreadCrumbsSeparatorColor(final int separatorColor) {
-		if (getBreadCrumsSeparator() != null) {
+		if (getBreadCrumbsSeparator() != null) {
 			this.breadCrumbsSeparatorColor = separatorColor;
-			getBreadCrumsSeparator().setBackgroundColor(separatorColor);
+			getBreadCrumbsSeparator().setBackgroundColor(separatorColor);
 			return true;
 		}
 
@@ -1284,6 +1659,7 @@ public abstract class PreferenceActivity extends Activity implements
 				removeFragment(preferenceScreenFragment);
 				showBreadCrumbs(null, null);
 				preferenceScreenFragment = null;
+				currentHeader = null;
 			} else {
 				int selectedIndex = getListView().getCheckedItemPosition();
 
@@ -1327,6 +1703,34 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
+	public void onFragmentCreated(final Fragment fragment) {
+		getListView().setOnItemClickListener(PreferenceActivity.this);
+		getListAdapter().addListener(PreferenceActivity.this);
+
+		if (savedInstanceState == null) {
+			onCreatePreferenceHeaders();
+		} else {
+			ArrayList<PreferenceHeader> preferenceHeaders = savedInstanceState
+					.getParcelableArrayList(PREFERENCE_HEADERS_EXTRA);
+			getListAdapter().addAllItems(preferenceHeaders);
+		}
+
+		if (isSplitScreen()) {
+			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+			if (!getListAdapter().isEmpty()) {
+				getListView().setItemChecked(0, true);
+				showPreferenceScreen(getListAdapter().getItem(0), null);
+			}
+		}
+
+		int padding = getResources().getDimensionPixelSize(
+				R.dimen.preference_header_horizontal_padding);
+		getListView().setPadding(padding, 0, padding, 0);
+		handleIntent();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home && !isSplitScreen()
 				&& isPreferenceHeaderSelected() && isBackButtonOverridden()
@@ -1367,44 +1771,13 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	public void onFragmentCreated(final Fragment fragment) {
-		getListView().setOnItemClickListener(PreferenceActivity.this);
-		getListAdapter().addListener(PreferenceActivity.this);
-
-		if (savedInstanceState == null) {
-			onCreatePreferenceHeaders();
-		} else {
-			ArrayList<PreferenceHeader> preferenceHeaders = savedInstanceState
-					.getParcelableArrayList(PREFERENCE_HEADERS_EXTRA);
-			getListAdapter().addAllItems(preferenceHeaders);
-		}
-
-		if (isSplitScreen()) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-			if (!getListAdapter().isEmpty()) {
-				getListView().setItemChecked(0, true);
-				showPreferenceScreen(getListAdapter().getItem(0), null);
-			}
-		}
-
-		int padding = getResources().getDimensionPixelSize(
-				R.dimen.preference_header_horizontal_padding);
-		getListView().setPadding(padding, 0, padding, 0);
-		handleIntent();
-	}
-
-	@Override
 	protected void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString(CURRENT_FRAGMENT_EXTRA,
-				(currentHeader != null) ? currentHeader.getFragment() : null);
 		outState.putBundle(CURRENT_BUNDLE_EXTRA,
 				(currentHeader != null) ? currentHeader.getExtras() : null);
 		outState.putCharSequence(CURRENT_TITLE_EXTRA, currentTitle);
 		outState.putCharSequence(CURRENT_SHORT_TITLE_EXTRA, currentShortTitle);
-		outState.putInt(SELECTED_INDEX_EXTRA, isSplitScreen() ? getListView()
-				.getCheckedItemPosition() : ListView.INVALID_POSITION);
+		outState.putParcelable(CURRENT_PREFERENCE_HEADER_EXTRA, currentHeader);
 		outState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA,
 				getListAdapter().getAllItems());
 	}
@@ -1412,33 +1785,27 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	protected void onRestoreInstanceState(final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		String currentFragment = savedInstanceState
-				.getString(CURRENT_FRAGMENT_EXTRA);
 		Bundle currentBundle = savedInstanceState
 				.getBundle(CURRENT_BUNDLE_EXTRA);
 		CharSequence title = savedInstanceState
 				.getCharSequence(CURRENT_TITLE_EXTRA);
 		CharSequence shortTitle = savedInstanceState
 				.getCharSequence(CURRENT_SHORT_TITLE_EXTRA);
-		int selectedIndex = savedInstanceState.getInt(SELECTED_INDEX_EXTRA);
+		PreferenceHeader currentPreferenceHeader = savedInstanceState
+				.getParcelable(CURRENT_PREFERENCE_HEADER_EXTRA);
 
-		if (currentFragment != null) {
-			showPreferenceScreen(currentFragment, currentBundle);
+		if (currentPreferenceHeader != null) {
+			showPreferenceScreen(currentPreferenceHeader, currentBundle);
 			showBreadCrumbs(title, shortTitle);
 
-			for (int i = 0; i < getListAdapter().getCount(); i++) {
-				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
+			if (isSplitScreen()) {
+				int selectedIndex = getListAdapter().indexOf(
+						currentPreferenceHeader);
 
-				if (preferenceHeader.getFragment() != null
-						&& preferenceHeader.getFragment().equals(
-								currentFragment)) {
-					currentHeader = preferenceHeader;
+				if (selectedIndex != -1) {
+					getListView().setItemChecked(selectedIndex, true);
 				}
 			}
-		}
-
-		if (selectedIndex != ListView.INVALID_POSITION) {
-			getListView().setItemChecked(selectedIndex, true);
 		}
 	}
 

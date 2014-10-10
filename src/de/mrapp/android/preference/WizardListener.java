@@ -22,9 +22,9 @@ import android.app.Fragment;
 /**
  * Defines the interface a class, which should be notified when the user
  * navigates within a {@link PreferenceActivity}, which is used as wizard, by
- * using its next-, back- and skip-button. The return values of the interface's
- * methods allow to take influence on the navigation, e.g. if the currently
- * shown preferences should be validated.
+ * using its next-, back- and finish-button. The return values of the
+ * interface's methods allow to take influence on the navigation, e.g. if the
+ * currently shown preferences should be validated.
  * 
  * @author Michael Rapp
  *
@@ -68,23 +68,6 @@ public interface WizardListener {
 	 *         allowed, false otherwise
 	 */
 	boolean onPreviousStep(int position, PreferenceHeader preferenceHeader,
-			Fragment fragment);
-
-	/**
-	 * The method, which is invoked, when the user wants to skip the wizard.
-	 * 
-	 * @param position
-	 *            The position of the currently selected preference header as an
-	 *            {@link Integer} value
-	 * @param preferenceHeader
-	 *            The currently selected preference header as an instance of the
-	 *            class {@link PreferenceHeader}
-	 * @param fragment
-	 *            The currently shown fragment as an instance of the class
-	 *            {@link Fragment}
-	 * @return True, if skipping the wizard should be allowed, false otherwise
-	 */
-	boolean onSkip(int position, PreferenceHeader preferenceHeader,
 			Fragment fragment);
 
 	/**
