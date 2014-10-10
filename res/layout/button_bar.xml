@@ -17,42 +17,52 @@ You should have received a copy of the GNU Lesser General Public
 License along with this program. If not, see
 <http://www.gnu.org/licenses/>. 
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/button_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="0"
+    android:orientation="vertical"
     android:visibility="gone" >
 
-    <Button
-        android:id="@id/back_button"
-        android:layout_width="@dimen/button_bar_button_width"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/button_bar_button_margin"
-        android:text="@string/back_button_label" />
+    <View
+        android:id="@id/button_bar_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
 
-    <Button
-        android:id="@id/next_button"
-        android:layout_width="@dimen/button_bar_button_width"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/button_bar_button_margin"
-        android:text="@string/next_button_label" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@id/finish_button"
-        android:layout_width="@dimen/button_bar_button_width"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/button_bar_button_margin"
-        android:text="@string/finish_button_label"
-        android:visibility="gone" />
+        <Button
+            android:id="@id/back_button"
+            android:layout_width="@dimen/button_bar_button_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/button_bar_button_margin"
+            android:text="@string/back_button_label" />
 
-</RelativeLayout>
+        <Button
+            android:id="@id/next_button"
+            android:layout_width="@dimen/button_bar_button_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/button_bar_button_margin"
+            android:text="@string/next_button_label" />
+
+        <Button
+            android:id="@id/finish_button"
+            android:layout_width="@dimen/button_bar_button_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/button_bar_button_margin"
+            android:text="@string/finish_button_label"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>
