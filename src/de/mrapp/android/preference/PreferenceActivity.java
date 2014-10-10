@@ -760,7 +760,9 @@ public abstract class PreferenceActivity extends Activity implements
 			getBreadCrumbs().setTitle(title, shortTitle);
 			getBreadCrumbs().setParentTitle(null, null, null);
 		} else if (title != null) {
-			this.defaultTitle = getTitle();
+			if (defaultTitle == null) {
+				defaultTitle = getTitle();
+			}
 			setTitle(title);
 		}
 	}
