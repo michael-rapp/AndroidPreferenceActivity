@@ -239,6 +239,12 @@ public abstract class PreferenceActivity extends Activity implements
 	private View breadCrumbsSeperator;
 
 	/**
+	 * The view, which is used to draw a separator between the button bar and
+	 * the preferences when the activity is used as a wizard.
+	 */
+	private View buttonBarSeparator;
+
+	/**
 	 * The view, which is used to draw a shadow besides the navigation on
 	 * devices with a large screen.
 	 */
@@ -292,6 +298,12 @@ public abstract class PreferenceActivity extends Activity implements
 	 * the preferences on devices with a large screen.
 	 */
 	private int breadCrumbsSeparatorColor;
+
+	/**
+	 * The color of the separator, which is drawn between the button bar and the
+	 * preference, when the activity is used as a wizard.
+	 */
+	private int buttonBarSeparatorColor;
 
 	/**
 	 * The color of the shadow, which is drawn besides the navigation on devices
@@ -1061,6 +1073,18 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Returns the view, which is used to draw a separator between the button
+	 * bar and the preferences when the activity is used as a wizard.
+	 * 
+	 * @return The view, which is used to draw a separator between the button
+	 *         bar and the preferences, as an instance of the class {@link View}
+	 *         or null, if the activity is not used as a wizard
+	 */
+	public final View getButtonBarSeparator() {
+		return buttonBarSeparator;
+	}
+
+	/**
 	 * Returns the view, which is used to draw a shadow besides the navigation
 	 * on devices with a large screen.
 	 * 
@@ -1281,6 +1305,13 @@ public abstract class PreferenceActivity extends Activity implements
 		if (showButtonBar) {
 			buttonBar = (ViewGroup) findViewById(R.id.button_bar);
 			buttonBar.setVisibility(View.VISIBLE);
+			buttonBarSeparator = findViewById(R.id.button_bar_separator);
+
+			if (getButtonBarSeparatorColor() == 0) {
+				setButtonBarSeparatorColor(getResources().getColor(
+						R.color.separator));
+			}
+
 			nextButton = (Button) findViewById(R.id.next_button);
 			nextButton.setOnClickListener(createNextButtonListener());
 			finishButton = (Button) findViewById(R.id.finish_button);
@@ -1294,6 +1325,7 @@ public abstract class PreferenceActivity extends Activity implements
 		} else if (buttonBar != null) {
 			buttonBar.setVisibility(View.GONE);
 			buttonBar = null;
+			buttonBarSeparator = null;
 			finishButton = null;
 			nextButton = null;
 			backButton = null;
@@ -1341,6 +1373,40 @@ public abstract class PreferenceActivity extends Activity implements
 		if (getBreadCrumbsSeparator() != null) {
 			this.breadCrumbsSeparatorColor = separatorColor;
 			getBreadCrumbsSeparator().setBackgroundColor(separatorColor);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the color of the separator, which is drawn between the button bar
+	 * and the preferences when the activity is used as a wizard.
+	 * 
+	 * @return The color of the separator as an {@link Integer} value or -1, if
+	 *         the activity is not used as a wizard
+	 */
+	public final int getButtonBarSeparatorColor() {
+		if (getButtonBarSeparator() != null) {
+			return buttonBarSeparatorColor;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Sets the color of the separator, which is drawn between the button bar
+	 * and the preferences when the activity is used as a wizard. The color is
+	 * only set when the activity is used as a wizard.
+	 * 
+	 * @param separatorColor
+	 *            The color, which should be set, as an {@link Integer} value
+	 * @return True, if the color has been set, false otherwise
+	 */
+	public final boolean setButtonBarSeparatorColor(final int separatorColor) {
+		if (getButtonBarSeparator() != null) {
+			this.buttonBarSeparatorColor = separatorColor;
+			getButtonBarSeparator().setBackgroundColor(separatorColor);
 			return true;
 		}
 
@@ -1766,8 +1832,7 @@ public abstract class PreferenceActivity extends Activity implements
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		overrideBackButton(true);
-		setBreadCrumbsSeparatorColor(getResources().getColor(
-				R.color.bread_crumb_separator));
+		setBreadCrumbsSeparatorColor(getResources().getColor(R.color.separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
 		showPreferenceHeaders();
 	}
