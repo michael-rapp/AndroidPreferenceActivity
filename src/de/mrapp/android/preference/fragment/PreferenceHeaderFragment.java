@@ -22,25 +22,35 @@ import static de.mrapp.android.preference.util.Condition.ensureNotNull;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+import de.mrapp.android.preference.R;
 import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
 
 /**
- * A list fragment, which shows multiple preference headers and provides
- * navigation to each header's fragment.
+ * A fragment, which shows multiple preference headers and provides navigation
+ * to each header's fragment.
  * 
  * @author Michael Rapp
  * 
  * @since 1.0.0
  */
-public class PreferenceHeaderFragment extends ListFragment {
+public class PreferenceHeaderFragment extends Fragment {
+
+	/**
+	 * The list view, which is used to show the preference headers.
+	 */
+	private ListView listView;
 
 	/**
 	 * The adapter, which provides the preference headers for visualization
 	 * using the fragment's list view.
 	 */
-	private PreferenceHeaderAdapter preferenceHeaderAdapter;
+	private PreferenceHeaderAdapter adapter;
 
 	/**
 	 * A set, which contains the listeners, which should be notified on events
@@ -84,16 +94,42 @@ public class PreferenceHeaderFragment extends ListFragment {
 	}
 
 	@Override
-	public final void onActivityCreated(final Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		preferenceHeaderAdapter = new PreferenceHeaderAdapter(getActivity());
-		setListAdapter(preferenceHeaderAdapter);
-		notifyFragmentCreated();
+	public final View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.preference_header_fragment,
+				container, false);
+		listView = (ListView) view.findViewById(android.R.id.list);
+		return view;
 	}
 
 	@Override
+	public final void onActivityCreated(final Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		adapter = new PreferenceHeaderAdapter(getActivity());
+		getListView().setAdapter(adapter);
+		notifyFragmentCreated();
+	}
+
+	/**
+	 * Returns the list view, which is used to show the preference headers.
+	 * 
+	 * @return The list view, which is used to show the preference headers, as
+	 *         an instance of the class {@link ListView}
+	 */
+	public final ListView getListView() {
+		return listView;
+	}
+
+	/**
+	 * Returns the adapter, which provides the preference headers for
+	 * visualization using the fragment's list view.
+	 * 
+	 * @return The adapter, which provides the preference headers for
+	 *         visualization using the fragment's list view, as an instance of
+	 *         the class {@link PreferenceHeaderAdapter}
+	 */
 	public final PreferenceHeaderAdapter getListAdapter() {
-		return preferenceHeaderAdapter;
+		return adapter;
 	}
 
 }
