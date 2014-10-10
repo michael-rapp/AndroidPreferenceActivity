@@ -618,6 +618,30 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Adapts the GUI, depending on whether the navigation is currently hidden
+	 * or not.
+	 * 
+	 * @param navigationHidden
+	 *            True, if the navigation is currently hidden, false otherwise
+	 */
+	private void adaptNavigation(final boolean navigationHidden) {
+		if (isSplitScreen()) {
+			getPreferenceHeaderParentView().setVisibility(
+					navigationHidden ? View.GONE : View.VISIBLE);
+			getShadowView().setVisibility(
+					navigationHidden ? View.GONE : View.VISIBLE);
+		} else if (navigationHidden && isPreferenceHeaderSelected()) {
+			hideActionBarBackButton();
+		} else if (navigationHidden && !isPreferenceHeaderSelected()) {
+			if (!getListAdapter().isEmpty()) {
+				showPreferenceScreen(getListAdapter().getItem(0), null);
+			} else {
+				finish();
+			}
+		}
+	}
+
+	/**
 	 * Shows the fragment, which provides the navigation to each preference
 	 * header's fragment.
 	 */
@@ -677,7 +701,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 * Shows the back button in the activity's action bar.
 	 */
 	private void showActionBarBackButton() {
-		if (getActionBar() != null && !isNavigationHidden()) {
+		if (getActionBar() != null && !isNavigationHidden()
+				&& !(!isSplitScreen() && isButtonBarShown())) {
 			displayHomeAsUp = isDisplayHomeAsUpEnabled();
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
@@ -1266,23 +1291,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            otherwise
 	 */
 	public final void hideNavigation(final boolean hideNavigation) {
-		this.navigationHidden = hideNavigation
-				|| (!isSplitScreen() && isButtonBarShown());
-
-		if (isSplitScreen()) {
-			getPreferenceHeaderParentView().setVisibility(
-					navigationHidden ? View.GONE : View.VISIBLE);
-			getShadowView().setVisibility(
-					navigationHidden ? View.GONE : View.VISIBLE);
-		} else if (navigationHidden && isPreferenceHeaderSelected()) {
-			hideActionBarBackButton();
-		} else if (navigationHidden && !isPreferenceHeaderSelected()) {
-			if (!getListAdapter().isEmpty()) {
-				showPreferenceScreen(getListAdapter().getItem(0), null);
-			} else {
-				finish();
-			}
-		}
+		this.navigationHidden = hideNavigation;
+		adaptNavigation(hideNavigation);
 	}
 
 	/**
@@ -1320,7 +1330,7 @@ public abstract class PreferenceActivity extends Activity implements
 			backButton.setOnClickListener(createBackButtonListener());
 
 			if (!isSplitScreen()) {
-				hideNavigation(true);
+				adaptNavigation(true);
 			}
 		} else if (buttonBar != null) {
 			buttonBar.setVisibility(View.GONE);
@@ -1760,7 +1770,8 @@ public abstract class PreferenceActivity extends Activity implements
 	@Override
 	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
-				&& isPreferenceHeaderSelected() && !isNavigationHidden()) {
+				&& isPreferenceHeaderSelected() && !isNavigationHidden()
+				&& !(!isSplitScreen() && isButtonBarShown())) {
 			showPreferenceHeaders();
 			hideActionBarBackButton();
 			resetTitle();
