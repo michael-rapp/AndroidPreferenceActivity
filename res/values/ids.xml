@@ -28,6 +28,6 @@ License along with this program. If not, see
     <item name="button_bar" type="id"/>
     <item name="back_button" type="id"/>
     <item name="next_button" type="id"/>
-    <item name="skip_button" type="id"/>
+    <item name="finish_button" type="id"/>
 
 </resources>

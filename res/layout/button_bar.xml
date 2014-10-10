@@ -30,30 +30,29 @@ License along with this program. If not, see
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_margin="@dimen/button_bar_button_margin"
         android:text="@string/back_button_label" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@id/next_button"
+        android:layout_width="@dimen/button_bar_button_width"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:orientation="horizontal" >
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/button_bar_button_margin"
+        android:text="@string/next_button_label" />
 
-        <Button
-            android:id="@id/skip_button"
-            android:layout_width="@dimen/button_bar_button_width"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/button_bar_button_margin"
-            android:text="@string/skip_button_label"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@id/next_button"
-            android:layout_width="@dimen/button_bar_button_width"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/button_bar_button_margin"
-            android:text="@string/next_button_label" />
-    </LinearLayout>
+    <Button
+        android:id="@id/finish_button"
+        android:layout_width="@dimen/button_bar_button_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/button_bar_button_margin"
+        android:text="@string/finish_button_label"
+        android:visibility="gone" />
 
 </RelativeLayout>

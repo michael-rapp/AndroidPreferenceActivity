@@ -21,6 +21,6 @@ License along with this program. If not, see
 
     <string name="back_button_label">Zurück</string>
     <string name="next_button_label">Weiter</string>
-    <string name="skip_button_label">Abbrechen</string>
+    <string name="finish_button_label">Fertig</string>
 
 </resources>
