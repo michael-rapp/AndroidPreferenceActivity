@@ -20,4 +20,8 @@ License along with this program. If not, see
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/list"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:paddingEnd="@dimen/preference_header_right_padding"
+    android:paddingLeft="@dimen/preference_header_left_padding"
+    android:paddingRight="@dimen/preference_header_right_padding"
+    android:paddingStart="@dimen/preference_header_left_padding" />

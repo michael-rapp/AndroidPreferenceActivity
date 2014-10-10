@@ -1803,9 +1803,6 @@ public abstract class PreferenceActivity extends Activity implements
 			}
 		}
 
-		int padding = getResources().getDimensionPixelSize(
-				R.dimen.preference_header_horizontal_padding);
-		getListView().setPadding(padding, 0, padding, 0);
 		handleIntent();
 	}
 
