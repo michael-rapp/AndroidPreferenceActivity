@@ -22,6 +22,8 @@ License along with this program. If not, see
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingEnd="@dimen/button_bar_horizontal_padding"
+    android:paddingStart="@dimen/button_bar_horizontal_padding"
     android:visibility="gone" >
 
     <View
@@ -40,7 +42,8 @@ License along with this program. If not, see
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/button_bar_button_margin"
+            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:text="@string/back_button_label" />
 
         <Button
@@ -50,7 +53,8 @@ License along with this program. If not, see
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/button_bar_button_margin"
+            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:text="@string/next_button_label" />
 
         <Button
@@ -60,7 +64,8 @@ License along with this program. If not, see
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/button_bar_button_margin"
+            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:text="@string/finish_button_label"
             android:visibility="gone" />
     </RelativeLayout>
