@@ -15,9 +15,9 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference.fragment;
+package de.mrapp.android.preference.activity.fragment;
 
-import static de.mrapp.android.preference.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,7 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import de.mrapp.android.preference.R;
-import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
+import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 
 /**
  * A fragment, which shows multiple preference headers and provides navigation

@@ -15,7 +15,7 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference.adapter;
+package de.mrapp.android.preference.activity.adapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,10 +32,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.mrapp.android.preference.PreferenceHeader;
-import de.mrapp.android.preference.PreferenceHeaderDecorator;
 import de.mrapp.android.preference.R;
-import static de.mrapp.android.preference.util.Condition.ensureNotNull;
+import de.mrapp.android.preference.activity.PreferenceHeader;
+import de.mrapp.android.preference.activity.PreferenceHeaderDecorator;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 
 /**
  * An adapter, which provides instances of the class {@link PreferenceHeader}

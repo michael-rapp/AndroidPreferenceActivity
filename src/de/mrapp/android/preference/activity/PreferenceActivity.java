@@ -15,13 +15,13 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference;
+package de.mrapp.android.preference.activity;
 
-import static de.mrapp.android.preference.util.Condition.ensureAtLeast;
-import static de.mrapp.android.preference.util.Condition.ensureGreaterThan;
-import static de.mrapp.android.preference.util.Condition.ensureNotNull;
-import static de.mrapp.android.preference.util.DisplayUtil.convertDpToPixels;
-import static de.mrapp.android.preference.util.DisplayUtil.convertPixelsToDp;
+import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
+import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
+import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,11 +50,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import de.mrapp.android.preference.adapter.AdapterListener;
-import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter;
-import de.mrapp.android.preference.fragment.FragmentListener;
-import de.mrapp.android.preference.fragment.PreferenceHeaderFragment;
-import de.mrapp.android.preference.parser.PreferenceHeaderParser;
+import de.mrapp.android.preference.R;
+import de.mrapp.android.preference.activity.adapter.AdapterListener;
+import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
+import de.mrapp.android.preference.activity.fragment.FragmentListener;
+import de.mrapp.android.preference.activity.fragment.PreferenceHeaderFragment;
+import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences,

@@ -1,4 +1,4 @@
-package de.mrapp.android.preference.parser;
+package de.mrapp.android.preference.activity.parser;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -16,8 +16,8 @@ import android.util.AttributeSet;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.util.Xml;
-import de.mrapp.android.preference.PreferenceHeader;
 import de.mrapp.android.preference.R;
+import de.mrapp.android.preference.activity.PreferenceHeader;
 
 /**
  * An utility class, which allows to parse instances of the class

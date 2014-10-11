@@ -15,9 +15,9 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference.adapter;
+package de.mrapp.android.preference.activity.adapter;
 
-import de.mrapp.android.preference.PreferenceHeader;
+import de.mrapp.android.preference.activity.PreferenceHeader;
 
 /**
  * Defines the interface, a class, which should be notified, when the underlying
