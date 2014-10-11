@@ -339,7 +339,8 @@ public final class PreferenceHeaderParser {
 	 *         or -1, if no icon id is defined by the given typed array
 	 */
 	private static int parseIconId(final TypedArray typedArray) {
-		return typedArray.getInt(R.styleable.PreferenceHeader_android_icon, -1);
+		return typedArray.getResourceId(
+				R.styleable.PreferenceHeader_android_icon, -1);
 	}
 
 	/**
