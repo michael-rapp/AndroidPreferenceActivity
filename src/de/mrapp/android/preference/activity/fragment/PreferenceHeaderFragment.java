@@ -28,7 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import de.mrapp.android.preference.R;
+import de.mrapp.android.preference.activity.R;
 import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 
 /**

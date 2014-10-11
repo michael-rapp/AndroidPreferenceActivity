@@ -50,7 +50,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import de.mrapp.android.preference.R;
 import de.mrapp.android.preference.activity.adapter.AdapterListener;
 import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.activity.fragment.FragmentListener;

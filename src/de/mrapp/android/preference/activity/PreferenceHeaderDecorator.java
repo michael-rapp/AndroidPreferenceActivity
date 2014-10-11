@@ -17,8 +17,8 @@
  */
 package de.mrapp.android.preference.activity;
 
-import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter.ViewHolder;
 import android.view.View;
+import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter.ViewHolder;
 
 /**
  * Defines the interface, a class, which should be able to modify the
