@@ -16,8 +16,8 @@ import android.util.AttributeSet;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.util.Xml;
-import de.mrapp.android.preference.R;
 import de.mrapp.android.preference.activity.PreferenceHeader;
+import de.mrapp.android.preference.activity.R;
 
 /**
  * An utility class, which allows to parse instances of the class
