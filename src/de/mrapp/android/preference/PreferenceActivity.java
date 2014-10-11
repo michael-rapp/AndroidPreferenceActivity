@@ -538,6 +538,23 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
+	 * Notifies all registered listeners that the user wants to skip the wizard.
+	 * 
+	 * @return True, if skipping the wizard should be allowed, false otherwise
+	 */
+	private boolean notifyOnSkip() {
+		boolean accepted = true;
+
+		for (WizardListener listener : wizardListeners) {
+			accepted &= listener.onSkip(
+					getListAdapter().indexOf(currentHeader), currentHeader,
+					preferenceScreenFragment);
+		}
+
+		return accepted;
+	}
+
+	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -1769,13 +1786,21 @@ public abstract class PreferenceActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && !isSplitScreen()
-				&& isPreferenceHeaderSelected() && !isNavigationHidden()
-				&& !(!isSplitScreen() && isButtonBarShown())) {
-			showPreferenceHeaders();
-			hideActionBarBackButton();
-			resetTitle();
-			return true;
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (!isSplitScreen() && isPreferenceHeaderSelected()
+					&& !isNavigationHidden()
+					&& !(!isSplitScreen() && isButtonBarShown())) {
+				showPreferenceHeaders();
+				hideActionBarBackButton();
+				resetTitle();
+				return true;
+			} else if (isButtonBarShown()) {
+				if (notifyOnSkip()) {
+					return super.onKeyDown(keyCode, event);
+				}
+
+				return true;
+			}
 		}
 
 		return super.onKeyDown(keyCode, event);
@@ -1808,13 +1833,20 @@ public abstract class PreferenceActivity extends Activity implements
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		if (item.getItemId() == android.R.id.home && !isSplitScreen()
-				&& isPreferenceHeaderSelected() && isBackButtonOverridden()
-				&& !isNavigationHidden()) {
-			showPreferenceHeaders();
-			hideActionBarBackButton();
-			resetTitle();
-			return true;
+		if (item.getItemId() == android.R.id.home) {
+			if (!isSplitScreen() && isPreferenceHeaderSelected()
+					&& isBackButtonOverridden() && !isNavigationHidden()) {
+				showPreferenceHeaders();
+				hideActionBarBackButton();
+				resetTitle();
+				return true;
+			} else if (isButtonBarShown()) {
+				if (notifyOnSkip()) {
+					return super.onOptionsItemSelected(item);
+				}
+
+				return true;
+			}
 		}
 
 		return super.onOptionsItemSelected(item);
