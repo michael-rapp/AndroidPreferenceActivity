@@ -529,7 +529,7 @@ public abstract class PreferenceActivity extends Activity implements
 		boolean accepted = true;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onNextStep(
+			accepted &= listener.onFinish(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
 		}
