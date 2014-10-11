@@ -15,7 +15,7 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference.util;
+package de.mrapp.android.preference.activity.util;
 
 import android.content.Context;
 import android.content.res.Resources;

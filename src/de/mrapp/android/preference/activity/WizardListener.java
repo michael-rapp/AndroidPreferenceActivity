@@ -15,7 +15,7 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference;
+package de.mrapp.android.preference.activity;
 
 import android.app.Fragment;
 

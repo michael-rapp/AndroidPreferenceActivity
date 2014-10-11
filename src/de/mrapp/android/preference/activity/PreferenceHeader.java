@@ -15,10 +15,10 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference;
+package de.mrapp.android.preference.activity;
 
-import static de.mrapp.android.preference.util.Condition.ensureNotEmpty;
-import static de.mrapp.android.preference.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotEmpty;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

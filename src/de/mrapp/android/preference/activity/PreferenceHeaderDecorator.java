@@ -15,9 +15,9 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>. 
  */
-package de.mrapp.android.preference;
+package de.mrapp.android.preference.activity;
 
-import de.mrapp.android.preference.adapter.PreferenceHeaderAdapter.ViewHolder;
+import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter.ViewHolder;
 import android.view.View;
 
 /**
