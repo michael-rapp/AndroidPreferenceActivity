@@ -32,11 +32,6 @@ License along with this program. If not, see
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <View
-            android:id="@id/shadow_view"
-            android:layout_width="@dimen/default_shadow_width"
-            android:layout_height="match_parent" />
-
         <LinearLayout
             android:id="@id/preference_screen_container"
             android:layout_width="match_parent"
@@ -72,6 +67,11 @@ License along with this program. If not, see
 
             <include layout="@layout/button_bar" />
         </LinearLayout>
+
+        <View
+            android:id="@id/shadow_view"
+            android:layout_width="@dimen/default_shadow_width"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
 </LinearLayout>
