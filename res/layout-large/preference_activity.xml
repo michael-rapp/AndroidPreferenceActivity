@@ -41,9 +41,9 @@ License along with this program. If not, see
             android:id="@id/preference_screen_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/preference_screen_horizontal_padding"
-            android:layout_marginStart="@dimen/preference_screen_horizontal_padding"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/preference_screen_horizontal_padding"
+            android:paddingStart="@dimen/preference_screen_horizontal_padding" >
 
             <android.app.FragmentBreadCrumbs
                 android:id="@id/bread_crumbs_view"
