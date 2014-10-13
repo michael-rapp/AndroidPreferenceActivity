@@ -569,6 +569,27 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle params) {
+		showPreferenceScreen(preferenceHeader, params, true);
+	}
+
+	/**
+	 * Shows the fragment, which corresponds to a specific preference header.
+	 * 
+	 * @param preferenceHeader
+	 *            The preference header, the fragment, which should be shown,
+	 *            corresponds to, as an instance of the class
+	 *            {@link PreferenceHeader}. The preference header may not be
+	 *            null
+	 * @param params
+	 *            Optional parameters, which are passed to the fragment, as an
+	 *            instance of the class Bundle or null, if the preference
+	 *            header's extras should be used instead
+	 * @param launchIntent
+	 *            True, if a preference header's intent should be launched,
+	 *            false otherwise
+	 */
+	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
+			final Bundle params, final boolean launchIntent) {
 		currentHeader = preferenceHeader;
 		adaptWizardButtons();
 
@@ -583,7 +604,7 @@ public abstract class PreferenceActivity extends Activity implements
 			preferenceScreenFragment = null;
 		}
 
-		if (preferenceHeader.getIntent() != null) {
+		if (launchIntent && preferenceHeader.getIntent() != null) {
 			startActivity(preferenceHeader.getIntent());
 		}
 	}
@@ -1902,7 +1923,7 @@ public abstract class PreferenceActivity extends Activity implements
 				.getParcelable(CURRENT_PREFERENCE_HEADER_EXTRA);
 
 		if (currentPreferenceHeader != null) {
-			showPreferenceScreen(currentPreferenceHeader, currentBundle);
+			showPreferenceScreen(currentPreferenceHeader, currentBundle, false);
 			showBreadCrumbs(title, shortTitle);
 
 			if (isSplitScreen()) {
