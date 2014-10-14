@@ -325,15 +325,6 @@ public abstract class PreferenceActivity extends Activity implements
 	private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
 
 	/**
-	 * Handles the intent, which has been used to start the activity.
-	 */
-	private void handleIntent() {
-		handleInitialFragmentIntent();
-		handleShowButtonBarIntent();
-		handleHideNavigationIntent();
-	}
-
-	/**
 	 * Handles extras of the intent, which has been used to start the activity,
 	 * that allow to initially display a specific fragment.
 	 */
@@ -1864,6 +1855,7 @@ public abstract class PreferenceActivity extends Activity implements
 
 		if (savedInstanceState == null) {
 			onCreatePreferenceHeaders();
+			handleInitialFragmentIntent();
 		} else {
 			ArrayList<PreferenceHeader> preferenceHeaders = savedInstanceState
 					.getParcelableArrayList(PREFERENCE_HEADERS_EXTRA);
@@ -1879,7 +1871,8 @@ public abstract class PreferenceActivity extends Activity implements
 			}
 		}
 
-		handleIntent();
+		handleShowButtonBarIntent();
+		handleHideNavigationIntent();
 	}
 
 	@Override
