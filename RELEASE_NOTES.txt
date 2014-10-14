@@ -1,0 +1,39 @@
+AndroidPreferenceActivity - RELEASE NOTES
+=========================================
+
+
+Version: 		1.0.0 
+Release date:	10.14.2014
+--------------------------
+
+The first stable release, which provides an activity, an alternative implementation of
+the Android SDK's built-in PreferenceActivity. The implementation initially provides the 
+following features:
+	
+    -   The activity's navigation allows to show preference headers, which categorize the
+        preferences of a PreferenceFragment. Furthermore, regular Fragments can be shown.
+        Besides a title, the preference headers may contain an icon and a summary and it
+        is possible to launch an intent when a header is selected.
+        
+    -   The activity's preference headers can be defined via XML resources, which are compatible 
+        to the ones used to initialize the Android SDK's built-in PreferenceActivity. 
+        Alternatively, the preference headers can be added or removed dynamically at runtime, 
+        which causes the current selected preference header to be adapted automatically.
+        
+    -   The activity provides methods, which easily allow to access its child views in
+        order to manipulate their appearance. For the most common manipulations even 
+        dedicated methods are provided.
+        
+    -   The library allows to override the behavior of the action bar's back button in
+        order to use it for navigating on devices with a small screen.
+    
+    -   It is possible to launch the activity using an intent, which specifies the preference
+        header, which should be initially selected. Such an intent also allows to hide the
+        navigation.
+        
+    -   By specifying appropriate intent extras, it is also possible to use the activity as a
+        wizard, which provides an alternative navigation, which allows to navigate from one
+        step of the wizard to an other. The navigation can be observed and influenced by 
+        implementing and registering an appropriate listener.
+
+    -   The Preference is visually-consistent with Android's built-in PreferenceActivity.
