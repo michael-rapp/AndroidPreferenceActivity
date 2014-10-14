@@ -1067,8 +1067,8 @@ public abstract class PreferenceActivity extends Activity implements
 	public final boolean setFinishButtonText(final CharSequence text) {
 		ensureNotNull(text, "The text may not be null");
 
-		if (nextButton != null) {
-			nextButton.setText(text);
+		if (finishButton != null) {
+			finishButton.setText(text);
 			return true;
 		}
 
