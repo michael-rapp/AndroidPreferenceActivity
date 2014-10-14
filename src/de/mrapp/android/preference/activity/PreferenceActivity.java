@@ -697,9 +697,9 @@ public abstract class PreferenceActivity extends Activity implements
 					showActionBarBackButton();
 				}
 			} else if (navigationHidden) {
-				if (!getListAdapter().isEmpty()) {
+				if (getListAdapter() != null && !getListAdapter().isEmpty()) {
 					showPreferenceScreen(getListAdapter().getItem(0), null);
-				} else {
+				} else if (getListAdapter() != null) {
 					finish();
 				}
 			}
@@ -783,7 +783,8 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	private void hideActionBarBackButton() {
-		if (getActionBar() != null && !displayHomeAsUp) {
+		if (getActionBar() != null && displayHomeAsUp != null
+				&& !displayHomeAsUp) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
