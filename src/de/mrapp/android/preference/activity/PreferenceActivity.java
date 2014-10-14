@@ -1895,7 +1895,8 @@ public abstract class PreferenceActivity extends Activity implements
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			if (!isSplitScreen() && isPreferenceHeaderSelected()
-					&& isBackButtonOverridden() && !isNavigationHidden()) {
+					&& isBackButtonOverridden() && !isNavigationHidden()
+					&& !(!isSplitScreen() && isButtonBarShown())) {
 				showPreferenceHeaders();
 				hideActionBarBackButton();
 				resetTitle();
