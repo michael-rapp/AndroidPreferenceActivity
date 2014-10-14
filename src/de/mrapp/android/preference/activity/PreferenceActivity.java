@@ -325,6 +325,21 @@ public abstract class PreferenceActivity extends Activity implements
 	private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
 
 	/**
+	 * Initializes the preference header, which is selected by default on
+	 * devices with a large screen.
+	 */
+	private void initializeSelectedPreferenceHeader() {
+		if (isSplitScreen()) {
+			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+			if (!getListAdapter().isEmpty()) {
+				getListView().setItemChecked(0, true);
+				showPreferenceScreen(getListAdapter().getItem(0), null);
+			}
+		}
+	}
+
+	/**
 	 * Handles extras of the intent, which has been used to start the activity,
 	 * that allow to initially display a specific fragment.
 	 */
@@ -1852,20 +1867,14 @@ public abstract class PreferenceActivity extends Activity implements
 
 		if (savedInstanceState == null) {
 			onCreatePreferenceHeaders();
+			initializeSelectedPreferenceHeader();
 			handleInitialFragmentIntent();
+
 		} else {
 			ArrayList<PreferenceHeader> preferenceHeaders = savedInstanceState
 					.getParcelableArrayList(PREFERENCE_HEADERS_EXTRA);
 			getListAdapter().addAllItems(preferenceHeaders);
-		}
-
-		if (isSplitScreen()) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-			if (!getListAdapter().isEmpty()) {
-				getListView().setItemChecked(0, true);
-				showPreferenceScreen(getListAdapter().getItem(0), null);
-			}
+			initializeSelectedPreferenceHeader();
 		}
 
 		handleShowButtonBarIntent();
