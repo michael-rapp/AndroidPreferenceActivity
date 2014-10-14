@@ -273,7 +273,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 * True, if the back button of the action bar should be shown, false
 	 * otherwise.
 	 */
-	private boolean displayHomeAsUp;
+	private Boolean displayHomeAsUp;
 
 	/**
 	 * The default title of the activity.
@@ -689,13 +689,19 @@ public abstract class PreferenceActivity extends Activity implements
 					navigationHidden ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					navigationHidden ? View.GONE : View.VISIBLE);
-		} else if (navigationHidden && isPreferenceHeaderSelected()) {
-			hideActionBarBackButton();
-		} else if (navigationHidden && !isPreferenceHeaderSelected()) {
-			if (!getListAdapter().isEmpty()) {
-				showPreferenceScreen(getListAdapter().getItem(0), null);
-			} else {
-				finish();
+		} else {
+			if (isPreferenceHeaderSelected()) {
+				if (navigationHidden) {
+					hideActionBarBackButton();
+				} else {
+					showActionBarBackButton();
+				}
+			} else if (navigationHidden) {
+				if (!getListAdapter().isEmpty()) {
+					showPreferenceScreen(getListAdapter().getItem(0), null);
+				} else {
+					finish();
+				}
 			}
 		}
 	}
@@ -760,9 +766,13 @@ public abstract class PreferenceActivity extends Activity implements
 	 * Shows the back button in the activity's action bar.
 	 */
 	private void showActionBarBackButton() {
-		if (getActionBar() != null && !isNavigationHidden()
+		if (getActionBar() != null && isBackButtonOverridden()
+				&& !isNavigationHidden()
 				&& !(!isSplitScreen() && isButtonBarShown())) {
-			displayHomeAsUp = isDisplayHomeAsUpEnabled();
+			if (displayHomeAsUp == null) {
+				displayHomeAsUp = isDisplayHomeAsUpEnabled();
+			}
+
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
@@ -1760,10 +1770,12 @@ public abstract class PreferenceActivity extends Activity implements
 	public final void overrideBackButton(final boolean overrideBackButton) {
 		this.overrideBackButton = overrideBackButton;
 
-		if (isPreferenceHeaderSelected() && overrideBackButton) {
-			showActionBarBackButton();
-		} else if (isPreferenceHeaderSelected() && !overrideBackButton) {
-			hideActionBarBackButton();
+		if (isPreferenceHeaderSelected()) {
+			if (overrideBackButton) {
+				showActionBarBackButton();
+			} else {
+				hideActionBarBackButton();
+			}
 		}
 	}
 
