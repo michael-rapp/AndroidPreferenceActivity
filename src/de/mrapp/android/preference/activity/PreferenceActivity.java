@@ -1843,28 +1843,6 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (!isSplitScreen() && isPreferenceHeaderSelected()
-					&& !isNavigationHidden()
-					&& !(!isSplitScreen() && isButtonBarShown())) {
-				showPreferenceHeaders();
-				hideActionBarBackButton();
-				resetTitle();
-				return true;
-			} else if (isButtonBarShown()) {
-				if (notifyOnSkip()) {
-					return super.onKeyDown(keyCode, event);
-				}
-
-				return true;
-			}
-		}
-
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
 	public void onFragmentCreated(final Fragment fragment) {
 		getListView().setOnItemClickListener(PreferenceActivity.this);
 		getListAdapter().addListener(PreferenceActivity.this);
@@ -1889,6 +1867,28 @@ public abstract class PreferenceActivity extends Activity implements
 
 		handleShowButtonBarIntent();
 		handleHideNavigationIntent();
+	}
+
+	@Override
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (!isSplitScreen() && isPreferenceHeaderSelected()
+					&& !isNavigationHidden()
+					&& !(!isSplitScreen() && isButtonBarShown())) {
+				showPreferenceHeaders();
+				hideActionBarBackButton();
+				resetTitle();
+				return true;
+			} else if (isButtonBarShown()) {
+				if (notifyOnSkip()) {
+					return super.onKeyDown(keyCode, event);
+				}
+
+				return true;
+			}
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
