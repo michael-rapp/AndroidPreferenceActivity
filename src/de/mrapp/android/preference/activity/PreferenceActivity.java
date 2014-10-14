@@ -1818,7 +1818,6 @@ public abstract class PreferenceActivity extends Activity implements
 
 				if (selectedIndex == position) {
 					PreferenceHeader selectedPreferenceHeader;
-
 					try {
 						selectedPreferenceHeader = getListAdapter().getItem(
 								selectedIndex);
@@ -1829,6 +1828,10 @@ public abstract class PreferenceActivity extends Activity implements
 					}
 
 					showPreferenceScreen(selectedPreferenceHeader, null);
+				} else if (selectedIndex > position) {
+					getListView().setItemChecked(selectedIndex - 1, true);
+					showPreferenceScreen(
+							getListAdapter().getItem(selectedIndex - 1), null);
 				}
 			}
 		} else {
