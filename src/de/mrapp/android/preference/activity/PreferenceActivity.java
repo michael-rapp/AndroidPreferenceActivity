@@ -34,6 +34,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentBreadCrumbs;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -341,10 +342,10 @@ public abstract class PreferenceActivity extends Activity implements
 				.getStringExtra(EXTRA_SHOW_FRAGMENT);
 		Bundle initialArguments = getIntent().getBundleExtra(
 				EXTRA_SHOW_FRAGMENT_ARGUMENTS);
-		int initialTitle = getIntent()
-				.getIntExtra(EXTRA_SHOW_FRAGMENT_TITLE, 0);
-		int initialShortTitle = getIntent().getIntExtra(
-				EXTRA_SHOW_FRAGMENT_SHORT_TITLE, 0);
+		CharSequence initialTitle = getCharSequenceFromIntent(getIntent(),
+				EXTRA_SHOW_FRAGMENT_TITLE);
+		CharSequence initialShortTitle = getCharSequenceFromIntent(getIntent(),
+				EXTRA_SHOW_FRAGMENT_SHORT_TITLE);
 
 		if (initialFragment != null) {
 			for (int i = 0; i < getListAdapter().getCount(); i++) {
@@ -356,11 +357,8 @@ public abstract class PreferenceActivity extends Activity implements
 					showPreferenceScreen(preferenceHeader, initialArguments);
 					getListView().setItemChecked(i, true);
 
-					if (initialTitle != 0) {
-						CharSequence title = getText(initialTitle);
-						CharSequence shortTitle = (initialShortTitle != 0) ? getText(initialShortTitle)
-								: null;
-						showBreadCrumbs(title, shortTitle);
+					if (initialTitle != null) {
+						showBreadCrumbs(initialTitle, initialShortTitle);
 					}
 				}
 			}
@@ -375,23 +373,25 @@ public abstract class PreferenceActivity extends Activity implements
 	private void handleShowButtonBarIntent() {
 		boolean showButtonBar = getIntent().getBooleanExtra(
 				EXTRA_SHOW_BUTTON_BAR, false);
-		int nextButtonText = getIntent().getIntExtra(EXTRA_NEXT_BUTTON_TEXT, 0);
-		int backButtonText = getIntent().getIntExtra(EXTRA_BACK_BUTTON_TEXT, 0);
-		int finishButtonText = getIntent().getIntExtra(
-				EXTRA_FINISH_BUTTON_TEXT, 0);
+		CharSequence nextButtonText = getCharSequenceFromIntent(getIntent(),
+				EXTRA_NEXT_BUTTON_TEXT);
+		CharSequence backButtonText = getCharSequenceFromIntent(getIntent(),
+				EXTRA_BACK_BUTTON_TEXT);
+		CharSequence finishButtonText = getCharSequenceFromIntent(getIntent(),
+				EXTRA_FINISH_BUTTON_TEXT);
 
 		if (showButtonBar) {
 			showButtonBar(true);
 
-			if (nextButtonText != 0) {
+			if (nextButtonText != null) {
 				setNextButtonText(nextButtonText);
 			}
 
-			if (backButtonText != 0) {
+			if (backButtonText != null) {
 				setBackButtonText(backButtonText);
 			}
 
-			if (finishButtonText != 0) {
+			if (finishButtonText != null) {
 				setFinishButtonText(finishButtonText);
 			}
 		}
@@ -405,6 +405,36 @@ public abstract class PreferenceActivity extends Activity implements
 		boolean noHeaders = getIntent()
 				.getBooleanExtra(EXTRA_NO_HEADERS, false);
 		hideNavigation(noHeaders);
+	}
+
+	/**
+	 * Returns the char sequence, which is specified by a specific intent extra.
+	 * The char sequence can either be specified as a string or as a resource
+	 * id.
+	 * 
+	 * @param intent
+	 *            The intent, which specifies the char sequence, as an instance
+	 *            of the class {@link Intent}
+	 * @param name
+	 *            The name of the intent extra, which specifies the char
+	 *            sequence, as a {@link String}
+	 * @return The char sequence, which is specified by the given intent, as an
+	 *         instance of the class {@link CharSequence} or null, if the intent
+	 *         does not specify a char sequence with the given name
+	 */
+	private CharSequence getCharSequenceFromIntent(final Intent intent,
+			final String name) {
+		CharSequence charSequence = intent.getCharSequenceExtra(name);
+
+		if (charSequence == null) {
+			int resourceId = intent.getIntExtra(name, 0);
+
+			if (resourceId != 0) {
+				charSequence = getText(resourceId);
+			}
+		}
+
+		return charSequence;
 	}
 
 	/**
