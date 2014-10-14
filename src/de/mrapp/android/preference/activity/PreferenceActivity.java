@@ -393,9 +393,12 @@ public abstract class PreferenceActivity extends Activity implements
 	 * activity, that allows to hide the navigation.
 	 */
 	private void handleHideNavigationIntent() {
-		boolean noHeaders = getIntent()
-				.getBooleanExtra(EXTRA_NO_HEADERS, false);
-		hideNavigation(noHeaders);
+		if (getIntent().getExtras() != null
+				&& getIntent().getExtras().containsKey(EXTRA_NO_HEADERS)) {
+			hideNavigation(getIntent().getExtras().getBoolean(EXTRA_NO_HEADERS));
+		} else {
+			hideNavigation(isNavigationHidden());
+		}
 	}
 
 	/**
