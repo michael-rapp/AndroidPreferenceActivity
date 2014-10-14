@@ -97,7 +97,7 @@ public final class Condition {
 
 	/**
 	 * Ensures, that an {@link Integer} value is at least a specific value.
-	 * Otherwise an {@link IndexOutOfBoundsException} with a specific message
+	 * Otherwise an {@link IllegalArgumentException} with a specific message
 	 * will be thrown.
 	 * 
 	 * @param value
@@ -107,14 +107,14 @@ public final class Condition {
 	 *            The value, the given value must be at least, as an
 	 *            {@link Integer} value
 	 * @param exceptionMessage
-	 *            The message of the {@link IndexOutOfBoundsException}, which is
+	 *            The message of the {@link IllegalArgumentException}, which is
 	 *            thrown, if the given value is less than the reference value,
 	 *            as a {@link String}
 	 */
 	public static void ensureAtLeast(final int value, final int referenceValue,
 			final String exceptionMessage) {
 		if (value < referenceValue) {
-			throw new IndexOutOfBoundsException(exceptionMessage);
+			throw new IllegalArgumentException(exceptionMessage);
 		}
 	}
 
