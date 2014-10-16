@@ -70,8 +70,8 @@ import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
  *
  * @since 1.0.0
  */
-public abstract class PreferenceActivity extends Activity implements
-		FragmentListener, OnItemClickListener, AdapterListener {
+public class PreferenceActivity extends Activity implements FragmentListener,
+		OnItemClickListener, AdapterListener {
 
 	/**
 	 * When starting this activity, the invoking intent can contain this extra
