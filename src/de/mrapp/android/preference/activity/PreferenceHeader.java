@@ -109,7 +109,6 @@ public class PreferenceHeader implements Parcelable {
 		setIconId(-1);
 	}
 
-
 	/**
 	 * Returns the title of the navigation item.
 	 * 
@@ -346,11 +345,11 @@ public class PreferenceHeader implements Parcelable {
 	}
 
 	/**
-	 * Returns the optional parameters of the intent, which is launched, when
+	 * Returns the optional parameters, which are passed to the fragment, when
 	 * the navigation item is selected.
 	 * 
-	 * @return The parameters of the intent, which is launched, when the
-	 *         navigation item is selected, as an instance of the class
+	 * @return The parameters of the intent, which are passed to the fragment,
+	 *         when the navigation item is selected, as an instance of the class
 	 *         {@link Bundle} or null, if no parameters have been set
 	 */
 	public final Bundle getExtras() {
@@ -358,8 +357,8 @@ public class PreferenceHeader implements Parcelable {
 	}
 
 	/**
-	 * Sets the optional parameters of the intent, which should be launched,
-	 * when the navigation item is selected.
+	 * Sets the optional parameters of the intent, which should be passed to the
+	 * fragment, when the navigation item is selected.
 	 * 
 	 * @param extras
 	 *            The parameters, which should be set, as an instance of the
