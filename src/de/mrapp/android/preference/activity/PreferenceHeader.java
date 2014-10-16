@@ -36,24 +36,6 @@ import android.text.TextUtils;
 public class PreferenceHeader implements Parcelable {
 
 	/**
-	 * A creator, which allows to create instances of the class
-	 * {@link PreferenceHeader} from parcels.
-	 */
-	public static final Creator<PreferenceHeader> CREATOR = new Creator<PreferenceHeader>() {
-
-		@Override
-		public PreferenceHeader createFromParcel(final Parcel source) {
-			return new PreferenceHeader(source);
-		}
-
-		@Override
-		public PreferenceHeader[] newArray(final int size) {
-			return new PreferenceHeader[size];
-		}
-
-	};
-
-	/**
 	 * The title of the navigation item.
 	 */
 	private CharSequence title;
@@ -127,29 +109,6 @@ public class PreferenceHeader implements Parcelable {
 		setIconId(-1);
 	}
 
-	/**
-	 * Creates a new navigation item, which categorizes multiple preferences.
-	 * 
-	 * @param source
-	 *            The parcel, the navigation item should be created from, as an
-	 *            instance of the class {@link Parcel}. The parcel may not be
-	 *            null
-	 */
-	public PreferenceHeader(final Parcel source) {
-		setTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
-		setSummary(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
-		setBreadCrumbTitle(TextUtils.CHAR_SEQUENCE_CREATOR
-				.createFromParcel(source));
-		setBreadCrumbShortTitle(TextUtils.CHAR_SEQUENCE_CREATOR
-				.createFromParcel(source));
-		setIconId(source.readInt());
-		setFragment(source.readString());
-		setExtras(source.readBundle());
-
-		if (source.readInt() != 0) {
-			setIntent(Intent.CREATOR.createFromParcel(source));
-		}
-	}
 
 	/**
 	 * Returns the title of the navigation item.
