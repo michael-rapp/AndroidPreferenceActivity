@@ -1991,8 +1991,8 @@ public abstract class PreferenceActivity extends Activity implements
 
 	/**
 	 * The method, which is invoked, when the preference headers should be
-	 * created. This method has to be overridden by implementing subclasses to
-	 * add the preference headers.
+	 * created. This method may be overridden by implementing subclasses to add
+	 * the preference headers at the activity's start.
 	 */
 	protected void onCreatePreferenceHeaders() {
 		return;
