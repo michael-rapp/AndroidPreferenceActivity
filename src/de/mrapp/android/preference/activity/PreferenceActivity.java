@@ -147,14 +147,14 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 	/**
 	 * The name of the extra, which is used to save the title, which is
-	 * currently used by the bread crumbs, within a bundle.
+	 * currently used by the bread crumb, within a bundle.
 	 */
 	private static final String CURRENT_TITLE_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentTitle";
 
 	/**
 	 * The name of the extra, which is used to save the short title, which is
-	 * currently used by the bread crumbs, within a bundle.
+	 * currently used by the bread crumb, within a bundle.
 	 */
 	private static final String CURRENT_SHORT_TITLE_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentShortTitle";
@@ -205,7 +205,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 	/**
 	 * The view group, which contains all views, e.g. the preferences itself and
-	 * the bread crumbs, which are shown when a preference header is selected on
+	 * the bread crumb, which are shown when a preference header is selected on
 	 * devices with a large screen.
 	 */
 	private ViewGroup preferenceScreenContainer;
@@ -234,10 +234,10 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	private Button finishButton;
 
 	/**
-	 * The view, which is used to draw a separator between the bread crumbs and
+	 * The view, which is used to draw a separator between the bread crumb and
 	 * the preferences on devices with a large screen.
 	 */
-	private View breadCrumbsSeperator;
+	private View breadCrumbSeperator;
 
 	/**
 	 * The view, which is used to draw a separator between the button bar and
@@ -258,14 +258,14 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	private PreferenceHeader currentHeader;
 
 	/**
-	 * The title, which is currently used by the bread crumbs or null, if no
-	 * bread crumbs are currently shown.
+	 * The title, which is currently used by the bread crumb or null, if no
+	 * bread crumb are currently shown.
 	 */
 	private CharSequence currentTitle;
 
 	/**
-	 * The short title, which is currently used by the bread crumbs or null, if
-	 * no bread crumbs are currently shown.
+	 * The short title, which is currently used by the bread crumb or null, if
+	 * no bread crumb are currently shown.
 	 */
 	private CharSequence currentShortTitle;
 
@@ -295,10 +295,10 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	private boolean navigationHidden;
 
 	/**
-	 * The color of the separator, which is drawn between the bread crumbs and
+	 * The color of the separator, which is drawn between the bread crumb and
 	 * the preferences on devices with a large screen.
 	 */
-	private int breadCrumbsSeparatorColor;
+	private int breadCrumbSeparatorColor;
 
 	/**
 	 * The color of the separator, which is drawn between the button bar and the
@@ -313,10 +313,10 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	private int shadowColor;
 
 	/**
-	 * The bread crumbs, which are used to show the title of the currently
+	 * The bread crumb, which are used to show the title of the currently
 	 * selected fragment on devices with a large screen.
 	 */
-	private FragmentBreadCrumbs breadCrumbs;
+	private FragmentBreadCrumbs breadCrumb;
 
 	/**
 	 * A set, which contains the listeners, which have registered to be notified
@@ -364,7 +364,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 					getListView().setItemChecked(i, true);
 
 					if (initialTitle != null) {
-						showBreadCrumbs(initialTitle, initialShortTitle);
+						showBreadCrumb(initialTitle, initialShortTitle);
 					}
 				}
 			}
@@ -633,12 +633,12 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 		adaptWizardButtons();
 
 		if (preferenceHeader.getFragment() != null) {
-			showBreadCrumbs(preferenceHeader);
+			showBreadCrumb(preferenceHeader);
 			Bundle parameters = (params != null) ? params : preferenceHeader
 					.getExtras();
 			showPreferenceScreen(preferenceHeader.getFragment(), parameters);
 		} else if (preferenceScreenFragment != null) {
-			showBreadCrumbs(preferenceHeader);
+			showBreadCrumb(preferenceHeader);
 			removeFragment(preferenceScreenFragment);
 			preferenceScreenFragment = null;
 		}
@@ -831,18 +831,18 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	}
 
 	/**
-	 * Shows the bread crumbs for a specific preference header, depending on
+	 * Shows the bread crumb for a specific preference header, depending on
 	 * whether the device has a large screen or not. On devices with a large
-	 * screen the bread crumbs will be shown above the currently shown fragment,
-	 * on devices with a small screen the bread crumbs will be shown as the
+	 * screen the bread crumb will be shown above the currently shown fragment,
+	 * on devices with a small screen the bread crumb will be shown as the
 	 * action bar's title instead.
 	 * 
 	 * @param preferenceHeader
-	 *            The preference header, the bread crumbs should be shown for,
-	 *            as an instance of the class {@link PreferenceHeader}. The
+	 *            The preference header, the bread crumb should be shown for, as
+	 *            an instance of the class {@link PreferenceHeader}. The
 	 *            preference header may not be null
 	 */
-	private void showBreadCrumbs(final PreferenceHeader preferenceHeader) {
+	private void showBreadCrumb(final PreferenceHeader preferenceHeader) {
 		CharSequence title = preferenceHeader.getBreadCrumbTitle();
 
 		if (title == null) {
@@ -853,41 +853,41 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 			title = getTitle();
 		}
 
-		showBreadCrumbs(title, preferenceHeader.getBreadCrumbShortTitle());
+		showBreadCrumb(title, preferenceHeader.getBreadCrumbShortTitle());
 	}
 
 	/**
-	 * Shows the bread crumbs using a specific title and short title, depending
+	 * Shows the bread crumb using a specific title and short title, depending
 	 * on whether the device has a large screen or not. On devices with a large
-	 * screen the bread crumbs will be shown above the currently shown fragment,
-	 * on devices with a small screen the bread crumbs will be shown as the
+	 * screen the bread crumb will be shown above the currently shown fragment,
+	 * on devices with a small screen the bread crumb will be shown as the
 	 * action bar's title instead.
 	 * 
 	 * @param title
-	 *            The title, which should be used by the bread crumbs, as an
+	 *            The title, which should be used by the bread crumb, as an
 	 *            instance of the class {@link CharSequence} or null, if no
 	 *            title should be used
 	 * @param shortTitle
-	 *            The short title, which should be used by the bread crumbs, as
+	 *            The short title, which should be used by the bread crumb, as
 	 *            an instance of the class {@link CharSequence} or null, if no
 	 *            short title should be used
 	 */
-	private void showBreadCrumbs(final CharSequence title,
+	private void showBreadCrumb(final CharSequence title,
 			final CharSequence shortTitle) {
 		this.currentTitle = title;
 		this.currentShortTitle = title;
 
-		if (getBreadCrumbs() != null) {
+		if (getBreadCrumb() != null) {
 			if (title != null || shortTitle != null) {
-				getBreadCrumbs().setVisibility(View.VISIBLE);
-				getBreadCrumbsSeparator().setVisibility(View.VISIBLE);
+				getBreadCrumb().setVisibility(View.VISIBLE);
+				getBreadCrumbSeparator().setVisibility(View.VISIBLE);
 			} else {
-				getBreadCrumbs().setVisibility(View.GONE);
-				getBreadCrumbsSeparator().setVisibility(View.GONE);
+				getBreadCrumb().setVisibility(View.GONE);
+				getBreadCrumbSeparator().setVisibility(View.GONE);
 			}
 
-			getBreadCrumbs().setTitle(title, shortTitle);
-			getBreadCrumbs().setParentTitle(null, null, null);
+			getBreadCrumb().setTitle(title, shortTitle);
+			getBreadCrumb().setParentTitle(null, null, null);
 		} else if (title != null) {
 			if (defaultTitle == null) {
 				defaultTitle = getTitle();
@@ -981,7 +981,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 	/**
 	 * Returns the view group, which contains all views, e.g. the preferences
-	 * itself and the bread crumbs, which are shown when a preference header is
+	 * itself and the bread crumb, which are shown when a preference header is
 	 * selected on devices with a large screen.
 	 * 
 	 * @return The view group, which contains all views, which are shown when a
@@ -1195,14 +1195,14 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 	/**
 	 * Returns the view, which is used to draw a separator between the bread
-	 * crumbs and the preferences on devices with a large screen.
+	 * crumb and the preferences on devices with a large screen.
 	 * 
 	 * @return The view, which is used to draw a separator between the bread
-	 *         crumbs and the preferences, as an instance of the class
+	 *         crumb and the preferences, as an instance of the class
 	 *         {@link View} or null, if the device has a small display
 	 */
-	public final View getBreadCrumbsSeparator() {
-		return breadCrumbsSeperator;
+	public final View getBreadCrumbSeparator() {
+		return breadCrumbSeperator;
 	}
 
 	/**
@@ -1230,15 +1230,15 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	}
 
 	/**
-	 * Returns the bread crumbs, which are used to show the title of the
+	 * Returns the bread crumb, which are used to show the title of the
 	 * currently selected fragment on devices with a large screen.
 	 * 
-	 * @return The bread crumbs, which are used to show the title of the
+	 * @return The bread crumb, which are used to show the title of the
 	 *         currently selected fragment or null, if the device has a small
 	 *         screen
 	 */
-	public final FragmentBreadCrumbs getBreadCrumbs() {
-		return breadCrumbs;
+	public final FragmentBreadCrumbs getBreadCrumb() {
+		return breadCrumb;
 	}
 
 	/**
@@ -1465,21 +1465,21 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 	/**
 	 * Returns the color of the separator, which is drawn between the bread
-	 * crumbs and the preferences on devices with a large screen.
+	 * crumb and the preferences on devices with a large screen.
 	 * 
 	 * @return The color of the separator as an {@link Integer} value or -1, if
 	 *         the device has a small screen
 	 */
-	public final int getBreadCrumbsSeparatorColor() {
-		if (getBreadCrumbsSeparator() != null) {
-			return breadCrumbsSeparatorColor;
+	public final int getBreadCrumbSeparatorColor() {
+		if (getBreadCrumbSeparator() != null) {
+			return breadCrumbSeparatorColor;
 		} else {
 			return -1;
 		}
 	}
 
 	/**
-	 * Sets the color of the separator, which is drawn between the bread crumbs
+	 * Sets the color of the separator, which is drawn between the bread crumb
 	 * and the preferences on devices with a large screen. The color is only set
 	 * on devices with a large screen.
 	 * 
@@ -1487,10 +1487,10 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	 *            The color, which should be set, as an {@link Integer} value
 	 * @return True, if the color has been set, false otherwise
 	 */
-	public final boolean setBreadCrumbsSeparatorColor(final int separatorColor) {
-		if (getBreadCrumbsSeparator() != null) {
-			this.breadCrumbsSeparatorColor = separatorColor;
-			getBreadCrumbsSeparator().setBackgroundColor(separatorColor);
+	public final boolean setBreadCrumbSeparatorColor(final int separatorColor) {
+		if (getBreadCrumbSeparator() != null) {
+			this.breadCrumbSeparatorColor = separatorColor;
+			getBreadCrumbSeparator().setBackgroundColor(separatorColor);
 			return true;
 		}
 
@@ -1847,7 +1847,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 		if (isSplitScreen()) {
 			if (adapter.isEmpty()) {
 				removeFragment(preferenceScreenFragment);
-				showBreadCrumbs(null, null);
+				showBreadCrumb(null, null);
 				preferenceScreenFragment = null;
 				currentHeader = null;
 			} else {
@@ -1957,19 +1957,19 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
-		breadCrumbs = (FragmentBreadCrumbs) findViewById(R.id.bread_crumbs_view);
+		breadCrumb = (FragmentBreadCrumbs) findViewById(R.id.bread_crumb_view);
 
-		if (breadCrumbs != null) {
-			breadCrumbs.setMaxVisible(2);
-			breadCrumbs.setActivity(this);
+		if (breadCrumb != null) {
+			breadCrumb.setMaxVisible(2);
+			breadCrumb.setActivity(this);
 		}
 
-		breadCrumbsSeperator = findViewById(R.id.bread_crumbs_separator);
+		breadCrumbSeperator = findViewById(R.id.bread_crumb_separator);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		overrideBackButton(true);
-		setBreadCrumbsSeparatorColor(getResources().getColor(R.color.separator));
+		setBreadCrumbSeparatorColor(getResources().getColor(R.color.separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
 		showPreferenceHeaders();
 	}
@@ -2000,7 +2000,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 		if (currentPreferenceHeader != null) {
 			showPreferenceScreen(currentPreferenceHeader, currentBundle, false);
-			showBreadCrumbs(title, shortTitle);
+			showBreadCrumb(title, shortTitle);
 
 			if (isSplitScreen()) {
 				int selectedIndex = getListAdapter().indexOf(

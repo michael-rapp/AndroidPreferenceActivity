@@ -41,7 +41,7 @@ License along with this program. If not, see
             android:paddingStart="@dimen/preference_screen_horizontal_padding" >
 
             <android.app.FragmentBreadCrumbs
-                android:id="@id/bread_crumbs_view"
+                android:id="@id/bread_crumb_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bread_crumb_height"
                 android:gravity="center_vertical|start"
@@ -52,7 +52,7 @@ License along with this program. If not, see
                 android:visibility="gone" />
 
             <View
-                android:id="@id/bread_crumbs_separator"
+                android:id="@id/bread_crumb_separator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/bread_crumb_horizontal_padding"
