@@ -243,8 +243,15 @@ public final class PreferenceHeaderParser {
 	 */
 	private static CharSequence parseTitle(final Context context,
 			final TypedArray typedArray) {
-		return parseCharSequence(context, typedArray,
+		CharSequence title = parseCharSequence(context, typedArray,
 				R.styleable.PreferenceHeader_android_title);
+
+		if (title == null) {
+			throw new RuntimeException(
+					"<header> tag must contain title attribute");
+		}
+
+		return title;
 	}
 
 	/**
