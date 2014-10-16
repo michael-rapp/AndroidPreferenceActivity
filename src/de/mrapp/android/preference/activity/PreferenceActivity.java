@@ -1111,6 +1111,22 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	}
 
 	/**
+	 * Returns the text of the finish button, which is shown, when the activity
+	 * is used as a wizard and the last preference header is currently selected.
+	 * 
+	 * @return The text of the finish button as an instance of the class
+	 *         {@link CharSequence} or null, if the activity is not used as a
+	 *         wizard
+	 */
+	public final CharSequence getFinishButtonText() {
+		if (finishButton != null) {
+			return finishButton.getText();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns the back button, which is shown, when the activity is used as a
 	 * wizard.
 	 * 
