@@ -691,7 +691,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 			getFinishButton().setVisibility(
 					(index == getListAdapter().getCount() - 1) ? View.VISIBLE
 							: View.GONE);
-		} else {
+		} else if (isButtonBarShown()) {
 			getBackButton().setVisibility(View.GONE);
 			getNextButton().setVisibility(View.GONE);
 			getFinishButton().setVisibility(View.VISIBLE);
