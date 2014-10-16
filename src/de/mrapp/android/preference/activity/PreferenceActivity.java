@@ -691,6 +691,10 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 			getFinishButton().setVisibility(
 					(index == getListAdapter().getCount() - 1) ? View.VISIBLE
 							: View.GONE);
+		} else {
+			getBackButton().setVisibility(View.GONE);
+			getNextButton().setVisibility(View.GONE);
+			getFinishButton().setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -1832,6 +1836,8 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 		} else {
 			updateSavedInstanceState();
 		}
+
+		adaptWizardButtons();
 	}
 
 	@Override
@@ -1874,6 +1880,8 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 			updateSavedInstanceState();
 		}
+
+		adaptWizardButtons();
 	}
 
 	@Override
