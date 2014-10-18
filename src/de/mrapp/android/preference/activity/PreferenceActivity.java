@@ -56,6 +56,7 @@ import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.activity.fragment.FragmentListener;
 import de.mrapp.android.preference.activity.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
+import de.mrapp.android.preference.activity.util.VisibleForTesting;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences,
@@ -142,35 +143,40 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	 * been passed when the currently shown fragment has been created, within a
 	 * bundle.
 	 */
-	private static final String CURRENT_BUNDLE_EXTRA = PreferenceActivity.class
+	@VisibleForTesting
+	protected static final String CURRENT_BUNDLE_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentBundle";
 
 	/**
 	 * The name of the extra, which is used to save the title, which is
 	 * currently used by the bread crumb, within a bundle.
 	 */
-	private static final String CURRENT_TITLE_EXTRA = PreferenceActivity.class
+	@VisibleForTesting
+	protected static final String CURRENT_TITLE_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentTitle";
 
 	/**
 	 * The name of the extra, which is used to save the short title, which is
 	 * currently used by the bread crumb, within a bundle.
 	 */
-	private static final String CURRENT_SHORT_TITLE_EXTRA = PreferenceActivity.class
+	@VisibleForTesting
+	protected static final String CURRENT_SHORT_TITLE_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentShortTitle";
 
 	/**
 	 * The name of the extra, which is used to save the currently selected
 	 * preference header, within a bundle.
 	 */
-	private static final String CURRENT_PREFERENCE_HEADER_EXTRA = PreferenceActivity.class
+	@VisibleForTesting
+	protected static final String CURRENT_PREFERENCE_HEADER_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::CurrentPreferenceHeader";
 
 	/**
 	 * The name of the extra, which is used to saved the preference headers
 	 * within a bundle.
 	 */
-	private static final String PREFERENCE_HEADERS_EXTRA = PreferenceActivity.class
+	@VisibleForTesting
+	protected static final String PREFERENCE_HEADERS_EXTRA = PreferenceActivity.class
 			.getSimpleName() + "::PreferenceHeaders";
 
 	/**
