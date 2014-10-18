@@ -1537,6 +1537,27 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	}
 
 	/**
+	 * Returns the preference header, which is currently selected.
+	 * 
+	 * @return The preference header, which is currently selected or null, if no
+	 *         preference header is currently selected
+	 */
+	public final PreferenceHeader getSelectedPreferenceHeader() {
+		return currentHeader;
+	}
+
+	/**
+	 * Returns the position of the preference header, which is currently
+	 * selected.
+	 * 
+	 * @return The position of the preference header, which is currently
+	 *         selected or -1, if no preference header is currently selected
+	 */
+	public final int getSelectedPreferenceHeaderPosition() {
+		return getListAdapter().indexOf(currentHeader);
+	}
+
+	/**
 	 * Returns the color of the separator, which is drawn between the bread
 	 * crumb and the preferences on devices with a large screen.
 	 * 
