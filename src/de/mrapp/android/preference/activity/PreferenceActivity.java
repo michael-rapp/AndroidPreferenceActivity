@@ -26,6 +26,7 @@ import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixel
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import android.annotation.TargetApi;
@@ -345,8 +346,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 			if (!getListAdapter().isEmpty()) {
-				getListView().setItemChecked(0, true);
-				showPreferenceScreen(getListAdapter().getItem(0), null);
+				selectPreferenceHeader(0);
 			}
 		}
 	}
@@ -366,14 +366,12 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 				EXTRA_SHOW_FRAGMENT_SHORT_TITLE);
 
 		if (initialFragment != null) {
-			for (int i = 0; i < getListAdapter().getCount(); i++) {
-				PreferenceHeader preferenceHeader = getListAdapter().getItem(i);
-
+			for (PreferenceHeader preferenceHeader : getListAdapter()
+					.getAllItems()) {
 				if (preferenceHeader.getFragment() != null
 						&& preferenceHeader.getFragment().equals(
 								initialFragment)) {
-					showPreferenceScreen(preferenceHeader, initialArguments);
-					getListView().setItemChecked(i, true);
+					selectPreferenceHeader(preferenceHeader, initialArguments);
 
 					if (initialTitle != null) {
 						showBreadCrumb(initialTitle, initialShortTitle);
@@ -474,12 +472,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 				if (currentIndex < getNumberOfPreferenceHeaders() - 1
 						&& notifyOnNextStep()) {
-					showPreferenceScreen(
-							getListAdapter().getItem(currentIndex + 1), null);
-
-					if (isSplitScreen()) {
-						getListView().setItemChecked(currentIndex + 1, true);
-					}
+					selectPreferenceHeader(currentIndex + 1);
 				}
 			}
 
@@ -501,12 +494,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 				int currentIndex = getListAdapter().indexOf(currentHeader);
 
 				if (currentIndex > 0 && notifyOnPreviousStep()) {
-					showPreferenceScreen(
-							getListAdapter().getItem(currentIndex - 1), null);
-
-					if (isSplitScreen()) {
-						getListView().setItemChecked(currentIndex - 1, true);
-					}
+					selectPreferenceHeader(currentIndex - 1);
 				}
 			}
 
@@ -613,14 +601,14 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	 *            corresponds to, as an instance of the class
 	 *            {@link PreferenceHeader}. The preference header may not be
 	 *            null
-	 * @param params
-	 *            Optional parameters, which are passed to the fragment, as an
-	 *            instance of the class Bundle or null, if the preference
-	 *            header's extras should be used instead
+	 * @param parameters
+	 *            The parameters, which should be passed to the fragment, as an
+	 *            instance of the class {@link Bundle} or null, if the
+	 *            preference header's extras should be used instead
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
-			final Bundle params) {
-		showPreferenceScreen(preferenceHeader, params, true);
+			final Bundle parameters) {
+		showPreferenceScreen(preferenceHeader, parameters, true);
 	}
 
 	/**
@@ -631,23 +619,23 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	 *            corresponds to, as an instance of the class
 	 *            {@link PreferenceHeader}. The preference header may not be
 	 *            null
-	 * @param params
-	 *            Optional parameters, which are passed to the fragment, as an
-	 *            instance of the class Bundle or null, if the preference
-	 *            header's extras should be used instead
+	 * @param parameters
+	 *            The parameters, which should be passed to the fragment, as an
+	 *            instance of the class {@link Bundle} or null, if the
+	 *            preference header's extras should be used instead
 	 * @param launchIntent
 	 *            True, if a preference header's intent should be launched,
 	 *            false otherwise
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
-			final Bundle params, final boolean launchIntent) {
+			final Bundle parameters, final boolean launchIntent) {
 		currentHeader = preferenceHeader;
 		adaptWizardButtons();
 
 		if (preferenceHeader.getFragment() != null) {
 			showBreadCrumb(preferenceHeader);
-			currentBundle = (params != null) ? params : preferenceHeader
-					.getExtras();
+			currentBundle = (parameters != null) ? parameters
+					: preferenceHeader.getExtras();
 			showPreferenceScreen(preferenceHeader.getFragment(), currentBundle);
 		} else if (preferenceScreenFragment != null) {
 			showBreadCrumb(preferenceHeader);
@@ -667,9 +655,9 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	 *            The full qualified class name of the fragment, which should be
 	 *            shown, as a {@link String}
 	 * @param params
-	 *            Optional parameters, which are passed to the fragment, as an
-	 *            instance of the class {@link Bundle} or null, if no parameters
-	 *            should be passed
+	 *            The parameters, which should be passed to the fragment, as an
+	 *            instance of the class {@link Bundle} or null, if the
+	 *            preference header's extras should be used instead
 	 */
 	private void showPreferenceScreen(final String fragmentName,
 			final Bundle params) {
@@ -1379,6 +1367,79 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	}
 
 	/**
+	 * Selects a specific preference header.
+	 * 
+	 * @param preferenceHeader
+	 *            The preference header, which should be selected, as an
+	 *            instance of the class {@link PreferenceHeader}. The preference
+	 *            header may not be null. If the preference header does not
+	 *            belong to the activity, a {@link NoSuchElementException} will
+	 *            be thrown
+	 */
+	public final void selectPreferenceHeader(
+			final PreferenceHeader preferenceHeader) {
+		selectPreferenceHeader(preferenceHeader, null);
+	}
+
+	/**
+	 * Selects a specific preference header.
+	 * 
+	 * @param preferenceHeader
+	 *            The preference header, which should be selected, as an
+	 *            instance of the class {@link PreferenceHeader}. The preference
+	 *            header may not be null. If the preference header does not
+	 *            belong to the activity, a {@link NoSuchElementException} will
+	 *            be thrown
+	 * @param parameters
+	 *            The parameters, which should be passed to the preference
+	 *            header's fragment, as an instance of the class {@link Bundle}
+	 *            or null, if the preference header's extras should be used
+	 *            instead
+	 */
+	public final void selectPreferenceHeader(
+			final PreferenceHeader preferenceHeader, final Bundle parameters) {
+		ensureNotNull(preferenceHeader, "The preference header may not be null");
+		int position = getListAdapter().indexOf(preferenceHeader);
+
+		if (position == -1) {
+			throw new NoSuchElementException();
+		}
+
+		selectPreferenceHeader(position, parameters);
+	}
+
+	/**
+	 * Selects the preference header, which belongs to a specific position.
+	 * 
+	 * @param position
+	 *            The position of the preference header, which should be
+	 *            selected, as an {@link Integer} value. If the position is
+	 *            invalid, an {@link IndexOutOfBoundsException} will be thrown
+	 */
+	public final void selectPreferenceHeader(final int position) {
+		selectPreferenceHeader(position, null);
+	}
+
+	/**
+	 * Selects the preference header, which belongs to a specific position.
+	 * 
+	 * @param position
+	 *            The position of the preference header, which should be
+	 *            selected, as an {@link Integer} value. If the position is
+	 *            invalid, an {@link IndexOutOfBoundsException} will be thrown
+	 * @param parameters
+	 *            The parameters, which should be passed to the preference
+	 *            header's fragment, as an instance of the class {@link Bundle}
+	 *            or null, if the preference header's extras should be used
+	 *            instead
+	 */
+	public final void selectPreferenceHeader(final int position,
+			final Bundle parameters) {
+		getListView().setItemChecked(position, true);
+		showPreferenceScreen(getListAdapter().getItem(position), parameters);
+	}
+
+	/**
 	 * Returns, whether the preference headers and the corresponding fragments
 	 * are shown split screen, or not.
 	 * 
@@ -1842,8 +1903,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 			final PreferenceHeader preferenceHeader, final int position) {
 		if (isSplitScreen()) {
 			if (adapter.getCount() == 1) {
-				getListView().setItemChecked(0, true);
-				showPreferenceScreen(getListAdapter().getItem(0), null);
+				selectPreferenceHeader(0);
 			}
 		} else {
 			updateSavedInstanceState();
