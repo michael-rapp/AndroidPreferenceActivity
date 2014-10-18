@@ -20,7 +20,7 @@ remove the activity's preference headers dynamically at runtime.
 The library provides the following features:
 
     -   The activity's navigation allows to show preference headers, which categorize the
-        preferences of a PreferenceFragment. Furthermore, regular Fragments can be shown.
+        preferences of a PreferenceFragment. Furthermore, regular fragments can be shown.
         Besides a title, the preference headers may contain an icon and a summary and it
         is possible to launch an intent when a header is selected.
         
@@ -31,7 +31,7 @@ The library provides the following features:
         
     -   The activity provides methods, which easily allow to access its child views in
         order to manipulate their appearance. For the most common manipulations even 
-        dedicated methods are provided.
+        dedicated methods exist.
         
     -   The library allows to override the behavior of the action bar's back button in
         order to use it for navigating on devices with a small screen.
@@ -44,8 +44,6 @@ The library provides the following features:
         wizard, which provides an alternative navigation, which allows to navigate from one
         step of the wizard to an other. The navigation can be observed and influenced by 
         implementing and registering an appropriate listener.
-
-    -   The Preference is visually-consistent with Android's built-in PreferenceActivity.
 
 	
 License Agreement
