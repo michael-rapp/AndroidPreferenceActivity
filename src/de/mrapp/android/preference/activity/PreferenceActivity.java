@@ -252,10 +252,16 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	private View shadowView;
 
 	/**
-	 * The preference header, which is currently selected, or null, if no
+	 * The preference header, which is currently selected or null, if no
 	 * preference header is currently selected.
 	 */
 	private PreferenceHeader currentHeader;
+
+	/**
+	 * The parameters which have been passed to the currently shown fragment or
+	 * null, if no parameters have been passed.
+	 */
+	private Bundle currentBundle;
 
 	/**
 	 * The title, which is currently used by the bread crumb or null, if no
@@ -634,9 +640,9 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 
 		if (preferenceHeader.getFragment() != null) {
 			showBreadCrumb(preferenceHeader);
-			Bundle parameters = (params != null) ? params : preferenceHeader
+			currentBundle = (params != null) ? params : preferenceHeader
 					.getExtras();
-			showPreferenceScreen(preferenceHeader.getFragment(), parameters);
+			showPreferenceScreen(preferenceHeader.getFragment(), currentBundle);
 		} else if (preferenceScreenFragment != null) {
 			showBreadCrumb(preferenceHeader);
 			removeFragment(preferenceScreenFragment);
@@ -1977,8 +1983,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	@Override
 	protected void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putBundle(CURRENT_BUNDLE_EXTRA,
-				(currentHeader != null) ? currentHeader.getExtras() : null);
+		outState.putBundle(CURRENT_BUNDLE_EXTRA, currentBundle);
 		outState.putCharSequence(CURRENT_TITLE_EXTRA, currentTitle);
 		outState.putCharSequence(CURRENT_SHORT_TITLE_EXTRA, currentShortTitle);
 		outState.putParcelable(CURRENT_PREFERENCE_HEADER_EXTRA, currentHeader);
@@ -1989,8 +1994,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 	@Override
 	protected void onRestoreInstanceState(final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		Bundle currentBundle = savedInstanceState
-				.getBundle(CURRENT_BUNDLE_EXTRA);
+		Bundle bundle = savedInstanceState.getBundle(CURRENT_BUNDLE_EXTRA);
 		CharSequence title = savedInstanceState
 				.getCharSequence(CURRENT_TITLE_EXTRA);
 		CharSequence shortTitle = savedInstanceState
@@ -1999,7 +2003,7 @@ public class PreferenceActivity extends Activity implements FragmentListener,
 				.getParcelable(CURRENT_PREFERENCE_HEADER_EXTRA);
 
 		if (currentPreferenceHeader != null) {
-			showPreferenceScreen(currentPreferenceHeader, currentBundle, false);
+			showPreferenceScreen(currentPreferenceHeader, bundle, false);
 			showBreadCrumb(title, shortTitle);
 
 			if (isSplitScreen()) {
