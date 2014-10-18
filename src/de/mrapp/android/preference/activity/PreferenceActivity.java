@@ -72,8 +72,8 @@ import de.mrapp.android.preference.activity.util.VisibleForTesting;
  *
  * @since 1.0.0
  */
-public class PreferenceActivity extends Activity implements FragmentListener,
-		OnItemClickListener, AdapterListener {
+public abstract class PreferenceActivity extends Activity implements
+		FragmentListener, OnItemClickListener, AdapterListener {
 
 	/**
 	 * When starting this activity, the invoking intent can contain this extra
