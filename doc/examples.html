@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>AndroidPreferenceActivity &#150; Documentation: Examples</title>
+        <link rel=stylesheet type=text/css href=style.css />
+        <link rel="icon" type="image/png" href="images/favicon.png" />
+    </head>
+    
+    <body>
+        <div class="content">
+            <div class="header">
+                <h1>AndroidPreferenceActivity &#150; Documentation</h1>
+                <h2>Documentation of the Android-library "AndroidPreferenceActivity".</h2>
+            </div>
+
+            <div class="navigation">
+                <div class="navigation-item"><a href="index.html">GENERAL</a></div>
+                <div class="navigation-item"><a href="content.html">CONTENT</a></div>
+                <div class="navigation-item-selected"><a href="examples.html">EXAMPLES</a></div>
+            </div>
+
+            <div class="text">
+                 <h3>Examples</h3>
+
+                 <p>Before the library "AndroidPreferenceActivity" can be used, its source code must be retrieved. The latest release can be downloaded as a zip archive via the direct link <a href="https://sourceforge.net/p/androidpreferenceactivity/files">https://sourceforge.net/p/androidpreferenceactivity/files</a>. Alternatively, the Mercurial repository, which hosts the project's source code, can be cloned by using the following command line command:</p>
+
+                <div class="code-block">hg clone http://hg.code.sf.net/p/androidpreferenceactivity/code androidpreferenceactivity-code</div>
+                
+                <p>To use the library within a project, the downloaded source code has to be added to the workspace of the appropriate IDE. When using Eclipse, the source code can be added as a new project by using the option "File" -> "Import..." -> "Android" -> "Existing Android Code Into Workspace" like shown in the screenshot below:</p>
+
+                <p><center><a href="images/import-dialog.png" target="_blank".><img src="images/import-dialog.png" width="480" alt="The Eclipse import dialog"></center></a></p>
+
+                <p>To be able to use the newly imported library project from within another project, a reference to the library project has to be created. This can be established in the Eclipse IDE by right-clicking the dependent project and choosing the option "Properties". Then the group "Android" at the left of the recently opened window has to be chosen. Finally, the button "Add..." has to be clicked to add the library project as a new dependency. The screenshots below illustrate this procedure:</p>
+
+                <p><center><a href="images/add-dependency.png" target="_blank".><img src="images/add-dependency.png" width="95%" alt="The dialog, which allows to add a library to an Android project"></center></a></p>
+
+                <p>For further information about how to reference an Android library project, refer to <a href="http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject">this</a> article of the official Android developer documentation.</p>
+
+                <h4>Specifying and adding preference headers via XML</h4>
+
+                <p>The XML code below shows how to declare multiple preference headers as a XML resource. In this example the file's path is <tt>/res/xml/preference_headers.xml</tt>.</p>
+
+                <div class="xml-block"><font color='#3f7f5f'>&lt;?xml</font>&nbsp;version=<font color='#2a00ff'>"1.0"</font>&nbsp;encoding=<font color='#2a00ff'>"utf-8"</font>?&gt;
+<br/><font color='#3f7f5f'>&lt;preference-headers&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android</font>"
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;header</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:breadCrumbShortTitle=<font color='#2a00ff'>"breadCrumbShortTitle"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:breadCrumbTitle=<font color='#2a00ff'>"breadCrumbTitle"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:fragment=<font color='#2a00ff'>"com.something.Fragment"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:summary=<font color='#2a00ff'>"summary"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:title=<font color='#2a00ff'>"title"</font> <font color='#3f7f5f'>/&gt;</font>
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;header</font> android:title=<font color='#2a00ff'>"title"</font> <font color='#3f7f5f'>&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;intent</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:targetClass=<font color='#2a00ff'>"com.something.Activity"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:targetPackage=<font color='#2a00ff'>"com.something"</font> <font color='#3f7f5f'>/&gt;</font>
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;extra</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:name=<font color='#2a00ff'>"key"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:value=<font color='#2a00ff'>"value"</font> <font color='#3f7f5f'>/&gt;</font>
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;header</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:breadCrumbShortTitle=<font color='#2a00ff'>"@string/breadCrumbShortTitle"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:breadCrumbTitle=<font color='#2a00ff'>"@string/breadCrumbTitle"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:icon=<font color='#2a00ff'>"@android:drawable/ic_delete"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:summary=<font color='#2a00ff'>"@string/summary"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:title=<font color='#2a00ff'>"@string/title"</font> <font color='#3f7f5f'>/&gt;</font>
+<br/><br/><font color='#3f7f5f'>&lt;/preference-headers&gt;</font></div>
+
+                <p>As seen in the example above, it is possible to specify a fragment, which should be shown when the appropriate preference header becomes selected, as well as an intent, which is used to launch an activity when the preference header is selected. These two possibilites can also be used together.</p>
+
+                <p>The Java code below shows how the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> can be extended to create an activity whose preference headers are loaded at startup from the XML resource shown above:</p>
+
+                <div class="code-block"><strong><font color='#7f0055'>public class</font></strong> PreferenceActivity <strong><font color='#7f0055'>extends</font></strong> de.mrapp.android.preference.PreferenceActivity {
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;@Override
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<strong><font color='#7f0055'>protected final void</font></strong> onCreatePreferenceHeaders() {
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addPreferenceHeadersFromResource(R.xml.<font color='#2a00ff'><strong><i>preference_headers</i></strong></font>);
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br/><br/>}</div>
+
+                <h4>External references:</h4>
+
+                <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/tools/projects/projects-eclipse.html" target="_blank">http://developer.android.com/tools/projects/projects-eclipse.html</a> &#150; Managing Projects from Eclipse with ADT</div>
+            </div>
+
+            <div class="copyright">
+                &#169; Copyright 2014, Michael Rapp. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>
