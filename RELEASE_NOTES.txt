@@ -3,7 +3,7 @@ AndroidPreferenceActivity - RELEASE NOTES
 
 
 Version: 		1.0.0 
-Release date:	10.14.2014
+Release date:	10.19.2014
 --------------------------
 
 The first stable release, which provides an activity, an alternative implementation of
