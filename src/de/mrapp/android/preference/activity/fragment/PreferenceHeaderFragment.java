@@ -56,7 +56,7 @@ public class PreferenceHeaderFragment extends Fragment {
 	 * A set, which contains the listeners, which should be notified on events
 	 * concerning the fragment.
 	 */
-	private Set<FragmentListener> listeners = new LinkedHashSet<>();
+	private Set<FragmentListener> listeners = new LinkedHashSet<FragmentListener>();
 
 	/**
 	 * Notifies all registered listeners, that the fragment has been created.

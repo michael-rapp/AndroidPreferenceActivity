@@ -100,7 +100,7 @@ public final class PreferenceHeaderParser {
 			throws XmlPullParserException, IOException {
 		parseUntilStartTag(parser);
 
-		Collection<PreferenceHeader> preferenceHeaders = new LinkedList<>();
+		Collection<PreferenceHeader> preferenceHeaders = new LinkedList<PreferenceHeader>();
 		int outerDepth = parser.getDepth();
 		int tagType = parser.next();
 

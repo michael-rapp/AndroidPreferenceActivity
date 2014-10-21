@@ -336,12 +336,12 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	public PreferenceHeaderAdapter(final Context context) {
 		ensureNotNull(context, "The context may not be null");
 		this.context = context;
-		this.preferenceHeaders = new LinkedList<>();
+		this.preferenceHeaders = new LinkedList<PreferenceHeader>();
 		this.enabled = true;
 		this.viewId = R.layout.preference_header_item;
 		this.selectorId = R.drawable.preference_header_selector;
-		this.listeners = new LinkedHashSet<>();
-		this.decorators = new LinkedHashSet<>();
+		this.listeners = new LinkedHashSet<AdapterListener>();
+		this.decorators = new LinkedHashSet<PreferenceHeaderDecorator>();
 	}
 
 	/**
@@ -522,7 +522,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 *         if the adapter does not contain any items
 	 */
 	public final ArrayList<PreferenceHeader> getAllItems() {
-		return new ArrayList<>(preferenceHeaders);
+		return new ArrayList<PreferenceHeader>(preferenceHeaders);
 	}
 
 	/**
