@@ -2,6 +2,19 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        1.0.1 
+Release date:   10.21.2014
+--------------------------
+
+A minor release, which provides the following changes:
+    
+    -   Added a public inner class, which implements the interface
+        android.os.parcelable.Creator the the class PreferenceHeader in order to allow
+        creating instances from a Parcel.
+    
+    -   Prepared for Android 5.0 (API level 21).
+    
+    
 Version: 		1.0.0 
 Release date:	10.19.2014
 --------------------------
