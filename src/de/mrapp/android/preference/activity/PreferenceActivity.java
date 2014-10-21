@@ -72,6 +72,7 @@ import de.mrapp.android.preference.activity.util.VisibleForTesting;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("deprecation")
 public abstract class PreferenceActivity extends Activity implements
 		FragmentListener, OnItemClickListener, AdapterListener {
 
@@ -335,7 +336,7 @@ public abstract class PreferenceActivity extends Activity implements
 	 * A set, which contains the listeners, which have registered to be notified
 	 * when the user navigates within the activity, if it used as a wizard.
 	 */
-	private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
+	private Set<WizardListener> wizardListeners = new LinkedHashSet<WizardListener>();
 
 	/**
 	 * Initializes the preference header, which is selected by default on
@@ -1650,7 +1651,6 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            The color, which should be set, as an {@link Integer} value
 	 * @return True, if the color has been set, false otherwise
 	 */
-	@SuppressWarnings("deprecation")
 	public final boolean setShadowColor(final int shadowColor) {
 		if (getShadowView() != null) {
 			this.shadowColor = shadowColor;
@@ -1761,7 +1761,6 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            class {@link Drawable} or null, if no background should be set
 	 * @return True, if the background has been set, false otherwise
 	 */
-	@SuppressWarnings("deprecation")
 	public final boolean setPreferenceScreenBackground(final Drawable drawable) {
 		if (getPreferenceScreenContainer() != null) {
 			getPreferenceScreenContainer().setBackgroundDrawable(drawable);
@@ -1828,7 +1827,6 @@ public abstract class PreferenceActivity extends Activity implements
 	 *            class {@link Drawable} or null, if no background should be set
 	 * @return True, if the background has been set, false otherwise
 	 */
-	@SuppressWarnings("deprecation")
 	public final boolean setNavigationBackground(final Drawable drawable) {
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
