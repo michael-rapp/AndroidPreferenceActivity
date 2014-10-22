@@ -376,7 +376,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRestoreDisabledPreferences(true);
+		showRestoreDefaultsButton(getArguments().getBoolean(
+				EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false));
+		setRestoreDisabledPreferences(getArguments().getBoolean(
+				EXTRA_RESTORE_DISABLED_PREFERENCES, true));
 	}
 
 	@Override
