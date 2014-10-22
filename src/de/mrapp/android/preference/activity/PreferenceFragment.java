@@ -44,15 +44,34 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private LinearLayout layout;
 
 	/**
+	 * The view group, which contains the button, which allows to restore the
+	 * preferences' default values.
+	 */
+	private ViewGroup buttonBar;
+
+	/**
+	 * The view, which is used to draw a separator between the preferences and
+	 * the button, which allows to restore the preferences' default values.
+	 */
+	private View buttonBarSeparator;
+
+	/**
 	 * The button, which allows to restore the preferences' default values.
 	 */
 	private Button restoreDefaultsButton;
 
-	private void createRestoreDefaultsButton() {
-		restoreDefaultsButton = new Button(getActivity());
-		restoreDefaultsButton.setText(getResources().getString(
-				R.string.restore_defaults_button_label));
-		restoreDefaultsButton.setId(R.id.restore_defaults_button);
+	/**
+	 * Inflates the button bar, which contains the button, which allows to
+	 * restore the preferences' default values.
+	 */
+	private void inflateRestoreDefaultsButtonBar() {
+		LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+		buttonBar = (ViewGroup) layoutInflater.inflate(
+				R.layout.restore_defaults_button_bar, layout, false);
+		buttonBarSeparator = buttonBar
+				.findViewById(R.id.restore_defaults_button_bar_separator);
+		restoreDefaultsButton = (Button) buttonBar
+				.findViewById(R.id.restore_defaults_button);
 		restoreDefaultsButton
 				.setOnClickListener(createRestoreDefaultsListener());
 	}
@@ -69,37 +88,15 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		};
 	}
 
-	private void addRestoreDefaultsButton() {
-		if (layout != null && restoreDefaultsButton != null) {
-			RelativeLayout relativeLayout = new RelativeLayout(getActivity());
-			RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.MATCH_PARENT,
-					RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-			RelativeLayout.LayoutParams buttonLayoutParams = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.WRAP_CONTENT,
-					RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-			// if (Device.isTablet(getActivity())) {
-			// restoreButtonLayoutParams
-			// .addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			// } else {
-			// restoreButtonLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			// restoreButtonLayoutParams.setMargins(
-			// RESTORE_BUTTON_MARGIN_SMARTPHONE,
-			// RESTORE_BUTTON_MARGIN_SMARTPHONE,
-			// RESTORE_BUTTON_MARGIN_SMARTPHONE,
-			// RESTORE_BUTTON_MARGIN_SMARTPHONE);
-			// }
-
-			relativeLayout.addView(restoreDefaultsButton, buttonLayoutParams);
-			layout.addView(relativeLayout, relativeLayoutParams);
+	private void addRestoreDefaultsButtonBar() {
+		if (layout != null && buttonBar != null) {
+			layout.addView(buttonBar);
 		}
 	}
 
-	private void removeRestoreDefaultsButton() {
-		if (layout != null && restoreDefaultsButton != null) {
-			layout.removeView(restoreDefaultsButton);
+	private void removeRestoreDefaultsButtonBar() {
+		if (layout != null && buttonBar != null) {
+			layout.removeView(buttonBar);
 		}
 	}
 
@@ -124,12 +121,40 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 */
 	public final void showRestoreDefaultsButton(final boolean show) {
 		if (show) {
-			createRestoreDefaultsButton();
-			addRestoreDefaultsButton();
+			inflateRestoreDefaultsButtonBar();
+			addRestoreDefaultsButtonBar();
 		} else {
-			removeRestoreDefaultsButton();
+			removeRestoreDefaultsButtonBar();
+			buttonBar = null;
+			buttonBarSeparator = null;
 			restoreDefaultsButton = null;
 		}
+	}
+
+	/**
+	 * Returns the view group, which contains the button, which allows to
+	 * restore the preferences' default values.
+	 * 
+	 * @return The view group, which contains the button, which allows to
+	 *         restore the preferences' default values, as an instance of the
+	 *         class {@link ViewGroup} or null, if the button is not shown
+	 */
+	public final ViewGroup getButtonBar() {
+		return buttonBar;
+	}
+
+	/**
+	 * Returns the view, which is used to draw a separator between the
+	 * preferences and the button, which allows to restore the preferences'
+	 * default values.
+	 * 
+	 * @return The view, which is used to draw a separator between the
+	 *         preferences and the button, which allows to restore the
+	 *         preferences' default values, as an instance of the class
+	 *         {@link View} or null, if the button is not shown
+	 */
+	public final View getButtonBarSeparator() {
+		return buttonBarSeparator;
 	}
 
 	/**
@@ -149,7 +174,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 			final ViewGroup container, final Bundle savedInstanceState) {
 		layout = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
-		addRestoreDefaultsButton();
+		addRestoreDefaultsButtonBar();
 		return layout;
 	}
 
