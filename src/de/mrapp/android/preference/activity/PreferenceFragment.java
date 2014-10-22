@@ -24,7 +24,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a
@@ -61,7 +60,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private Button restoreDefaultsButton;
 
 	/**
-	 * Inflates the button bar, which contains the button, which allows to
+	 * Inflates the view group, which contains the button, which allows to
 	 * restore the preferences' default values.
 	 */
 	private void inflateRestoreDefaultsButtonBar() {
@@ -76,6 +75,13 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 				.setOnClickListener(createRestoreDefaultsListener());
 	}
 
+	/**
+	 * Creates and returns a listener, which allows to restore the preferences'
+	 * default values.
+	 * 
+	 * @return The listener, which has been created, as an instance of the type
+	 *         {@link OnClickListener}
+	 */
 	private OnClickListener createRestoreDefaultsListener() {
 		return new OnClickListener() {
 
@@ -88,12 +94,20 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		};
 	}
 
+	/**
+	 * Adds the view group, which contains the button, which allows to restore
+	 * the preferences' default values, to the fragment.
+	 */
 	private void addRestoreDefaultsButtonBar() {
 		if (layout != null && buttonBar != null) {
 			layout.addView(buttonBar);
 		}
 	}
 
+	/**
+	 * Removes the view group, which contains the button, which allows to
+	 * restore the preferences' default values, from the fragment.
+	 */
 	private void removeRestoreDefaultsButtonBar() {
 		if (layout != null && buttonBar != null) {
 			layout.removeView(buttonBar);
