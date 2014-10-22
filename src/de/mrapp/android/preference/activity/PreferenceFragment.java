@@ -389,6 +389,40 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		return null;
 	}
 
+	/**
+	 * Sets the text of the button, which allows to restore the preferences'
+	 * default values. The text is only set, if the button is shown.
+	 * 
+	 * @param text
+	 *            The text, which should be set, as an instance of the class
+	 *            {@link CharSequence}. The text may not be null
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setRestoreDefaultsButtonText(final CharSequence text) {
+		ensureNotNull(text, "The text may not be null");
+
+		if (restoreDefaultsButton != null) {
+			restoreDefaultsButton.setText(text);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the text of the button, which allows to restore the preferences'
+	 * default values. The text is only set, if the button is shown.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the text, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 * @return True, if the text has been set, false otherwise
+	 */
+	public final boolean setRestoreDefaultsButtonText(final int resourceId) {
+		return setRestoreDefaultsButtonText(getText(resourceId));
+	}
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
