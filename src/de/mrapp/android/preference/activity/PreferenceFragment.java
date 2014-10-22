@@ -75,6 +75,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private int buttonBarSeparatorColor;
 
 	/**
+	 * True, if the default values of preferences, which are currently disabled,
+	 * should also be restored when clicking the appropriate button.
+	 */
+	private boolean restoreDisabledPreferences;
+
+	/**
 	 * A set, which contains the listeners, which should be notified, when the
 	 * preferences' default values should be restored.
 	 */
@@ -157,7 +163,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
 			if (preference instanceof PreferenceGroup) {
 				restoreDefaults((PreferenceGroup) preference, sharedPreferences);
-			} else if (preference.getKey() != null) {
+			} else if (preference.getKey() != null
+					&& (!areDisabledPreferencesRestored() || preference
+							.isEnabled())) {
 				sharedPreferences.edit().remove(preference.getKey()).commit();
 			}
 
@@ -184,22 +192,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	/**
-	 * Restores the default values of all preferences, including those that are
-	 * currently disabled, which are contained by the fragment.
-	 */
-	public final void restoreDefaults() {
-		restoreDefaults(true);
-	}
-
-	/**
 	 * Restores the default values of all preferences, which are contained by
 	 * the fragment.
-	 * 
-	 * @param restoreDisabledPreferences
-	 *            True, if the default values of preferences, which are
-	 *            currently disabled, should be also restored, false otherwise
 	 */
-	public final void restoreDefaults(final boolean restoreDisabledPreferences) {
+	public final void restoreDefaults() {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
 		restoreDefaults(getPreferenceScreen(), sharedPreferences);
@@ -263,6 +259,32 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 			buttonBarSeparator = null;
 			restoreDefaultsButton = null;
 		}
+	}
+
+	/**
+	 * Returns, whether the default values of preferences, which are currently
+	 * disabled, are also restored when clicking the appropriate button.
+	 * 
+	 * @return True, if the default values of preferences, which are currently
+	 *         disabled, are also restored when clicking the appropriate button,
+	 *         false otherwise
+	 */
+	public final boolean areDisabledPreferencesRestored() {
+		return restoreDisabledPreferences;
+	}
+
+	/**
+	 * Sets, whether the default values of preferences, which are currently
+	 * disabled, should also be restored when clicking the appropriate button.
+	 * 
+	 * @param restoreDisabledPreferences
+	 *            True, if the default values of preferences, which are
+	 *            currently disabled, should also be restored when clicking the
+	 *            appropriate button, false otherwise
+	 */
+	public final void setRestoreDisabledPreferences(
+			final boolean restoreDisabledPreferences) {
+		this.restoreDisabledPreferences = restoreDisabledPreferences;
 	}
 
 	/**
