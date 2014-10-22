@@ -360,7 +360,13 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	@Override
-	public final View onCreateView(final LayoutInflater inflater,
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRestoreDisabledPreferences(true);
+	}
+
+	@Override
+	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		layout = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
