@@ -17,6 +17,9 @@
  */
 package de.mrapp.android.preference.activity;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -28,6 +31,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a
@@ -70,6 +75,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private int buttonBarSeparatorColor;
 
 	/**
+	 * A set, which contains the listeners, which should be notified, when the
+	 * preferences' default values should be restored.
+	 */
+	private Set<DefaultValueListener> defaultValueListeners = new LinkedHashSet<DefaultValueListener>();
+
+	/**
 	 * Inflates the view group, which contains the button, which allows to
 	 * restore the preferences' default values.
 	 */
@@ -99,7 +110,9 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
 			@Override
 			public void onClick(final View v) {
-				restoreDefaults();
+				if (notifyOnRestoreDefaultValues()) {
+					restoreDefaults();
+				}
 			}
 
 		};
@@ -154,6 +167,23 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	/**
+	 * Notifies all registered listeners, that the preferences' default values
+	 * should be restored.
+	 * 
+	 * @return True, if restoring the preferences' default values should be
+	 *         proceeded, false otherwise
+	 */
+	private boolean notifyOnRestoreDefaultValues() {
+		boolean result = true;
+
+		for (DefaultValueListener listener : defaultValueListeners) {
+			result &= listener.onRestoreDefaultValues(this);
+		}
+
+		return result;
+	}
+
+	/**
 	 * Restores the default values of all preferences, which are contained by
 	 * the fragment.
 	 */
@@ -161,6 +191,35 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
 		restoreDefaults(getPreferenceScreen(), sharedPreferences);
+	}
+
+	/**
+	 * Adds a new listener, which should be notified, when the preferences'
+	 * default values should be restored, to the fragment.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added as an instance of the type
+	 *            {@link DefaultValueListener}. The listener may not be null
+	 */
+	public final void addDefaultValueListener(
+			final DefaultValueListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		this.defaultValueListeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified anymore, when
+	 * the preferences' default values should be restored, from the fragment.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed as an instance of the
+	 *            type {@link DefaultValueListener}. The listener may not be
+	 *            null
+	 */
+	public final void removeDefaultValueListener(
+			final DefaultValueListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		this.defaultValueListeners.remove(listener);
 	}
 
 	/**
