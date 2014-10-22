@@ -373,6 +373,22 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		return restoreDefaultsButton;
 	}
 
+	/**
+	 * Returns the text of the button, which allows to restore the preferences'
+	 * default values.
+	 * 
+	 * @return The text of the button, which allows to restore the preferences'
+	 *         default values, as an instance of the class {@link CharSequence}
+	 *         or null, if the button is not shown
+	 */
+	public final CharSequence getRestoreDefaultsButtonText() {
+		if (restoreDefaultsButton != null) {
+			return restoreDefaultsButton.getText();
+		}
+
+		return null;
+	}
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
