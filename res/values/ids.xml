@@ -25,8 +25,8 @@ License along with this program. If not, see
     <item name="shadow_view" type="id"/>
     <item name="bread_crumb_view" type="id"/>
     <item name="bread_crumb_separator" type="id"/>
-    <item name="button_bar" type="id"/>
-    <item name="button_bar_separator" type="id"/>
+    <item name="wizard_button_bar" type="id"/>
+    <item name="wizard_button_bar_separator" type="id"/>
     <item name="back_button" type="id"/>
     <item name="next_button" type="id"/>
     <item name="finish_button" type="id"/>
