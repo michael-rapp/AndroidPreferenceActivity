@@ -17,6 +17,8 @@
  */
 package de.mrapp.android.preference.activity;
 
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,13 +27,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a
@@ -52,12 +54,20 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	public static final String EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON = "extra_prefs_show_restore_defaults_button";
 
 	/**
-	 * When starting attaching this fragment to an activity and using
+	 * When attaching this fragment to an activity and using
 	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
 	 * specified to define, whether the default buttons of disabled preferences
 	 * should also be restored, or not.
 	 */
 	public static final String EXTRA_RESTORE_DISABLED_PREFERENCES = "extra_prefs_restore_disabled_preferences";
+
+	/**
+	 * When attaching this fragment to an activity and using
+	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
+	 * specified to supply a custom text for the button, which allows to restore
+	 * the preferences' default values.
+	 */
+	public static final String EXTRA_RESTORE_DEFAULTS_BUTTON_TEXT = "extra_prefs_restore_defaults_button_text";
 
 	/**
 	 * The layout, which contains the fragment's preferences as well as the
@@ -203,6 +213,73 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Handles the extra of the arguments, which have been passed to the
+	 * fragment, that allows to show the button, which allows to restore the
+	 * preferences' default values.
+	 */
+	private void handleShowRestoreDefaultsButtonArgument() {
+		boolean showButton = getArguments().getBoolean(
+				EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false);
+
+		if (showButton) {
+			showRestoreDefaultsButton(true);
+		}
+	}
+
+	/**
+	 * Handles the extra of the arguments, which have been passed to the
+	 * fragment, that allows to specify, whether the default values of disabled
+	 * preference should also be restored, or not.
+	 */
+	private void handleRestoreDisabledPreferencesArgument() {
+		boolean restoreDisabled = getArguments().getBoolean(
+				EXTRA_RESTORE_DISABLED_PREFERENCES, true);
+
+		if (!restoreDisabled) {
+			setRestoreDisabledPreferences(false);
+		}
+	}
+
+	/**
+	 * Handles the extra of the arguments, which have been passed to the
+	 * fragment, that allows to specify a custom text for the button, which
+	 * allows to restore the preferences' default values.
+	 */
+	private void handleRestoreDefaultsButtonTextArgument() {
+		CharSequence buttonText = getCharSequenceFromArguments(EXTRA_RESTORE_DEFAULTS_BUTTON_TEXT);
+
+		if (!TextUtils.isEmpty(buttonText)) {
+			setRestoreDefaultsButtonText(buttonText);
+		}
+	}
+
+	/**
+	 * Returns the char sequence, which is specified by a specific extra of the
+	 * arguments, which have been passed to the fragment. The char sequence can
+	 * either be specified as a string or as a resource id.
+	 * 
+	 * @param name
+	 *            The name of the extra, which specifies the char sequence, as a
+	 *            {@link String}
+	 * @return The char sequence, which is specified by the arguments, as an
+	 *         instance of the class {@link CharSequence} or null, if the
+	 *         arguments do not specify a char sequence with the given name
+	 */
+	private CharSequence getCharSequenceFromArguments(final String name) {
+		CharSequence charSequence = getArguments().getCharSequence(name);
+
+		if (charSequence == null) {
+			int resourceId = getArguments().getInt(name, 0);
+
+			if (resourceId != 0) {
+				charSequence = getText(resourceId);
+			}
+		}
+
+		return charSequence;
 	}
 
 	/**
@@ -426,14 +503,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRestoreDisabledPreferences(true);
 
 		if (getArguments() != null) {
-			showRestoreDefaultsButton(getArguments().getBoolean(
-					EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false));
-			setRestoreDisabledPreferences(getArguments().getBoolean(
-					EXTRA_RESTORE_DISABLED_PREFERENCES, true));
-		} else {
-			setRestoreDisabledPreferences(true);
+			handleShowRestoreDefaultsButtonArgument();
+			handleRestoreDisabledPreferencesArgument();
+			handleRestoreDefaultsButtonTextArgument();
 		}
 	}
 
