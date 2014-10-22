@@ -31,7 +31,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 
 /**
@@ -44,6 +43,21 @@ import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
  * @since 1.1.0
  */
 public class PreferenceFragment extends android.preference.PreferenceFragment {
+
+	/**
+	 * When attaching this fragment to an activity, the passed bundle can
+	 * contain this extra boolean to display the button, which allows to restore
+	 * the preferences' default values.
+	 */
+	public static final String EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON = "extra_prefs_show_restore_defaults_button";
+
+	/**
+	 * When starting attaching this fragment to an activity and using
+	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
+	 * specified to define, whether the default buttons of disabled preferences
+	 * should also be restored, or not.
+	 */
+	public static final String EXTRA_RESTORE_DISABLED_PREFERENCES = "extra_prefs_restore_disabled_preferences";
 
 	/**
 	 * The layout, which contains the fragment's preferences as well as the
