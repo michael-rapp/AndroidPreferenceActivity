@@ -17,7 +17,11 @@
  */
 package de.mrapp.android.preference.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceGroup;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,6 +64,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private Button restoreDefaultsButton;
 
 	/**
+	 * The color of the separator, which is drawn between the preferences and
+	 * the button, which allows to restore the preferences' default values.
+	 */
+	private int buttonBarSeparatorColor;
+
+	/**
 	 * Inflates the view group, which contains the button, which allows to
 	 * restore the preferences' default values.
 	 */
@@ -89,8 +99,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
 			@Override
 			public void onClick(final View v) {
-				// TODO Auto-generated method stub
-
+				restoreDefaults();
 			}
 
 		};
@@ -114,6 +123,44 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		if (layout != null && buttonBar != null) {
 			layout.removeView(buttonBar);
 		}
+	}
+
+	/**
+	 * Restores the default preferences, which are contained by a specific
+	 * preference group.
+	 * 
+	 * @param preferenceGroup
+	 *            The preference group, whose preferences should be restored, as
+	 *            an instance of the class {@link PreferenceGroup}
+	 * @param sharedPreferences
+	 *            The shared preferences, which should be used to restore the
+	 *            preferences, as an instance of the type
+	 *            {@link SharedPreferences}
+	 */
+	private void restoreDefaults(final PreferenceGroup preferenceGroup,
+			final SharedPreferences sharedPreferences) {
+		for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
+			Preference preference = preferenceGroup.getPreference(i);
+
+			if (preference instanceof PreferenceGroup) {
+				restoreDefaults((PreferenceGroup) preference, sharedPreferences);
+			} else if (preference.getKey() != null) {
+				sharedPreferences.edit().remove(preference.getKey()).commit();
+			}
+
+			preferenceGroup.removePreference(preference);
+			preferenceGroup.addPreference(preference);
+		}
+	}
+
+	/**
+	 * Restores the default values of all preferences, which are contained by
+	 * the fragment.
+	 */
+	public final void restoreDefaults() {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getActivity());
+		restoreDefaults(getPreferenceScreen(), sharedPreferences);
 	}
 
 	/**
@@ -174,6 +221,40 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	/**
+	 * Returns the color of the separator, which is drawn between the
+	 * preferences and the button, which allows to restore the default values.
+	 * 
+	 * @return The color of the separator as an {@link Integer} value or -1, if
+	 *         the button is not shown
+	 */
+	public final int getButtonBarSeparatorColor() {
+		if (getButtonBarSeparator() != null) {
+			return buttonBarSeparatorColor;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Sets the color of the separator, which is drawn between the preferences
+	 * and the button, which allows to restore the default values. The color is
+	 * only set when the button is shown.
+	 * 
+	 * @param separatorColor
+	 *            The color, which should be set as an {@link Integer} value
+	 * @return True, if the color has been set, false otherwise
+	 */
+	public final boolean setButtonBarSeparatorColor(final int separatorColor) {
+		if (getButtonBarSeparator() != null) {
+			this.buttonBarSeparatorColor = separatorColor;
+			getButtonBarSeparator().setBackgroundColor(separatorColor);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns the button, which allows to restore the preferences' default
 	 * values.
 	 * 
@@ -191,6 +272,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		layout = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
 		addRestoreDefaultsButtonBar();
+		setButtonBarSeparatorColor(getResources().getColor(R.color.separator));
 		return layout;
 	}
 
