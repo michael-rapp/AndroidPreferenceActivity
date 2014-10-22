@@ -31,5 +31,7 @@ License along with this program. If not, see
     <item name="next_button" type="id"/>
     <item name="finish_button" type="id"/>
     <item name="restore_defaults_button" type="id"/>
+    <item name="restore_defaults_button_bar" type="id"/>
+    <item name="restore_defaults_button_bar_separator" type="id"/>
 
 </resources>
