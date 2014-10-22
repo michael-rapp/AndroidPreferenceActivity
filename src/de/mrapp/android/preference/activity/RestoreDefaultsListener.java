@@ -26,7 +26,7 @@ package de.mrapp.android.preference.activity;
  * 
  * @since 1.1.0
  */
-public interface DefaultValueListener {
+public interface RestoreDefaultsListener {
 
 	/**
 	 * The method, which is invoked, when the default values of the preferences,

@@ -84,7 +84,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * A set, which contains the listeners, which should be notified, when the
 	 * preferences' default values should be restored.
 	 */
-	private Set<DefaultValueListener> defaultValueListeners = new LinkedHashSet<DefaultValueListener>();
+	private Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<RestoreDefaultsListener>();
 
 	/**
 	 * Inflates the view group, which contains the button, which allows to
@@ -184,7 +184,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private boolean notifyOnRestoreDefaultValues() {
 		boolean result = true;
 
-		for (DefaultValueListener listener : defaultValueListeners) {
+		for (RestoreDefaultsListener listener : restoreDefaultsListeners) {
 			result &= listener.onRestoreDefaultValues(this);
 		}
 
@@ -207,12 +207,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * 
 	 * @param listener
 	 *            The listener, which should be added as an instance of the type
-	 *            {@link DefaultValueListener}. The listener may not be null
+	 *            {@link RestoreDefaultsListener}. The listener may not be null
 	 */
-	public final void addDefaultValueListener(
-			final DefaultValueListener listener) {
+	public final void addRestoreDefaultsListener(
+			final RestoreDefaultsListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
-		this.defaultValueListeners.add(listener);
+		this.restoreDefaultsListeners.add(listener);
 	}
 
 	/**
@@ -221,13 +221,13 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * 
 	 * @param listener
 	 *            The listener, which should be removed as an instance of the
-	 *            type {@link DefaultValueListener}. The listener may not be
+	 *            type {@link RestoreDefaultsListener}. The listener may not be
 	 *            null
 	 */
-	public final void removeDefaultValueListener(
-			final DefaultValueListener listener) {
+	public final void removeRestoreDefaultsListener(
+			final RestoreDefaultsListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
-		this.defaultValueListeners.remove(listener);
+		this.restoreDefaultsListeners.remove(listener);
 	}
 
 	/**
