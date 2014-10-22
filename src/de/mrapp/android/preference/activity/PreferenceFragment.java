@@ -64,15 +64,17 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * restore the preferences' default values.
 	 */
 	private void inflateRestoreDefaultsButtonBar() {
-		LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-		buttonBar = (ViewGroup) layoutInflater.inflate(
-				R.layout.restore_defaults_button_bar, layout, false);
-		buttonBarSeparator = buttonBar
-				.findViewById(R.id.restore_defaults_button_bar_separator);
-		restoreDefaultsButton = (Button) buttonBar
-				.findViewById(R.id.restore_defaults_button);
-		restoreDefaultsButton
-				.setOnClickListener(createRestoreDefaultsListener());
+		if (buttonBar == null) {
+			LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+			buttonBar = (ViewGroup) layoutInflater.inflate(
+					R.layout.restore_defaults_button_bar, layout, false);
+			buttonBarSeparator = buttonBar
+					.findViewById(R.id.restore_defaults_button_bar_separator);
+			restoreDefaultsButton = (Button) buttonBar
+					.findViewById(R.id.restore_defaults_button);
+			restoreDefaultsButton
+					.setOnClickListener(createRestoreDefaultsListener());
+		}
 	}
 
 	/**
