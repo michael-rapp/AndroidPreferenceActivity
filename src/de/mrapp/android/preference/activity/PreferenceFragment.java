@@ -184,8 +184,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	/**
-	 * Restores the default values of all preferences, which are contained by
-	 * the fragment.
+	 * Restores the default values of all preferences, including those that are
+	 * currently disabled, which are contained by the fragment.
 	 */
 	public final void restoreDefaults() {
 		restoreDefaults(true);
@@ -195,11 +195,11 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * Restores the default values of all preferences, which are contained by
 	 * the fragment.
 	 * 
-	 * @param includeDisabledPreferences
+	 * @param restoreDisabledPreferences
 	 *            True, if the default values of preferences, which are
 	 *            currently disabled, should be also restored, false otherwise
 	 */
-	public final void restoreDefaults(final boolean includeDisabledPreferences) {
+	public final void restoreDefaults(final boolean restoreDisabledPreferences) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
 		restoreDefaults(getPreferenceScreen(), sharedPreferences);
