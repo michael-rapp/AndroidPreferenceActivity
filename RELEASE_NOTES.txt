@@ -2,6 +2,17 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        1.1.0 
+Release date:   10.23.2014
+--------------------------
+
+A feature release, which introduces the following functionalities:
+    
+    -   The library does now provide a class, which is extended from the Android SDK's
+        built-in PreferenceFragment. This class allows to show a button, which may be
+        used to restore the default values of the fragment's preferences.
+
+
 Version:        1.0.1 
 Release date:   10.21.2014
 --------------------------
