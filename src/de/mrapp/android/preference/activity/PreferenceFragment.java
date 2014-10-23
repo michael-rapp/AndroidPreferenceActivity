@@ -206,13 +206,12 @@ public abstract class PreferenceFragment extends
 			} else if (preference.getKey() != null
 					&& !preference.getKey().isEmpty()
 					&& !isBlackListed(preference.getKey())
-					&& (!areDisabledPreferencesRestored() || preference
+					&& (areDisabledPreferencesRestored() || preference
 							.isEnabled())) {
 				sharedPreferences.edit().remove(preference.getKey()).commit();
+				preferenceGroup.removePreference(preference);
+				preferenceGroup.addPreference(preference);
 			}
-
-			preferenceGroup.removePreference(preference);
-			preferenceGroup.addPreference(preference);
 		}
 	}
 
