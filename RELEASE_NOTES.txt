@@ -2,6 +2,16 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        1.1.1
+Release date:   10.23.2014
+--------------------------
+
+A minor release, which provides the following changes:
+    
+    -   Added a black list to the class PreferenceFragment, which allows to specify the
+        keys of the preferences, whose default values should not be restored.
+
+
 Version:        1.1.0 
 Release date:   10.23.2014
 --------------------------
