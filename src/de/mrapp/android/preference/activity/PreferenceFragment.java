@@ -288,7 +288,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	public final void restoreDefaults() {
 		SharedPreferences sharedPreferences = getPreferenceManager()
 				.getSharedPreferences();
-		restoreDefaults(getPreferenceScreen(), sharedPreferences);
+
+		if (getPreferenceScreen() != null) {
+			restoreDefaults(getPreferenceScreen(), sharedPreferences);
+		}
 	}
 
 	/**
