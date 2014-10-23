@@ -65,6 +65,14 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	/**
 	 * When attaching this fragment to an activity and using
 	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
+	 * specified to supply a black list, which contains the keys of the
+	 * preferences whose default values should not be restored.
+	 */
+	public static final String EXTRA_BLACK_LIST = "extra_prefs_black_list";
+
+	/**
+	 * When attaching this fragment to an activity and using
+	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
 	 * specified to supply a custom text for the button, which allows to restore
 	 * the preferences' default values.
 	 */
@@ -266,6 +274,21 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	/**
+	 * Handles the extra of the arguments, which have been passed to the
+	 * fragment, that allows to specify a lack list, which contains the keys of
+	 * the preferences, whose default values should not be restored.
+	 */
+	private void handleBlackListArgument() {
+		CharSequence[] keys = getCharSequenceArrayFromArguments(EXTRA_BLACK_LIST);
+
+		if (keys != null) {
+			for (CharSequence key : keys) {
+				addKeyToBlackList(key.toString());
+			}
+		}
+	}
+
+	/**
 	 * Returns the char sequence, which is specified by a specific extra of the
 	 * arguments, which have been passed to the fragment. The char sequence can
 	 * either be specified as a string or as a resource id.
@@ -289,6 +312,39 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		}
 
 		return charSequence;
+	}
+
+	/**
+	 * Returns the char sequence array, which is specified by a specific extra
+	 * of the arguments, which have been passed to the fragment. The char
+	 * sequences, which are contained by the array, can either be specified as a
+	 * string or as a resource id.
+	 * 
+	 * @param name
+	 *            The name of the extra, which specifies the char sequence
+	 *            array, as a {@link String}
+	 * @return The char sequence array, which is specified by the arguments, as
+	 *         an array of the class {@link CharSequence} or null, if the
+	 *         arguments do not specify a char sequence array with the given
+	 *         name
+	 */
+	private CharSequence[] getCharSequenceArrayFromArguments(final String name) {
+		CharSequence[] charSequences = getArguments()
+				.getCharSequenceArray(name);
+
+		if (charSequences == null) {
+			int[] resourceIds = getArguments().getIntArray(name);
+
+			if (resourceIds != null) {
+				charSequences = new CharSequence[resourceIds.length];
+
+				for (int i = 0; i < resourceIds.length; i++) {
+					charSequences[i] = getActivity().getString(resourceIds[i]);
+				}
+			}
+		}
+
+		return charSequences;
 	}
 
 	/**
@@ -607,6 +663,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 			handleShowRestoreDefaultsButtonArgument();
 			handleRestoreDisabledPreferencesArgument();
 			handleRestoreDefaultsButtonTextArgument();
+			handleBlackListArgument();
 		}
 	}
 
