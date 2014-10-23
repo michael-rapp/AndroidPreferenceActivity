@@ -45,7 +45,8 @@ import android.widget.LinearLayout;
  * 
  * @since 1.1.0
  */
-public class PreferenceFragment extends android.preference.PreferenceFragment {
+public abstract class PreferenceFragment extends
+		android.preference.PreferenceFragment {
 
 	/**
 	 * When attaching this fragment to an activity, the passed bundle can
