@@ -1495,9 +1495,9 @@ public abstract class PreferenceActivity extends Activity implements
 	 */
 	public final void showButtonBar(final boolean showButtonBar) {
 		if (showButtonBar) {
-			buttonBar = (ViewGroup) findViewById(R.id.button_bar);
+			buttonBar = (ViewGroup) findViewById(R.id.wizard_button_bar);
 			buttonBar.setVisibility(View.VISIBLE);
-			buttonBarSeparator = findViewById(R.id.button_bar_separator);
+			buttonBarSeparator = findViewById(R.id.wizard_button_bar_separator);
 
 			if (getButtonBarSeparatorColor() == 0) {
 				setButtonBarSeparatorColor(getResources().getColor(
