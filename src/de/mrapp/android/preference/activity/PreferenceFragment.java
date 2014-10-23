@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -287,8 +286,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * the fragment.
 	 */
 	public final void restoreDefaults() {
-		SharedPreferences sharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(getActivity());
+		SharedPreferences sharedPreferences = getPreferenceManager()
+				.getSharedPreferences();
 		restoreDefaults(getPreferenceScreen(), sharedPreferences);
 	}
 
