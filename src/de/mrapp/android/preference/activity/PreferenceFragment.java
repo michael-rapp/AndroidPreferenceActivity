@@ -522,6 +522,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		layout = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
 		addRestoreDefaultsButtonBar();
+		setButtonBarSeparatorColor(buttonBarSeparatorColor);
 		return layout;
 	}
 
