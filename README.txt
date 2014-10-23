@@ -44,6 +44,10 @@ The library provides the following features:
         wizard, which provides an alternative navigation, which allows to navigate from one
         step of the wizard to an other. The navigation can be observed and influenced by 
         implementing and registering an appropriate listener.
+        
+    -   The library provides a class, which is extended from the Android SDK's built-in 
+        PreferenceFragment. This class allows to show a button, which may be
+        used to restore the default values of the fragment's preferences.
 
 	
 License Agreement

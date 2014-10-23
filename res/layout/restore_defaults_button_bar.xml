@@ -18,16 +18,30 @@ License along with this program. If not, see
 <http://www.gnu.org/licenses/>. 
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/restore_defaults_button_bar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/button_bar_horizontal_padding"
+    android:paddingStart="@dimen/button_bar_horizontal_padding" >
+
+    <View
+        android:id="@id/restore_defaults_button_bar_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
 
     <RelativeLayout
-        android:id="@id/preference_header_parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content" >
 
-    <include layout="@layout/wizard_button_bar" />
+        <Button
+            android:id="@id/restore_defaults_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+            android:text="@string/restore_defaults_button_label" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -65,7 +65,7 @@ License along with this program. If not, see
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <include layout="@layout/button_bar" />
+            <include layout="@layout/wizard_button_bar" />
         </LinearLayout>
 
         <View
