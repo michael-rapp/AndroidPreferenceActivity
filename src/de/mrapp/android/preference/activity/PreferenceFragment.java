@@ -18,7 +18,9 @@
 package de.mrapp.android.preference.activity;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotEmpty;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -110,6 +112,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	private Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<RestoreDefaultsListener>();
 
 	/**
+	 * A set, which contains the keys of the preferences whose default values
+	 * should not be restored.
+	 */
+	private Set<String> blackList = new LinkedHashSet<String>();
+
+	/**
 	 * Inflates the view group, which contains the button, which allows to
 	 * restore the preferences' default values.
 	 */
@@ -187,6 +195,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 			if (preference instanceof PreferenceGroup) {
 				restoreDefaults((PreferenceGroup) preference, sharedPreferences);
 			} else if (preference.getKey() != null
+					&& !preference.getKey().isEmpty()
+					&& !isBlackListed(preference.getKey())
 					&& (!areDisabledPreferencesRestored() || preference
 							.isEnabled())) {
 				sharedPreferences.edit().remove(preference.getKey()).commit();
@@ -500,6 +510,90 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 */
 	public final boolean setRestoreDefaultsButtonText(final int resourceId) {
 		return setRestoreDefaultsButtonText(getText(resourceId));
+	}
+
+	/**
+	 * Returns the black list, which contains the keys of the preferences, whose
+	 * default values should not be restored.
+	 * 
+	 * @return The black list, which contains the keys of the preferences, whose
+	 *         default values should not be restored, as an instance of the type
+	 *         {@link Collection} or an empty collection, if the black list is
+	 *         empty
+	 */
+	public final Collection<String> getBlackList() {
+		return blackList;
+	}
+
+	/**
+	 * Returns, whether a specific key is contained by the black list, which
+	 * contains the keys of the preferences, whose default values should not be
+	 * restored.
+	 * 
+	 * @param key
+	 *            The key, which should be checked, as a {@link String}
+	 * @return True, if the given key is contained by the black list, false
+	 *         otherwise
+	 */
+	public final boolean isBlackListed(final String key) {
+		return blackList.contains(key);
+	}
+
+	/**
+	 * Returns, whether a specific key is contained by the black list, which
+	 * contains the keys of the preferences, whose default values should not be
+	 * restored.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the key, which should be checked, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 * @return True, if the given key is contained by the black list, false
+	 *         otherwise
+	 */
+	public final boolean isBlackListed(final int resourceId) {
+		return isBlackListed(getActivity().getString(resourceId));
+	}
+
+	/**
+	 * Adds a specific key to the black list, which contains the keys of the
+	 * preferences, whose default values should not be restored.
+	 * 
+	 * @param key
+	 *            The key, which should be added, as a {@link String}. The key
+	 *            may neither null, nor empty
+	 */
+	public final void addKeyToBlackList(final String key) {
+		ensureNotNull(key, "The key may not be null");
+		ensureNotEmpty(key, "The key may not be empty");
+		blackList.add(key);
+	}
+
+	/**
+	 * Adds a specific key to the black list, which contains the keys of the
+	 * preferences, whose default values should not be restored.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the key, which should be added, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void addKeyToBlackList(final int resourceId) {
+		addKeyToBlackList(getActivity().getString(resourceId));
+	}
+
+	/**
+	 * Removes a specific key from the black list, which contains the keys of
+	 * the preferences, whose default values should not be restored.
+	 * 
+	 * @param key
+	 *            The key, which should be removed, as a {@link String}. The key
+	 *            may neither null, nor empty
+	 */
+	public final void removeKeyFromBlackList(final String key) {
+		ensureNotNull(key, "The key may not be null");
+		ensureNotEmpty(key, "The key may not be empty");
+		blackList.remove(key);
 	}
 
 	@Override
