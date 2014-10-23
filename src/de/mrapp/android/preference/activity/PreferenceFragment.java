@@ -502,6 +502,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.buttonBarSeparatorColor = getResources().getColor(
+				R.color.separator);
 		setRestoreDisabledPreferences(true);
 
 		if (getArguments() != null) {
@@ -517,7 +519,6 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		layout = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
 		addRestoreDefaultsButtonBar();
-		setButtonBarSeparatorColor(getResources().getColor(R.color.separator));
 		return layout;
 	}
 
