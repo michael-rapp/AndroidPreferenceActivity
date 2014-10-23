@@ -653,6 +653,19 @@ public abstract class PreferenceFragment extends
 		blackList.remove(key);
 	}
 
+	/**
+	 * Removes a specific key from the black list, which contains the keys of
+	 * the preferences, whose default values should not be restored.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the key, which should be removed, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void removeKeyFromBlackList(final int resourceId) {
+		removeKeyFromBlackList(getActivity().getString(resourceId));
+	}
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
