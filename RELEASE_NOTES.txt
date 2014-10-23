@@ -2,6 +2,15 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        1.1.2
+Release date:   10.24.2014
+--------------------------
+
+A bugfix release, which fixed the following issue:
+    
+    -   https://sourceforge.net/p/androidpreferenceactivity/tickets/1/
+        
+        
 Version:        1.1.1
 Release date:   10.23.2014
 --------------------------
