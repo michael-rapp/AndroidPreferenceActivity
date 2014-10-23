@@ -18,7 +18,9 @@
 package de.mrapp.android.preference.activity;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotEmpty;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -43,7 +45,8 @@ import android.widget.LinearLayout;
  * 
  * @since 1.1.0
  */
-public class PreferenceFragment extends android.preference.PreferenceFragment {
+public abstract class PreferenceFragment extends
+		android.preference.PreferenceFragment {
 
 	/**
 	 * When attaching this fragment to an activity, the passed bundle can
@@ -59,6 +62,14 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * should also be restored, or not.
 	 */
 	public static final String EXTRA_RESTORE_DISABLED_PREFERENCES = "extra_prefs_restore_disabled_preferences";
+
+	/**
+	 * When attaching this fragment to an activity and using
+	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
+	 * specified to supply a black list, which contains the keys of the
+	 * preferences whose default values should not be restored.
+	 */
+	public static final String EXTRA_BLACK_LIST = "extra_prefs_black_list";
 
 	/**
 	 * When attaching this fragment to an activity and using
@@ -108,6 +119,12 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	 * preferences' default values should be restored.
 	 */
 	private Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<RestoreDefaultsListener>();
+
+	/**
+	 * A set, which contains the keys of the preferences whose default values
+	 * should not be restored.
+	 */
+	private Set<String> blackList = new LinkedHashSet<String>();
 
 	/**
 	 * Inflates the view group, which contains the button, which allows to
@@ -187,6 +204,8 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 			if (preference instanceof PreferenceGroup) {
 				restoreDefaults((PreferenceGroup) preference, sharedPreferences);
 			} else if (preference.getKey() != null
+					&& !preference.getKey().isEmpty()
+					&& !isBlackListed(preference.getKey())
 					&& (!areDisabledPreferencesRestored() || preference
 							.isEnabled())) {
 				sharedPreferences.edit().remove(preference.getKey()).commit();
@@ -256,6 +275,21 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 	}
 
 	/**
+	 * Handles the extra of the arguments, which have been passed to the
+	 * fragment, that allows to specify a lack list, which contains the keys of
+	 * the preferences, whose default values should not be restored.
+	 */
+	private void handleBlackListArgument() {
+		CharSequence[] keys = getCharSequenceArrayFromArguments(EXTRA_BLACK_LIST);
+
+		if (keys != null) {
+			for (CharSequence key : keys) {
+				addKeyToBlackList(key.toString());
+			}
+		}
+	}
+
+	/**
 	 * Returns the char sequence, which is specified by a specific extra of the
 	 * arguments, which have been passed to the fragment. The char sequence can
 	 * either be specified as a string or as a resource id.
@@ -279,6 +313,39 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		}
 
 		return charSequence;
+	}
+
+	/**
+	 * Returns the char sequence array, which is specified by a specific extra
+	 * of the arguments, which have been passed to the fragment. The char
+	 * sequences, which are contained by the array, can either be specified as a
+	 * string or as a resource id.
+	 * 
+	 * @param name
+	 *            The name of the extra, which specifies the char sequence
+	 *            array, as a {@link String}
+	 * @return The char sequence array, which is specified by the arguments, as
+	 *         an array of the class {@link CharSequence} or null, if the
+	 *         arguments do not specify a char sequence array with the given
+	 *         name
+	 */
+	private CharSequence[] getCharSequenceArrayFromArguments(final String name) {
+		CharSequence[] charSequences = getArguments()
+				.getCharSequenceArray(name);
+
+		if (charSequences == null) {
+			int[] resourceIds = getArguments().getIntArray(name);
+
+			if (resourceIds != null) {
+				charSequences = new CharSequence[resourceIds.length];
+
+				for (int i = 0; i < resourceIds.length; i++) {
+					charSequences[i] = getActivity().getString(resourceIds[i]);
+				}
+			}
+		}
+
+		return charSequences;
 	}
 
 	/**
@@ -502,6 +569,103 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 		return setRestoreDefaultsButtonText(getText(resourceId));
 	}
 
+	/**
+	 * Returns the black list, which contains the keys of the preferences, whose
+	 * default values should not be restored.
+	 * 
+	 * @return The black list, which contains the keys of the preferences, whose
+	 *         default values should not be restored, as an instance of the type
+	 *         {@link Collection} or an empty collection, if the black list is
+	 *         empty
+	 */
+	public final Collection<String> getBlackList() {
+		return blackList;
+	}
+
+	/**
+	 * Returns, whether a specific key is contained by the black list, which
+	 * contains the keys of the preferences, whose default values should not be
+	 * restored.
+	 * 
+	 * @param key
+	 *            The key, which should be checked, as a {@link String}
+	 * @return True, if the given key is contained by the black list, false
+	 *         otherwise
+	 */
+	public final boolean isBlackListed(final String key) {
+		return blackList.contains(key);
+	}
+
+	/**
+	 * Returns, whether a specific key is contained by the black list, which
+	 * contains the keys of the preferences, whose default values should not be
+	 * restored.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the key, which should be checked, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 * @return True, if the given key is contained by the black list, false
+	 *         otherwise
+	 */
+	public final boolean isBlackListed(final int resourceId) {
+		return isBlackListed(getActivity().getString(resourceId));
+	}
+
+	/**
+	 * Adds a specific key to the black list, which contains the keys of the
+	 * preferences, whose default values should not be restored.
+	 * 
+	 * @param key
+	 *            The key, which should be added, as a {@link String}. The key
+	 *            may neither null, nor empty
+	 */
+	public final void addKeyToBlackList(final String key) {
+		ensureNotNull(key, "The key may not be null");
+		ensureNotEmpty(key, "The key may not be empty");
+		blackList.add(key);
+	}
+
+	/**
+	 * Adds a specific key to the black list, which contains the keys of the
+	 * preferences, whose default values should not be restored.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the key, which should be added, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void addKeyToBlackList(final int resourceId) {
+		addKeyToBlackList(getActivity().getString(resourceId));
+	}
+
+	/**
+	 * Removes a specific key from the black list, which contains the keys of
+	 * the preferences, whose default values should not be restored.
+	 * 
+	 * @param key
+	 *            The key, which should be removed, as a {@link String}. The key
+	 *            may neither null, nor empty
+	 */
+	public final void removeKeyFromBlackList(final String key) {
+		ensureNotNull(key, "The key may not be null");
+		ensureNotEmpty(key, "The key may not be empty");
+		blackList.remove(key);
+	}
+
+	/**
+	 * Removes a specific key from the black list, which contains the keys of
+	 * the preferences, whose default values should not be restored.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the key, which should be removed, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource
+	 */
+	public final void removeKeyFromBlackList(final int resourceId) {
+		removeKeyFromBlackList(getActivity().getString(resourceId));
+	}
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -513,6 +677,7 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 			handleShowRestoreDefaultsButtonArgument();
 			handleRestoreDisabledPreferencesArgument();
 			handleRestoreDefaultsButtonTextArgument();
+			handleBlackListArgument();
 		}
 	}
 
