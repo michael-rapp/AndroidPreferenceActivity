@@ -17,6 +17,8 @@
  */
 package de.mrapp.android.preference.activity;
 
+import android.preference.Preference;
+
 /**
  * Defines the interface, a class, which should be notified, when the default
  * values of the preferences, which belong to a {@link PreferenceFragment},
@@ -39,6 +41,47 @@ public interface RestoreDefaultsListener {
 	 * @return True, if restoring the preferences' default values should be
 	 *         proceeded, false otherwise
 	 */
-	boolean onRestoreDefaultValues(PreferenceFragment fragment);
+	boolean onRestoreDefaultValuesRequested(PreferenceFragment fragment);
+
+	/**
+	 * The method, which is invoked, when the default value of a specific
+	 * preference, should be restored.
+	 * 
+	 * @param fragment
+	 *            The fragment, the preference, whose default value should be
+	 *            restored, belongs to, as an instance of the class
+	 *            {@link PreferenceFragment}
+	 * @param preference
+	 *            The preference, whose default value should be restored, as an
+	 *            instance of the class {@link Preference}
+	 * @param currentValue
+	 *            The current value of the preference, whose default value
+	 *            should be restored, as an instance of the class {@link Object}
+	 * @return True, if restoring the preference's default value should be
+	 *         proceeded, false otherwise
+	 */
+	boolean onRestoreDefaultValueRequested(PreferenceFragment fragment,
+			Preference preference, Object currentValue);
+
+	/**
+	 * The method, which is invoked, when the default value of a specific
+	 * preference has been restored.
+	 * 
+	 * @param fragment
+	 *            The fragment, the preference, whose default value has been
+	 *            restored, belongs to, as an instance of the class
+	 *            {@link PreferenceFragment}
+	 * @param preference
+	 *            The preference, whose default value has been restored, as an
+	 *            instance of the class {@link Preference}
+	 * @param oldValue
+	 *            The old value of the preference, whose default value has been
+	 *            restored, as an instance of the class {@link Object}
+	 * @param newValue
+	 *            The new value of the preference, whose default value has been
+	 *            restored, as an instance of the class {@link Object}
+	 */
+	void onRestoredDefaultValue(PreferenceFragment fragment,
+			Preference preference, Object oldValue, Object newValue);
 
 }
