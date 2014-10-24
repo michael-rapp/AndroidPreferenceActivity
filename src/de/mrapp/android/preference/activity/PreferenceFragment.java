@@ -18,9 +18,7 @@
 package de.mrapp.android.preference.activity;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotEmpty;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -54,22 +52,6 @@ public abstract class PreferenceFragment extends
 	 * the preferences' default values.
 	 */
 	public static final String EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON = "extra_prefs_show_restore_defaults_button";
-
-	/**
-	 * When attaching this fragment to an activity and using
-	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
-	 * specified to define, whether the default buttons of disabled preferences
-	 * should also be restored, or not.
-	 */
-	public static final String EXTRA_RESTORE_DISABLED_PREFERENCES = "extra_prefs_restore_disabled_preferences";
-
-	/**
-	 * When attaching this fragment to an activity and using
-	 * <code>EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON</code>, this extra can also be
-	 * specified to supply a black list, which contains the keys of the
-	 * preferences whose default values should not be restored.
-	 */
-	public static final String EXTRA_BLACK_LIST = "extra_prefs_black_list";
 
 	/**
 	 * When attaching this fragment to an activity and using
@@ -109,22 +91,10 @@ public abstract class PreferenceFragment extends
 	private int buttonBarSeparatorColor;
 
 	/**
-	 * True, if the default values of preferences, which are currently disabled,
-	 * should also be restored when clicking the appropriate button.
-	 */
-	private boolean restoreDisabledPreferences;
-
-	/**
 	 * A set, which contains the listeners, which should be notified, when the
 	 * preferences' default values should be restored.
 	 */
 	private Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<RestoreDefaultsListener>();
-
-	/**
-	 * A set, which contains the keys of the preferences whose default values
-	 * should not be restored.
-	 */
-	private Set<String> blackList = new LinkedHashSet<String>();
 
 	/**
 	 * Inflates the view group, which contains the button, which allows to
@@ -156,7 +126,7 @@ public abstract class PreferenceFragment extends
 
 			@Override
 			public void onClick(final View v) {
-				if (notifyOnRestoreDefaultValues()) {
+				if (notifyOnRestoreDefaultValuesRequested()) {
 					restoreDefaults();
 				}
 			}
@@ -204,13 +174,19 @@ public abstract class PreferenceFragment extends
 			if (preference instanceof PreferenceGroup) {
 				restoreDefaults((PreferenceGroup) preference, sharedPreferences);
 			} else if (preference.getKey() != null
-					&& !preference.getKey().isEmpty()
-					&& !isBlackListed(preference.getKey())
-					&& (areDisabledPreferencesRestored() || preference
-							.isEnabled())) {
-				sharedPreferences.edit().remove(preference.getKey()).commit();
-				preferenceGroup.removePreference(preference);
-				preferenceGroup.addPreference(preference);
+					&& !preference.getKey().isEmpty()) {
+				Object oldValue = sharedPreferences.getAll().get(
+						preference.getKey());
+
+				if (notifyOnRestoreDefaultValueRequested(preference, oldValue)) {
+					sharedPreferences.edit().remove(preference.getKey())
+							.commit();
+					preferenceGroup.removePreference(preference);
+					preferenceGroup.addPreference(preference);
+					Object newValue = sharedPreferences.getAll().get(
+							preference.getKey());
+					notifyOnRestoredDefaultValue(preference, oldValue, newValue);
+				}
 			}
 		}
 	}
@@ -222,14 +198,61 @@ public abstract class PreferenceFragment extends
 	 * @return True, if restoring the preferences' default values should be
 	 *         proceeded, false otherwise
 	 */
-	private boolean notifyOnRestoreDefaultValues() {
+	private boolean notifyOnRestoreDefaultValuesRequested() {
 		boolean result = true;
 
 		for (RestoreDefaultsListener listener : restoreDefaultsListeners) {
-			result &= listener.onRestoreDefaultValues(this);
+			result &= listener.onRestoreDefaultValuesRequested(this);
 		}
 
 		return result;
+	}
+
+	/**
+	 * Notifies all registered listeners, that the default value of a specific
+	 * preference should be restored.
+	 * 
+	 * @param preference
+	 *            The preference, whose default value should be restored, as an
+	 *            instance of the class {@link Preference}
+	 * @param currentValue
+	 *            The current value of the preference, whose default value
+	 *            should be restored, as an instance of the class {@link Object}
+	 * @return True, if restoring the preference's default value should be
+	 *         proceeded, false otherwise
+	 */
+	private boolean notifyOnRestoreDefaultValueRequested(
+			final Preference preference, final Object currentValue) {
+		boolean result = true;
+
+		for (RestoreDefaultsListener listener : restoreDefaultsListeners) {
+			result &= listener.onRestoreDefaultValueRequested(this, preference,
+					currentValue);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Notifies all registered listeners, that the default value of a specific
+	 * preference has been be restored.
+	 * 
+	 * @param preference
+	 *            The preference, whose default value has been restored, as an
+	 *            instance of the class {@link Preference}
+	 * @param oldValue
+	 *            The old value of the preference, whose default value has been
+	 *            restored, as an instance of the class {@link Object}
+	 * @param newValue
+	 *            The new value of the preference, whose default value has been
+	 *            restored, as an instance of the class {@link Object}
+	 */
+	private void notifyOnRestoredDefaultValue(final Preference preference,
+			final Object oldValue, final Object newValue) {
+		for (RestoreDefaultsListener listener : restoreDefaultsListeners) {
+			listener.onRestoredDefaultValue(this, preference, oldValue,
+					newValue);
+		}
 	}
 
 	/**
@@ -248,20 +271,6 @@ public abstract class PreferenceFragment extends
 
 	/**
 	 * Handles the extra of the arguments, which have been passed to the
-	 * fragment, that allows to specify, whether the default values of disabled
-	 * preference should also be restored, or not.
-	 */
-	private void handleRestoreDisabledPreferencesArgument() {
-		boolean restoreDisabled = getArguments().getBoolean(
-				EXTRA_RESTORE_DISABLED_PREFERENCES, true);
-
-		if (!restoreDisabled) {
-			setRestoreDisabledPreferences(false);
-		}
-	}
-
-	/**
-	 * Handles the extra of the arguments, which have been passed to the
 	 * fragment, that allows to specify a custom text for the button, which
 	 * allows to restore the preferences' default values.
 	 */
@@ -270,21 +279,6 @@ public abstract class PreferenceFragment extends
 
 		if (!TextUtils.isEmpty(buttonText)) {
 			setRestoreDefaultsButtonText(buttonText);
-		}
-	}
-
-	/**
-	 * Handles the extra of the arguments, which have been passed to the
-	 * fragment, that allows to specify a lack list, which contains the keys of
-	 * the preferences, whose default values should not be restored.
-	 */
-	private void handleBlackListArgument() {
-		CharSequence[] keys = getCharSequenceArrayFromArguments(EXTRA_BLACK_LIST);
-
-		if (keys != null) {
-			for (CharSequence key : keys) {
-				addKeyToBlackList(key.toString());
-			}
 		}
 	}
 
@@ -312,39 +306,6 @@ public abstract class PreferenceFragment extends
 		}
 
 		return charSequence;
-	}
-
-	/**
-	 * Returns the char sequence array, which is specified by a specific extra
-	 * of the arguments, which have been passed to the fragment. The char
-	 * sequences, which are contained by the array, can either be specified as a
-	 * string or as a resource id.
-	 * 
-	 * @param name
-	 *            The name of the extra, which specifies the char sequence
-	 *            array, as a {@link String}
-	 * @return The char sequence array, which is specified by the arguments, as
-	 *         an array of the class {@link CharSequence} or null, if the
-	 *         arguments do not specify a char sequence array with the given
-	 *         name
-	 */
-	private CharSequence[] getCharSequenceArrayFromArguments(final String name) {
-		CharSequence[] charSequences = getArguments()
-				.getCharSequenceArray(name);
-
-		if (charSequences == null) {
-			int[] resourceIds = getArguments().getIntArray(name);
-
-			if (resourceIds != null) {
-				charSequences = new CharSequence[resourceIds.length];
-
-				for (int i = 0; i < resourceIds.length; i++) {
-					charSequences[i] = getActivity().getString(resourceIds[i]);
-				}
-			}
-		}
-
-		return charSequences;
 	}
 
 	/**
@@ -418,32 +379,6 @@ public abstract class PreferenceFragment extends
 			buttonBarSeparator = null;
 			restoreDefaultsButton = null;
 		}
-	}
-
-	/**
-	 * Returns, whether the default values of preferences, which are currently
-	 * disabled, are also restored when clicking the appropriate button.
-	 * 
-	 * @return True, if the default values of preferences, which are currently
-	 *         disabled, are also restored when clicking the appropriate button,
-	 *         false otherwise
-	 */
-	public final boolean areDisabledPreferencesRestored() {
-		return restoreDisabledPreferences;
-	}
-
-	/**
-	 * Sets, whether the default values of preferences, which are currently
-	 * disabled, should also be restored when clicking the appropriate button.
-	 * 
-	 * @param restoreDisabledPreferences
-	 *            True, if the default values of preferences, which are
-	 *            currently disabled, should also be restored when clicking the
-	 *            appropriate button, false otherwise
-	 */
-	public final void setRestoreDisabledPreferences(
-			final boolean restoreDisabledPreferences) {
-		this.restoreDisabledPreferences = restoreDisabledPreferences;
 	}
 
 	/**
@@ -568,115 +503,15 @@ public abstract class PreferenceFragment extends
 		return setRestoreDefaultsButtonText(getText(resourceId));
 	}
 
-	/**
-	 * Returns the black list, which contains the keys of the preferences, whose
-	 * default values should not be restored.
-	 * 
-	 * @return The black list, which contains the keys of the preferences, whose
-	 *         default values should not be restored, as an instance of the type
-	 *         {@link Collection} or an empty collection, if the black list is
-	 *         empty
-	 */
-	public final Collection<String> getBlackList() {
-		return blackList;
-	}
-
-	/**
-	 * Returns, whether a specific key is contained by the black list, which
-	 * contains the keys of the preferences, whose default values should not be
-	 * restored.
-	 * 
-	 * @param key
-	 *            The key, which should be checked, as a {@link String}
-	 * @return True, if the given key is contained by the black list, false
-	 *         otherwise
-	 */
-	public final boolean isBlackListed(final String key) {
-		return blackList.contains(key);
-	}
-
-	/**
-	 * Returns, whether a specific key is contained by the black list, which
-	 * contains the keys of the preferences, whose default values should not be
-	 * restored.
-	 * 
-	 * @param resourceId
-	 *            The resource id of the key, which should be checked, as an
-	 *            {@link Integer} value. The resource id must correspond to a
-	 *            valid string resource
-	 * @return True, if the given key is contained by the black list, false
-	 *         otherwise
-	 */
-	public final boolean isBlackListed(final int resourceId) {
-		return isBlackListed(getActivity().getString(resourceId));
-	}
-
-	/**
-	 * Adds a specific key to the black list, which contains the keys of the
-	 * preferences, whose default values should not be restored.
-	 * 
-	 * @param key
-	 *            The key, which should be added, as a {@link String}. The key
-	 *            may neither null, nor empty
-	 */
-	public final void addKeyToBlackList(final String key) {
-		ensureNotNull(key, "The key may not be null");
-		ensureNotEmpty(key, "The key may not be empty");
-		blackList.add(key);
-	}
-
-	/**
-	 * Adds a specific key to the black list, which contains the keys of the
-	 * preferences, whose default values should not be restored.
-	 * 
-	 * @param resourceId
-	 *            The resource id of the key, which should be added, as an
-	 *            {@link Integer} value. The resource id must correspond to a
-	 *            valid string resource
-	 */
-	public final void addKeyToBlackList(final int resourceId) {
-		addKeyToBlackList(getActivity().getString(resourceId));
-	}
-
-	/**
-	 * Removes a specific key from the black list, which contains the keys of
-	 * the preferences, whose default values should not be restored.
-	 * 
-	 * @param key
-	 *            The key, which should be removed, as a {@link String}. The key
-	 *            may neither null, nor empty
-	 */
-	public final void removeKeyFromBlackList(final String key) {
-		ensureNotNull(key, "The key may not be null");
-		ensureNotEmpty(key, "The key may not be empty");
-		blackList.remove(key);
-	}
-
-	/**
-	 * Removes a specific key from the black list, which contains the keys of
-	 * the preferences, whose default values should not be restored.
-	 * 
-	 * @param resourceId
-	 *            The resource id of the key, which should be removed, as an
-	 *            {@link Integer} value. The resource id must correspond to a
-	 *            valid string resource
-	 */
-	public final void removeKeyFromBlackList(final int resourceId) {
-		removeKeyFromBlackList(getActivity().getString(resourceId));
-	}
-
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.buttonBarSeparatorColor = getResources().getColor(
 				R.color.separator);
-		setRestoreDisabledPreferences(true);
 
 		if (getArguments() != null) {
 			handleShowRestoreDefaultsButtonArgument();
-			handleRestoreDisabledPreferencesArgument();
 			handleRestoreDefaultsButtonTextArgument();
-			handleBlackListArgument();
 		}
 	}
 
