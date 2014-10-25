@@ -181,13 +181,16 @@ public abstract class PreferenceFragment extends
 				if (notifyOnRestoreDefaultValueRequested(preference, oldValue)) {
 					sharedPreferences.edit().remove(preference.getKey())
 							.commit();
+					preferenceGroup.removePreference(preference);
+					preferenceGroup.addPreference(preference);
 					Object newValue = sharedPreferences.getAll().get(
 							preference.getKey());
 					notifyOnRestoredDefaultValue(preference, oldValue, newValue);
+				} else {
+					preferenceGroup.removePreference(preference);
+					preferenceGroup.addPreference(preference);
 				}
 
-				preferenceGroup.removePreference(preference);
-				preferenceGroup.addPreference(preference);
 			}
 		}
 	}
