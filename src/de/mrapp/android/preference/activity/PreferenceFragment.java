@@ -186,7 +186,11 @@ public abstract class PreferenceFragment extends
 					Object newValue = sharedPreferences.getAll().get(
 							preference.getKey());
 					notifyOnRestoredDefaultValue(preference, oldValue, newValue);
+				} else {
+					preferenceGroup.removePreference(preference);
+					preferenceGroup.addPreference(preference);
 				}
+
 			}
 		}
 	}
@@ -251,7 +255,7 @@ public abstract class PreferenceFragment extends
 			final Object oldValue, final Object newValue) {
 		for (RestoreDefaultsListener listener : restoreDefaultsListeners) {
 			listener.onRestoredDefaultValue(this, preference, oldValue,
-					newValue);
+					newValue != null ? newValue : oldValue);
 		}
 	}
 
