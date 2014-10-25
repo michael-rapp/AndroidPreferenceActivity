@@ -3,7 +3,7 @@ AndroidPreferenceActivity - RELEASE NOTES
 
 
 Version:        1.2.0
-Release date:   10.24.2014
+Release date:   10.25.2014
 --------------------------
 
 A feature release, which introduces the following functionalities:
