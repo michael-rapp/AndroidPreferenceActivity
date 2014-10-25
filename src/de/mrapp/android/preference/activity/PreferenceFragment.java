@@ -255,7 +255,7 @@ public abstract class PreferenceFragment extends
 			final Object oldValue, final Object newValue) {
 		for (RestoreDefaultsListener listener : restoreDefaultsListeners) {
 			listener.onRestoredDefaultValue(this, preference, oldValue,
-					newValue);
+					newValue != null ? newValue : oldValue);
 		}
 	}
 
