@@ -43,6 +43,7 @@ License along with this program. If not, see
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:textStyle="bold"
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:text="@string/restore_defaults_button_label" />

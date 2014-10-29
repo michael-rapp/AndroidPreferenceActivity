@@ -36,14 +36,15 @@ License along with this program. If not, see
 
         <Button
             android:id="@id/restore_defaults_button"
-            android:textColor="?attr/colorPrimary"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:text="@string/restore_defaults_button_label" />
+            android:text="@string/restore_defaults_button_label"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </LinearLayout>
