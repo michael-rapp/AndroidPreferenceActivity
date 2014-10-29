@@ -29,8 +29,6 @@ import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentBreadCrumbs;
@@ -41,10 +39,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -188,6 +186,11 @@ public abstract class PreferenceActivity extends Activity implements
 	private Bundle savedInstanceState;
 
 	/**
+	 * The toolbar of the activity.
+	 */
+	private Toolbar toolbar;
+
+	/**
 	 * The fragment, which contains the preference headers and provides the
 	 * navigation to each header's fragment.
 	 */
@@ -284,10 +287,11 @@ public abstract class PreferenceActivity extends Activity implements
 	private CharSequence currentShortTitle;
 
 	/**
-	 * True, if the back button of the action bar should be shown, false
-	 * otherwise.
+	 * A pair, which contains the navigation icon of the activity's toolbar,
+	 * which should be shown by default, and whether the icon has already been
+	 * initialized.
 	 */
-	private Boolean displayHomeAsUp;
+	private Pair<Boolean, Drawable> defaultToolbarNavigationIcon;
 
 	/**
 	 * The default title of the activity.
@@ -295,11 +299,17 @@ public abstract class PreferenceActivity extends Activity implements
 	private CharSequence defaultTitle;
 
 	/**
-	 * True, if the behavior of the action bar's back button is overridden to
-	 * return to the navigation when a preference header is currently selected
-	 * on devices with a small screen.
+	 * True, if the behavior of the navigation icon of the activity's toolbar is
+	 * overridden in order to return to the navigation when a preference header
+	 * is currently selected on devices with a small screen.
 	 */
-	private boolean overrideBackButton;
+	private boolean overrideNavigationIcon;
+
+	/**
+	 * The navigation icon of the acitivity's toolbar, which is shown when a
+	 * preference header is selected on devices with a small screen.
+	 */
+	private Drawable toolbarNavigationIcon;
 
 	/**
 	 * True, if the fragment, which provides navigation to each preference
@@ -673,7 +683,7 @@ public abstract class PreferenceActivity extends Activity implements
 			replaceFragment(preferenceScreenFragment,
 					R.id.preference_header_parent,
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			showActionBarBackButton();
+			showToolbarNavigationIcon();
 		}
 	}
 
@@ -715,9 +725,9 @@ public abstract class PreferenceActivity extends Activity implements
 		} else {
 			if (isPreferenceHeaderSelected()) {
 				if (navigationHidden) {
-					hideActionBarBackButton();
+					hideToolbarNavigationIcon();
 				} else {
-					showActionBarBackButton();
+					showToolbarNavigationIcon();
 				}
 			} else if (navigationHidden) {
 				if (getListAdapter() != null && !getListAdapter().isEmpty()) {
@@ -786,49 +796,57 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Shows the back button in the activity's action bar.
+	 * Shows the navigation icon of the activity's toolbar.
 	 */
-	private void showActionBarBackButton() {
-		if (getActionBar() != null && isBackButtonOverridden()
+	private void showToolbarNavigationIcon() {
+		if (isPreferenceHeaderSelected() && isNavigationIconOverridden()
 				&& !isNavigationHidden()
 				&& !(!isSplitScreen() && isButtonBarShown())) {
-			if (displayHomeAsUp == null) {
-				displayHomeAsUp = isDisplayHomeAsUpEnabled();
+			if (defaultToolbarNavigationIcon == null
+					|| !defaultToolbarNavigationIcon.first) {
+				defaultToolbarNavigationIcon = new Pair<Boolean, Drawable>(
+						true, getToolbar().getNavigationIcon());
 			}
 
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getToolbar().setNavigationIcon(getToolbarNavigationIcon());
+			getToolbar().setNavigationOnClickListener(
+					createToolbarNavigationListener());
 		}
 	}
 
 	/**
-	 * Hides the back button in the activity's action bar, if it was not
-	 * previously shown.
-	 */
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-	private void hideActionBarBackButton() {
-		if (getActionBar() != null && displayHomeAsUp != null
-				&& !displayHomeAsUp) {
-			getActionBar().setDisplayHomeAsUpEnabled(false);
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				getActionBar().setHomeButtonEnabled(false);
-			}
-		}
-	}
-
-	/**
-	 * Returns, whether the back button of the action bar is currently shown, or
-	 * not.
+	 * Creates and returns a listener, which allows to navigate using the
+	 * navigation icon of the activity's toolbar.
 	 * 
-	 * @return True, if the back button of the action bar is currently shown,
-	 *         false otherwise
+	 * @return The listener, which has been created, as an instance of the type
+	 *         {@link OnClickListener}
 	 */
-	private boolean isDisplayHomeAsUpEnabled() {
-		if (getActionBar() != null) {
-			return (getActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) == ActionBar.DISPLAY_HOME_AS_UP;
-		}
+	private OnClickListener createToolbarNavigationListener() {
+		return new OnClickListener() {
 
-		return false;
+			@Override
+			public void onClick(final View v) {
+				if (!isSplitScreen() && isPreferenceHeaderSelected()
+						&& isNavigationIconOverridden()
+						&& !isNavigationHidden()
+						&& !(!isSplitScreen() && isButtonBarShown())) {
+					showPreferenceHeaders();
+					hideToolbarNavigationIcon();
+					resetTitle();
+				}
+
+			}
+
+		};
+	}
+
+	/**
+	 * Hides the navigation icon of the activity's toolbar, respectively sets it
+	 * to the previous icon.
+	 */
+	private void hideToolbarNavigationIcon() {
+		getToolbar().setNavigationIcon(defaultToolbarNavigationIcon.second);
+		defaultToolbarNavigationIcon = null;
 	}
 
 	/**
@@ -923,6 +941,16 @@ public abstract class PreferenceActivity extends Activity implements
 
 		savedInstanceState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA,
 				getListAdapter().getAllItems());
+	}
+
+	/**
+	 * Returns the activity's toolbar.
+	 * 
+	 * @return The activity's toolbar as an instance of the class
+	 *         {@link Toolbar}.
+	 */
+	public final Toolbar getToolbar() {
+		return toolbar;
 	}
 
 	/**
@@ -1878,35 +1906,95 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	/**
-	 * Returns, whether the behavior of the action bar's back button is
-	 * overridden to return to the navigation when a preference header is
-	 * currently selected on devices with a small screen, or not.
+	 * Returns, whether the behavior of the navigation icon of the activity's
+	 * toolbar is overridden in order to return to the navigation when a
+	 * preference header is currently selected on devices with a small screen,
+	 * or not.
 	 * 
-	 * @return True, if the behavior of the action bar's back button is
-	 *         overridden, false otherwise
+	 * @return True, if the behavior of the navigation icon is overridden, false
+	 *         otherwise
 	 */
-	public final boolean isBackButtonOverridden() {
-		return overrideBackButton;
+	public final boolean isNavigationIconOverridden() {
+		return overrideNavigationIcon;
 	}
 
 	/**
-	 * Sets, whether the behavior of the action bar's back button should be
-	 * overridden to return to the navigation when a preference header is
-	 * currently selected on devices with a small screen, or not.
+	 * Sets, whether the behavior of the navigation icon of the activity's
+	 * toolbar should be overridden in order to return to the navigation when a
+	 * preference header is currently selected on devices with a small screen,
+	 * or not.
 	 * 
-	 * @param overrideBackButton
-	 *            True, if the behavior of the action bar's back button should
-	 *            be overridden, false otherwise
+	 * @param overrideNavigationIcon
+	 *            True, if the behavior of the navigation icon should be
+	 *            overridden, false otherwise
 	 */
-	public final void overrideBackButton(final boolean overrideBackButton) {
-		this.overrideBackButton = overrideBackButton;
+	public final void overrideNavigationIcon(
+			final boolean overrideNavigationIcon) {
+		this.overrideNavigationIcon = overrideNavigationIcon;
 
 		if (isPreferenceHeaderSelected()) {
-			if (overrideBackButton) {
-				showActionBarBackButton();
+			if (overrideNavigationIcon) {
+				showToolbarNavigationIcon();
 			} else {
-				hideActionBarBackButton();
+				hideToolbarNavigationIcon();
 			}
+		}
+	}
+
+	/**
+	 * Returns the navigation icon of the acitivity's toolbar, which is shown
+	 * when a preference header is selected on devices with a small screen.
+	 * 
+	 * @return The navigation icon, which is shown when a preference header is
+	 *         selected on devices with a small screen, as an instance of the
+	 *         class {@link Drawable}
+	 */
+	public final Drawable getToolbarNavigationIcon() {
+		return toolbarNavigationIcon;
+	}
+
+	/**
+	 * Sets the navigation icon of the activity's toolbar, which should be shown
+	 * when a preference header is selected on devices with a small screen.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the icon, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 */
+	public final void setToolbarNavigationIcon(final int resourceId) {
+		setToolbarNavigationIcon(getResources().getDrawable(resourceId));
+	}
+
+	/**
+	 * Sets the navigation icon of the activity's toolbar, which should be shown
+	 * when a preference header is selected on devices with a small screen.
+	 * 
+	 * @param icon
+	 *            The icon, which should be set, as an instance of the class
+	 *            {@link Drawable}. The icon may not be null
+	 */
+	public final void setToolbarNavigationIcon(final Drawable icon) {
+		ensureNotNull(icon, "The icon may not be null");
+		this.toolbarNavigationIcon = icon;
+		showToolbarNavigationIcon();
+	}
+
+	@Override
+	public final void setTitle(final CharSequence title) {
+		super.setTitle(title);
+
+		if (getToolbar() != null) {
+			getToolbar().setTitle(title);
+		}
+	}
+
+	@Override
+	public final void setTitle(final int resourceId) {
+		super.setTitle(resourceId);
+
+		if (getToolbar() != null) {
+			getToolbar().setTitle(resourceId);
 		}
 	}
 
@@ -1965,7 +2053,7 @@ public abstract class PreferenceActivity extends Activity implements
 		} else {
 			if (currentHeader == preferenceHeader) {
 				showPreferenceHeaders();
-				hideActionBarBackButton();
+				hideToolbarNavigationIcon();
 				resetTitle();
 			}
 
@@ -2003,7 +2091,7 @@ public abstract class PreferenceActivity extends Activity implements
 					&& !isNavigationHidden()
 					&& !(!isSplitScreen() && isButtonBarShown())) {
 				showPreferenceHeaders();
-				hideActionBarBackButton();
+				hideToolbarNavigationIcon();
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
@@ -2019,32 +2107,13 @@ public abstract class PreferenceActivity extends Activity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(final MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			if (!isSplitScreen() && isPreferenceHeaderSelected()
-					&& isBackButtonOverridden() && !isNavigationHidden()
-					&& !(!isSplitScreen() && isButtonBarShown())) {
-				showPreferenceHeaders();
-				hideActionBarBackButton();
-				resetTitle();
-				return true;
-			} else if (isButtonBarShown()) {
-				if (notifyOnSkip()) {
-					return super.onOptionsItemSelected(item);
-				}
-
-				return true;
-			}
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.savedInstanceState = savedInstanceState;
 		setContentView(R.layout.preference_activity);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.setVisibility(View.VISIBLE);
+		toolbar.setTitle(getTitle());
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
@@ -2059,9 +2128,10 @@ public abstract class PreferenceActivity extends Activity implements
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
-		overrideBackButton(true);
+		overrideNavigationIcon(true);
 		setBreadCrumbSeparatorColor(getResources().getColor(R.color.separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
+		setToolbarNavigationIcon(R.drawable.back_icon_black);
 		showPreferenceHeaders();
 	}
 
