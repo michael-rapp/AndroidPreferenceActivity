@@ -37,6 +37,7 @@ License along with this program. If not, see
 
         <Button
             android:id="@id/back_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="@dimen/button_bar_button_width"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -44,10 +45,12 @@ License along with this program. If not, see
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:text="@string/back_button_label" />
+            android:text="@string/back_button_label"
+            android:textColor="?attr/colorPrimary" />
 
         <Button
             android:id="@id/next_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="@dimen/button_bar_button_width"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -55,10 +58,12 @@ License along with this program. If not, see
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:text="@string/next_button_label" />
+            android:text="@string/next_button_label"
+            android:textColor="?attr/colorPrimary" />
 
         <Button
             android:id="@id/finish_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="@dimen/button_bar_button_width"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -67,6 +72,7 @@ License along with this program. If not, see
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:text="@string/finish_button_label"
+            android:textColor="?attr/colorPrimary"
             android:visibility="gone" />
     </RelativeLayout>
 

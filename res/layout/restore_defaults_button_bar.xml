@@ -36,6 +36,8 @@ License along with this program. If not, see
 
         <Button
             android:id="@id/restore_defaults_button"
+            android:textColor="?attr/colorPrimary"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
