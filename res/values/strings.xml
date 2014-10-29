@@ -19,9 +19,9 @@ License along with this program. If not, see
 -->
 <resources>
 
-    <string name="back_button_label">Back</string>
-    <string name="next_button_label">Next</string>
-    <string name="finish_button_label">Finish</string>
-    <string name="restore_defaults_button_label">Restore defaults</string>
+    <string name="back_button_label">BACK</string>
+    <string name="next_button_label">NEXT</string>
+    <string name="finish_button_label">FINISH</string>
+    <string name="restore_defaults_button_label">RESTORE DEFAULTS</string>
 
 </resources>
