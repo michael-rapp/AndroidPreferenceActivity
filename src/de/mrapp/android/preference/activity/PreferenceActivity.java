@@ -188,6 +188,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private Bundle savedInstanceState;
 
 	/**
+	 * The view, which is used to visualize a large toolbar on devices with a
+	 * large screen.
+	 */
+	private ToolbarLarge toolbarLarge;
+
+	/**
 	 * The fragment, which contains the preference headers and provides the
 	 * navigation to each header's fragment.
 	 */
@@ -337,8 +343,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * when the user navigates within the activity, if it used as a wizard.
 	 */
 	private Set<WizardListener> wizardListeners = new LinkedHashSet<WizardListener>();
-
-	private ToolbarLarge toolbarLarge;
 
 	/**
 	 * Initializes the action bar's toolbar.
@@ -1674,6 +1678,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
 			getShadowView().setBackgroundDrawable(gradient);
+			toolbarLarge.setShadowColor(shadowColor);
 			return true;
 		}
 
@@ -1714,6 +1719,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			getShadowView().getLayoutParams().width = convertDpToPixels(this,
 					width);
 			getShadowView().requestLayout();
+			toolbarLarge.setShadowWidth(width);
 			return true;
 		}
 
