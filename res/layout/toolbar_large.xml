@@ -35,6 +35,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="104dp"
                     android:layout_marginStart="104dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="?android:attr/textColorPrimary" />
 
