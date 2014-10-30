@@ -29,8 +29,8 @@ License along with this program. If not, see
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:visibility="gone"
-        app:popupTheme="?attr/actionBarPopupTheme"
-        app:theme="?attr/actionBarTheme" />
+        app:popupTheme="?attr/toolbarPopupTheme"
+        app:theme="?attr/toolbarTheme" />
 
     <RelativeLayout
         android:id="@id/preference_header_parent"
