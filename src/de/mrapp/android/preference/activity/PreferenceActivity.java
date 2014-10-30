@@ -187,11 +187,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private Bundle savedInstanceState;
 
 	/**
-	 * The toolbar of the activity.
-	 */
-	private Toolbar toolbar;
-
-	/**
 	 * The fragment, which contains the preference headers and provides the
 	 * navigation to each header's fragment.
 	 */
@@ -346,7 +341,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * Initializes the action bar's toolbar.
 	 */
 	private void initializeToolbar() {
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		toolbar.setVisibility(View.VISIBLE);
 		toolbar.setTitle(getTitle());
 
@@ -2058,6 +2053,18 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public final void setTitle(final CharSequence title) {
+		super.setTitle(title);
+		getSupportActionBar().setTitle(title);
+	}
+
+	@Override
+	public final void setTitle(final int resourceId) {
+		super.setTitle(resourceId);
+		getSupportActionBar().setTitle(resourceId);
 	}
 
 	@Override
