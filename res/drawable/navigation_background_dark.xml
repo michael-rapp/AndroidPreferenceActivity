@@ -26,7 +26,7 @@ License along with this program. If not, see
     </item>
     <item android:right="1dp">
         <shape android:shape="rectangle" >
-            <solid android:color="@color/background_dark" />
+            <solid android:color="@color/navigation_background_dark" />
         </shape>
     </item>
 

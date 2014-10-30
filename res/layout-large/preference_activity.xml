@@ -50,6 +50,7 @@ License along with this program. If not, see
                 android:id="@id/preference_screen_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/preference_screen_background_light"
                 android:orientation="vertical"
                 android:paddingEnd="@dimen/preference_screen_horizontal_padding"
                 android:paddingStart="@dimen/preference_screen_horizontal_padding" >

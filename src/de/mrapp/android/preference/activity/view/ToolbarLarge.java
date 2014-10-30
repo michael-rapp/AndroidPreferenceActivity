@@ -17,8 +17,13 @@
  */
 package de.mrapp.android.preference.activity.view;
 
+import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
+import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -31,10 +36,15 @@ public class ToolbarLarge extends FrameLayout {
 
 	private TextView titleTextView;
 
+	private View shadowView;
+
+	private int shadowColor;
+
 	private void inflate() {
 		inflate(getContext(), R.layout.toolbar_large, this);
 		this.backgroundView = findViewById(R.id.toolbar_background);
 		this.titleTextView = (TextView) findViewById(R.id.title);
+		this.shadowView = findViewById(R.id.toolbar_shadow_view);
 	}
 
 	private void obtainStyledAttributes(final Context context,
@@ -95,6 +105,10 @@ public class ToolbarLarge extends FrameLayout {
 		obtainStyledAttributes(context, attributeSet);
 	}
 
+	public final CharSequence getTitle() {
+		return titleTextView.getText();
+	}
+
 	public final void setTitle(final CharSequence title) {
 		titleTextView.setText(title);
 	}
@@ -103,8 +117,28 @@ public class ToolbarLarge extends FrameLayout {
 		titleTextView.setText(resourceId);
 	}
 
-	public final CharSequence getTitle() {
-		return titleTextView.getText();
+	public final int getShadowColor() {
+		return shadowColor;
+	}
+
+	@SuppressWarnings("deprecation")
+	public final void setShadowColor(final int shadowColor) {
+		this.shadowColor = shadowColor;
+		GradientDrawable gradient = new GradientDrawable(
+				Orientation.LEFT_RIGHT, new int[] { shadowColor,
+						Color.TRANSPARENT });
+		shadowView.setBackgroundDrawable(gradient);
+	}
+
+	public final int getShadowWidth() {
+		return convertPixelsToDp(getContext(),
+				shadowView.getLayoutParams().width);
+	}
+
+	public final void setShadowWidth(final int width) {
+		shadowView.getLayoutParams().width = convertDpToPixels(getContext(),
+				width);
+		shadowView.requestLayout();
 	}
 
 }
