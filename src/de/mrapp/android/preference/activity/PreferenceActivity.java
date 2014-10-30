@@ -341,17 +341,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * Initializes the action bar's toolbar.
 	 */
 	private void initializeToolbar() {
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		toolbar.setVisibility(View.VISIBLE);
-		toolbar.setTitle(getTitle());
-
-		try {
+		if (getSupportActionBar() == null) {
+			Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+			toolbar.setVisibility(View.VISIBLE);
+			toolbar.setTitle(getTitle());
 			setSupportActionBar(toolbar);
-		} catch (IllegalStateException e) {
-			throw new IllegalStateException("The theme of the activity "
-					+ getClass().getName()
-					+ " must be set to \"Theme.AppCompat.NoActionBar\""
-					+ " or \"Theme.AppComat.Light.NoActionBar", e);
 		}
 	}
 
