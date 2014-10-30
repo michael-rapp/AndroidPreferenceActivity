@@ -24,7 +24,8 @@ License along with this program. If not, see
     <color name="background_light">#ffeeeeee</color>
     <color name="background_dark">#ff202020</color>
     <color name="shadow">#22000000</color>
-    <color name="selection">#ff0099cc</color>
-    <color name="separator">#ff404040</color>
+    <color name="selection">#20000000</color>
+    <color name="separator">#20000000</color>
+    <color name="overlay">#20000000</color>
 
 </resources>
