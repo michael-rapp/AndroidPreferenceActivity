@@ -21,6 +21,7 @@
             android:orientation="horizontal" >
 
             <RelativeLayout
+                android:id="@+id/left_container"
                 android:layout_width="@dimen/default_navigation_width"
                 android:layout_height="match_parent"
                 android:layout_marginTop="64dp"
@@ -37,8 +38,8 @@
                     android:layout_marginStart="104dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="34sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -48,6 +49,7 @@
             </RelativeLayout>
 
             <FrameLayout
+                android:id="@+id/rightcontainer"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -58,11 +60,32 @@
                     android:layout_height="match_parent"
                     android:background="@color/overlay" />
 
-                <View
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:background="@color/border" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="64dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="Introduction"
+                        android:textColor="#ffffffff"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/border" />
+                </RelativeLayout>
 
                 <View
                     android:id="@id/toolbar_shadow_view"

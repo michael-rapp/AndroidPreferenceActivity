@@ -1893,6 +1893,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			getPreferenceHeaderParentView().getLayoutParams().width = convertDpToPixels(
 					this, width);
 			getPreferenceHeaderParentView().requestLayout();
+			toolbarLarge.setNavigationWidth(width);
 			return true;
 		}
 
