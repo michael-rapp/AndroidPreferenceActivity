@@ -27,5 +27,8 @@ License along with this program. If not, see
         <attr name="android:icon" />
         <attr name="android:fragment" />
     </declare-styleable>
+    <declare-styleable name="PreferenceActivity">
+        <attr name="toolbarStyle" />
+    </declare-styleable>
 
 </resources>
