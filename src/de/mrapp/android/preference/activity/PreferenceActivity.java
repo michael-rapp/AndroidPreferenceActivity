@@ -57,6 +57,7 @@ import de.mrapp.android.preference.activity.fragment.FragmentListener;
 import de.mrapp.android.preference.activity.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
 import de.mrapp.android.preference.activity.util.VisibleForTesting;
+import de.mrapp.android.preference.activity.view.ToolbarLarge;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences,
@@ -337,15 +338,24 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	private Set<WizardListener> wizardListeners = new LinkedHashSet<WizardListener>();
 
+	private ToolbarLarge toolbarLarge;
+
 	/**
 	 * Initializes the action bar's toolbar.
 	 */
 	private void initializeToolbar() {
 		if (getSupportActionBar() == null) {
 			Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-			toolbar.setVisibility(View.VISIBLE);
-			toolbar.setTitle(getTitle());
+
+			if (isSplitScreen()) {
+				toolbarLarge = (ToolbarLarge) findViewById(R.id.toolbar_large);
+				toolbarLarge.setVisibility(View.VISIBLE);
+			} else {
+				toolbar.setVisibility(View.VISIBLE);
+			}
+
 			setSupportActionBar(toolbar);
+			setTitle(getTitle());
 		}
 	}
 
@@ -2052,13 +2062,23 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	@Override
 	public final void setTitle(final CharSequence title) {
 		super.setTitle(title);
-		getSupportActionBar().setTitle(title);
+		if (isSplitScreen()) {
+			toolbarLarge.setTitle(title);
+			getSupportActionBar().setTitle(null);
+		} else {
+			getSupportActionBar().setTitle(title);
+		}
 	}
 
 	@Override
 	public final void setTitle(final int resourceId) {
 		super.setTitle(resourceId);
-		getSupportActionBar().setTitle(resourceId);
+		if (isSplitScreen()) {
+			toolbarLarge.setTitle(resourceId);
+			getSupportActionBar().setTitle(null);
+		} else {
+			getSupportActionBar().setTitle(resourceId);
+		}
 	}
 
 	@Override
@@ -2066,7 +2086,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		this.savedInstanceState = savedInstanceState;
 		setContentView(R.layout.preference_activity);
-		initializeToolbar();
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
@@ -2081,6 +2100,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
+		initializeToolbar();
 		overrideNavigationIcon(true);
 		setBreadCrumbSeparatorColor(getResources().getColor(R.color.separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
