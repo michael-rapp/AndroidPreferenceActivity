@@ -17,6 +17,8 @@
  */
 package de.mrapp.android.preference.activity.view;
 
+import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
+import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 import android.content.Context;
@@ -40,11 +42,14 @@ public class ToolbarLarge extends FrameLayout {
 
 	private int shadowColor;
 
+	private View leftContainer;
+
 	private void inflate() {
 		inflate(getContext(), R.layout.toolbar_large, this);
 		this.backgroundView = findViewById(R.id.toolbar_background);
 		this.titleTextView = (TextView) findViewById(R.id.title);
 		this.shadowView = findViewById(R.id.toolbar_shadow_view);
+		this.leftContainer = findViewById(R.id.left_container);
 	}
 
 	private void obtainStyledAttributes(final Context context,
@@ -117,6 +122,18 @@ public class ToolbarLarge extends FrameLayout {
 		titleTextView.setText(resourceId);
 	}
 
+	public final int getNavigationWidth() {
+		return convertPixelsToDp(getContext(),
+				leftContainer.getLayoutParams().width);
+	}
+
+	public final void setNavigationWidth(final int width) {
+		ensureGreaterThan(width, 0, "The width must be greater than 0");
+		leftContainer.getLayoutParams().width = convertDpToPixels(getContext(),
+				width);
+		leftContainer.requestLayout();
+	}
+
 	public final int getShadowColor() {
 		return shadowColor;
 	}
@@ -136,6 +153,7 @@ public class ToolbarLarge extends FrameLayout {
 	}
 
 	public final void setShadowWidth(final int width) {
+		ensureAtLeast(width, 0, "The width must be at least 0");
 		shadowView.getLayoutParams().width = convertDpToPixels(getContext(),
 				width);
 		shadowView.requestLayout();
