@@ -1931,18 +1931,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public final void setTitle(final CharSequence title) {
-		super.setTitle(title);
-		toolbar.setTitle(title);
-	}
-
-	@Override
-	public final void setTitle(final int resourceId) {
-		super.setTitle(resourceId);
-		toolbar.setTitle(resourceId);
-	}
-
-	@Override
 	public final void onItemClick(final AdapterView<?> parent, final View view,
 			final int position, final long id) {
 		showPreferenceScreen(getListAdapter().getItem(position), null);
