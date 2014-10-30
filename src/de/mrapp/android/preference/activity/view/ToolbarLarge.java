@@ -29,6 +29,7 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.mrapp.android.preference.activity.R;
 
@@ -42,14 +43,14 @@ public class ToolbarLarge extends FrameLayout {
 
 	private int shadowColor;
 
-	private View leftContainer;
+	private View overlayView;
 
 	private void inflate() {
 		inflate(getContext(), R.layout.toolbar_large, this);
 		this.backgroundView = findViewById(R.id.toolbar_background);
 		this.titleTextView = (TextView) findViewById(R.id.title);
 		this.shadowView = findViewById(R.id.toolbar_shadow_view);
-		this.leftContainer = findViewById(R.id.left_container);
+		this.overlayView = findViewById(R.id.overlay);
 	}
 
 	private void obtainStyledAttributes(final Context context,
@@ -123,15 +124,17 @@ public class ToolbarLarge extends FrameLayout {
 	}
 
 	public final int getNavigationWidth() {
-		return convertPixelsToDp(getContext(),
-				leftContainer.getLayoutParams().width);
+		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
+				.getLayoutParams();
+		return convertPixelsToDp(getContext(), layoutParams.leftMargin);
 	}
 
 	public final void setNavigationWidth(final int width) {
 		ensureGreaterThan(width, 0, "The width must be greater than 0");
-		leftContainer.getLayoutParams().width = convertDpToPixels(getContext(),
-				width);
-		leftContainer.requestLayout();
+		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
+				.getLayoutParams();
+		layoutParams.leftMargin = convertDpToPixels(getContext(), width);
+		overlayView.requestLayout();
 	}
 
 	public final int getShadowColor() {
