@@ -19,6 +19,9 @@ License along with this program. If not, see
 -->
 <resources>
 
+    <attr name="toolbarTheme" format="reference" />
+    <attr name="toolbarPopupTheme" format="reference" />
+
     <declare-styleable name="PreferenceHeader">
         <attr name="android:title" />
         <attr name="android:summary" />
