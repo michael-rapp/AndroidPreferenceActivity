@@ -844,7 +844,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *         currently shown, false otherwise
 	 */
 	private boolean isDisplayHomeAsUpEnabled() {
-		if (getActionBar() != null) {
+		if (getSupportActionBar() != null) {
 			return (getSupportActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) == ActionBar.DISPLAY_HOME_AS_UP;
 		}
 
