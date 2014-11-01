@@ -48,7 +48,9 @@ License along with this program. If not, see
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/preference_padding"
+        android:paddingTop="@dimen/preference_padding" >
 
         <TextView
             android:id="@android:id/title"
