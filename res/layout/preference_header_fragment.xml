@@ -22,7 +22,5 @@ License along with this program. If not, see
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
     android:paddingBottom="@dimen/preference_header_vertical_padding"
     android:paddingTop="@dimen/preference_header_vertical_padding" />
