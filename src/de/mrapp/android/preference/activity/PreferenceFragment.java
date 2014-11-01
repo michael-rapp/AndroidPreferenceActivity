@@ -33,6 +33,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a
@@ -95,6 +97,16 @@ public abstract class PreferenceFragment extends
 	 * preferences' default values should be restored.
 	 */
 	private Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<RestoreDefaultsListener>();
+
+	/**
+	 * Initializes the list view, which is used to show the fragment's
+	 * preferences.
+	 */
+	private void initializeListView() {
+		ListView preferenceListView = (ListView) layout
+				.findViewById(android.R.id.list);
+		preferenceListView.setPadding(0, 0, 0, 0);
+	}
 
 	/**
 	 * Inflates the view group, which contains the button, which allows to
@@ -191,6 +203,32 @@ public abstract class PreferenceFragment extends
 					preferenceGroup.addPreference(preference);
 				}
 
+			}
+		}
+	}
+
+	/**
+	 * Applies Material style on all preferences, which are contained by a
+	 * specific preference group, and on the group itself.
+	 * 
+	 * @param preferenceGroup
+	 *            The preference group, at whose preferences the Material style
+	 *            should be applied on, as an instance of the class
+	 *            {@link PreferenceGroup}
+	 * @param decorator
+	 *            The decorator, which should be used to apply the Material
+	 *            style, as an instance of the class {@link PreferenceDecorator}
+	 */
+	private void applyMaterialStyle(final PreferenceGroup preferenceGroup,
+			final PreferenceDecorator decorator) {
+		for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
+			Preference preference = preferenceGroup.getPreference(i);
+
+			if (preference instanceof PreferenceGroup) {
+				decorator.applyDecorator(preference);
+				applyMaterialStyle((PreferenceGroup) preference, decorator);
+			} else {
+				decorator.applyDecorator(preference);
 			}
 		}
 	}
@@ -524,9 +562,20 @@ public abstract class PreferenceFragment extends
 			final ViewGroup container, final Bundle savedInstanceState) {
 		layout = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
+		initializeListView();
 		addRestoreDefaultsButtonBar();
 		setButtonBarSeparatorColor(buttonBarSeparatorColor);
 		return layout;
+	}
+
+	@Override
+	public final void addPreferencesFromResource(final int resourceId) {
+		super.addPreferencesFromResource(resourceId);
+		PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
+
+		if (getPreferenceScreen() != null) {
+			applyMaterialStyle(getPreferenceScreen(), decorator);
+		}
 	}
 
 }

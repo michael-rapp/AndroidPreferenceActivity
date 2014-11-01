@@ -33,6 +33,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.mrapp.android.preference.activity.R;
 
+/**
+ * A custom view, which is used to visualize a large toolbar on devices with a
+ * large screen.
+ * 
+ * @author Michael Rapp
+ *
+ * @since 2.0.0
+ */
 public class ToolbarLarge extends FrameLayout {
 
 	private View backgroundView;

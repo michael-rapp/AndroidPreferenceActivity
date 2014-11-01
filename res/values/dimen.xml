@@ -24,6 +24,8 @@ License along with this program. If not, see
     <dimen name="preference_header_item_margin">16dp</dimen>
     <dimen name="preference_header_item_icon_size">40dp</dimen>
     <dimen name="preference_screen_horizontal_padding">16dp</dimen>
+    <dimen name="preference_category_vertical_margin">16dp</dimen>
+    <dimen name="preference_padding">16dp</dimen>
     <dimen name="bread_crumb_height">72dp</dimen>
     <dimen name="bread_crumb_padding_bottom">8dp</dimen>
     <dimen name="bread_crumb_padding_top">16dp</dimen>
