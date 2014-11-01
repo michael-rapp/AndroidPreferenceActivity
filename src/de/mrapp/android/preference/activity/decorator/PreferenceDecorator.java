@@ -1,0 +1,123 @@
+/*
+ * AndroidPreferenceActivity Copyright 2014 Michael Rapp
+ *
+ * This program is free software: you can redistribute it and/or modify 
+ * it under the terms of the GNU Lesser General Public License as published 
+ * by the Free Software Foundation, either version 3 of the License, or 
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>. 
+ */
+package de.mrapp.android.preference.activity.decorator;
+
+import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import android.content.Context;
+import android.preference.DialogPreference;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceCategory;
+import android.preference.RingtonePreference;
+import android.preference.TwoStatePreference;
+import de.mrapp.android.preference.activity.R;
+
+/**
+ * A decorator, which allows to apply Material style on specific preferences.
+ * 
+ * @author Michael Rapp
+ *
+ * @since 2.0.0
+ */
+public class PreferenceDecorator {
+
+	/**
+	 * The prefix of the name of a layout resource, which belongs to the Android
+	 * SDK.
+	 */
+	private static final String ANDROID_LAYOUT_PREFIX = "android:layout";
+
+	/**
+	 * The context, which is used by the decorator.
+	 */
+	private final Context context;
+
+	/**
+	 * Returns, whether the default layout is applied to a specific preference,
+	 * or not.
+	 * 
+	 * @param preference
+	 *            The preference, whose layout should be checked, as an instance
+	 *            of the class {@link Preference}
+	 * @return True, if the default layout is applied to the given preference,
+	 *         false otherwise
+	 */
+	private boolean hasDefaultLayoutResource(final Preference preference) {
+		return context.getResources()
+				.getResourceName(preference.getLayoutResource())
+				.startsWith(ANDROID_LAYOUT_PREFIX);
+	}
+
+	/**
+	 * Applies Material style, by setting an appropriate layout resource, on a
+	 * specific preference.
+	 * 
+	 * @param preference
+	 *            The preference, whose layout resource should be set, as an
+	 *            instance of the class {@link Preference}
+	 * @return True, if the layout resource has been set, false otherwise
+	 */
+	private boolean setLayoutResource(final Preference preference) {
+		if (preference instanceof PreferenceCategory) {
+			preference.setLayoutResource(R.layout.preference_category);
+			return true;
+		} else if (preference instanceof ListPreference
+				|| preference instanceof TwoStatePreference
+				|| preference instanceof EditTextPreference
+				|| preference instanceof DialogPreference
+				|| preference instanceof RingtonePreference) {
+			preference.setLayoutResource(R.layout.preference);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Creates a new decorator, which allows to apply Material style on specific
+	 * preferences.
+	 * 
+	 * @param context
+	 *            The context, which should be used by the decorator, as an
+	 *            instance of the class {@link Context}
+	 */
+	public PreferenceDecorator(final Context context) {
+		ensureNotNull(context, "The context may not be null");
+		this.context = context;
+	}
+
+	/**
+	 * Applies the decorator on a specific preference. The decorator is only
+	 * applied, if the default layout is applied on the preference.
+	 * 
+	 * @param preference
+	 *            The preference, the decorator should be applied on, as an
+	 *            instance of the class {@link Preference}. The preference may
+	 *            not be null
+	 * @return True, if the decorator has been applied, false otherwise
+	 */
+	public final boolean applyDecorator(final Preference preference) {
+		if (hasDefaultLayoutResource(preference)) {
+			return setLayoutResource(preference);
+		}
+
+		return false;
+	}
+
+}
