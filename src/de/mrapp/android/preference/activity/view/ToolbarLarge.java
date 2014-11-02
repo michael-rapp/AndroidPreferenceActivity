@@ -158,8 +158,15 @@ public class ToolbarLarge extends FrameLayout {
 		ensureGreaterThan(width, 0, "The width must be greater than 0");
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
 				.getLayoutParams();
-		layoutParams.leftMargin = convertDpToPixels(getContext(), width);
+		int widthInPixels = convertDpToPixels(getContext(), width);
+		layoutParams.leftMargin = widthInPixels;
 		overlayView.requestLayout();
+		int titleMaxWidth = widthInPixels
+				- getContext().getResources().getDimensionPixelSize(
+						R.dimen.toolbar_title_margin_left)
+				- getContext().getResources().getDimensionPixelSize(
+						R.dimen.list_view_item_padding);
+		titleTextView.setMaxWidth(titleMaxWidth);
 	}
 
 	public final int getShadowColor() {
