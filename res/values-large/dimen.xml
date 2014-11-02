@@ -24,7 +24,6 @@ License along with this program. If not, see
     <dimen name="list_view_item_icon_size">56dp</dimen>
     <dimen name="preference_horizontal_padding">32dp</dimen>
     <dimen name="preference_vertical_padding">24dp</dimen>
-    <dimen name="button_bar_horizontal_padding">48dp</dimen>
-    <dimen name="button_bar_vertical_button_margin">16dp</dimen>
+    <dimen name="button_bar_horizontal_padding">32dp</dimen>
 
 </resources>
