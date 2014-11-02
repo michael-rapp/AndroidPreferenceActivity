@@ -737,6 +737,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 					navigationHidden ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					navigationHidden ? View.GONE : View.VISIBLE);
+			
+			if (toolbarLarge != null) {
+				toolbarLarge.hideNavigation(navigationHidden);
+			}
 		} else {
 			if (isPreferenceHeaderSelected()) {
 				if (navigationHidden) {
