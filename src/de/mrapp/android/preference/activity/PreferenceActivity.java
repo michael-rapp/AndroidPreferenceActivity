@@ -187,6 +187,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
 
 	/**
+	 * The default elevation of the button bar, which contains the buttons,
+	 * which are shown when the activity is used as a wizard.
+	 */
+	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
+
+	/**
 	 * The saved instance state, which has been passed to the activity, when it
 	 * has been created.
 	 */
@@ -259,10 +265,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private View breadCrumbSeperator;
 
 	/**
-	 * The view, which is used to draw a separator between the button bar and
-	 * the preferences when the activity is used as a wizard.
+	 * The view, which is used to draw a shadow above the button bar when the
+	 * activity is used as a wizard.
 	 */
-	private View buttonBarSeparator;
+	private View buttonBarShadowView;
 
 	/**
 	 * The view, which is used to draw a shadow besides the navigation on
@@ -325,16 +331,15 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private int navigationElevation;
 
 	/**
+	 * THe elevation of the button bar in dp.
+	 */
+	private int buttonBarElevation;
+
+	/**
 	 * The color of the separator, which is drawn between the bread crumb and
 	 * the preferences on devices with a large screen.
 	 */
 	private int breadCrumbSeparatorColor;
-
-	/**
-	 * The color of the separator, which is drawn between the button bar and the
-	 * preference, when the activity is used as a wizard.
-	 */
-	private int buttonBarSeparatorColor;
 
 	/**
 	 * The bread crumb, which is used to show the title of the currently
@@ -740,8 +745,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setVisibility(
 					navigationHidden ? View.GONE : View.VISIBLE);
-			getShadowView().setVisibility(
-					navigationHidden ? View.GONE : View.VISIBLE);
+			shadowView.setVisibility(navigationHidden ? View.GONE
+					: View.VISIBLE);
 
 			if (toolbarLarge != null) {
 				toolbarLarge.hideNavigation(navigationHidden);
@@ -1239,30 +1244,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Returns the view, which is used to draw a separator between the button
-	 * bar and the preferences when the activity is used as a wizard.
-	 * 
-	 * @return The view, which is used to draw a separator between the button
-	 *         bar and the preferences, as an instance of the class {@link View}
-	 *         or null, if the activity is not used as a wizard
-	 */
-	public final View getButtonBarSeparator() {
-		return buttonBarSeparator;
-	}
-
-	/**
-	 * Returns the view, which is used to draw a shadow besides the navigation
-	 * on devices with a large screen.
-	 * 
-	 * @return The view, which is used to draw a shadow besides the navigation,
-	 *         as an instance of the class {@link View} or null, if the device
-	 *         has a small screen
-	 */
-	public final View getShadowView() {
-		return shadowView;
-	}
-
-	/**
 	 * Returns the bread crumb, which is used to show the title of the currently
 	 * selected fragment on devices with a large screen, if the activity's
 	 * toolbar is not shown.
@@ -1530,11 +1511,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		if (showButtonBar) {
 			buttonBar = (ViewGroup) findViewById(R.id.wizard_button_bar);
 			buttonBar.setVisibility(View.VISIBLE);
-			buttonBarSeparator = findViewById(R.id.wizard_button_bar_separator);
+			buttonBarShadowView = findViewById(R.id.wizard_button_bar_separator);
 
-			if (getButtonBarSeparatorColor() == 0) {
-				setButtonBarSeparatorColor(getResources().getColor(
-						R.color.separator));
+			if (buttonBarElevation == 0) {
+				setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
 			}
 
 			nextButton = (Button) findViewById(R.id.next_button);
@@ -1550,7 +1530,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		} else if (buttonBar != null) {
 			buttonBar.setVisibility(View.GONE);
 			buttonBar = null;
-			buttonBarSeparator = null;
+			buttonBarShadowView = null;
 			finishButton = null;
 			nextButton = null;
 			backButton = null;
@@ -1626,40 +1606,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Returns the color of the separator, which is drawn between the button bar
-	 * and the preferences when the activity is used as a wizard.
-	 * 
-	 * @return The color of the separator as an {@link Integer} value or -1, if
-	 *         the activity is not used as a wizard
-	 */
-	public final int getButtonBarSeparatorColor() {
-		if (getButtonBarSeparator() != null) {
-			return buttonBarSeparatorColor;
-		} else {
-			return -1;
-		}
-	}
-
-	/**
-	 * Sets the color of the separator, which is drawn between the button bar
-	 * and the preferences when the activity is used as a wizard. The color is
-	 * only set when the activity is used as a wizard.
-	 * 
-	 * @param separatorColor
-	 *            The color, which should be set, as an {@link Integer} value
-	 * @return True, if the color has been set, false otherwise
-	 */
-	public final boolean setButtonBarSeparatorColor(final int separatorColor) {
-		if (getButtonBarSeparator() != null) {
-			this.buttonBarSeparatorColor = separatorColor;
-			getButtonBarSeparator().setBackgroundColor(separatorColor);
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Returns the elevation of the navigation.
 	 * 
 	 * @return The elevation of the navigation in dp as an {@link Integer} value
@@ -1693,7 +1639,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		ensureAtMaximum(elevation, shadowWidths.length,
 				"The elevation must be at maximum " + shadowWidths.length);
 
-		if (getShadowView() != null) {
+		if (shadowView != null) {
 			this.navigationElevation = elevation;
 			int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
 			int shadowWidth = convertDpToPixels(this,
@@ -1702,13 +1648,69 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
-			getShadowView().setBackgroundDrawable(gradient);
-			getShadowView().getLayoutParams().width = shadowWidth;
-			getShadowView().requestLayout();
+			shadowView.setBackgroundDrawable(gradient);
+			shadowView.getLayoutParams().width = shadowWidth;
+			shadowView.requestLayout();
 
 			if (toolbarLarge != null) {
 				toolbarLarge.setNavigationElevation(elevation);
 			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the elevation of the button bar, which contains the buttons,
+	 * which are shown when the activity is used as a wizard.
+	 * 
+	 * @return The elevation of the button bar in dp as an {@link Integer} value
+	 *         or -1, if the activity is not used as a wizard
+	 */
+	public final int getButtonBarElevation() {
+		if (isButtonBarShown()) {
+			return buttonBarElevation;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Sets the elevation of the button bar, which contains the buttons, which
+	 * are shown when the activity is used as a wizard. The elevation is only
+	 * set when the activity is used as a wizard.
+	 * 
+	 * @param elevation
+	 *            The elevation, which should be set, in dp as an
+	 *            {@link Integer} value. The elevation must be at least 1 and at
+	 *            maximum 5
+	 * @return True, if the elevation has been set, false otherwise
+	 */
+	@SuppressWarnings("deprecation")
+	public final boolean setButtonBarElevation(final int elevation) {
+		String[] shadowColors = getResources().getStringArray(
+				R.array.button_bar_elevation_shadow_colors);
+		String[] shadowWidths = getResources().getStringArray(
+				R.array.button_bar_elevation_shadow_widths);
+		ensureAtLeast(elevation, 1, "The elevation must be at least 1");
+		ensureAtMaximum(elevation, shadowWidths.length,
+				"The elevation must be at maximum " + shadowWidths.length);
+
+		if (buttonBarShadowView != null) {
+			this.buttonBarElevation = elevation;
+			int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
+			int shadowWidth = convertDpToPixels(this,
+					Integer.valueOf(shadowWidths[elevation - 1]));
+
+			GradientDrawable gradient = new GradientDrawable(
+					Orientation.BOTTOM_TOP, new int[] { shadowColor,
+							Color.TRANSPARENT });
+			buttonBarShadowView.setBackgroundDrawable(gradient);
+			buttonBarShadowView.getLayoutParams().height = shadowWidth;
+			buttonBarShadowView.requestLayout();
+			return true;
 		}
 
 		return false;
