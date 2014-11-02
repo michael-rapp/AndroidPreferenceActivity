@@ -1662,7 +1662,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	/**
 	 * Returns the elevation of the navigation.
 	 * 
-	 * @return The elevation of the navigation as an {@link Integer} value in dp
+	 * @return The elevation of the navigation in dp as an {@link Integer} value
 	 *         or -1, if the device has a small screen
 	 */
 	public final int getNavigationElevation() {
@@ -1678,8 +1678,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * devices with a large screen.
 	 * 
 	 * @param elevation
-	 *            The elevation, which should be set, as an {@link Integer}
-	 *            value in dp
+	 *            The elevation, which should be set, in dp as an
+	 *            {@link Integer} value. The elevation must be at least 1 and at
+	 *            maximum 5
 	 * @return True, if the elevation has been set, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
