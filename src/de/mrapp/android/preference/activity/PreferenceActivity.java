@@ -908,6 +908,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			}
 
 			getBreadCrumb().setText(title);
+		} else if (toolbarLarge != null) {
+			toolbarLarge.setBreadCrumbTitle(title);
 		} else if (title != null) {
 			if (defaultTitle == null) {
 				defaultTitle = getTitle();

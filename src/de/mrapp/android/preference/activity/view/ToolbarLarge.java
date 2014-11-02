@@ -47,6 +47,8 @@ public class ToolbarLarge extends FrameLayout {
 
 	private TextView titleTextView;
 
+	private TextView breadCrumbTextView;
+
 	private View shadowView;
 
 	private int shadowColor;
@@ -57,6 +59,7 @@ public class ToolbarLarge extends FrameLayout {
 		inflate(getContext(), R.layout.toolbar_large, this);
 		this.backgroundView = findViewById(R.id.toolbar_background_view);
 		this.titleTextView = (TextView) findViewById(android.R.id.title);
+		this.breadCrumbTextView = (TextView) findViewById(R.id.toolbar_bread_crumb_view);
 		this.shadowView = findViewById(R.id.toolbar_shadow_view);
 		this.overlayView = findViewById(R.id.toolbar_overlay_view);
 	}
@@ -96,8 +99,10 @@ public class ToolbarLarge extends FrameLayout {
 		typedArray.recycle();
 
 		if (textColorPrimary != -1) {
-			titleTextView.setTextColor(getContext().getResources().getColor(
-					textColorPrimary));
+			int titleColor = getContext().getResources().getColor(
+					textColorPrimary);
+			titleTextView.setTextColor(titleColor);
+			breadCrumbTextView.setTextColor(titleColor);
 		}
 	}
 
@@ -129,6 +134,18 @@ public class ToolbarLarge extends FrameLayout {
 
 	public final void setTitle(final int resourceId) {
 		titleTextView.setText(resourceId);
+	}
+
+	public final CharSequence getBreadCrumbTitle() {
+		return breadCrumbTextView.getText();
+	}
+
+	public final void setBreadCrumbTitle(final CharSequence title) {
+		breadCrumbTextView.setText(title);
+	}
+
+	public final void setBreadCrumbTitle(final int resourceId) {
+		breadCrumbTextView.setText(resourceId);
 	}
 
 	public final int getNavigationWidth() {
