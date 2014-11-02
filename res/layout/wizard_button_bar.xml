@@ -47,7 +47,9 @@ License along with this program. If not, see
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:minWidth="@dimen/button_min_width"
-            android:text="@string/back_button_label" />
+            android:text="@string/back_button_label"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textStyle="bold" />
 
         <Button
             android:id="@id/next_button"
@@ -61,7 +63,8 @@ License along with this program. If not, see
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:minWidth="@dimen/button_min_width"
             android:text="@string/next_button_label"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
 
         <Button
             android:id="@id/finish_button"
@@ -76,6 +79,7 @@ License along with this program. If not, see
             android:minWidth="@dimen/button_min_width"
             android:text="@string/finish_button_label"
             android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
             android:visibility="gone" />
     </RelativeLayout>
 
