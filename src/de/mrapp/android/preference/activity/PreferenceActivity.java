@@ -1939,6 +1939,77 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
+	 * Returns the background of the bread crumb, which is used to show the
+	 * title of the currently selected fragment on devices with a large screen,
+	 * if the activity's toolbar is not shown.
+	 * 
+	 * @return The background of the bread crumb, which is used to show the
+	 *         title of the currently selected fragment on devices with a large
+	 *         screen, if the activity's toolbar is not shown, as an instance of
+	 *         the class {@link Drawable} or null, if no background is set or
+	 *         the bread crumb is not shown
+	 */
+	public final Drawable getBreadCrumbBackground() {
+		if (getBreadCrumb() != null) {
+			return getBreadCrumb().getBackground();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Sets the background of the bread crumb, which is used to show the title
+	 * of the currently selected fragment on devices with a large screen, if the
+	 * activity's toolbar is not shown. The background is only set when the
+	 * bread crumb is shown.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the background, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 * @return True, if the background has been set, false otherwise
+	 */
+	public final boolean setBreadCrumbBackground(final int resourceId) {
+		return setBreadCrumbBackground(getResources().getDrawable(resourceId));
+	}
+
+	/**
+	 * Sets the background color of the bread crumb, which is used to show the
+	 * title of the currently selected fragment on devices with a large screen,
+	 * if the activity's toolbar is not shown. The background color is only set
+	 * when the bread crumb is shown.
+	 * 
+	 * @param color
+	 *            The background color, which should be set, as an
+	 *            {@link Integer} value
+	 * @return True, if the background color has been set, false otherwise
+	 */
+	public final boolean setBreadCrumbBackgroundColor(final int color) {
+		return setBreadCrumbBackground(new ColorDrawable(color));
+	}
+
+	/**
+	 * Sets the background of the bread crumb, which is used to show the title
+	 * of the currently selected fragment on devices with a large screen, if the
+	 * activity's toolbar is not shown. The background is only set when the
+	 * bread crumb is shown.
+	 * 
+	 * @param drawable
+	 *            The background, which should be set, as an instance of the
+	 *            class {@link Drawable} or null, if no background should be set
+	 * @return True, if the background has been set, false otherwise
+	 */
+	@SuppressWarnings("deprecation")
+	public final boolean setBreadCrumbBackground(final Drawable drawable) {
+		if (getBreadCrumb() != null) {
+			getBreadCrumb().setBackgroundDrawable(drawable);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns the width of the parent view of the fragment, which provides
 	 * navigation to each preference header's fragment on devices with a large
 	 * screen.
