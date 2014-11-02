@@ -543,15 +543,17 @@ public abstract class PreferenceFragment extends
 
 	/**
 	 * Sets the elevation of the view group, which contains the button, which
-	 * allows to restore the preferences' default values.
+	 * allows to restore the preferences' default values. The elevation is only
+	 * set when the button is shown.
 	 * 
 	 * @param elevation
 	 *            The elevation, which should be set, in dp as an
 	 *            {@link Integer} value. The elevation must be at least 1 and at
 	 *            maximum 5
+	 * @return True, if the elevation has been set, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
-	public final void setButtonBarElevation(final int elevation) {
+	public final boolean setButtonBarElevation(final int elevation) {
 		String[] shadowColors = getResources().getStringArray(
 				R.array.button_bar_elevation_shadow_colors);
 		String[] shadowWidths = getResources().getStringArray(
@@ -560,7 +562,7 @@ public abstract class PreferenceFragment extends
 		ensureAtMaximum(elevation, shadowWidths.length,
 				"The elevation must be at maximum " + shadowWidths.length);
 
-		if (shadowView != null) {
+		if (isRestoreDefaultsButtonShown()) {
 			this.buttonBarElevation = elevation;
 			int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
 			int shadowWidth = convertDpToPixels(getActivity(),
@@ -572,7 +574,10 @@ public abstract class PreferenceFragment extends
 			shadowView.setBackgroundDrawable(gradient);
 			shadowView.getLayoutParams().height = shadowWidth;
 			shadowView.requestLayout();
+			return true;
 		}
+
+		return false;
 	}
 
 	/**
