@@ -18,9 +18,9 @@
 package de.mrapp.android.preference.activity;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
+import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
-import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 
@@ -193,6 +193,13 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
 
 	/**
+	 * The default elevation of the bread crumb, which is used to show the title
+	 * of the currently selected fragment on devices with a large screen, if the
+	 * activity's toolbar is not shown.
+	 */
+	private static final int DEFAULT_BREAD_CRUMB_ELEVATION = 2;
+
+	/**
 	 * The saved instance state, which has been passed to the activity, when it
 	 * has been created.
 	 */
@@ -331,9 +338,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private int navigationElevation;
 
 	/**
-	 * THe elevation of the button bar in dp.
+	 * The elevation of the button bar in dp.
 	 */
 	private int buttonBarElevation;
+
+	/**
+	 * The elevation of the bread crumb in dp.
+	 */
+	private int breadCrumbElevation;
 
 	/**
 	 * The bread crumb, which is used to show the title of the currently
@@ -1665,6 +1677,63 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
+	 * Returns the elevation of the bread crumb, which is used to show the title
+	 * of the currently selected fragment on devices with a large screen, if the
+	 * activity's toolbar is not shown.
+	 * 
+	 * @return The elevation of the bread crumb in dp as an {@link Integer}
+	 *         value or -1, if the device has a small screen or the activity's
+	 *         toolbar is shown
+	 */
+	public final int getBreadCrumbElevation() {
+		if (getBreadCrumb() != null) {
+			return breadCrumbElevation;
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Sets the elevation of the bread crumb, which is used to show the title of
+	 * the currently selected fragment on devices with a large screen, if the
+	 * activity's toolbar is not shown. The elevation is only set when the bread
+	 * crumb is shown.
+	 * 
+	 * @param elevation
+	 *            The elevation, which should be set, in dp as an
+	 *            {@link Integer} value. The elevation must be at least 1 and at
+	 *            maximum 5
+	 * @return True, if the elevation has been set, false otherwise
+	 */
+	@SuppressWarnings("deprecation")
+	public final boolean setBreadCrumbElevation(final int elevation) {
+		String[] shadowColors = getResources().getStringArray(
+				R.array.bread_crumb_elevation_shadow_colors);
+		String[] shadowWidths = getResources().getStringArray(
+				R.array.bread_crumb_elevation_shadow_widths);
+		ensureAtLeast(elevation, 1, "The elevation must be at least 1");
+		ensureAtMaximum(elevation, shadowWidths.length,
+				"The elevation must be at maximum " + shadowWidths.length);
+
+		if (breadCrumbShadowView != null) {
+			this.breadCrumbElevation = elevation;
+			int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
+			int shadowWidth = convertDpToPixels(this,
+					Integer.valueOf(shadowWidths[elevation - 1]));
+
+			GradientDrawable gradient = new GradientDrawable(
+					Orientation.TOP_BOTTOM, new int[] { shadowColor,
+							Color.TRANSPARENT });
+			breadCrumbShadowView.setBackgroundDrawable(gradient);
+			breadCrumbShadowView.getLayoutParams().height = shadowWidth;
+			breadCrumbShadowView.requestLayout();
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns the background of the view group, which contains all views, which
 	 * are shown when a preference header is selected on devices with a large
 	 * screen.
@@ -2052,6 +2121,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 		overrideNavigationIcon(true);
 		setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
+		setBreadCrumbElevation(DEFAULT_BREAD_CRUMB_ELEVATION);
 		showPreferenceHeaders();
 	}
 
