@@ -1566,10 +1566,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Returns the elevation of the navigation.
+	 * Returns the elevation of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment on devices with a large
+	 * screen.
 	 * 
-	 * @return The elevation of the navigation in dp as an {@link Integer} value
-	 *         or -1, if the device has a small screen
+	 * @return The elevation of the parent view of the fragment, which provides
+	 *         navigation to each preference header's fragment on devices with a
+	 *         large screen, in dp as an {@link Integer} value or -1, if the
+	 *         device has a small screen
 	 */
 	public final int getNavigationElevation() {
 		if (isSplitScreen()) {
@@ -1580,8 +1584,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Sets the elevation of the navigation. The elevation is only set on
-	 * devices with a large screen.
+	 * Sets the elevation of the parent view of the fragment, which provides
+	 * navigation to each preference header's fragment on devices with a large
+	 * screen. The elevation is only set on devices with a large screen.
 	 * 
 	 * @param elevation
 	 *            The elevation, which should be set, in dp as an
@@ -1861,6 +1866,72 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	public final boolean setNavigationBackground(final Drawable drawable) {
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the background of the button bar, which contains the buttons,
+	 * which are shown when the activity is used as a wizard.
+	 * 
+	 * @return The background of the button bar, which contains the buttons,
+	 *         which are shown when the activity is used as a wizard, as an
+	 *         instance of the class {@link Drawable} or null, if no background
+	 *         has been set or the activity is not used as a wizard
+	 */
+	public final Drawable getButtonBarBackground() {
+		if (getButtonBar() != null) {
+			return getButtonBar().getBackground();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Sets the background of the button bar, which contains the buttons, which
+	 * are shown when the activity is used as a wizard. The background is only
+	 * set when the activity is used as a wizard.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the background, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 * @return True, if the background has been set, false otherwise
+	 */
+	public final boolean setButtonBarBackground(final int resourceId) {
+		return setButtonBarBackground(getResources().getDrawable(resourceId));
+	}
+
+	/**
+	 * Sets the background color of the button bar, which contains the buttons,
+	 * which are shown when the activity is used as a wizard. The background
+	 * color is only set when the activity is used as a wizard.
+	 * 
+	 * @param color
+	 *            The background color, which should be set, as an
+	 *            {@link Integer} value
+	 * @return True, if the background color has been set, false otherwise
+	 */
+	public final boolean setButtonBarBackgroundColor(final int color) {
+		return setButtonBarBackground(new ColorDrawable(color));
+	}
+
+	/**
+	 * Sets the background of the button bar, which contains the buttons, which
+	 * are shown when the activity is used as a wizard. The background is only
+	 * set when the activity is used as a wizard.
+	 * 
+	 * @param drawable
+	 *            The background, which should be set, as an instance of the
+	 *            class {@link Drawable} or null, if no background should be set
+	 * @return True, if the background has been set, false otherwise
+	 */
+	@SuppressWarnings("deprecation")
+	public final boolean setButtonBarBackground(final Drawable drawable) {
+		if (getButtonBar() != null) {
+			getButtonBar().setBackgroundDrawable(drawable);
 			return true;
 		}
 
