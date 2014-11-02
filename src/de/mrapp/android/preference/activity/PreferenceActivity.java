@@ -1681,7 +1681,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
 			getShadowView().setBackgroundDrawable(gradient);
-			toolbarLarge.setShadowColor(shadowColor);
+
+			if (toolbarLarge != null) {
+				toolbarLarge.setShadowColor(shadowColor);
+			}
+
 			return true;
 		}
 
@@ -1722,7 +1726,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			getShadowView().getLayoutParams().width = convertDpToPixels(this,
 					width);
 			getShadowView().requestLayout();
-			toolbarLarge.setShadowWidth(width);
+
+			if (toolbarLarge != null) {
+				toolbarLarge.setShadowWidth(width);
+			}
+
 			return true;
 		}
 
@@ -1898,7 +1906,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			getPreferenceHeaderParentView().getLayoutParams().width = convertDpToPixels(
 					this, width);
 			getPreferenceHeaderParentView().requestLayout();
-			toolbarLarge.setNavigationWidth(width);
+
+			if (toolbarLarge != null) {
+				toolbarLarge.setNavigationWidth(width);
+			}
+
 			return true;
 		}
 
@@ -2074,9 +2086,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	@Override
 	public final void setTitle(final CharSequence title) {
 		super.setTitle(title);
-		if (isSplitScreen()) {
-			toolbarLarge.setTitle(title);
+		if (toolbarLarge != null) {
 			getSupportActionBar().setTitle(null);
+			toolbarLarge.setTitle(title);
 		} else {
 			getSupportActionBar().setTitle(title);
 		}
@@ -2085,9 +2097,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	@Override
 	public final void setTitle(final int resourceId) {
 		super.setTitle(resourceId);
-		if (isSplitScreen()) {
-			toolbarLarge.setTitle(resourceId);
+		if (toolbarLarge != null) {
 			getSupportActionBar().setTitle(null);
+			toolbarLarge.setTitle(resourceId);
 		} else {
 			getSupportActionBar().setTitle(resourceId);
 		}
@@ -2101,12 +2113,16 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
-		breadCrumb = (TextView) findViewById(R.id.bread_crumb_view);
-		breadCrumbSeperator = findViewById(R.id.bread_crumb_separator);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		initializeToolbar();
+
+		if (toolbarLarge == null) {
+			breadCrumb = (TextView) findViewById(R.id.bread_crumb_view);
+			breadCrumbSeperator = findViewById(R.id.bread_crumb_separator);
+		}
+
 		overrideNavigationIcon(true);
 		setBreadCrumbSeparatorColor(getResources().getColor(R.color.separator));
 		setShadowColor(getResources().getColor(R.color.shadow));
