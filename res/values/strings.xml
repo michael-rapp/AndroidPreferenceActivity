@@ -52,5 +52,19 @@ License along with this program. If not, see
         <item>#40000000</item>
         <item>#4d000000</item>
     </string-array>
+    <string-array name="bread_crumb_elevation_shadow_widths">
+        <item>1</item>
+        <item>3</item>
+        <item>6</item>
+        <item>10</item>
+        <item>15</item>
+    </string-array>
+    <string-array name="bread_crumb_elevation_shadow_colors">
+        <item>#3d000000</item>
+        <item>#3b000000</item>
+        <item>#3b000000</item>
+        <item>#38000000</item>
+        <item>#38000000</item>
+    </string-array>
 
 </resources>
