@@ -22,5 +22,4 @@ License along with this program. If not, see
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingBottom="@dimen/preference_header_vertical_padding"
-    android:paddingTop="@dimen/preference_header_vertical_padding" />
+    android:paddingTop="@dimen/list_view_padding_top" />
