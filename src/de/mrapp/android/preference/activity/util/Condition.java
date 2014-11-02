@@ -118,4 +118,26 @@ public final class Condition {
 		}
 	}
 
+	/**
+	 * Ensures, that a {@link Float} value is at maximum a specific value.
+	 * Otherwise an {@link IllegalArgumentException} with a specific message
+	 * will be thrown.
+	 * 
+	 * @param value
+	 *            The value, which should be checked, as a {@link Float} value
+	 * @param referenceValue
+	 *            The value, the given value must be at maximum, as a
+	 *            {@link Float} value
+	 * @param exceptionMessage
+	 *            The message of the {@link IllegalArgumentException}, which is
+	 *            thrown, if the given value is greater than the reference
+	 *            value, as a {@link String}
+	 */
+	public static void ensureAtMaximum(final float value,
+			final float referenceValue, final String exceptionMessage) {
+		if (value > referenceValue) {
+			throw new IllegalArgumentException(exceptionMessage);
+		}
+	}
+
 }
