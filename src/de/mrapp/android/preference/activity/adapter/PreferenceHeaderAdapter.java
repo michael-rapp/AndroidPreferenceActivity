@@ -339,7 +339,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		this.preferenceHeaders = new LinkedList<PreferenceHeader>();
 		this.enabled = true;
 		this.viewId = R.layout.preference_header_item;
-		this.selectorId = R.drawable.preference_header_selector;
+		this.selectorId = R.drawable.list_view_item_selector;
 		this.listeners = new LinkedHashSet<AdapterListener>();
 		this.decorators = new LinkedHashSet<PreferenceHeaderDecorator>();
 	}
