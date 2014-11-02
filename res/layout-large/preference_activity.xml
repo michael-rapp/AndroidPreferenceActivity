@@ -72,17 +72,30 @@ License along with this program. If not, see
                     android:textSize="@dimen/bread_crumb_text_size"
                     android:visibility="gone" />
 
-                <View
-                    android:id="@id/bread_crumb_separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:visibility="gone" />
-
-                <RelativeLayout
-                    android:id="@id/preference_screen_parent"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1" >
+
+                    <View
+                        android:id="@id/bread_crumb_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="top"
+                        android:visibility="gone" />
+
+                    <RelativeLayout
+                        android:id="@id/preference_screen_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:id="@id/wizard_button_bar_shadow_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="bottom"
+                        android:visibility="gone" />
+                </FrameLayout>
 
                 <include layout="@layout/wizard_button_bar" />
             </LinearLayout>

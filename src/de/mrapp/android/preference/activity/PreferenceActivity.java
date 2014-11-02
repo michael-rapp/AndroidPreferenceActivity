@@ -1511,7 +1511,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		if (showButtonBar) {
 			buttonBar = (ViewGroup) findViewById(R.id.wizard_button_bar);
 			buttonBar.setVisibility(View.VISIBLE);
-			buttonBarShadowView = findViewById(R.id.wizard_button_bar_separator);
+			buttonBarShadowView = findViewById(R.id.wizard_button_bar_shadow_view);
+			buttonBarShadowView.setVisibility(View.VISIBLE);
 
 			if (buttonBarElevation == 0) {
 				setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
@@ -1529,6 +1530,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			}
 		} else if (buttonBar != null) {
 			buttonBar.setVisibility(View.GONE);
+			buttonBarShadowView.setVisibility(View.GONE);
 			buttonBar = null;
 			buttonBarShadowView = null;
 			finishButton = null;
