@@ -1215,11 +1215,13 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Returns the view, which is used to draw a separator between the bread
-	 * crumb and the preferences on devices with a large screen.
+	 * crumb and the preferences on devices with a large screen, if the
+	 * activity's toolbar is not shown.
 	 * 
 	 * @return The view, which is used to draw a separator between the bread
 	 *         crumb and the preferences, as an instance of the class
-	 *         {@link View} or null, if the device has a small display
+	 *         {@link View} or null, if the device has a small display and the
+	 *         activity's toolbar is not shown
 	 */
 	public final View getBreadCrumbSeparator() {
 		return breadCrumbSeperator;
