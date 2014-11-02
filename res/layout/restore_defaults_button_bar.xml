@@ -25,7 +25,7 @@ License along with this program. If not, see
     android:orientation="vertical" >
 
     <View
-        android:id="@id/restore_defaults_button_bar_separator"
+        android:id="@id/restore_defaults_button_bar_shadow_view"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
