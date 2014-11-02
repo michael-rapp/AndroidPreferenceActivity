@@ -78,7 +78,7 @@ License along with this program. If not, see
                     android:layout_weight="1" >
 
                     <View
-                        android:id="@id/bread_crumb_separator"
+                        android:id="@id/bread_crumb_shadow_view"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="top"
