@@ -55,10 +55,10 @@ public class ToolbarLarge extends FrameLayout {
 
 	private void inflate() {
 		inflate(getContext(), R.layout.toolbar_large, this);
-		this.backgroundView = findViewById(R.id.toolbar_background);
-		this.titleTextView = (TextView) findViewById(R.id.title);
+		this.backgroundView = findViewById(R.id.toolbar_background_view);
+		this.titleTextView = (TextView) findViewById(android.R.id.title);
 		this.shadowView = findViewById(R.id.toolbar_shadow_view);
-		this.overlayView = findViewById(R.id.overlay);
+		this.overlayView = findViewById(R.id.toolbar_overlay_view);
 	}
 
 	private void obtainStyledAttributes(final Context context,
