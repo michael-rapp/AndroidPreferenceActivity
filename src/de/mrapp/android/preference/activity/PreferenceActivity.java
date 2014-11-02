@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import android.app.Fragment;
-import android.app.FragmentBreadCrumbs;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
@@ -51,6 +50,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import de.mrapp.android.preference.activity.adapter.AdapterListener;
 import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.activity.fragment.FragmentListener;
@@ -72,7 +72,6 @@ import de.mrapp.android.preference.activity.view.ToolbarLarge;
  *
  * @since 1.0.0
  */
-@SuppressWarnings("deprecation")
 public abstract class PreferenceActivity extends ActionBarActivity implements
 		FragmentListener, OnItemClickListener, AdapterListener {
 
@@ -333,10 +332,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private int shadowColor;
 
 	/**
-	 * The bread crumb, which are used to show the title of the currently
-	 * selected fragment on devices with a large screen.
+	 * The bread crumb, which is used to show the title of the currently
+	 * selected fragment on devices with a large screen, if the activity's
+	 * toolbar is not shown.
 	 */
-	private FragmentBreadCrumbs breadCrumb;
+	private TextView breadCrumb;
 
 	/**
 	 * A set, which contains the listeners, which have registered to be notified
@@ -907,8 +907,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				getBreadCrumbSeparator().setVisibility(View.GONE);
 			}
 
-			getBreadCrumb().setTitle(title, shortTitle);
-			getBreadCrumb().setParentTitle(null, null, null);
+			getBreadCrumb().setText(title);
 		} else if (title != null) {
 			if (defaultTitle == null) {
 				defaultTitle = getTitle();
@@ -1251,14 +1250,15 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Returns the bread crumb, which are used to show the title of the
-	 * currently selected fragment on devices with a large screen.
+	 * Returns the bread crumb, which is used to show the title of the currently
+	 * selected fragment on devices with a large screen, if the activity's
+	 * toolbar is not shown.
 	 * 
-	 * @return The bread crumb, which are used to show the title of the
-	 *         currently selected fragment or null, if the device has a small
-	 *         screen
+	 * @return The bread crumb, which is used to show the title of the currently
+	 *         selected fragment or null, if the device has a small screen or
+	 *         the activity's toolbar is shown
 	 */
-	public final FragmentBreadCrumbs getBreadCrumb() {
+	public final TextView getBreadCrumb() {
 		return breadCrumb;
 	}
 
@@ -1671,6 +1671,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The color, which should be set, as an {@link Integer} value
 	 * @return True, if the color has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setShadowColor(final int shadowColor) {
 		if (getShadowView() != null) {
 			this.shadowColor = shadowColor;
@@ -1783,6 +1784,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            class {@link Drawable} or null, if no background should be set
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setPreferenceScreenBackground(final Drawable drawable) {
 		if (getPreferenceScreenContainer() != null) {
 			getPreferenceScreenContainer().setBackgroundDrawable(drawable);
@@ -1849,6 +1851,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            class {@link Drawable} or null, if no background should be set
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setNavigationBackground(final Drawable drawable) {
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
@@ -2096,13 +2099,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
-		breadCrumb = (FragmentBreadCrumbs) findViewById(R.id.bread_crumb_view);
-
-		if (breadCrumb != null) {
-			breadCrumb.setMaxVisible(2);
-			breadCrumb.setActivity(this);
-		}
-
+		breadCrumb = (TextView) findViewById(R.id.bread_crumb_view);
 		breadCrumbSeperator = findViewById(R.id.bread_crumb_separator);
 		shadowView = findViewById(R.id.shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
