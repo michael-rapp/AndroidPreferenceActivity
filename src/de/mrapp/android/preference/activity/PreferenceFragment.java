@@ -23,6 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
@@ -428,6 +430,57 @@ public abstract class PreferenceFragment extends
 	 */
 	public final ViewGroup getButtonBar() {
 		return buttonBar;
+	}
+
+	/**
+	 * Returns the background of the view group, which contains the button,
+	 * which allows to restore the preferences' default values.
+	 * 
+	 * @return The background of the view group, which contains the button,
+	 *         which allows to restore the preferences' default values, as an
+	 *         instance of the class {@link Drawable} or null, if no background
+	 *         is set
+	 */
+	public final Drawable getButtonBarBackground() {
+		return buttonBar.getBackground();
+	}
+
+	/**
+	 * Sets the background of the view group, which contains the button, which
+	 * allows to restore the preferences' default values.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the background, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 */
+	public final void setButtonBarBackground(final int resourceId) {
+		setButtonBarBackground(getResources().getDrawable(resourceId));
+	}
+
+	/**
+	 * Sets the background color of the view group, which contains the button,
+	 * which allows to restore the preferences' default values.
+	 * 
+	 * @param color
+	 *            The background color, which should be set, as an
+	 *            {@link Integer} value
+	 */
+	public final void setButtonBarBackgroundColor(final int color) {
+		setButtonBarBackground(new ColorDrawable(color));
+	}
+
+	/**
+	 * Sets the background of the view group, which contains the button, which
+	 * allows to restore the preferences' default values.
+	 * 
+	 * @param drawable
+	 *            The background, which should be set, as an instance of the
+	 *            class {@link Drawable} or null, if no background should be set
+	 */
+	@SuppressWarnings("deprecation")
+	public final void setButtonBarBackground(final Drawable drawable) {
+		buttonBar.setBackgroundDrawable(drawable);
 	}
 
 	/**
