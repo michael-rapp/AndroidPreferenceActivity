@@ -126,6 +126,7 @@ public abstract class PreferenceFragment extends
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		shadowView = new View(getActivity());
+		shadowView.setVisibility(View.INVISIBLE);
 		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.BOTTOM);
 		frameLayout.addView(shadowView, layoutParams);
@@ -440,10 +441,14 @@ public abstract class PreferenceFragment extends
 		if (show) {
 			inflateRestoreDefaultsButtonBar();
 			addRestoreDefaultsButtonBar();
+
+			if (shadowView != null) {
+				shadowView.setVisibility(View.VISIBLE);
+			}
 		} else {
 			removeRestoreDefaultsButtonBar();
+			shadowView.setVisibility(View.INVISIBLE);
 			buttonBar = null;
-			shadowView = null;
 			restoreDefaultsButton = null;
 		}
 	}
@@ -571,6 +576,7 @@ public abstract class PreferenceFragment extends
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.BOTTOM_TOP, new int[] { shadowColor,
 							Color.TRANSPARENT });
+			shadowView.setVisibility(View.VISIBLE);
 			shadowView.setBackgroundDrawable(gradient);
 			shadowView.getLayoutParams().height = shadowWidth;
 			shadowView.requestLayout();
