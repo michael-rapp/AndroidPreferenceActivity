@@ -24,37 +24,30 @@ License along with this program. If not, see
     android:baselineAligned="false"
     android:clipToPadding="false"
     android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingBottom="@dimen/preference_vertical_padding"
-    android:paddingLeft="@dimen/preference_horizontal_padding"
-    android:paddingRight="@dimen/preference_horizontal_padding"
-    android:paddingTop="@dimen/preference_vertical_padding" >
+    android:minHeight="@dimen/list_view_item_min_height"
+    android:paddingEnd="@dimen/list_view_item_padding"
+    android:paddingLeft="@dimen/list_view_item_padding"
+    android:paddingRight="@dimen/list_view_item_padding"
+    android:paddingStart="@dimen/list_view_item_padding" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <ImageView
-            android:id="@+android:id/icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:contentDescription="@null"
-            android:minWidth="48dp"
-            android:scaleType="centerInside" />
-    </LinearLayout>
+    <ImageView
+        android:id="@android:id/icon"
+        android:layout_width="@dimen/list_view_item_icon_size"
+        android:layout_height="@dimen/list_view_item_icon_size"
+        android:layout_marginEnd="@dimen/list_view_item_padding"
+        android:layout_marginRight="@dimen/list_view_item_padding"
+        android:contentDescription="@null"
+        android:scaleType="centerInside" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/list_view_item_padding"
+        android:paddingTop="@dimen/list_view_item_padding" >
 
         <TextView
-            android:id="@+android:id/title"
+            android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -63,24 +56,24 @@ License along with this program. If not, see
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+android:id/summary"
+            android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@android:id/title"
             android:layout_alignStart="@android:id/title"
             android:layout_below="@android:id/title"
+            android:ellipsize="end"
             android:maxLines="10"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary" />
     </RelativeLayout>
 
-    <!-- Preference should place its actual preference widget here. -->
-
     <LinearLayout
-        android:id="@+android:id/widget_frame"
+        android:id="@android:id/widget_frame"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/list_view_item_padding"
+        android:layout_marginStart="@dimen/list_view_item_padding"
         android:orientation="vertical" />
 
 </LinearLayout>

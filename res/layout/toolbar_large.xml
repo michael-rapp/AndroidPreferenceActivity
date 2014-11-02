@@ -47,8 +47,8 @@
                 android:layout_alignLeft="@+id/overlay"
                 android:layout_alignStart="@+id/overlay"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="32dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginLeft="@dimen/list_view_item_padding"
+                android:layout_marginStart="@dimen/list_view_item_padding"
                 android:text="Introduction"
                 android:textColor="#ffffffff"
                 android:textSize="20sp" />

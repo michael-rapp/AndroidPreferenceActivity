@@ -105,7 +105,9 @@ public abstract class PreferenceFragment extends
 	private void initializeListView() {
 		ListView preferenceListView = (ListView) layout
 				.findViewById(android.R.id.list);
-		preferenceListView.setPadding(0, 0, 0, 0);
+		int paddingTop = getResources().getDimensionPixelSize(
+				R.dimen.list_view_padding_top);
+		preferenceListView.setPadding(0, paddingTop, 0, 0);
 	}
 
 	/**
