@@ -18,9 +18,9 @@
 package de.mrapp.android.preference.activity.view;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
+import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -51,14 +51,17 @@ public class ToolbarLarge extends FrameLayout {
 
 	private View shadowView;
 
-	private int shadowColor;
-
 	private View overlayView;
 
 	/**
 	 * The width of the navigation in dp.
 	 */
 	private int navigationWidth;
+
+	/**
+	 * The elevation of the navigation in dp.
+	 */
+	private int navigationElevation;
 
 	private void inflate() {
 		inflate(getContext(), R.layout.toolbar_large, this);
@@ -188,28 +191,30 @@ public class ToolbarLarge extends FrameLayout {
 		}
 	}
 
-	public final int getShadowColor() {
-		return shadowColor;
+	public final int getNavigationElevation() {
+		return navigationElevation;
 	}
 
 	@SuppressWarnings("deprecation")
-	public final void setShadowColor(final int shadowColor) {
-		this.shadowColor = shadowColor;
+	public final void setNavigationElevation(final int elevation) {
+		String[] shadowColors = getResources().getStringArray(
+				R.array.navigation_elevation_shadow_colors);
+		String[] shadowWidths = getResources().getStringArray(
+				R.array.navigation_elevation_shadow_widths);
+		ensureAtLeast(elevation, 1, "The elevation must be at least 1");
+		ensureAtMaximum(elevation, shadowWidths.length,
+				"The elevation must be at maximum " + shadowWidths.length);
+
+		this.navigationElevation = elevation;
+		int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
+		int shadowWidth = convertDpToPixels(getContext(),
+				Integer.valueOf(shadowWidths[elevation - 1]));
+
 		GradientDrawable gradient = new GradientDrawable(
 				Orientation.LEFT_RIGHT, new int[] { shadowColor,
 						Color.TRANSPARENT });
 		shadowView.setBackgroundDrawable(gradient);
-	}
-
-	public final int getShadowWidth() {
-		return convertPixelsToDp(getContext(),
-				shadowView.getLayoutParams().width);
-	}
-
-	public final void setShadowWidth(final int width) {
-		ensureAtLeast(width, 0, "The width must be at least 0");
-		shadowView.getLayoutParams().width = convertDpToPixels(getContext(),
-				width);
+		shadowView.getLayoutParams().width = shadowWidth;
 		shadowView.requestLayout();
 	}
 

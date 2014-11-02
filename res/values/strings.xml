@@ -24,4 +24,19 @@ License along with this program. If not, see
     <string name="finish_button_label">FINISH</string>
     <string name="restore_defaults_button_label">RESTORE DEFAULTS</string>
 
+    <string-array name="navigation_elevation_shadow_widths">
+        <item>1</item>
+        <item>3</item>
+        <item>10</item>
+        <item>14</item>
+        <item>19</item>
+    </string-array>
+    <string-array name="navigation_elevation_shadow_colors">
+        <item>#1f000000</item>
+        <item>#29000000</item>
+        <item>#31000000</item>
+        <item>#40000000</item>
+        <item>#4d000000</item>
+    </string-array>
+
 </resources>
