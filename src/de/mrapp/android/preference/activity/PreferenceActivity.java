@@ -259,10 +259,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private Button finishButton;
 
 	/**
-	 * The view, which is used to draw a separator between the bread crumb and
-	 * the preferences on devices with a large screen.
+	 * The view, which is used to draw a shadow below the bread crumb on devices
+	 * with a large screen.
 	 */
-	private View breadCrumbSeperator;
+	private View breadCrumbShadowView;
 
 	/**
 	 * The view, which is used to draw a shadow above the button bar when the
@@ -334,12 +334,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * THe elevation of the button bar in dp.
 	 */
 	private int buttonBarElevation;
-
-	/**
-	 * The color of the separator, which is drawn between the bread crumb and
-	 * the preferences on devices with a large screen.
-	 */
-	private int breadCrumbSeparatorColor;
 
 	/**
 	 * The bread crumb, which is used to show the title of the currently
@@ -915,10 +909,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		if (getBreadCrumb() != null) {
 			if (title != null || shortTitle != null) {
 				getBreadCrumb().setVisibility(View.VISIBLE);
-				getBreadCrumbSeparator().setVisibility(View.VISIBLE);
+				breadCrumbShadowView.setVisibility(View.VISIBLE);
 			} else {
 				getBreadCrumb().setVisibility(View.GONE);
-				getBreadCrumbSeparator().setVisibility(View.GONE);
+				breadCrumbShadowView.setVisibility(View.GONE);
 			}
 
 			getBreadCrumb().setText(title);
@@ -1227,20 +1221,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	public final boolean setBackButtonText(final int resourceId) {
 		return setBackButtonText(getText(resourceId));
-	}
-
-	/**
-	 * Returns the view, which is used to draw a separator between the bread
-	 * crumb and the preferences on devices with a large screen, if the
-	 * activity's toolbar is not shown.
-	 * 
-	 * @return The view, which is used to draw a separator between the bread
-	 *         crumb and the preferences, as an instance of the class
-	 *         {@link View} or null, if the device has a small display and the
-	 *         activity's toolbar is not shown
-	 */
-	public final View getBreadCrumbSeparator() {
-		return breadCrumbSeperator;
 	}
 
 	/**
@@ -1571,40 +1551,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	public final int getSelectedPreferenceHeaderPosition() {
 		return getListAdapter().indexOf(currentHeader);
-	}
-
-	/**
-	 * Returns the color of the separator, which is drawn between the bread
-	 * crumb and the preferences on devices with a large screen.
-	 * 
-	 * @return The color of the separator as an {@link Integer} value or -1, if
-	 *         the device has a small screen
-	 */
-	public final int getBreadCrumbSeparatorColor() {
-		if (getBreadCrumbSeparator() != null) {
-			return breadCrumbSeparatorColor;
-		} else {
-			return -1;
-		}
-	}
-
-	/**
-	 * Sets the color of the separator, which is drawn between the bread crumb
-	 * and the preferences on devices with a large screen. The color is only set
-	 * on devices with a large screen.
-	 * 
-	 * @param separatorColor
-	 *            The color, which should be set, as an {@link Integer} value
-	 * @return True, if the color has been set, false otherwise
-	 */
-	public final boolean setBreadCrumbSeparatorColor(final int separatorColor) {
-		if (getBreadCrumbSeparator() != null) {
-			this.breadCrumbSeparatorColor = separatorColor;
-			getBreadCrumbSeparator().setBackgroundColor(separatorColor);
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -2101,11 +2047,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 		if (toolbarLarge == null) {
 			breadCrumb = (TextView) findViewById(R.id.bread_crumb_view);
-			breadCrumbSeperator = findViewById(R.id.bread_crumb_separator);
+			breadCrumbShadowView = findViewById(R.id.bread_crumb_shadow_view);
 		}
 
 		overrideNavigationIcon(true);
-		setBreadCrumbSeparatorColor(getResources().getColor(R.color.separator));
 		setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
 		showPreferenceHeaders();
 	}
