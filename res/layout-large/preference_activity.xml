@@ -89,7 +89,7 @@ License along with this program. If not, see
 
             <View
                 android:id="@id/shadow_view"
-                android:layout_width="@dimen/default_shadow_width"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </FrameLayout>
     </LinearLayout>

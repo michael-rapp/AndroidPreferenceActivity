@@ -75,7 +75,7 @@ License along with this program. If not, see
 
         <View
             android:id="@id/toolbar_shadow_view"
-            android:layout_width="@dimen/default_shadow_width"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignLeft="@id/toolbar_overlay_view"
             android:layout_alignStart="@id/toolbar_overlay_view" />

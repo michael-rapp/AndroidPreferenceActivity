@@ -76,21 +76,14 @@ public abstract class PreferenceFragment extends
 	private ViewGroup buttonBar;
 
 	/**
-	 * The view, which is used to draw a separator between the preferences and
-	 * the button, which allows to restore the preferences' default values.
+	 * The view, which is used to draw a shadow above the button bar.
 	 */
-	private View buttonBarSeparator;
+	private View shadowView;
 
 	/**
 	 * The button, which allows to restore the preferences' default values.
 	 */
 	private Button restoreDefaultsButton;
-
-	/**
-	 * The color of the separator, which is drawn between the preferences and
-	 * the button, which allows to restore the preferences' default values.
-	 */
-	private int buttonBarSeparatorColor;
 
 	/**
 	 * A set, which contains the listeners, which should be notified, when the
@@ -119,8 +112,8 @@ public abstract class PreferenceFragment extends
 			LayoutInflater layoutInflater = getActivity().getLayoutInflater();
 			buttonBar = (ViewGroup) layoutInflater.inflate(
 					R.layout.restore_defaults_button_bar, layout, false);
-			buttonBarSeparator = buttonBar
-					.findViewById(R.id.restore_defaults_button_bar_separator);
+			shadowView = buttonBar
+					.findViewById(R.id.restore_defaults_button_bar_shadow_view);
 			restoreDefaultsButton = (Button) buttonBar
 					.findViewById(R.id.restore_defaults_button);
 			restoreDefaultsButton
@@ -420,7 +413,7 @@ public abstract class PreferenceFragment extends
 		} else {
 			removeRestoreDefaultsButtonBar();
 			buttonBar = null;
-			buttonBarSeparator = null;
+			shadowView = null;
 			restoreDefaultsButton = null;
 		}
 	}
@@ -435,54 +428,6 @@ public abstract class PreferenceFragment extends
 	 */
 	public final ViewGroup getButtonBar() {
 		return buttonBar;
-	}
-
-	/**
-	 * Returns the view, which is used to draw a separator between the
-	 * preferences and the button, which allows to restore the preferences'
-	 * default values.
-	 * 
-	 * @return The view, which is used to draw a separator between the
-	 *         preferences and the button, which allows to restore the
-	 *         preferences' default values, as an instance of the class
-	 *         {@link View} or null, if the button is not shown
-	 */
-	public final View getButtonBarSeparator() {
-		return buttonBarSeparator;
-	}
-
-	/**
-	 * Returns the color of the separator, which is drawn between the
-	 * preferences and the button, which allows to restore the default values.
-	 * 
-	 * @return The color of the separator as an {@link Integer} value or -1, if
-	 *         the button is not shown
-	 */
-	public final int getButtonBarSeparatorColor() {
-		if (getButtonBarSeparator() != null) {
-			return buttonBarSeparatorColor;
-		} else {
-			return -1;
-		}
-	}
-
-	/**
-	 * Sets the color of the separator, which is drawn between the preferences
-	 * and the button, which allows to restore the default values. The color is
-	 * only set when the button is shown.
-	 * 
-	 * @param separatorColor
-	 *            The color, which should be set as an {@link Integer} value
-	 * @return True, if the color has been set, false otherwise
-	 */
-	public final boolean setButtonBarSeparatorColor(final int separatorColor) {
-		if (getButtonBarSeparator() != null) {
-			this.buttonBarSeparatorColor = separatorColor;
-			getButtonBarSeparator().setBackgroundColor(separatorColor);
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -550,8 +495,6 @@ public abstract class PreferenceFragment extends
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.buttonBarSeparatorColor = getResources().getColor(
-				R.color.separator);
 
 		if (getArguments() != null) {
 			handleShowRestoreDefaultsButtonArgument();
@@ -566,7 +509,6 @@ public abstract class PreferenceFragment extends
 				savedInstanceState);
 		initializeListView();
 		addRestoreDefaultsButtonBar();
-		setButtonBarSeparatorColor(buttonBarSeparatorColor);
 		return layout;
 	}
 
