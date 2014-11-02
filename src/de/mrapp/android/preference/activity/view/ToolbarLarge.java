@@ -55,6 +55,11 @@ public class ToolbarLarge extends FrameLayout {
 
 	private View overlayView;
 
+	/**
+	 * The width of the navigation in dp.
+	 */
+	private int navigationWidth;
+
 	private void inflate() {
 		inflate(getContext(), R.layout.toolbar_large, this);
 		this.backgroundView = findViewById(R.id.toolbar_background_view);
@@ -149,13 +154,12 @@ public class ToolbarLarge extends FrameLayout {
 	}
 
 	public final int getNavigationWidth() {
-		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
-				.getLayoutParams();
-		return convertPixelsToDp(getContext(), layoutParams.leftMargin);
+		return navigationWidth;
 	}
 
 	public final void setNavigationWidth(final int width) {
 		ensureGreaterThan(width, 0, "The width must be greater than 0");
+		this.navigationWidth = width;
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
 				.getLayoutParams();
 		int widthInPixels = convertDpToPixels(getContext(), width);
@@ -167,6 +171,21 @@ public class ToolbarLarge extends FrameLayout {
 				- getContext().getResources().getDimensionPixelSize(
 						R.dimen.list_view_item_padding);
 		titleTextView.setMaxWidth(titleMaxWidth);
+	}
+
+	public final void hideNavigation(final boolean navigationHidden) {
+		shadowView.setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
+		titleTextView.setVisibility(navigationHidden ? View.INVISIBLE
+				: View.VISIBLE);
+
+		if (navigationHidden) {
+			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
+					.getLayoutParams();
+			layoutParams.leftMargin = 0;
+			overlayView.requestLayout();
+		} else {
+			setNavigationWidth(navigationWidth);
+		}
 	}
 
 	public final int getShadowColor() {
