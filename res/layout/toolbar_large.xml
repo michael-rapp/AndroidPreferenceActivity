@@ -53,13 +53,17 @@ License along with this program. If not, see
 
         <TextView
             android:id="@id/toolbar_bread_crumb_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@android:id/title"
             android:layout_alignLeft="@id/toolbar_overlay_view"
             android:layout_alignStart="@id/toolbar_overlay_view"
+            android:layout_marginEnd="@dimen/preference_horizontal_padding"
             android:layout_marginLeft="@dimen/preference_horizontal_padding"
+            android:layout_marginRight="@dimen/preference_horizontal_padding"
             android:layout_marginStart="@dimen/preference_horizontal_padding"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/bread_crumb_text_size" />
 
