@@ -52,6 +52,7 @@ License along with this program. If not, see
             android:textSize="@dimen/toolbar_title_text_size" />
 
         <TextView
+            android:id="@id/toolbar_bread_crumb_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@android:id/title"
