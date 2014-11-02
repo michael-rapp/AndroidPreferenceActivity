@@ -281,7 +281,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * The view, which is used to draw a shadow besides the navigation on
 	 * devices with a large screen.
 	 */
-	private View shadowView;
+	private View navigationShadowView;
 
 	/**
 	 * The preference header, which is currently selected or null, if no
@@ -751,7 +751,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		if (isSplitScreen()) {
 			getPreferenceHeaderParentView().setVisibility(
 					navigationHidden ? View.GONE : View.VISIBLE);
-			shadowView.setVisibility(navigationHidden ? View.GONE
+			navigationShadowView.setVisibility(navigationHidden ? View.GONE
 					: View.VISIBLE);
 
 			if (toolbarLarge != null) {
@@ -1599,7 +1599,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		ensureAtMaximum(elevation, shadowWidths.length,
 				"The elevation must be at maximum " + shadowWidths.length);
 
-		if (shadowView != null) {
+		if (navigationShadowView != null) {
 			this.navigationElevation = elevation;
 			int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
 			int shadowWidth = convertDpToPixels(this,
@@ -1608,9 +1608,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
-			shadowView.setBackgroundDrawable(gradient);
-			shadowView.getLayoutParams().width = shadowWidth;
-			shadowView.requestLayout();
+			navigationShadowView.setBackgroundDrawable(gradient);
+			navigationShadowView.getLayoutParams().width = shadowWidth;
+			navigationShadowView.requestLayout();
 
 			if (toolbarLarge != null) {
 				toolbarLarge.setNavigationElevation(elevation);
@@ -2109,7 +2109,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
-		shadowView = findViewById(R.id.shadow_view);
+		navigationShadowView = findViewById(R.id.navigation_shadow_view);
 		preferenceHeaderFragment = new PreferenceHeaderFragment();
 		preferenceHeaderFragment.addFragmentListener(this);
 		initializeToolbar();
