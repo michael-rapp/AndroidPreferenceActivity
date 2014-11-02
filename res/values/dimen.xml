@@ -38,8 +38,8 @@ License along with this program. If not, see
     <dimen name="bread_crumb_horizontal_padding">0dp</dimen>
     <dimen name="default_navigation_width">320dp</dimen>
     <dimen name="default_shadow_width">10dp</dimen>
-    <dimen name="button_bar_button_width">150dp</dimen>
     <dimen name="button_bar_vertical_button_margin">8dp</dimen>
     <dimen name="button_bar_horizontal_padding">16dp</dimen>
+    <dimen name="button_min_width">150dp</dimen>
 
 </resources>

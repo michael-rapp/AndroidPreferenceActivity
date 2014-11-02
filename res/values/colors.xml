@@ -28,7 +28,8 @@ License along with this program. If not, see
     <color name="preference_screen_background_dark">#ff202020</color>
     <color name="shadow">#31000000</color>
     <color name="selection">#16000000</color>
-    <color name="separator">#ff000000</color>
+    <color name="separator">#20000000</color>
     <color name="overlay">#16000000</color>
+    <color name="button_bar_overlay">#05000000</color>
 
 </resources>
