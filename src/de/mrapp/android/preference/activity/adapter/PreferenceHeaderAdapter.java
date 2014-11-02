@@ -375,7 +375,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * 
 	 * @return The resource id of the selector, which is used as the background
 	 *         of the view, which is used to visualize the adapter's items, as
-	 *         an {@link Integer} value or 0, if no selector is used
+	 *         an {@link Integer} value
 	 */
 	public final int getSelectorId() {
 		return selectorId;
@@ -387,7 +387,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 * 
 	 * @param selectorId
 	 *            The resource id, which should be set, as an {@link Integer}
-	 *            value or 0, if no selector should be used
+	 *            value. The resource id must correspond to a valid drawable
+	 *            resource
 	 */
 	public final void setSelectorId(final int selectorId) {
 		this.selectorId = selectorId;
