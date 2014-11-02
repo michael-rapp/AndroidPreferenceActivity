@@ -20,6 +20,7 @@ package de.mrapp.android.preference.activity;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 
@@ -181,6 +182,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			.getSimpleName() + "::PreferenceHeaders";
 
 	/**
+	 * The default elevation of the navigation in dp.
+	 */
+	private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
+
+	/**
 	 * The saved instance state, which has been passed to the activity, when it
 	 * has been created.
 	 */
@@ -314,6 +320,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private boolean navigationHidden;
 
 	/**
+	 * The elevation of the navigation in dp.
+	 */
+	private int navigationElevation;
+
+	/**
 	 * The color of the separator, which is drawn between the bread crumb and
 	 * the preferences on devices with a large screen.
 	 */
@@ -324,12 +335,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * preference, when the activity is used as a wizard.
 	 */
 	private int buttonBarSeparatorColor;
-
-	/**
-	 * The color of the shadow, which is drawn besides the navigation on devices
-	 * with a large screen.
-	 */
-	private int shadowColor;
 
 	/**
 	 * The bread crumb, which is used to show the title of the currently
@@ -737,7 +742,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 					navigationHidden ? View.GONE : View.VISIBLE);
 			getShadowView().setVisibility(
 					navigationHidden ? View.GONE : View.VISIBLE);
-			
+
 			if (toolbarLarge != null) {
 				toolbarLarge.hideNavigation(navigationHidden);
 			}
@@ -1655,89 +1660,54 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Returns the color of the shadow, which is drawn besides the navigation on
-	 * devices with a large screen.
+	 * Returns the elevation of the navigation.
 	 * 
-	 * @return The color of the shadow, which is drawn besides the navigation,
-	 *         as an {@link Integer} value or -1, if the device has a small
-	 *         screen
+	 * @return The elevation of the navigation as an {@link Integer} value in dp
+	 *         or -1, if the device has a small screen
 	 */
-	public final int getShadowColor() {
+	public final int getNavigationElevation() {
 		if (isSplitScreen()) {
-			return shadowColor;
+			return navigationElevation;
 		} else {
 			return -1;
 		}
 	}
 
 	/**
-	 * Sets the color of the shadow, which is drawn besides the navigation on
-	 * devices with a large screen. The color is only set on devices with a
-	 * large screen.
+	 * Sets the elevation of the navigation. The elevation is only set on
+	 * devices with a large screen.
 	 * 
-	 * @param shadowColor
-	 *            The color, which should be set, as an {@link Integer} value
-	 * @return True, if the color has been set, false otherwise
+	 * @param elevation
+	 *            The elevation, which should be set, as an {@link Integer}
+	 *            value in dp
+	 * @return True, if the elevation has been set, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
-	public final boolean setShadowColor(final int shadowColor) {
+	public final boolean setNavigationElevation(final int elevation) {
+		String[] shadowColors = getResources().getStringArray(
+				R.array.navigation_elevation_shadow_colors);
+		String[] shadowWidths = getResources().getStringArray(
+				R.array.navigation_elevation_shadow_widths);
+		ensureAtLeast(elevation, 1, "The elevation must be at least 1");
+		ensureAtMaximum(elevation, shadowWidths.length,
+				"The elevation must be at maximum " + shadowWidths.length);
+
 		if (getShadowView() != null) {
-			this.shadowColor = shadowColor;
+			this.navigationElevation = elevation;
+			int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
+			int shadowWidth = convertDpToPixels(this,
+					Integer.valueOf(shadowWidths[elevation - 1]));
+
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.LEFT_RIGHT, new int[] { shadowColor,
 							Color.TRANSPARENT });
 			getShadowView().setBackgroundDrawable(gradient);
-
-			if (toolbarLarge != null) {
-				toolbarLarge.setShadowColor(shadowColor);
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Returns the width of the shadow, which is drawn besides the navigation on
-	 * devices with a large screen.
-	 * 
-	 * @return The width of the shadow, which is drawn besides the navigation,
-	 *         in dp as an {@link Integer} value or -1, if the device has a
-	 *         small screen
-	 */
-	public final int getShadowWidth() {
-		if (getShadowView() != null) {
-			return convertPixelsToDp(this,
-					getShadowView().getLayoutParams().width);
-		} else {
-			return -1;
-		}
-	}
-
-	/**
-	 * Sets the width of the shadow, which is drawn besides the navigation on
-	 * devices with a large screen. The width is only set on devices with a
-	 * large screen.
-	 * 
-	 * @param width
-	 *            The width, which should be set, in dp as an {@link Integer}
-	 *            value. The width must be at least 0
-	 * @return True, if the width has been set, false otherwise
-	 */
-	public final boolean setShadowWidth(final int width) {
-		ensureAtLeast(width, 0, "The width must be at least 0");
-
-		if (getShadowView() != null) {
-			getShadowView().getLayoutParams().width = convertDpToPixels(this,
-					width);
+			getShadowView().getLayoutParams().width = shadowWidth;
 			getShadowView().requestLayout();
 
 			if (toolbarLarge != null) {
-				toolbarLarge.setShadowWidth(width);
+				toolbarLarge.setNavigationElevation(elevation);
 			}
-
-			return true;
 		}
 
 		return false;
@@ -2131,7 +2101,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 		overrideNavigationIcon(true);
 		setBreadCrumbSeparatorColor(getResources().getColor(R.color.separator));
-		setShadowColor(getResources().getColor(R.color.shadow));
+		setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
 		showPreferenceHeaders();
 	}
 
