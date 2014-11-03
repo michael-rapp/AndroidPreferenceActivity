@@ -137,7 +137,11 @@ public abstract class PreferenceFragment extends
 		int paddingTop = getResources().getDimensionPixelSize(
 				R.dimen.list_view_padding_top);
 		listView.setPadding(0, paddingTop, 0, 0);
-		listView.setOnScrollListener(new HideViewOnScrollAnimation(buttonBar));
+
+		if (buttonBar != null) {
+			listView.setOnScrollListener(new HideViewOnScrollAnimation(
+					buttonBar));
+		}
 	}
 
 	/**
