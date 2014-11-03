@@ -45,6 +45,11 @@ import de.mrapp.android.preference.activity.R;
 public class ToolbarLarge extends FrameLayout {
 
 	/**
+	 * The default elevation of the navigation in dp.
+	 */
+	private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
+
+	/**
 	 * The view, which is used to visualize the toolbar's background.
 	 */
 	private View backgroundView;
@@ -94,6 +99,7 @@ public class ToolbarLarge extends FrameLayout {
 				.getLayoutParams();
 		this.navigationWidth = convertPixelsToDp(getContext(),
 				layoutParams.leftMargin);
+		setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
 	}
 
 	/**
@@ -327,6 +333,17 @@ public class ToolbarLarge extends FrameLayout {
 				- getContext().getResources().getDimensionPixelSize(
 						R.dimen.list_view_item_padding);
 		titleTextView.setMaxWidth(titleMaxWidth);
+	}
+
+	/**
+	 * Returns, whether the navigation is hidden, or not.
+	 * 
+	 * @return True, if the navigation is hidden, false otherwise
+	 */
+	public final boolean isNavigationHidden() {
+		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
+				.getLayoutParams();
+		return layoutParams.leftMargin == 0;
 	}
 
 	/**
