@@ -204,6 +204,39 @@ public class HideViewOnScrollAnimation extends Animation implements
 		this.animationDuration = animationDuration;
 	}
 
+	/**
+	 * Returns the view, which is animated by the listener.
+	 * 
+	 * @return The view, which is animated by the listener as an instance of the
+	 *         class {@link View}
+	 */
+	public final View getView() {
+		return animatedView;
+	}
+
+	/**
+	 * Returns the direction, which should be be used to translate the view in
+	 * order to hide it.
+	 * 
+	 * @return The direction, which should be be used to translate the view in
+	 *         order to hide it, as a value of the enum {@link Direction}. The
+	 *         direction may either be <code>UP</code> or <code>DOWN</code>
+	 */
+	public final Direction getDirection() {
+		return direction;
+	}
+
+	/**
+	 * Returns the duration of the animation, which is used to show or hide the
+	 * view.
+	 * 
+	 * @return The duration of the animation, which is used to show or hide the
+	 *         view, in milliseconds as a {@link Long} value
+	 */
+	public final long getAnimationDuration() {
+		return animationDuration;
+	}
+
 	@Override
 	public final void onScrollStateChanged(final AbsListView listView,
 			final int scrollState) {
