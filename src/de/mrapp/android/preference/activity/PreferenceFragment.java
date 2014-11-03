@@ -83,7 +83,7 @@ public abstract class PreferenceFragment extends
 	/**
 	 * The default elevation of the button bar in dp.
 	 */
-	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 1;
+	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
 
 	/**
 	 * The fragment's parent parentView.
