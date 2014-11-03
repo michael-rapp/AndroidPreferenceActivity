@@ -19,7 +19,7 @@ License along with this program. If not, see
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/selection" android:state_activated="true"/>
+    <item android:drawable="@color/selection_light" android:state_activated="true"/>
     <item android:drawable="@android:color/transparent"/>
 
 </selector>
