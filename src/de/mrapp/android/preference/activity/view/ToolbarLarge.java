@@ -340,7 +340,7 @@ public class ToolbarLarge extends FrameLayout {
 					.getLayoutParams();
 			layoutParams.leftMargin = 0;
 			overlayView.requestLayout();
-		} else {
+		} else if (navigationWidth != 0) {
 			setNavigationWidth(navigationWidth);
 		}
 	}
