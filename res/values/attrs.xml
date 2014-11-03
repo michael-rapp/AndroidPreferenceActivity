@@ -21,7 +21,18 @@ License along with this program. If not, see
 
     <attr name="toolbarTheme" format="reference" />
     <attr name="toolbarPopupTheme" format="reference" />
-
+    <attr name="navigationBackground" format="reference|color" />
+    <attr name="preferenceScreenBackground" format="reference|color" />
+    <attr name="wizardButtonBarBackground" format="reference|color" />
+    <attr name="restoreDefaultsButtonBarBackground" format="reference|color" />
+    <attr name="breadCrumbBackground" format="reference|color" />
+    <attr name="navigationWidth" format="dimension" />
+    <attr name="overrideNavigationIcon" format="boolean" />
+    <attr name="navigationElevation" format="dimension"/>
+    <attr name="wizardButtonBarElevation" format="dimension"/>
+    <attr name="restoreDefaultsButtonBarElevation" format="dimension"/>
+    <attr name="breadCrumbElevation" format="dimension"/>
+    
     <declare-styleable name="PreferenceHeader">
         <attr name="android:title" />
         <attr name="android:summary" />

@@ -33,6 +33,10 @@ import java.util.Set;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -2265,6 +2269,245 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
 		setBreadCrumbElevation(DEFAULT_BREAD_CRUMB_ELEVATION);
 		showPreferenceHeaders();
+		obtainStyledAttributes();
+	}
+
+	/**
+	 * Obtains all relevant attributes from the activity's current theme.
+	 */
+	private void obtainStyledAttributes() {
+		int theme = obtainTheme();
+
+		if (theme != -1) {
+			obtainNavigationBackground(theme);
+			obtainPreferenceScreenBackground(theme);
+			obtainWizardButtonBarBackground(theme);
+			obtainBreadCrumbBackground(theme);
+			obtainNavigationWidth(theme);
+			obtainOverrideNavigationIcon(theme);
+			obtainNavigationElevation(theme);
+			obtainWizardButtonBarElevation(theme);
+			obtainBreadCrumbElevation(theme);
+		}
+	}
+
+	/**
+	 * Obtains the resource id of the activity's current theme.
+	 * 
+	 * @return The resource id of the acitivty's current theme as an
+	 *         {@link Integer} value or -1, if an error occurred while obtaining
+	 *         the theme
+	 */
+	private int obtainTheme() {
+		try {
+			String packageName = getClass().getPackage().getName();
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(
+					packageName, PackageManager.GET_META_DATA);
+			return packageInfo.applicationInfo.theme;
+		} catch (NameNotFoundException e) {
+			return -1;
+		}
+	}
+
+	/**
+	 * Obtains the background of the navigation from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the background should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainNavigationBackground(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.navigationBackground });
+		int color = typedArray.getColor(0, -1);
+
+		if (color != -1) {
+			setNavigationBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, -1);
+
+			if (resourceId != -1) {
+				setNavigationBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the background of the preference screen from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the background should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainPreferenceScreenBackground(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.preferenceScreenBackground });
+		int color = typedArray.getColor(0, -1);
+
+		if (color != -1) {
+			setPreferenceScreenBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, -1);
+
+			if (resourceId != -1) {
+				setPreferenceScreenBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the background of the wizard button bar from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the background should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainWizardButtonBarBackground(final int theme) {
+		View wizardButtonBar = findViewById(R.id.wizard_button_bar);
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.wizardButtonBarBackground });
+		int color = typedArray.getColor(0, -1);
+
+		if (color != -1) {
+			wizardButtonBar.setBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, -1);
+
+			if (resourceId != -1) {
+				wizardButtonBar.setBackgroundResource(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the background of the bread crumb from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the background should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainBreadCrumbBackground(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.breadCrumbBackground });
+		int color = typedArray.getColor(0, -1);
+
+		if (color != -1) {
+			setBreadCrumbBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, -1);
+
+			if (resourceId != -1) {
+				setBreadCrumbBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the width of the navigation from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the navigation width should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainNavigationWidth(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.navigationWidth });
+		int width = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, -1));
+
+		if (width != -1) {
+			setNavigationWidth(width);
+		}
+	}
+
+	/**
+	 * Obtains, whether the behavior of the navigation icon should be
+	 * overridden, or not.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the navigation width should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainOverrideNavigationIcon(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.overrideNavigationIcon });
+		overrideNavigationIcon(typedArray.getBoolean(0, true));
+	}
+
+	/**
+	 * Obtains the elevation of the navigation from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the navigation width should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainNavigationElevation(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.navigationElevation });
+		int elevation = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, -1));
+
+		if (elevation != -1) {
+			setNavigationElevation(elevation);
+		}
+	}
+
+	/**
+	 * Obtains the elevation of the button bar from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the navigation width should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	@SuppressWarnings("deprecation")
+	private void obtainWizardButtonBarElevation(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.wizardButtonBarElevation });
+		int elevation = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, -1));
+
+		if (elevation != -1) {
+			View shadowView = findViewById(R.id.wizard_button_bar_shadow_view);
+			String[] shadowColors = getResources().getStringArray(
+					R.array.button_bar_elevation_shadow_colors);
+			String[] shadowWidths = getResources().getStringArray(
+					R.array.button_bar_elevation_shadow_widths);
+			ensureAtLeast(elevation, 1, "The elevation must be at least 1");
+			ensureAtMaximum(elevation, shadowWidths.length,
+					"The elevation must be at maximum " + shadowWidths.length);
+
+			if (shadowView != null) {
+				this.buttonBarElevation = elevation;
+				int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
+				int shadowWidth = convertDpToPixels(this,
+						Integer.valueOf(shadowWidths[elevation - 1]));
+
+				GradientDrawable gradient = new GradientDrawable(
+						Orientation.BOTTOM_TOP, new int[] { shadowColor,
+								Color.TRANSPARENT });
+				shadowView.setBackgroundDrawable(gradient);
+				shadowView.getLayoutParams().height = shadowWidth;
+				shadowView.requestLayout();
+			}
+		}
+	}
+
+	/**
+	 * Obtains the elevation of the bread crumb from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the navigation width should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainBreadCrumbElevation(final int theme) {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+				new int[] { R.attr.breadCrumbElevation });
+		int elevation = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, -1));
+
+		if (elevation != -1) {
+			setBreadCrumbElevation(elevation);
+		}
 	}
 
 	@Override

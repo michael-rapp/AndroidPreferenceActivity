@@ -21,11 +21,16 @@ import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
+import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -98,6 +103,12 @@ public abstract class PreferenceFragment extends
 	private FrameLayout frameLayout;
 
 	/**
+	 * The parent view of the view group, which contains the button, which
+	 * allows to restore the preferences' default values.
+	 */
+	private ViewGroup buttonBarParent;
+
+	/**
 	 * The view group, which contains the button, which allows to restore the
 	 * preferences' default values.
 	 */
@@ -145,16 +156,96 @@ public abstract class PreferenceFragment extends
 	 * restore the preferences' default values.
 	 */
 	private void inflateRestoreDefaultsButtonBar() {
-		if (buttonBar == null) {
+		if (buttonBarParent == null) {
 			LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-			buttonBar = (ViewGroup) layoutInflater.inflate(
+			buttonBarParent = (ViewGroup) layoutInflater.inflate(
 					R.layout.restore_defaults_button_bar, frameLayout, false);
-			restoreDefaultsButton = (Button) buttonBar
+			buttonBar = (ViewGroup) buttonBarParent
+					.findViewById(R.id.restore_defaults_button_bar);
+			restoreDefaultsButton = (Button) buttonBarParent
 					.findViewById(R.id.restore_defaults_button);
 			restoreDefaultsButton
 					.setOnClickListener(createRestoreDefaultsListener());
-			shadowView = buttonBar
+			shadowView = buttonBarParent
 					.findViewById(R.id.restore_defaults_button_bar_shadow_view);
+			obtainStyledAttributes();
+		}
+	}
+
+	/**
+	 * Obtains all relevant attributes from the activity's current theme.
+	 */
+	private void obtainStyledAttributes() {
+		int theme = obtainTheme();
+
+		if (theme != -1) {
+			obtainButtonBarBackground(theme);
+			obtainButtonBarElevation(theme);
+		}
+	}
+
+	/**
+	 * Obtains the resource id of the activity's current theme.
+	 * 
+	 * @return The resource id of the acitivty's current theme as an
+	 *         {@link Integer} value or -1, if an error occurred while obtaining
+	 *         the theme
+	 */
+	private int obtainTheme() {
+		try {
+			String packageName = getActivity().getClass().getPackage()
+					.getName();
+			PackageInfo packageInfo = getActivity().getPackageManager()
+					.getPackageInfo(packageName, PackageManager.GET_META_DATA);
+			return packageInfo.applicationInfo.theme;
+		} catch (NameNotFoundException e) {
+			return -1;
+		}
+	}
+
+	/**
+	 * Obtains the background of the button bar from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the background should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainButtonBarBackground(final int theme) {
+		TypedArray typedArray = getActivity()
+				.getTheme()
+				.obtainStyledAttributes(theme,
+						new int[] { R.attr.restoreDefaultsButtonBarBackground });
+		int color = typedArray.getColor(0, -1);
+
+		if (color != -1) {
+			setButtonBarBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, -1);
+
+			if (resourceId != -1) {
+				setButtonBarBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the elevation of the button bar from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the navigation width should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainButtonBarElevation(final int theme) {
+		TypedArray typedArray = getActivity().getTheme()
+				.obtainStyledAttributes(theme,
+						new int[] { R.attr.restoreDefaultsButtonBarElevation });
+		int elevation = convertPixelsToDp(getActivity(),
+				typedArray.getDimensionPixelSize(0, -1));
+
+		if (elevation != -1) {
+			setButtonBarElevation(elevation);
+		} else {
+			setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
 		}
 	}
 
@@ -183,13 +274,13 @@ public abstract class PreferenceFragment extends
 	 * the preferences' default values, to the fragment.
 	 */
 	private void addRestoreDefaultsButtonBar() {
-		if (frameLayout != null && buttonBar != null) {
+		if (frameLayout != null && buttonBarParent != null) {
 			FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
 					FrameLayout.LayoutParams.MATCH_PARENT,
 					FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-			frameLayout.addView(buttonBar, layoutParams);
+			frameLayout.addView(buttonBarParent, layoutParams);
 			listView.setOnScrollListener(new HideViewOnScrollAnimation(
-					buttonBar, Direction.DOWN));
+					buttonBarParent, Direction.DOWN));
 		}
 	}
 
@@ -198,8 +289,8 @@ public abstract class PreferenceFragment extends
 	 * restore the preferences' default values, from the fragment.
 	 */
 	private void removeRestoreDefaultsButtonBar() {
-		if (frameLayout != null && buttonBar != null) {
-			frameLayout.removeView(buttonBar);
+		if (frameLayout != null && buttonBarParent != null) {
+			frameLayout.removeView(buttonBarParent);
 		}
 	}
 
@@ -455,6 +546,7 @@ public abstract class PreferenceFragment extends
 		} else {
 			removeRestoreDefaultsButtonBar();
 			listView.setOnScrollListener(null);
+			buttonBarParent = null;
 			buttonBar = null;
 			restoreDefaultsButton = null;
 		}
@@ -657,7 +749,6 @@ public abstract class PreferenceFragment extends
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.buttonBarElevation = DEFAULT_BUTTON_BAR_ELEVATION;
 
 		if (getArguments() != null) {
 			handleShowRestoreDefaultsButtonArgument();
@@ -672,7 +763,6 @@ public abstract class PreferenceFragment extends
 				savedInstanceState);
 		initializeListView();
 		addRestoreDefaultsButtonBar();
-		setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
 		return parentView;
 	}
 
