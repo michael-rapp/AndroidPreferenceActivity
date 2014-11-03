@@ -21,6 +21,7 @@ import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
+import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -89,6 +90,10 @@ public class ToolbarLarge extends FrameLayout {
 		this.breadCrumbTextView = (TextView) findViewById(R.id.toolbar_bread_crumb_view);
 		this.shadowView = findViewById(R.id.toolbar_shadow_view);
 		this.overlayView = findViewById(R.id.toolbar_overlay_view);
+		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
+				.getLayoutParams();
+		this.navigationWidth = convertPixelsToDp(getContext(),
+				layoutParams.leftMargin);
 	}
 
 	/**
@@ -340,7 +345,7 @@ public class ToolbarLarge extends FrameLayout {
 					.getLayoutParams();
 			layoutParams.leftMargin = 0;
 			overlayView.requestLayout();
-		} else if (navigationWidth != 0) {
+		} else {
 			setNavigationWidth(navigationWidth);
 		}
 	}
