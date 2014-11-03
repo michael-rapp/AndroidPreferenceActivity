@@ -749,6 +749,7 @@ public abstract class PreferenceFragment extends
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.buttonBarElevation = DEFAULT_BUTTON_BAR_ELEVATION;
 
 		if (getArguments() != null) {
 			handleShowRestoreDefaultsButtonArgument();
