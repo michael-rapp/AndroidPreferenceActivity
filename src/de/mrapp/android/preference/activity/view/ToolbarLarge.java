@@ -108,7 +108,7 @@ public class ToolbarLarge extends FrameLayout {
 		int theme = obtainTheme(typedArray);
 		typedArray.recycle();
 
-		if (theme != -1) {
+		if (theme != 0) {
 			obtainBackgroundColor(theme);
 			obtainTitleColor(theme);
 		}
@@ -124,7 +124,7 @@ public class ToolbarLarge extends FrameLayout {
 	 * @return The resource id of the theme as an {@link Integer} value
 	 */
 	private int obtainTheme(final TypedArray typedArray) {
-		return typedArray.getResourceId(R.styleable.Toolbar_theme, -1);
+		return typedArray.getResourceId(R.styleable.Toolbar_theme, 0);
 	}
 
 	/**
@@ -138,10 +138,10 @@ public class ToolbarLarge extends FrameLayout {
 	private void obtainBackgroundColor(final int theme) {
 		TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(
 				theme, new int[] { R.attr.colorPrimary });
-		int colorPrimary = typedArray.getColor(0, -1);
+		int colorPrimary = typedArray.getColor(0, 0);
 		typedArray.recycle();
 
-		if (colorPrimary != -1) {
+		if (colorPrimary != 0) {
 			backgroundView.setBackgroundColor(colorPrimary);
 		}
 	}
@@ -156,10 +156,10 @@ public class ToolbarLarge extends FrameLayout {
 	private void obtainTitleColor(final int theme) {
 		TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(
 				theme, new int[] { android.R.attr.textColorPrimary });
-		int textColorPrimary = typedArray.getResourceId(0, -1);
+		int textColorPrimary = typedArray.getResourceId(0, 0);
 		typedArray.recycle();
 
-		if (textColorPrimary != -1) {
+		if (textColorPrimary != 0) {
 			int titleColor = getContext().getResources().getColor(
 					textColorPrimary);
 			titleTextView.setTextColor(titleColor);

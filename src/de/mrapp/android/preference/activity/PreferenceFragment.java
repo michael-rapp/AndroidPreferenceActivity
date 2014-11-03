@@ -178,7 +178,7 @@ public abstract class PreferenceFragment extends
 	private void obtainStyledAttributes() {
 		int theme = obtainTheme();
 
-		if (theme != -1) {
+		if (theme != 0) {
 			obtainButtonBarBackground(theme);
 			obtainButtonBarElevation(theme);
 		}
@@ -188,7 +188,7 @@ public abstract class PreferenceFragment extends
 	 * Obtains the resource id of the activity's current theme.
 	 * 
 	 * @return The resource id of the acitivty's current theme as an
-	 *         {@link Integer} value or -1, if an error occurred while obtaining
+	 *         {@link Integer} value or 0, if an error occurred while obtaining
 	 *         the theme
 	 */
 	private int obtainTheme() {
@@ -199,7 +199,7 @@ public abstract class PreferenceFragment extends
 					.getPackageInfo(packageName, PackageManager.GET_META_DATA);
 			return packageInfo.applicationInfo.theme;
 		} catch (NameNotFoundException e) {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -215,14 +215,14 @@ public abstract class PreferenceFragment extends
 				.getTheme()
 				.obtainStyledAttributes(theme,
 						new int[] { R.attr.restoreDefaultsButtonBarBackground });
-		int color = typedArray.getColor(0, -1);
+		int color = typedArray.getColor(0, 0);
 
-		if (color != -1) {
+		if (color != 0) {
 			setButtonBarBackgroundColor(color);
 		} else {
-			int resourceId = typedArray.getResourceId(0, -1);
+			int resourceId = typedArray.getResourceId(0, 0);
 
-			if (resourceId != -1) {
+			if (resourceId != 0) {
 				setButtonBarBackground(resourceId);
 			}
 		}
@@ -240,9 +240,9 @@ public abstract class PreferenceFragment extends
 				.obtainStyledAttributes(theme,
 						new int[] { R.attr.restoreDefaultsButtonBarElevation });
 		int elevation = convertPixelsToDp(getActivity(),
-				typedArray.getDimensionPixelSize(0, -1));
+				typedArray.getDimensionPixelSize(0, 0));
 
-		if (elevation != -1) {
+		if (elevation != 0) {
 			setButtonBarElevation(elevation);
 		} else {
 			setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);

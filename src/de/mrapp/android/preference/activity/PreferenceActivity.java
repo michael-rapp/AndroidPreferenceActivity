@@ -2278,7 +2278,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private void obtainStyledAttributes() {
 		int theme = obtainTheme();
 
-		if (theme != -1) {
+		if (theme != 0) {
 			obtainNavigationBackground(theme);
 			obtainPreferenceScreenBackground(theme);
 			obtainWizardButtonBarBackground(theme);
@@ -2295,7 +2295,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * Obtains the resource id of the activity's current theme.
 	 * 
 	 * @return The resource id of the acitivty's current theme as an
-	 *         {@link Integer} value or -1, if an error occurred while obtaining
+	 *         {@link Integer} value or 0, if an error occurred while obtaining
 	 *         the theme
 	 */
 	private int obtainTheme() {
@@ -2305,7 +2305,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 					packageName, PackageManager.GET_META_DATA);
 			return packageInfo.applicationInfo.theme;
 		} catch (NameNotFoundException e) {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -2319,14 +2319,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private void obtainNavigationBackground(final int theme) {
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.navigationBackground });
-		int color = typedArray.getColor(0, -1);
+		int color = typedArray.getColor(0, 0);
 
-		if (color != -1) {
+		if (color != 0) {
 			setNavigationBackgroundColor(color);
 		} else {
-			int resourceId = typedArray.getResourceId(0, -1);
+			int resourceId = typedArray.getResourceId(0, 0);
 
-			if (resourceId != -1) {
+			if (resourceId != 0) {
 				setNavigationBackground(resourceId);
 			}
 		}
@@ -2342,14 +2342,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private void obtainPreferenceScreenBackground(final int theme) {
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.preferenceScreenBackground });
-		int color = typedArray.getColor(0, -1);
+		int color = typedArray.getColor(0, 0);
 
-		if (color != -1) {
+		if (color != 0) {
 			setPreferenceScreenBackgroundColor(color);
 		} else {
-			int resourceId = typedArray.getResourceId(0, -1);
+			int resourceId = typedArray.getResourceId(0, 0);
 
-			if (resourceId != -1) {
+			if (resourceId != 0) {
 				setPreferenceScreenBackground(resourceId);
 			}
 		}
@@ -2366,14 +2366,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		View wizardButtonBar = findViewById(R.id.wizard_button_bar);
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.wizardButtonBarBackground });
-		int color = typedArray.getColor(0, -1);
+		int color = typedArray.getColor(0, 0);
 
-		if (color != -1) {
+		if (color != 0) {
 			wizardButtonBar.setBackgroundColor(color);
 		} else {
-			int resourceId = typedArray.getResourceId(0, -1);
+			int resourceId = typedArray.getResourceId(0, 0);
 
-			if (resourceId != -1) {
+			if (resourceId != 0) {
 				wizardButtonBar.setBackgroundResource(resourceId);
 			}
 		}
@@ -2389,14 +2389,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private void obtainBreadCrumbBackground(final int theme) {
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.breadCrumbBackground });
-		int color = typedArray.getColor(0, -1);
+		int color = typedArray.getColor(0, 0);
 
-		if (color != -1) {
+		if (color != 0) {
 			setBreadCrumbBackgroundColor(color);
 		} else {
-			int resourceId = typedArray.getResourceId(0, -1);
+			int resourceId = typedArray.getResourceId(0, 0);
 
-			if (resourceId != -1) {
+			if (resourceId != 0) {
 				setBreadCrumbBackground(resourceId);
 			}
 		}
@@ -2413,9 +2413,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.navigationWidth });
 		int width = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, -1));
+				typedArray.getDimensionPixelSize(0, 0));
 
-		if (width != -1) {
+		if (width != 0) {
 			setNavigationWidth(width);
 		}
 	}
@@ -2445,9 +2445,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.navigationElevation });
 		int elevation = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, -1));
+				typedArray.getDimensionPixelSize(0, 0));
 
-		if (elevation != -1) {
+		if (elevation != 0) {
 			setNavigationElevation(elevation);
 		}
 	}
@@ -2464,9 +2464,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.wizardButtonBarElevation });
 		int elevation = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, -1));
+				typedArray.getDimensionPixelSize(0, 0));
 
-		if (elevation != -1) {
+		if (elevation != 0) {
 			View shadowView = findViewById(R.id.wizard_button_bar_shadow_view);
 			String[] shadowColors = getResources().getStringArray(
 					R.array.button_bar_elevation_shadow_colors);
@@ -2503,9 +2503,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
 				new int[] { R.attr.breadCrumbElevation });
 		int elevation = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, -1));
+				typedArray.getDimensionPixelSize(0, 0));
 
-		if (elevation != -1) {
+		if (elevation != 0) {
 			setBreadCrumbElevation(elevation);
 		}
 	}
