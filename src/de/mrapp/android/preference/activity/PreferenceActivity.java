@@ -190,14 +190,14 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * The default elevation of the button bar, which contains the buttons,
 	 * which are shown when the activity is used as a wizard.
 	 */
-	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
+	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 1;
 
 	/**
 	 * The default elevation of the bread crumb, which is used to show the title
 	 * of the currently selected fragment on devices with a large screen, if the
 	 * activity's toolbar is not shown.
 	 */
-	private static final int DEFAULT_BREAD_CRUMB_ELEVATION = 2;
+	private static final int DEFAULT_BREAD_CRUMB_ELEVATION = 1;
 
 	/**
 	 * The saved instance state, which has been passed to the activity, when it

@@ -44,6 +44,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
 
 /**
@@ -76,13 +77,24 @@ public abstract class PreferenceFragment extends
 	/**
 	 * The default elevation of the button bar in dp.
 	 */
-	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
+	private static final int DEFAULT_BUTTON_BAR_ELEVATION = 1;
 
 	/**
-	 * The layout, which contains the fragment's preferences as well as the
-	 * button, which allows to restore the default values.
+	 * The fragment's parent parentView.
 	 */
-	private LinearLayout layout;
+	private LinearLayout parentView;
+
+	/**
+	 * The list view, which contains the fragment's preferences.
+	 */
+	private ListView listView;
+
+	/**
+	 * The frame parentView, which contains the list view, which contains the
+	 * fragment's preferences, as well as the button bar, which contains the
+	 * button, which allows to restore the preferences' default values.
+	 */
+	private FrameLayout frameLayout;
 
 	/**
 	 * The view group, which contains the button, which allows to restore the
@@ -116,24 +128,16 @@ public abstract class PreferenceFragment extends
 	 * preferences.
 	 */
 	private void initializeListView() {
-		ListView preferenceListView = (ListView) layout
-				.findViewById(android.R.id.list);
-
-		layout.removeView(preferenceListView);
-		FrameLayout frameLayout = new FrameLayout(getActivity());
-		layout.addView(frameLayout, preferenceListView.getLayoutParams());
-		frameLayout.addView(preferenceListView,
-				FrameLayout.LayoutParams.MATCH_PARENT,
+		listView = (ListView) parentView.findViewById(android.R.id.list);
+		parentView.removeView(listView);
+		frameLayout = new FrameLayout(getActivity());
+		parentView.addView(frameLayout, listView.getLayoutParams());
+		frameLayout.addView(listView, FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
-		shadowView = new View(getActivity());
-		shadowView.setVisibility(View.INVISIBLE);
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, 0, Gravity.BOTTOM);
-		frameLayout.addView(shadowView, layoutParams);
-
 		int paddingTop = getResources().getDimensionPixelSize(
 				R.dimen.list_view_padding_top);
-		preferenceListView.setPadding(0, paddingTop, 0, 0);
+		listView.setPadding(0, paddingTop, 0, 0);
+		listView.setOnScrollListener(new HideViewOnScrollAnimation(buttonBar));
 	}
 
 	/**
@@ -144,11 +148,13 @@ public abstract class PreferenceFragment extends
 		if (buttonBar == null) {
 			LayoutInflater layoutInflater = getActivity().getLayoutInflater();
 			buttonBar = (ViewGroup) layoutInflater.inflate(
-					R.layout.restore_defaults_button_bar, layout, false);
+					R.layout.restore_defaults_button_bar, frameLayout, false);
 			restoreDefaultsButton = (Button) buttonBar
 					.findViewById(R.id.restore_defaults_button);
 			restoreDefaultsButton
 					.setOnClickListener(createRestoreDefaultsListener());
+			shadowView = buttonBar
+					.findViewById(R.id.restore_defaults_button_bar_shadow_view);
 		}
 	}
 
@@ -177,8 +183,11 @@ public abstract class PreferenceFragment extends
 	 * the preferences' default values, to the fragment.
 	 */
 	private void addRestoreDefaultsButtonBar() {
-		if (layout != null && buttonBar != null) {
-			layout.addView(buttonBar);
+		if (frameLayout != null && buttonBar != null) {
+			FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+					FrameLayout.LayoutParams.MATCH_PARENT,
+					FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+			frameLayout.addView(buttonBar, layoutParams);
 		}
 	}
 
@@ -187,8 +196,8 @@ public abstract class PreferenceFragment extends
 	 * restore the preferences' default values, from the fragment.
 	 */
 	private void removeRestoreDefaultsButtonBar() {
-		if (layout != null && buttonBar != null) {
-			layout.removeView(buttonBar);
+		if (frameLayout != null && buttonBar != null) {
+			frameLayout.removeView(buttonBar);
 		}
 	}
 
@@ -442,12 +451,13 @@ public abstract class PreferenceFragment extends
 			inflateRestoreDefaultsButtonBar();
 			addRestoreDefaultsButtonBar();
 
-			if (shadowView != null) {
-				shadowView.setVisibility(View.VISIBLE);
+			if (listView != null) {
+				listView.setOnScrollListener(new HideViewOnScrollAnimation(
+						buttonBar));
 			}
 		} else {
 			removeRestoreDefaultsButtonBar();
-			shadowView.setVisibility(View.INVISIBLE);
+			listView.setOnScrollListener(null);
 			buttonBar = null;
 			restoreDefaultsButton = null;
 		}
@@ -576,7 +586,6 @@ public abstract class PreferenceFragment extends
 			GradientDrawable gradient = new GradientDrawable(
 					Orientation.BOTTOM_TOP, new int[] { shadowColor,
 							Color.TRANSPARENT });
-			shadowView.setVisibility(View.VISIBLE);
 			shadowView.setBackgroundDrawable(gradient);
 			shadowView.getLayoutParams().height = shadowWidth;
 			shadowView.requestLayout();
@@ -651,6 +660,7 @@ public abstract class PreferenceFragment extends
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.buttonBarElevation = DEFAULT_BUTTON_BAR_ELEVATION;
 
 		if (getArguments() != null) {
 			handleShowRestoreDefaultsButtonArgument();
@@ -661,12 +671,12 @@ public abstract class PreferenceFragment extends
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
-		layout = (LinearLayout) super.onCreateView(inflater, container,
+		parentView = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
 		initializeListView();
 		addRestoreDefaultsButtonBar();
 		setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
-		return layout;
+		return parentView;
 	}
 
 	@Override

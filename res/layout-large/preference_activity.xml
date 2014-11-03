@@ -59,7 +59,7 @@ License along with this program. If not, see
                     android:id="@id/bread_crumb_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/bread_crumb_height"
-                    android:background="@color/button_bar_overlay"
+                    android:background="@color/button_bar_background_light"
                     android:ellipsize="end"
                     android:gravity="center_vertical|start"
                     android:paddingEnd="@dimen/preference_horizontal_padding"
