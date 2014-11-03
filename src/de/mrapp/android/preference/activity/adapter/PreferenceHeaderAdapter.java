@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -325,6 +329,54 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	}
 
 	/**
+	 * Obtains all relevant attributes from the context's current theme.
+	 */
+	private void obtainStyledAttributes() {
+		int theme = obtainTheme();
+
+		if (theme != 0) {
+			obtainSelector(theme);
+		}
+	}
+
+	/**
+	 * Obtains the resource id of the context's current theme.
+	 * 
+	 * @return The resource id of the context's current theme as an
+	 *         {@link Integer} value or 0, if an error occurred while obtaining
+	 *         the theme
+	 */
+	private int obtainTheme() {
+		try {
+			String packageName = context.getClass().getPackage().getName();
+			PackageInfo packageInfo = context.getPackageManager()
+					.getPackageInfo(packageName, PackageManager.GET_META_DATA);
+			return packageInfo.applicationInfo.theme;
+		} catch (NameNotFoundException e) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Obtains the selector from a specific theme.
+	 * 
+	 * @param theme
+	 *            The resource id of the theme, the background should be
+	 *            obtained from, as an {@link Integer} value
+	 */
+	private void obtainSelector(final int theme) {
+		TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+				theme, new int[] { R.attr.preferenceHeaderSelector });
+		int resourceId = typedArray.getResourceId(0, 0);
+
+		if (resourceId != 0) {
+			this.selectorId = resourceId;
+		} else {
+			this.selectorId = R.drawable.selector_light;
+		}
+	}
+
+	/**
 	 * Creates a new adapter, which provides instances of the class
 	 * {@link PreferenceHeader} to be used for visualization via a list view.
 	 * 
@@ -339,9 +391,9 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		this.preferenceHeaders = new LinkedList<PreferenceHeader>();
 		this.enabled = true;
 		this.viewId = R.layout.preference_header_item;
-		this.selectorId = R.drawable.selector_light;
 		this.listeners = new LinkedHashSet<AdapterListener>();
 		this.decorators = new LinkedHashSet<PreferenceHeaderDecorator>();
+		obtainStyledAttributes();
 	}
 
 	/**
