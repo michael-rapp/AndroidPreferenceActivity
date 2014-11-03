@@ -64,18 +64,18 @@ public class HideViewOnScrollAnimation extends Animation implements
 	/**
 	 * The view, which is animated by the listener.
 	 */
-	private View animatedView;
+	private final View animatedView;
 
 	/**
 	 * The direction, which is used to translate the view in order to hide it.
 	 */
-	private Direction direction;
+	private final Direction direction;
 
 	/**
 	 * The duration of the animation, which is used to show or hide the view, in
 	 * milliseconds.
 	 */
-	private long animationDuration;
+	private final long animationDuration;
 
 	/**
 	 * The observed list view's scroll position, when the listener was called
