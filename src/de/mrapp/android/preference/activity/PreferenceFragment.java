@@ -45,6 +45,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
+import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
 
 /**
@@ -137,11 +138,6 @@ public abstract class PreferenceFragment extends
 		int paddingTop = getResources().getDimensionPixelSize(
 				R.dimen.list_view_padding_top);
 		listView.setPadding(0, paddingTop, 0, 0);
-
-		if (buttonBar != null) {
-			listView.setOnScrollListener(new HideViewOnScrollAnimation(
-					buttonBar));
-		}
 	}
 
 	/**
@@ -192,6 +188,8 @@ public abstract class PreferenceFragment extends
 					FrameLayout.LayoutParams.MATCH_PARENT,
 					FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
 			frameLayout.addView(buttonBar, layoutParams);
+			listView.setOnScrollListener(new HideViewOnScrollAnimation(
+					buttonBar, Direction.DOWN));
 		}
 	}
 
@@ -454,11 +452,6 @@ public abstract class PreferenceFragment extends
 		if (show) {
 			inflateRestoreDefaultsButtonBar();
 			addRestoreDefaultsButtonBar();
-
-			if (listView != null) {
-				listView.setOnScrollListener(new HideViewOnScrollAnimation(
-						buttonBar));
-			}
 		} else {
 			removeRestoreDefaultsButtonBar();
 			listView.setOnScrollListener(null);

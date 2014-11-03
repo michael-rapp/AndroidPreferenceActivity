@@ -38,6 +38,24 @@ public class HideViewOnScrollAnimation extends Animation implements
 		OnScrollListener {
 
 	/**
+	 * Contains all possible directions, which can be used to translate the
+	 * animated view in order hide it.
+	 */
+	public enum Direction {
+
+		/**
+		 * If the view should be translated upwards.
+		 */
+		UP,
+
+		/**
+		 * If the view should be translated downwards.
+		 */
+		DOWN;
+
+	}
+
+	/**
 	 * The default duration of the animation, which is used to show or hide the
 	 * view, in milliseconds.
 	 */
@@ -47,6 +65,11 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 * The view, which is animated by the listener.
 	 */
 	private View animatedView;
+
+	/**
+	 * The direction, which is used to translate the view in order to hide it.
+	 */
+	private Direction direction;
 
 	/**
 	 * The duration of the animation, which is used to show or hide the view, in
@@ -86,7 +109,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 			scrollingDown = false;
 
 			if (animatedView.getAnimation() == null) {
-				ObjectAnimator animator = createAnimator(false);
+				ObjectAnimator animator = createAnimator();
 				animator.start();
 			}
 		}
@@ -101,7 +124,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 			scrollingDown = true;
 
 			if (animatedView.getAnimation() == null) {
-				ObjectAnimator animator = createAnimator(true);
+				ObjectAnimator animator = createAnimator();
 				animator.start();
 			}
 		}
@@ -111,18 +134,22 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 * Creates and returns an animator, which allows to translate the animated
 	 * view to become shown or hidden.
 	 * 
-	 * @param hide
-	 *            True, if the view should become hidden, false otherwise
 	 * @return The animator, which has been created, as an instance of the class
 	 *         {@link ObjectAnimator}
 	 */
-	private ObjectAnimator createAnimator(final boolean hide) {
+	private ObjectAnimator createAnimator() {
 		if (initialPosition == 0) {
 			initialPosition = animatedView.getY();
 		}
 
-		float targetPosition = hide ? initialPosition
-				+ animatedView.getHeight() : initialPosition;
+		float targetPosition = scrollingDown ? initialPosition
+				- animatedView.getHeight() : initialPosition;
+
+		if (direction == Direction.DOWN) {
+			targetPosition = scrollingDown ? initialPosition
+					+ animatedView.getHeight() : initialPosition;
+		}
+
 		ObjectAnimator animation = ObjectAnimator.ofFloat(animatedView, "y",
 				animatedView.getY(), targetPosition);
 		animation.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -138,9 +165,14 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 * @param view
 	 *            The view, which should be animated by the listener, as an
 	 *            instance of the class {@link View}. The view may not be null
+	 * @param direction
+	 *            The direction, which should be be used to translate the view
+	 *            in order to hide it, as a value of the enum {@link Direction}.
+	 *            The direction may either be <code>UP</code> or
+	 *            <code>DOWN</code>
 	 */
-	public HideViewOnScrollAnimation(final View view) {
-		this(view, DEFAULT_ANIMATION_DURATION);
+	public HideViewOnScrollAnimation(final View view, final Direction direction) {
+		this(view, direction, DEFAULT_ANIMATION_DURATION);
 	}
 
 	/**
@@ -151,17 +183,24 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 * @param view
 	 *            The view, which should be animated by the listener, as an
 	 *            instance of the class {@link View}. The view may not be null
+	 * @param direction
+	 *            The direction, which should be be used to translate the view
+	 *            in order to hide it, as a value of the enum {@link Direction}.
+	 *            The direction may either be <code>UP</code> or
+	 *            <code>DOWN</code>
 	 * @param animationDuration
 	 *            The duration of the animation, which is used to show or hide
 	 *            the view, in milliseconds as a {@link Long} value. The
 	 *            duration must be greater than 0
 	 */
 	public HideViewOnScrollAnimation(final View view,
-			final long animationDuration) {
+			final Direction direction, final long animationDuration) {
 		ensureNotNull(view, "The view may not be null");
+		ensureNotNull(direction, "The direction may not be null");
 		ensureGreaterThan(animationDuration, 0,
 				"The animation duration must be greater than 0");
 		this.animatedView = view;
+		this.direction = direction;
 		this.animationDuration = animationDuration;
 	}
 
