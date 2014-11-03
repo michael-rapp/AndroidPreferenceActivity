@@ -21,27 +21,37 @@ License along with this program. If not, see
     android:id="@id/restore_defaults_button_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/button_bar_overlay"
     android:orientation="vertical" >
+
+    <View
+        android:id="@id/restore_defaults_button_bar_shadow_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/button_bar_horizontal_padding"
-        android:paddingStart="@dimen/button_bar_horizontal_padding" >
+        android:background="@color/button_bar_background_light" >
 
-        <Button
-            android:id="@id/restore_defaults_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
-            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:minWidth="@dimen/button_min_width"
-            android:text="@string/restore_defaults_button_label"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold" />
+            android:paddingEnd="@dimen/button_bar_horizontal_padding"
+            android:paddingStart="@dimen/button_bar_horizontal_padding" >
+
+            <Button
+                android:id="@id/restore_defaults_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+                android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+                android:minWidth="@dimen/button_min_width"
+                android:text="@string/restore_defaults_button_label"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

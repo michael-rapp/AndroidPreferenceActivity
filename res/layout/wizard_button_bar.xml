@@ -21,7 +21,7 @@ License along with this program. If not, see
     android:id="@id/wizard_button_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/button_bar_overlay"
+    android:background="@color/button_bar_background_light"
     android:orientation="vertical"
     android:visibility="gone" >
 
