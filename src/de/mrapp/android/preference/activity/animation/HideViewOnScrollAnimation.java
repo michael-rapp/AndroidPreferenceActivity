@@ -18,6 +18,7 @@
 package de.mrapp.android.preference.activity.animation;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -37,15 +38,21 @@ public class HideViewOnScrollAnimation extends Animation implements
 		OnScrollListener {
 
 	/**
-	 * The duration of the animation, which is used to show or hide a view, in
-	 * milliseconds.
+	 * The default duration of the animation, which is used to show or hide the
+	 * view, in milliseconds.
 	 */
-	private static final long ANIMATION_DURATION = 300;
+	private static final long DEFAULT_ANIMATION_DURATION = 300L;
 
 	/**
 	 * The view, which is animated by the listener.
 	 */
 	private View animatedView;
+
+	/**
+	 * The duration of the animation, which is used to show or hide the view, in
+	 * milliseconds.
+	 */
+	private long animationDuration;
 
 	/**
 	 * The observed list view's scroll position, when the listener was called
@@ -119,7 +126,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 		ObjectAnimator animation = ObjectAnimator.ofFloat(animatedView, "y",
 				animatedView.getY(), targetPosition);
 		animation.setInterpolator(new AccelerateDecelerateInterpolator());
-		animation.setDuration(ANIMATION_DURATION);
+		animation.setDuration(animationDuration);
 		return animation;
 	}
 
@@ -133,8 +140,29 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *            instance of the class {@link View}. The view may not be null
 	 */
 	public HideViewOnScrollAnimation(final View view) {
+		this(view, DEFAULT_ANIMATION_DURATION);
+	}
+
+	/**
+	 * Creates a new scroll listener, which allows to animate a view to become
+	 * hidden or shown depending on the observed list view's scrolling
+	 * direction.
+	 * 
+	 * @param view
+	 *            The view, which should be animated by the listener, as an
+	 *            instance of the class {@link View}. The view may not be null
+	 * @param animationDuration
+	 *            The duration of the animation, which is used to show or hide
+	 *            the view, in milliseconds as a {@link Long} value. The
+	 *            duration must be greater than 0
+	 */
+	public HideViewOnScrollAnimation(final View view,
+			final long animationDuration) {
 		ensureNotNull(view, "The view may not be null");
+		ensureGreaterThan(animationDuration, 0,
+				"The animation duration must be greater than 0");
 		this.animatedView = view;
+		this.animationDuration = animationDuration;
 	}
 
 	@Override
