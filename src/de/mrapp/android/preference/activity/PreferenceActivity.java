@@ -1811,69 +1811,53 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Returns the background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment on devices with a large
-	 * screen.
+	 * navigation to each preference header's fragment.
 	 * 
 	 * @return The background of the parent view of the fragment, which provides
 	 *         navigation to each preference header's fragment, as an instance
 	 *         of the class {@link Drawable} or null, if no background has been
-	 *         set or the device has a small screen
+	 *         set
 	 */
 	public final Drawable getNavigationBackground() {
-		if (isSplitScreen()) {
-			return getPreferenceHeaderParentView().getBackground();
-		} else {
-			return null;
-		}
+		return getPreferenceHeaderParentView().getBackground();
 	}
 
 	/**
 	 * Sets the background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment. The background is only
-	 * set on devices with a large screen.
+	 * navigation to each preference header's fragment.
 	 * 
 	 * @param resourceId
 	 *            The resource id of the background, which should be set, as an
 	 *            {@link Integer} value. The resource id must correspond to a
 	 *            valid drawable resource
-	 * @return True, if the background has been set, false otherwise
 	 */
-	public final boolean setNavigationBackground(final int resourceId) {
-		return setNavigationBackground(getResources().getDrawable(resourceId));
+	public final void setNavigationBackground(final int resourceId) {
+		setNavigationBackground(getResources().getDrawable(resourceId));
 	}
 
 	/**
 	 * Sets the background color of the parent view of the fragment, which
-	 * provides navigation to each preference header's fragment. The background
-	 * is only set on devices with a large screen.
+	 * provides navigation to each preference header's fragment.
 	 * 
 	 * @param color
 	 *            The background color, which should be set, as an
 	 *            {@link Integer} value
-	 * @return True, if the background has been set, false otherwise
 	 */
-	public final boolean setNavigationBackgroundColor(final int color) {
-		return setNavigationBackground(new ColorDrawable(color));
+	public final void setNavigationBackgroundColor(final int color) {
+		setNavigationBackground(new ColorDrawable(color));
 	}
 
 	/**
 	 * Sets the background of the parent view of the fragment, which provides
-	 * navigation to each preference header's fragment. The background is only
-	 * set on devices with a large screen.
+	 * navigation to each preference header's fragment.
 	 * 
 	 * @param drawable
 	 *            The background, which should be set, as an instance of the
 	 *            class {@link Drawable} or null, if no background should be set
-	 * @return True, if the background has been set, false otherwise
 	 */
 	@SuppressWarnings("deprecation")
-	public final boolean setNavigationBackground(final Drawable drawable) {
-		if (isSplitScreen()) {
-			getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
-			return true;
-		}
-
-		return false;
+	public final void setNavigationBackground(final Drawable drawable) {
+		getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
 	}
 
 	/**
