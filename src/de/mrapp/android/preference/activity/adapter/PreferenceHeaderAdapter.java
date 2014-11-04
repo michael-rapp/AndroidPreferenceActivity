@@ -337,6 +337,10 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 		if (theme != 0) {
 			obtainSelector(theme);
 		}
+
+		if (selectorId == 0) {
+			selectorId = R.drawable.selector_light;
+		}
 	}
 
 	/**
@@ -371,8 +375,6 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 
 		if (resourceId != 0) {
 			this.selectorId = resourceId;
-		} else {
-			this.selectorId = R.drawable.selector_light;
 		}
 	}
 
