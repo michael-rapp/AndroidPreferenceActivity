@@ -19,9 +19,9 @@ License along with this program. If not, see
 -->
 <resources>
 
-    <color name="navigation_background_light">#ffffffff</color>
-    <color name="navigation_background_dark">#ff1a1a1a</color>
-    <color name="preference_screen_background_light">#fffafafa</color>
+    <color name="navigation_background_light">#ffeeeeee</color>
+    <color name="navigation_background_dark">#ff303030</color>
+    <color name="preference_screen_background_light">#ffeeeeee</color>
     <color name="preference_screen_background_dark">#ff303030</color>
     <color name="button_bar_background_light">#ffe2e2e2</color>
     <color name="button_bar_background_dark">#ff2a2a2a</color>

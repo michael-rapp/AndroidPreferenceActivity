@@ -40,7 +40,8 @@ License along with this program. If not, see
         <RelativeLayout
             android:id="@id/preference_header_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/navigation_background_light" />
 
         <View
             android:id="@id/wizard_button_bar_shadow_view"
