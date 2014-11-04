@@ -2,11 +2,34 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        2.0.0 
+Release date:   11.04.2014
+--------------------------
+
+A major release, which introduces the following features:
+    
+    -   The UI has been re-designed according to the Android 5.0 "Material Design" 
+        guidelines. To provide Material Design even on pre-Lollipop devices (API level 
+        less than 21), the AppCompat v7 revision 21 support library is used.
+        
+    -   The methods to set/retrieve shadow widths and colors have been replaced by
+        according methods, which allow to set/retrieve elevations like used by the
+        Android SDK 21.
+        
+    -   Added style attributes, which allow easier customizing of a PreferenceFragment's
+        appearance from within a theme.
+        
+    -   The button bar, which contains the button, which allows to restore the default 
+        values of a PreferenceFragment's preferences, is now animated to become hidden
+        when the user scrolls downwards and to become shown when the user scrolls
+        upwards.
+
+
 Version:        1.2.1
 Release date:   10.25.2014
 --------------------------
 
-A bugfix release, which fixed the following issue:
+A bugfix release, which fixes the following issues:
     
     -   https://sourceforge.net/p/androidpreferenceactivity/tickets/2/
     
@@ -34,7 +57,7 @@ Version:        1.1.2
 Release date:   10.24.2014
 --------------------------
 
-A bugfix release, which fixed the following issue:
+A bugfix release, which fixes the following issue:
     
     -   https://sourceforge.net/p/androidpreferenceactivity/tickets/1/
         
