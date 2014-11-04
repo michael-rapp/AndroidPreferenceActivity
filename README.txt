@@ -15,7 +15,9 @@ of the currently selected item are shown split screen instead. Although the libr
 designed to be similar to the API of the Android SDK's PreferenceActivity, it provides additional
 possibilities, beyond the functionalities of the original. This includes easier adaption of the
 activity's appearance, as well as the possibility to use the activity as a wizard and to add or
-remove the activity's preference headers dynamically at runtime. 
+remove the activity's preference headers dynamically at runtime. Since version 2.0.0 the activity's 
+UI is designed according to the Android 5.0 "Material Design" guidelines (even on pre-Lollipop 
+devices).
 
 The library provides the following features:
 
@@ -48,6 +50,9 @@ The library provides the following features:
     -   The library provides a class, which is extended from the Android SDK's built-in 
         PreferenceFragment. This class allows to show a button, which may be
         used to restore the default values of the fragment's preferences.
+        
+    -   The UI has been designed according to the Android 5.0 "Material Design" guidelines. 
+        Material Design is even used on pre-Lollipop devices (API level less than 21).
 
 	
 License Agreement
