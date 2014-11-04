@@ -1296,7 +1296,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The preference header, which should be added, as an instance
 	 *            of the class {@link PreferenceHeader}. The preference header
 	 *            may not be null
-	 * @return
 	 */
 	public final void addPreferenceHeader(
 			final PreferenceHeader preferenceHeader) {
