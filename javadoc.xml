@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="javadoc">
-    <target name="javadoc">
-        <javadoc access="public" author="true" classpath="../android-support-v7-appcompat/libs/android-support-v4.jar:../android-support-v7-appcompat/bin/android-support-v7-appcompat.jar:../android-support-v7-appcompat/libs/android-support-v7-appcompat.jar:/opt/android-sdk/platforms/android-21/android.jar" destdir="doc/javadoc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="de.mrapp.android.preference.activity.adapter,de.mrapp.android.preference.activity.decorator,de.mrapp.android.preference.activity.view,de.mrapp.android.preference.activity.animation,de.mrapp.android.preference.activity.fragment,de.mrapp.android.preference.activity.util,de.mrapp.android.preference.activity.parser" source="1.6" sourcefiles="src/de/mrapp/android/preference/activity/PreferenceHeaderDecorator.java,src/de/mrapp/android/preference/activity/RestoreDefaultsListener.java,src/de/mrapp/android/preference/activity/PreferenceHeader.java,src/de/mrapp/android/preference/activity/PreferenceActivity.java,src/de/mrapp/android/preference/activity/WizardListener.java,src/de/mrapp/android/preference/activity/PreferenceFragment.java" sourcepath="gen:src" splitindex="true" use="true" version="true">
-            <link href="file:/opt/android-sdk/docs/reference"/>
-        </javadoc>
-    </target>
-</project>
-
