@@ -24,26 +24,26 @@
             <div class="text">
                  <h3>Examples</h3>
 
+                 <p>This is example provides a quick overview about how to use the library "AndroidPreferenceActivity". This includes the necessary setup steps, as well as source code examples, which demonstrate the use of the library.</p>
+
+                 <h4>Project setup</h4>
+
                  <p>Before the library "AndroidPreferenceActivity" can be used, its source code must be retrieved. The latest release can be downloaded as a zip archive via the direct link <a href="https://sourceforge.net/p/androidpreferenceactivity/files">https://sourceforge.net/p/androidpreferenceactivity/files</a>. Alternatively, the Mercurial repository, which hosts the project's source code, can be cloned by using the following command line command:</p>
 
                 <div class="code-block">hg clone http://hg.code.sf.net/p/androidpreferenceactivity/code androidpreferenceactivity-code</div>
                 
-                <p>To use the library within a project, the downloaded source code has to be added to the workspace of the appropriate IDE. When using Eclipse, the source code can be added as a new project by using the option "File" -> "Import..." -> "Android" -> "Existing Android Code Into Workspace" like shown in the screenshot below:</p>
+                <p>To use the library within an Android project, the downloaded source code has to be imported into the workspace of the appropriate IDE. When using Eclipse, the source code can be added as a new project by using the option "File" -> "Import..." -> "Android" -> "Existing Android Code Into Workspace".</p>
 
-                <p><center><a href="images/import-dialog.png" target="_blank".><img src="images/import-dialog.png" width="480" alt="The Eclipse import dialog"></center></a></p>
+                <p>To be able to use the newly imported library project from within another project, a reference to the library project has to be created. This can be established in the Eclipse IDE by right-clicking the dependent project and choosing the option "Properties". Then the group "Android" at the left of the recently opened window has to be chosen. Finally, the button "Add..." has to be clicked to add the library project as a new dependency. For further information about how to reference an Android library project, refer to <a href="http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject">this</a> article of the official Android developer documentation.</p>
 
-                <p>To be able to use the newly imported library project from within another project, a reference to the library project has to be created. This can be established in the Eclipse IDE by right-clicking the dependent project and choosing the option "Properties". Then the group "Android" at the left of the recently opened window has to be chosen. Finally, the button "Add..." has to be clicked to add the library project as a new dependency. The screenshots below illustrate this procedure:</p>
-
-                <p><center><a href="images/add-dependency.png" target="_blank".><img src="images/add-dependency.png" width="95%" alt="The dialog, which allows to add a library to an Android project"></center></a></p>
-
-                <p>For further information about how to reference an Android library project, refer to <a href="http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject">this</a> article of the official Android developer documentation.</p>
+                <p>As the library depends on the AppCompat v7 revision 21 support library since version 2.0.0 in order to provide Android 5.0-features on devices with an API level less than 21, this support library or a newer one has to be added to the library's workspace as well. A detailed explaination about how to import this support library can be found in <a href="https://developer.android.com/tools/support-library/setup.html">this</a> article of the Android developer documentation.</p>
 
                 <h4>Specifying and adding preference headers via XML</h4>
 
                 <p>The XML code below shows how to declare multiple preference headers as a XML resource. In this example the file's path is <tt>/res/xml/preference_headers.xml</tt>.</p>
 
                 <div class="xml-block"><font color='#3f7f5f'>&lt;?xml</font>&nbsp;version=<font color='#2a00ff'>"1.0"</font>&nbsp;encoding=<font color='#2a00ff'>"utf-8"</font>?&gt;
-<br/><font color='#3f7f5f'>&lt;preference-headers&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android</font>"
+<br/><font color='#3f7f5f'>&lt;preference-headers&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android"</font>
 <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;header</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:breadCrumbShortTitle=<font color='#2a00ff'>"breadCrumbShortTitle"</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;android:breadCrumbTitle=<font color='#2a00ff'>"breadCrumbTitle"</font>
@@ -76,9 +76,48 @@
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;}
 <br/><br/>}</div>
 
+                <h4>Adapting the activity's appearance to dark theme</h4>
+
+                <p>The following content of an Android app's XML resource <tt>res/values/styles.xml</tt> can be used to easily adapt the apperarance of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> to a dark theme. The theme <tt>DarkTheme</tt> has to be applied on the appropriate activity in the app's <tt>AndroidManifest.xml</tt>.</p>
+
+                <div class="xml-block"><font color='#3f7f5f'>&lt;?xml</font>&nbsp;version=<font color='#2a00ff'>"1.0"</font>&nbsp;encoding=<font color='#2a00ff'>"utf-8"</font>?&gt;
+<br/><font color='#3f7f5f'>&lt;resources&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android"</font><font color='#3f7f5f'>&gt;</font>
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimaryDark"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorAccent"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"toolbarTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/ToolbarTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"toolbarPopupTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/DarkToolbarPopupTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"navigationBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/navigation_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"preferenceScreenBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/preference_screen_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"wizardButtonBarBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/button_bar_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"breadCrumbBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/button_bar_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"restoreDefaultsButtonBarBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/button_bar_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"preferenceHeaderSelector"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@drawable/selector_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
+
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"ToolbarTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_primary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorSecondary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
+
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkToolbarPopupTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font> <font color='#3f7f5f'>/&gt;</font>
+
+<br/><br/><font color='#3f7f5f'>&lt;/resources&gt;</font></div>
+
+                 <p>The screenshots below show the appearance of a <tt>PreferenceActivity</tt>, the above theme has applied on, when used on a tablet:</p>
+
+                 <p><center><a href="images/example-tablet.png" target="_blank".><img src="images/example-tablet-dark.png" width=640" alt="Example"></center></a></p>
+
+                 <p>The screenshot below show the appearance of the dark-themed <tt>PreferenceActivity</tt> when used on a smartphone:</p>
+
+                 <p><center><a href="images/example-smartphone.png" target="_blank".><img src="images/example-smartphone-dark.png" width="640" alt="Example"></center></a></p>
+
                 <h4>External references:</h4>
 
                 <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/tools/projects/projects-eclipse.html" target="_blank">http://developer.android.com/tools/projects/projects-eclipse.html</a> &#150; Managing Projects from Eclipse with ADT</div>
+                <div class="reference"><a name="reference2" class="reference">[2]</a><a href="https://developer.android.com/tools/support-library/setup.html" target="_blank">https://developer.android.com/tools/support-library/setup.html</a> &#150; Support Library Setup</div>
             </div>
 
             <div class="copyright">
