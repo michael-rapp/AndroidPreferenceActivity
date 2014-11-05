@@ -24,7 +24,7 @@ License along with this program. If not, see
     android:baselineAligned="false"
     android:clipToPadding="false"
     android:gravity="center_vertical"
-    android:minHeight="@dimen/list_view_item_min_height"
+    android:minHeight="@dimen/preference_min_height"
     android:paddingEnd="@dimen/preference_horizontal_padding"
     android:paddingLeft="@dimen/preference_horizontal_padding"
     android:paddingRight="@dimen/preference_horizontal_padding"
