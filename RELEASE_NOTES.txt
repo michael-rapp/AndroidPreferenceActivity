@@ -2,6 +2,15 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        2.0.2
+Release date:   11.05.2014
+--------------------------
+
+A minor release, which provides the following changes:
+    
+    -   The minimum height and the vertical padding of a preference have been changed.
+
+
 Version:        2.0.1
 Release date:   11.05.2014
 --------------------------

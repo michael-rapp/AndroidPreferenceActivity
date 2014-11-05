@@ -21,10 +21,12 @@ License along with this program. If not, see
 
     <dimen name="list_view_padding_top">8dp</dimen>
     <dimen name="list_view_item_min_height">56dp</dimen>
-    <dimen name="list_view_item_padding">16dp</dimen>
+    <dimen name="list_view_item_horizontal_padding">16dp</dimen>
+    <dimen name="list_view_item_vertical_padding">16dp</dimen>
     <dimen name="list_view_item_icon_size">40dp</dimen>
+    <dimen name="preference_min_height">64dp</dimen>
     <dimen name="preference_horizontal_padding">16dp</dimen>
-    <dimen name="preference_vertical_padding">16dp</dimen>
+    <dimen name="preference_vertical_padding">8dp</dimen>
     <dimen name="subheader_height">48dp</dimen>
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="toolbar_title_margin_left">104dp</dimen>

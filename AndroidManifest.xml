@@ -19,8 +19,8 @@ License along with this program. If not, see
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.mrapp.android.preference.activity"
-    android:versionCode="9"
-    android:versionName="2.0.1" >
+    android:versionCode="10"
+    android:versionName="2.0.2" >
 
     <uses-sdk
         android:minSdkVersion="11"
