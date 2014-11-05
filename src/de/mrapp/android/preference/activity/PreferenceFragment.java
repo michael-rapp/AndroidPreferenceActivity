@@ -243,9 +243,7 @@ public abstract class PreferenceFragment extends
 				typedArray.getDimensionPixelSize(0, 0));
 
 		if (elevation != 0) {
-			setButtonBarElevation(elevation);
-		} else {
-			setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
+			this.buttonBarElevation = elevation;
 		}
 	}
 
@@ -281,6 +279,7 @@ public abstract class PreferenceFragment extends
 			frameLayout.addView(buttonBarParent, layoutParams);
 			listView.setOnScrollListener(new HideViewOnScrollAnimation(
 					buttonBarParent, Direction.DOWN));
+			setButtonBarElevation(buttonBarElevation);
 		}
 	}
 
