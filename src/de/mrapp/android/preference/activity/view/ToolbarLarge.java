@@ -331,7 +331,7 @@ public class ToolbarLarge extends FrameLayout {
 				- getContext().getResources().getDimensionPixelSize(
 						R.dimen.toolbar_title_margin_left)
 				- getContext().getResources().getDimensionPixelSize(
-						R.dimen.list_view_item_padding);
+						R.dimen.list_view_item_horizontal_padding);
 		titleTextView.setMaxWidth(titleMaxWidth);
 	}
 
