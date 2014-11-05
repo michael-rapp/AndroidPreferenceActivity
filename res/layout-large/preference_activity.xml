@@ -26,7 +26,7 @@ License along with this program. If not, see
     <de.mrapp.android.preference.activity.view.ToolbarLarge
         android:id="@+id/toolbar_large"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="@dimen/toolbar_large_height"
         android:visibility="gone"
         app:theme="?attr/toolbarTheme" />
 
