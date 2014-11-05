@@ -66,15 +66,12 @@ public class PreferenceDecorator {
 	 * @param preference
 	 *            The preference, whose layout resource should be set, as an
 	 *            instance of the class {@link Preference}
-	 * @return True, if the layout resource has been set, false otherwise
 	 */
-	private boolean setLayoutResource(final Preference preference) {
+	private void setLayoutResource(final Preference preference) {
 		if (preference instanceof PreferenceCategory) {
 			preference.setLayoutResource(R.layout.preference_category);
-			return true;
 		} else {
 			preference.setLayoutResource(R.layout.preference);
-			return true;
 		}
 	}
 
@@ -99,14 +96,11 @@ public class PreferenceDecorator {
 	 *            The preference, the decorator should be applied on, as an
 	 *            instance of the class {@link Preference}. The preference may
 	 *            not be null
-	 * @return True, if the decorator has been applied, false otherwise
 	 */
-	public final boolean applyDecorator(final Preference preference) {
+	public final void applyDecorator(final Preference preference) {
 		if (hasDefaultLayoutResource(preference)) {
-			return setLayoutResource(preference);
+			setLayoutResource(preference);
 		}
-
-		return false;
 	}
 
 }
