@@ -19,6 +19,10 @@ package de.mrapp.android.preference.activity.animation;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -98,13 +102,57 @@ public class HideViewOnScrollAnimation extends Animation implements
 	/**
 	 * The initial position of the view, which is animated by the listener.
 	 */
-	private float initialPosition;
+	private float initialPosition = -1.0f;
+
+	/**
+	 * A set, which contains the listeners, which should be notified about the
+	 * animation's internal state.
+	 */
+	private Set<HideViewOnScrollAnimationListener> listeners;
+
+	/**
+	 * Notifies all listeners, which have been registered to be notified about
+	 * the animation's internal state, when the observed list view is scrolling
+	 * downwards.
+	 * 
+	 * @param animatedView
+	 *            The view, which is animated by the observed animation, as an
+	 *            instance of the class {@link View}
+	 * @param scrollPosition
+	 *            The current scroll position of the list view's first item in
+	 *            pixels as an {@link Integer} value
+	 */
+	private void notifyOnScrollingDown(final View animatedView,
+			final int scrollPosition) {
+		for (HideViewOnScrollAnimationListener listener : listeners) {
+			listener.onScrollingDown(this, animatedView, scrollPosition);
+		}
+	}
+
+	/**
+	 * Notifies all listeners, which have been registered to be notified about
+	 * the animation's internal state, when the observed list view is scrolling
+	 * upwards.
+	 * 
+	 * @param animatedView
+	 *            The view, which is animated by the observed animation, as an
+	 *            instance of the class {@link View}
+	 * @param scrollPosition
+	 *            The current scroll position of the list view's first item in
+	 *            pixels as an {@link Integer} value
+	 */
+	private void notifyOnScrollingUp(final View animatedView,
+			final int scrollPosition) {
+		for (HideViewOnScrollAnimationListener listener : listeners) {
+			listener.onScrollingUp(this, animatedView, scrollPosition);
+		}
+	}
 
 	/**
 	 * The method, which is invoked, when the observed list view is scrolling
-	 * up.
+	 * upwards.
 	 */
-	private void onUpScrolling() {
+	private void onScrollingUp() {
 		if (scrollingDown) {
 			scrollingDown = false;
 
@@ -117,9 +165,9 @@ public class HideViewOnScrollAnimation extends Animation implements
 
 	/**
 	 * The method, which is invoked, when the observed list view is scrolling
-	 * down.
+	 * downwards.
 	 */
-	private void onDownScrolling() {
+	private void onScrollingDown() {
 		if (!scrollingDown) {
 			scrollingDown = true;
 
@@ -138,7 +186,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *         {@link ObjectAnimator}
 	 */
 	private ObjectAnimator createAnimator() {
-		if (initialPosition == 0) {
+		if (initialPosition == -1.0f) {
 			initialPosition = animatedView.getY();
 		}
 
@@ -202,6 +250,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 		this.animatedView = view;
 		this.direction = direction;
 		this.animationDuration = animationDuration;
+		this.listeners = new LinkedHashSet<HideViewOnScrollAnimationListener>();
 	}
 
 	/**
@@ -237,6 +286,36 @@ public class HideViewOnScrollAnimation extends Animation implements
 		return animationDuration;
 	}
 
+	/**
+	 * Adds a new listener, which should be notified about the animation's
+	 * internal state, to the animation.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link HideViewOnScrollAnimationListener}. The listener
+	 *            may not be null
+	 */
+	public final void addListener(
+			final HideViewOnScrollAnimationListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified about the
+	 * animation's internal state, from the animation.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            tpye {@link HideViewOnScrollAnimationListener}. The listener
+	 *            may not be null
+	 */
+	public final void removeListener(
+			final HideViewOnScrollAnimationListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.remove(listener);
+	}
+
 	@Override
 	public final void onScrollStateChanged(final AbsListView listView,
 			final int scrollState) {
@@ -252,15 +331,19 @@ public class HideViewOnScrollAnimation extends Animation implements
 
 		if (firstVisibleItem == oldFirstVisibleItem) {
 			if (position > oldPosition) {
-				onUpScrolling();
+				onScrollingUp();
+				notifyOnScrollingUp(animatedView, position);
 			} else if (position < oldPosition) {
-				onDownScrolling();
+				onScrollingDown();
+				notifyOnScrollingDown(animatedView, position);
 			}
 		} else {
 			if (firstVisibleItem < oldFirstVisibleItem) {
-				onUpScrolling();
+				onScrollingUp();
+				notifyOnScrollingUp(animatedView, position);
 			} else {
-				onDownScrolling();
+				onScrollingDown();
+				notifyOnScrollingDown(animatedView, position);
 			}
 		}
 
