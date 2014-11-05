@@ -29,6 +29,7 @@ License along with this program. If not, see
     <dimen name="preference_vertical_padding">8dp</dimen>
     <dimen name="subheader_height">48dp</dimen>
     <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="toolbar_large_height">144dp</dimen>
     <dimen name="toolbar_title_margin_left">104dp</dimen>
     <dimen name="toolbar_title_text_size">34sp</dimen>
     <dimen name="bread_crumb_text_size">20sp</dimen>
