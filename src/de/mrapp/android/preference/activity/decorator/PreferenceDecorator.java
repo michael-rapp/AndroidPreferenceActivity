@@ -19,13 +19,8 @@ package de.mrapp.android.preference.activity.decorator;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 import android.content.Context;
-import android.preference.DialogPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
-import android.preference.RingtonePreference;
-import android.preference.TwoStatePreference;
 import de.mrapp.android.preference.activity.R;
 
 /**
@@ -77,16 +72,10 @@ public class PreferenceDecorator {
 		if (preference instanceof PreferenceCategory) {
 			preference.setLayoutResource(R.layout.preference_category);
 			return true;
-		} else if (preference instanceof ListPreference
-				|| preference instanceof TwoStatePreference
-				|| preference instanceof EditTextPreference
-				|| preference instanceof DialogPreference
-				|| preference instanceof RingtonePreference) {
+		} else {
 			preference.setLayoutResource(R.layout.preference);
 			return true;
 		}
-
-		return false;
 	}
 
 	/**
