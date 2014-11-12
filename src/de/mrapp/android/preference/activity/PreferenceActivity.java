@@ -186,6 +186,19 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			.getSimpleName() + "::PreferenceHeaders";
 
 	/**
+	 * The name of the extra, which is used to save the fragment, which is
+	 * currently shown as the preference screen, within a bundle.
+	 */
+	private static final String PREFERENCE_SCREEN_FRAGMENT_EXTRA = PreferenceActivity.class
+			.getSimpleName() + "::PreferenceScreenFragment";
+
+	/**
+	 * The name which is used to store fragment transitions of the back stack.
+	 */
+	private static final String FRAGMENT_BACK_STACK = PreferenceActivity.class
+			.getSimpleName() + "::FragmentBackStack";
+
+	/**
 	 * The default elevation of the navigation in dp.
 	 */
 	private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
@@ -208,6 +221,13 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * has been created.
 	 */
 	private Bundle savedInstanceState;
+
+	/**
+	 * The fragment, which has been shown as the preference screen before the
+	 * activity has been recreated or null, if no preference header has been
+	 * previously selected.
+	 */
+	private Fragment restoredPreferenceScreenFragment;
 
 	/**
 	 * The view, which is used to visualize a large toolbar on devices with a
@@ -707,8 +727,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	private void showPreferenceScreen(final String fragmentName,
 			final Bundle params) {
-		preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
-				params);
+		if (preferenceScreenFragment == null
+				|| !preferenceScreenFragment.getClass().getName()
+						.equals(fragmentName)) {
+			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
+					params);
+		}
 
 		if (isSplitScreen()) {
 			replaceFragment(preferenceScreenFragment,
@@ -816,6 +840,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		transaction.setTransition(transition);
+		transaction.addToBackStack(FRAGMENT_BACK_STACK);
 		transaction.replace(parentViewId, fragment);
 		transaction.commit();
 	}
@@ -2251,8 +2276,43 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		overrideNavigationIcon(true);
 		setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
 		setBreadCrumbElevation(DEFAULT_BREAD_CRUMB_ELEVATION);
-		showPreferenceHeaders();
 		obtainStyledAttributes();
+
+		if (savedInstanceState != null) {
+			restoredPreferenceScreenFragment = getFragmentManager()
+					.getFragment(savedInstanceState,
+							PREFERENCE_SCREEN_FRAGMENT_EXTRA);
+		}
+
+		showPreferenceHeaders();
+	}
+
+	@Override
+	protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+		Bundle bundle = savedInstanceState.getBundle(CURRENT_BUNDLE_EXTRA);
+		CharSequence title = savedInstanceState
+				.getCharSequence(CURRENT_TITLE_EXTRA);
+		CharSequence shortTitle = savedInstanceState
+				.getCharSequence(CURRENT_SHORT_TITLE_EXTRA);
+		PreferenceHeader currentPreferenceHeader = savedInstanceState
+				.getParcelable(CURRENT_PREFERENCE_HEADER_EXTRA);
+
+		if (currentPreferenceHeader != null) {
+			preferenceScreenFragment = restoredPreferenceScreenFragment;
+			showPreferenceScreen(currentPreferenceHeader, bundle, false);
+			showBreadCrumb(title, shortTitle);
+
+			if (isSplitScreen()) {
+				int selectedIndex = getListAdapter().indexOf(
+						currentPreferenceHeader);
+
+				if (selectedIndex != -1) {
+					getListView().setItemChecked(selectedIndex, true);
+				}
+			}
+		} else {
+			showPreferenceHeaders();
+		}
 	}
 
 	/**
@@ -2502,31 +2562,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		outState.putParcelable(CURRENT_PREFERENCE_HEADER_EXTRA, currentHeader);
 		outState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA,
 				getListAdapter().getAllItems());
-	}
 
-	@Override
-	protected void onRestoreInstanceState(final Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		Bundle bundle = savedInstanceState.getBundle(CURRENT_BUNDLE_EXTRA);
-		CharSequence title = savedInstanceState
-				.getCharSequence(CURRENT_TITLE_EXTRA);
-		CharSequence shortTitle = savedInstanceState
-				.getCharSequence(CURRENT_SHORT_TITLE_EXTRA);
-		PreferenceHeader currentPreferenceHeader = savedInstanceState
-				.getParcelable(CURRENT_PREFERENCE_HEADER_EXTRA);
-
-		if (currentPreferenceHeader != null) {
-			showPreferenceScreen(currentPreferenceHeader, bundle, false);
-			showBreadCrumb(title, shortTitle);
-
-			if (isSplitScreen()) {
-				int selectedIndex = getListAdapter().indexOf(
-						currentPreferenceHeader);
-
-				if (selectedIndex != -1) {
-					getListView().setItemChecked(selectedIndex, true);
-				}
-			}
+		if (preferenceScreenFragment != null) {
+			getFragmentManager().putFragment(outState,
+					PREFERENCE_SCREEN_FRAGMENT_EXTRA, preferenceScreenFragment);
 		}
 	}
 
