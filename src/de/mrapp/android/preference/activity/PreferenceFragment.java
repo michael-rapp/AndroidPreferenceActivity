@@ -761,8 +761,12 @@ public abstract class PreferenceFragment extends
 			final ViewGroup container, final Bundle savedInstanceState) {
 		parentView = (LinearLayout) super.onCreateView(inflater, container,
 				savedInstanceState);
-		initializeListView();
-		addRestoreDefaultsButtonBar();
+
+		if (savedInstanceState == null) {
+			initializeListView();
+			addRestoreDefaultsButtonBar();
+		}
+
 		return parentView;
 	}
 
