@@ -46,7 +46,8 @@ License along with this program. If not, see
             android:padding="@dimen/button_padding"
             android:text="@string/back_button_label"
             android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size" />
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold" />
 
         <Button
             android:id="@id/next_button"
@@ -62,7 +63,8 @@ License along with this program. If not, see
             android:padding="@dimen/button_padding"
             android:text="@string/next_button_label"
             android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size" />
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold" />
 
         <Button
             android:id="@id/finish_button"
@@ -79,6 +81,7 @@ License along with this program. If not, see
             android:text="@string/finish_button_label"
             android:textColor="?attr/colorAccent"
             android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
             android:visibility="gone" />
     </RelativeLayout>
 
