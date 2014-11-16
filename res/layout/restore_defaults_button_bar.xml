@@ -31,7 +31,8 @@ License along with this program. If not, see
         android:id="@id/restore_defaults_button_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/button_bar_background_light" >
+        android:background="@color/button_bar_background_light"
+        android:minHeight="@dimen/button_bar_min_height" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,8 +49,11 @@ License along with this program. If not, see
                 android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
                 android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
                 android:minWidth="@dimen/button_min_width"
+                android:padding="@dimen/button_padding"
                 android:text="@string/restore_defaults_button_label"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/button_text_size"
+                android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
 
