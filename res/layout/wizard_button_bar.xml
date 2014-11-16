@@ -22,6 +22,7 @@ License along with this program. If not, see
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/button_bar_background_light"
+    android:minHeight="@dimen/button_bar_min_height"
     android:orientation="vertical"
     android:visibility="gone" >
 
@@ -42,8 +43,10 @@ License along with this program. If not, see
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:minWidth="@dimen/button_min_width"
+            android:padding="@dimen/button_padding"
             android:text="@string/back_button_label"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/button_text_size" />
 
         <Button
             android:id="@id/next_button"
@@ -56,8 +59,10 @@ License along with this program. If not, see
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:minWidth="@dimen/button_min_width"
+            android:padding="@dimen/button_padding"
             android:text="@string/next_button_label"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/button_text_size" />
 
         <Button
             android:id="@id/finish_button"
@@ -70,8 +75,10 @@ License along with this program. If not, see
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
             android:minWidth="@dimen/button_min_width"
+            android:padding="@dimen/button_padding"
             android:text="@string/finish_button_label"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/button_text_size"
             android:visibility="gone" />
     </RelativeLayout>
 
