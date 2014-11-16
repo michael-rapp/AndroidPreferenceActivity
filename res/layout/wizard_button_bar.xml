@@ -17,72 +17,66 @@ You should have received a copy of the GNU Lesser General Public
 License along with this program. If not, see
 <http://www.gnu.org/licenses/>. 
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/wizard_button_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/button_bar_background_light"
     android:minHeight="@dimen/button_bar_min_height"
-    android:orientation="vertical"
+    android:paddingEnd="@dimen/button_bar_horizontal_padding"
+    android:paddingStart="@dimen/button_bar_horizontal_padding"
     android:visibility="gone" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@id/back_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/button_bar_horizontal_padding"
-        android:paddingStart="@dimen/button_bar_horizontal_padding" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+        android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+        android:minWidth="@dimen/button_min_width"
+        android:padding="@dimen/button_padding"
+        android:text="@string/back_button_label"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@id/back_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
-            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:minWidth="@dimen/button_min_width"
-            android:padding="@dimen/button_padding"
-            android:text="@string/back_button_label"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size"
-            android:textStyle="bold" />
+    <Button
+        android:id="@id/next_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+        android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+        android:minWidth="@dimen/button_min_width"
+        android:padding="@dimen/button_padding"
+        android:text="@string/next_button_label"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@id/next_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
-            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:minWidth="@dimen/button_min_width"
-            android:padding="@dimen/button_padding"
-            android:text="@string/next_button_label"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size"
-            android:textStyle="bold" />
+    <Button
+        android:id="@id/finish_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+        android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+        android:minWidth="@dimen/button_min_width"
+        android:padding="@dimen/button_padding"
+        android:text="@string/finish_button_label"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-        <Button
-            android:id="@id/finish_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
-            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:minWidth="@dimen/button_min_width"
-            android:padding="@dimen/button_padding"
-            android:text="@string/finish_button_label"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size"
-            android:textStyle="bold"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>
