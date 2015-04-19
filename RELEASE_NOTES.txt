@@ -2,6 +2,18 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        2.0.8
+Release date:   04.19.2015
+--------------------------
+
+A bugfix release, which fixes the following issues:
+    
+    -   The FrameLayout of a PreferenceFragment can now be accessed using 
+        the ID R.id.preference_fragment_frame_layout.
+        
+    -   API level 22 is now used.
+
+
 Version:        2.0.7
 Release date:   02.07.2015
 --------------------------
