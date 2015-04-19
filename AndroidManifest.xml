@@ -19,11 +19,11 @@ License along with this program. If not, see
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.mrapp.android.preference.activity"
-    android:versionCode="15"
-    android:versionName="2.0.7" >
+    android:versionCode="16"
+    android:versionName="2.0.8" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="22" />
 
 </manifest>

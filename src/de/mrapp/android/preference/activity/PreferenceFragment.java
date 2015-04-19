@@ -143,6 +143,7 @@ public abstract class PreferenceFragment extends
 		listView = (ListView) parentView.findViewById(android.R.id.list);
 		parentView.removeView(listView);
 		frameLayout = new FrameLayout(getActivity());
+		frameLayout.setId(R.id.preference_fragment_frame_layout);
 		parentView.addView(frameLayout, listView.getLayoutParams());
 		frameLayout.addView(listView, FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
@@ -591,6 +592,7 @@ public abstract class PreferenceFragment extends
 	 *            valid drawable resource
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setButtonBarBackground(final int resourceId) {
 		return setButtonBarBackground(getResources().getDrawable(resourceId));
 	}
