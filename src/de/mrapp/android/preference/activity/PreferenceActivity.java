@@ -1794,6 +1794,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            valid drawable resource
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setPreferenceScreenBackground(final int resourceId) {
 		return setPreferenceScreenBackground(getResources().getDrawable(
 				resourceId));
@@ -1855,6 +1856,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            {@link Integer} value. The resource id must correspond to a
 	 *            valid drawable resource
 	 */
+	@SuppressWarnings("deprecation")
 	public final void setNavigationBackground(final int resourceId) {
 		setNavigationBackground(getResources().getDrawable(resourceId));
 	}
@@ -1912,6 +1914,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            valid drawable resource
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setButtonBarBackground(final int resourceId) {
 		return setButtonBarBackground(getResources().getDrawable(resourceId));
 	}
@@ -1981,6 +1984,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            valid drawable resource
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setBreadCrumbBackground(final int resourceId) {
 		return setBreadCrumbBackground(getResources().getDrawable(resourceId));
 	}
