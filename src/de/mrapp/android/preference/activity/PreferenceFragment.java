@@ -591,6 +591,7 @@ public abstract class PreferenceFragment extends
 	 *            valid drawable resource
 	 * @return True, if the background has been set, false otherwise
 	 */
+	@SuppressWarnings("deprecation")
 	public final boolean setButtonBarBackground(final int resourceId) {
 		return setButtonBarBackground(getResources().getDrawable(resourceId));
 	}
