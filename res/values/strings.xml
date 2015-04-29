@@ -23,6 +23,7 @@ License along with this program. If not, see
     <string name="next_button_label">NEXT</string>
     <string name="finish_button_label">FINISH</string>
     <string name="restore_defaults_button_label">RESTORE DEFAULTS</string>
+    <string name="progress_format" formatted="false">Step %d of %d: %s</string>
 
     <string-array name="navigation_elevation_shadow_widths">
         <item>1</item>

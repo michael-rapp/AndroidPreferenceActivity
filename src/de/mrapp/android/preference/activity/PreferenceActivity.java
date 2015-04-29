@@ -145,6 +145,22 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	public static final String EXTRA_FINISH_BUTTON_TEXT = "extra_prefs_set_finish_text";
 
 	/**
+	 * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code>,
+	 * this boolean extra can also used to specify, whether the number of the
+	 * currently shown wizard step and the number of total steps should be shown
+	 * as the bread crumb title.
+	 */
+	public static final String EXTRA_SHOW_PROGRESS = "extra_prefs_show_progress";
+
+	/**
+	 * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code> and
+	 * <code>EXTRA_SHOW_PROGRESS</code>, this string extra can also be specified
+	 * to supply a custom format for showing the progress. The string must be
+	 * formatted according to the following syntax: "*%d*%d*%s*"
+	 */
+	public static final String EXTRA_PROGRESS_FORMAT = "extra_prefs_progress_format";
+
+	/**
 	 * The name of the extra, which is used to save the parameters, which have
 	 * been passed when the currently shown fragment has been created, within a
 	 * bundle.
@@ -379,6 +395,18 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private TextView breadCrumb;
 
 	/**
+	 * True, if the progress should be shown as the bread crumb title, false
+	 * otherwise.
+	 */
+	private boolean showProgress;
+
+	/**
+	 * The text, which is used to format the progress, which is shown as the
+	 * bread crumb title.
+	 */
+	private String progressFormat;
+
+	/**
 	 * A set, which contains the listeners, which have registered to be notified
 	 * when the user navigates within the activity, if it used as a wizard.
 	 */
@@ -461,6 +489,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				EXTRA_BACK_BUTTON_TEXT);
 		CharSequence finishButtonText = getCharSequenceFromIntent(getIntent(),
 				EXTRA_FINISH_BUTTON_TEXT);
+		CharSequence progressFormatString = getCharSequenceFromIntent(
+				getIntent(), EXTRA_PROGRESS_FORMAT);
 
 		if (showButtonBar) {
 			showButtonBar(true);
@@ -475,6 +505,13 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 			if (finishButtonText != null) {
 				setFinishButtonText(finishButtonText);
+			}
+
+			showProgress(getIntent()
+					.getBooleanExtra(EXTRA_SHOW_PROGRESS, false));
+
+			if (progressFormatString != null) {
+				setProgressFormat(progressFormatString.toString());
 			}
 		}
 	}
@@ -945,10 +982,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private void showBreadCrumb(final CharSequence title,
 			final CharSequence shortTitle) {
 		this.currentTitle = title;
-		this.currentShortTitle = title;
+		this.currentShortTitle = shortTitle;
+		CharSequence breadCrumbTitle = createBreadCrumbTitle(title);
 
 		if (getBreadCrumb() != null) {
-			if (title != null || shortTitle != null) {
+			if (breadCrumbTitle != null) {
 				getBreadCrumb().setVisibility(View.VISIBLE);
 				breadCrumbShadowView.setVisibility(View.VISIBLE);
 			} else {
@@ -956,15 +994,42 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				breadCrumbShadowView.setVisibility(View.GONE);
 			}
 
-			getBreadCrumb().setText(title);
+			getBreadCrumb().setText(breadCrumbTitle);
 		} else if (toolbarLarge != null) {
-			toolbarLarge.setBreadCrumbTitle(title);
-		} else if (title != null) {
+			toolbarLarge.setBreadCrumbTitle(breadCrumbTitle);
+		} else if (breadCrumbTitle != null) {
 			if (defaultTitle == null) {
 				defaultTitle = getTitle();
 			}
-			setTitle(title);
+			setTitle(breadCrumbTitle);
 		}
+	}
+
+	/**
+	 * Creates and returns the title of the bread crumb, depending on whether
+	 * the activity is used as a wizard and whether the progress should be
+	 * shown, or not.
+	 * 
+	 * @param title
+	 *            The title, which should be used by the bread crumb, as an
+	 *            instance of the class {@link CharSequence} or null, if no
+	 *            title should be used
+	 * @return The title, which has been created, as an instance of the class
+	 *         {@link CharSequence} or null, if no title should be used
+	 */
+	private CharSequence createBreadCrumbTitle(final CharSequence title) {
+		if (title != null) {
+			if (isProgressShown()) {
+				int currentStep = getListAdapter().indexOf(currentHeader) + 1;
+				int totalSteps = getListAdapter().getCount();
+				return String.format(getProgressFormat(), currentStep,
+						totalSteps, title);
+			} else {
+				return title;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -1262,6 +1327,96 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	public final boolean setBackButtonText(final int resourceId) {
 		return setBackButtonText(getText(resourceId));
+	}
+
+	/**
+	 * Returns, whether the progress is shown, if the activity is used as a
+	 * wizard.
+	 * 
+	 * @return True, if the progress is shown, false otherwise or if the
+	 *         activity is not used as a wizard
+	 */
+	public final boolean isProgressShown() {
+		return isButtonBarShown() && showProgress;
+	}
+
+	/**
+	 * Shows or hides the progress, if the activity is used as a wizard.
+	 * 
+	 * @param showProgress
+	 *            True, if the progress should be shown, false otherwise
+	 * @return True, if the progress has been shown or hidden, false otherwise
+	 */
+	public final boolean showProgress(final boolean showProgress) {
+		if (isButtonBarShown()) {
+			this.showProgress = showProgress;
+
+			if (currentHeader != null) {
+				showBreadCrumb(currentHeader);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the string, which is used to format the progress, which may be
+	 * shown, if the activity is used as a wizard.
+	 * 
+	 * @return The string, which is used to format the progress, as a
+	 *         {@link String} or null, if the activity is not used as a wizard
+	 *         or if no progress is shown
+	 */
+	public final String getProgressFormat() {
+		if (isProgressShown()) {
+			return progressFormat != null ? progressFormat
+					: getString(R.string.progress_format);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Sets the string, which should be used to format the progress, if the
+	 * activity is used as a wizard and the progress is shown.
+	 * 
+	 * @param progressFormat
+	 *            The string, which should be set, as a {@link String}. The
+	 *            string may not be null. It must be formatted according to the
+	 *            following syntax: "*%d*%d*%s*"
+	 * @return True, if the string has been set, false otherwise
+	 */
+	public final boolean setProgressFormat(final String progressFormat) {
+		ensureNotNull(progressFormat, "The progress format may not be null");
+
+		if (isProgressShown()) {
+			this.progressFormat = progressFormat;
+
+			if (currentHeader != null) {
+				showBreadCrumb(currentHeader);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the string, which should be used to format the progress, if the
+	 * activity is used as a wizard and the progress is shown.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the string, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource. It must be formatted according to the
+	 *            following syntax: "*%d*%d*%s*"
+	 * @return True, if the string has been set, false otherwise
+	 */
+	public final boolean setProgressFormat(final int resourceId) {
+		return setProgressFormat(getString(resourceId));
 	}
 
 	/**
