@@ -732,18 +732,21 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle parameters, final boolean launchIntent) {
-		currentHeader = preferenceHeader;
-		adaptWizardButtons();
+		if (currentHeader == null || !currentHeader.equals(preferenceHeader)) {
+			currentHeader = preferenceHeader;
+			adaptWizardButtons();
 
-		if (preferenceHeader.getFragment() != null) {
-			showBreadCrumb(preferenceHeader);
-			currentBundle = (parameters != null) ? parameters
-					: preferenceHeader.getExtras();
-			showPreferenceScreen(preferenceHeader.getFragment(), currentBundle);
-		} else if (preferenceScreenFragment != null) {
-			showBreadCrumb(preferenceHeader);
-			removeFragment(preferenceScreenFragment);
-			preferenceScreenFragment = null;
+			if (preferenceHeader.getFragment() != null) {
+				showBreadCrumb(preferenceHeader);
+				currentBundle = (parameters != null) ? parameters
+						: preferenceHeader.getExtras();
+				showPreferenceScreen(preferenceHeader.getFragment(),
+						currentBundle);
+			} else if (preferenceScreenFragment != null) {
+				showBreadCrumb(preferenceHeader);
+				removeFragment(preferenceScreenFragment);
+				preferenceScreenFragment = null;
+			}
 		}
 
 		if (launchIntent && preferenceHeader.getIntent() != null) {
@@ -764,12 +767,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	private void showPreferenceScreen(final String fragmentName,
 			final Bundle params) {
-		if (preferenceScreenFragment == null
-				|| !preferenceScreenFragment.getClass().getName()
-						.equals(fragmentName)) {
-			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
-					params);
-		}
+		preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
+				params);
 
 		if (isSplitScreen()) {
 			replaceFragment(preferenceScreenFragment,
