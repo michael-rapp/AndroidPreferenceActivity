@@ -44,7 +44,7 @@ License along with this program. If not, see
             android:layout_centerInParent="true"
             android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
             android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:minWidth="@dimen/button_min_width"
+            android:minWidth="150dp"
             android:padding="@dimen/button_padding"
             android:text="@string/restore_defaults_button_label"
             android:textColor="?attr/colorAccent"
