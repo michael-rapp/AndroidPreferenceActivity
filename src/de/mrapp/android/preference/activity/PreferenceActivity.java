@@ -573,9 +573,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			public void onClick(final View v) {
 				int currentIndex = getListAdapter().indexOf(currentHeader);
 
-				if (currentIndex < getNumberOfPreferenceHeaders() - 1
-						&& notifyOnNextStep()) {
-					selectPreferenceHeader(currentIndex + 1);
+				if (currentIndex < getNumberOfPreferenceHeaders() - 1) {
+					Bundle params = notifyOnNextStep();
+
+					if (params != null) {
+						selectPreferenceHeader(currentIndex + 1, params);
+					}
 				}
 			}
 
@@ -596,8 +599,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			public void onClick(final View v) {
 				int currentIndex = getListAdapter().indexOf(currentHeader);
 
-				if (currentIndex > 0 && notifyOnPreviousStep()) {
-					selectPreferenceHeader(currentIndex - 1);
+				if (currentIndex > 0) {
+					Bundle params = notifyOnPreviousStep();
+
+					if (params != null) {
+						selectPreferenceHeader(currentIndex - 1, params);
+					}
 				}
 			}
 
@@ -626,74 +633,114 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * Notifies all registered listeners that the user wants to navigate to the
 	 * next step of the wizard.
 	 * 
-	 * @return True, if navigating to the next step of the wizard should be
-	 *         allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if navigating to the next step of the
+	 *         wizard should be allowed, as an instance of the class
+	 *         {@link Bundle}, null otherwise
 	 */
-	private boolean notifyOnNextStep() {
-		boolean accepted = true;
+	private Bundle notifyOnNextStep() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onNextStep(
+			Bundle bundle = listener.onNextStep(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
 	 * Notifies all registered listeners that the user wants to navigate to the
 	 * previous step of the wizard.
 	 * 
-	 * @return True, if navigating to the previous step of the wizard should be
-	 *         allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if navigating to the previous step of the
+	 *         wizard should be allowed, as an instance of the class
+	 *         {@link Bundle}, null otherwise
 	 */
-	private boolean notifyOnPreviousStep() {
-		boolean accepted = true;
+	private Bundle notifyOnPreviousStep() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onPreviousStep(
+			Bundle bundle = listener.onPreviousStep(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
 	 * Notifies all registered listeners that the user wants to finish the last
 	 * step of the wizard.
 	 * 
-	 * @return True, if finishing the last step of the wizard should be allowed,
-	 *         false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if finishing the wizard should be
+	 *         allowed, as an instance of the class {@link Bundle}, null
+	 *         otherwise
 	 */
-	private boolean notifyOnFinish() {
-		boolean accepted = true;
+	private Bundle notifyOnFinish() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onFinish(
+			Bundle bundle = listener.onFinish(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
 	 * Notifies all registered listeners that the user wants to skip the wizard.
 	 * 
-	 * @return True, if skipping the wizard should be allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if skipping the wizard should be allowed,
+	 *         as an instance of the class {@link Bundle}, null otherwise
 	 */
-	private boolean notifyOnSkip() {
-		boolean accepted = true;
+	private Bundle notifyOnSkip() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onSkip(
+			Bundle bundle = listener.onSkip(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
@@ -2358,7 +2405,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
-				if (notifyOnSkip()) {
+				if (notifyOnSkip() != null) {
 					return super.onKeyDown(keyCode, event);
 				}
 
@@ -2380,7 +2427,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
-				if (notifyOnSkip()) {
+				if (notifyOnSkip() != null) {
 					return super.onOptionsItemSelected(item);
 				}
 
