@@ -758,6 +758,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
 			final Bundle parameters) {
+		if (parameters != null && preferenceHeader.getExtras() != null) {
+			parameters.putAll(preferenceHeader.getExtras());
+		}
+
 		showPreferenceScreen(preferenceHeader, parameters, true);
 	}
 
