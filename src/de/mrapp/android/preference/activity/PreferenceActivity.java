@@ -1914,6 +1914,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	public final void selectPreferenceHeader(final int position,
 			final Bundle parameters) {
 		getListView().setItemChecked(position, true);
+		getListView().smoothScrollToPosition(position);
 		showPreferenceScreen(getListAdapter().getItem(position), parameters);
 	}
 
