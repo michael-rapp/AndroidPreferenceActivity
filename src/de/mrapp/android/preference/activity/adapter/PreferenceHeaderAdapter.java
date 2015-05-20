@@ -250,16 +250,11 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
 	 *            instance of the class {@link PreferenceHeader}. The preference
 	 *            header may not be null
 	 */
-	@SuppressWarnings("deprecation")
 	private void visualizePreferenceHeaderIcon(final ViewHolder viewHolder,
 			final PreferenceHeader preferenceHeader) {
 		if (viewHolder.iconImageView != null) {
-			int iconId = preferenceHeader.getIconId();
-
-			if (iconId != -1) {
-				viewHolder.iconImageView.setImageDrawable(context
-						.getResources().getDrawable(iconId));
-			}
+			viewHolder.iconImageView.setImageDrawable(preferenceHeader
+					.getIcon());
 		}
 	}
 
