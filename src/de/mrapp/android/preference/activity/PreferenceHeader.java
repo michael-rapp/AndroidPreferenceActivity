@@ -21,6 +21,9 @@ import static de.mrapp.android.preference.activity.util.Condition.ensureNotEmpty
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -77,9 +80,9 @@ public class PreferenceHeader implements Parcelable {
 	private CharSequence breadCrumbShortTitle;
 
 	/**
-	 * The resource id of the the navigation item's icon.
+	 * The navigation item's icon.
 	 */
-	private int iconId;
+	private Drawable icon;
 
 	/**
 	 * The full qualified class name of the fragment, which is shown, when the
@@ -106,6 +109,7 @@ public class PreferenceHeader implements Parcelable {
 	 *            instance of the class {@link Parcel}. The parcel may not be
 	 *            null
 	 */
+	@SuppressWarnings("deprecation")
 	private PreferenceHeader(final Parcel source) {
 		setTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
 		setSummary(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
@@ -113,7 +117,8 @@ public class PreferenceHeader implements Parcelable {
 				.createFromParcel(source));
 		setBreadCrumbShortTitle(TextUtils.CHAR_SEQUENCE_CREATOR
 				.createFromParcel(source));
-		setIconId(source.readInt());
+		setIcon(new BitmapDrawable((Bitmap) source.readParcelable(Bitmap.class
+				.getClassLoader())));
 		setFragment(source.readString());
 		setExtras(source.readBundle());
 
@@ -131,7 +136,6 @@ public class PreferenceHeader implements Parcelable {
 	 */
 	public PreferenceHeader(final CharSequence title) {
 		setTitle(title);
-		setIconId(-1);
 	}
 
 	/**
@@ -148,7 +152,6 @@ public class PreferenceHeader implements Parcelable {
 	 */
 	public PreferenceHeader(final Context context, final int titleId) {
 		setTitle(context, titleId);
-		setIconId(-1);
 	}
 
 	/**
@@ -318,24 +321,41 @@ public class PreferenceHeader implements Parcelable {
 	}
 
 	/**
-	 * Returns the resource id of the navigation item's icon.
+	 * Returns the navigation item's icon.
 	 * 
-	 * @return The resource id of the navigation item's icon as an
-	 *         {@link Integer} value or -1, if no icon has been set
+	 * @return The navigation item's icon as an instance of the class
+	 *         {@link Drawable} or null, if no icon has been set
 	 */
-	public final int getIconId() {
-		return iconId;
+	public final Drawable getIcon() {
+		return icon;
 	}
 
 	/**
-	 * Sets the resource id of the navigation item's icon.
+	 * Sets the navigation item's icon.
 	 * 
-	 * @param resourceId
-	 *            The resource id, which should be set, as an {@link Integer}
-	 *            value or -1, if no icon should be set
+	 * @param icon
+	 *            The icon, which should be set, as an instance of the class
+	 *            {@link Drawable} or null, if no icon should be set
 	 */
-	public final void setIconId(final int resourceId) {
-		this.iconId = resourceId;
+	public final void setIcon(final Drawable icon) {
+		this.icon = icon;
+	}
+
+	/**
+	 * Sets the navigation item's icon.
+	 * 
+	 * @param context
+	 *            The context, which should be used to retrieve the drawable
+	 *            resource, as an instance of the class {@link Context}. The
+	 *            context may not be null
+	 * @param resourceId
+	 *            The resource id of the icon, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid drawable resource
+	 */
+	@SuppressWarnings("deprecation")
+	public final void setIcon(final Context context, final int resourceId) {
+		this.icon = context.getResources().getDrawable(resourceId);
 	}
 
 	/**
@@ -421,7 +441,7 @@ public class PreferenceHeader implements Parcelable {
 		TextUtils.writeToParcel(getSummary(), dest, flags);
 		TextUtils.writeToParcel(getBreadCrumbTitle(), dest, flags);
 		TextUtils.writeToParcel(getBreadCrumbShortTitle(), dest, flags);
-		dest.writeInt(getIconId());
+		dest.writeParcelable(((BitmapDrawable) getIcon()).getBitmap(), flags);
 		dest.writeString(getFragment());
 		dest.writeBundle(getExtras());
 
