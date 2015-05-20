@@ -441,7 +441,9 @@ public class PreferenceHeader implements Parcelable {
 		TextUtils.writeToParcel(getSummary(), dest, flags);
 		TextUtils.writeToParcel(getBreadCrumbTitle(), dest, flags);
 		TextUtils.writeToParcel(getBreadCrumbShortTitle(), dest, flags);
-		dest.writeParcelable(((BitmapDrawable) getIcon()).getBitmap(), flags);
+		Bitmap bitmap = (getIcon() != null && getIcon() instanceof BitmapDrawable) ? ((BitmapDrawable) getIcon())
+				.getBitmap() : null;
+		dest.writeParcelable(bitmap, flags);
 		dest.writeString(getFragment());
 		dest.writeBundle(getExtras());
 
