@@ -791,8 +791,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				showBreadCrumb(preferenceHeader);
 				currentBundle = (parameters != null) ? parameters
 						: preferenceHeader.getExtras();
-				showPreferenceScreen(preferenceHeader.getFragment(),
-						currentBundle);
+				showPreferenceScreenFragment(preferenceHeader, currentBundle);
 			} else if (preferenceScreenFragment != null) {
 				showBreadCrumb(preferenceHeader);
 				removeFragment(preferenceScreenFragment);
@@ -808,18 +807,27 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	/**
 	 * Shows the fragment, which corresponds to a specific class name.
 	 * 
-	 * @param fragmentName
-	 *            The full qualified class name of the fragment, which should be
-	 *            shown, as a {@link String}
+	 * @param preferenceHeader
+	 *            The preference header, the fragment, which should be shown,
+	 *            corresponds to, as an instance of the class
+	 *            {@link PreferenceHeader}. The preference header may not be
+	 *            null
 	 * @param params
 	 *            The parameters, which should be passed to the fragment, as an
 	 *            instance of the class {@link Bundle} or null, if the
 	 *            preference header's extras should be used instead
 	 */
-	private void showPreferenceScreen(final String fragmentName,
-			final Bundle params) {
-		preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
-				params);
+	private void showPreferenceScreenFragment(
+			final PreferenceHeader preferenceHeader, final Bundle params) {
+		String fragmentName = preferenceHeader.getFragment();
+
+		if (preferenceScreenFragment == null
+				|| !preferenceScreenFragment.getClass().getName()
+						.equals(fragmentName)
+				|| !preferenceHeader.equals(currentHeader)) {
+			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
+					params);
+		}
 
 		if (isSplitScreen()) {
 			replaceFragment(preferenceScreenFragment,
