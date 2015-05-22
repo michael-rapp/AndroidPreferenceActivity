@@ -755,14 +755,21 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The parameters, which should be passed to the fragment, as an
 	 *            instance of the class {@link Bundle} or null, if the
 	 *            preference header's extras should be used instead
+	 * @param forceTransition
+	 *            True, if instantiating a new fragment should be enforced, even
+	 *            if a fragment instance of the same class is already shown,
+	 *            false otherwise. Must be true for transitions, which have been
+	 *            initiated manually by the user in order to support using the
+	 *            same fragment class for multiple preference headers
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
-			final Bundle parameters) {
+			final Bundle parameters, final boolean forceTransition) {
 		if (parameters != null && preferenceHeader.getExtras() != null) {
 			parameters.putAll(preferenceHeader.getExtras());
 		}
 
-		showPreferenceScreen(preferenceHeader, parameters, true);
+		showPreferenceScreen(preferenceHeader, parameters, true,
+				forceTransition);
 	}
 
 	/**
@@ -780,9 +787,16 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * @param launchIntent
 	 *            True, if a preference header's intent should be launched,
 	 *            false otherwise
+	 * @param forceTransition
+	 *            True, if instantiating a new fragment should be enforced, even
+	 *            if a fragment instance of the same class is already shown,
+	 *            false otherwise. Must be true for transitions, which have been
+	 *            initiated manually by the user in order to support using the
+	 *            same fragment class for multiple preference headers
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
-			final Bundle parameters, final boolean launchIntent) {
+			final Bundle parameters, final boolean launchIntent,
+			final boolean forceTransition) {
 		if (currentHeader == null || !currentHeader.equals(preferenceHeader)) {
 			currentHeader = preferenceHeader;
 			adaptWizardButtons();
@@ -791,7 +805,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				showBreadCrumb(preferenceHeader);
 				currentBundle = (parameters != null) ? parameters
 						: preferenceHeader.getExtras();
-				showPreferenceScreenFragment(preferenceHeader, currentBundle);
+				showPreferenceScreenFragment(preferenceHeader, currentBundle,
+						forceTransition);
 			} else if (preferenceScreenFragment != null) {
 				showBreadCrumb(preferenceHeader);
 				removeFragment(preferenceScreenFragment);
@@ -816,12 +831,20 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The parameters, which should be passed to the fragment, as an
 	 *            instance of the class {@link Bundle} or null, if the
 	 *            preference header's extras should be used instead
+	 * @param forceTransition
+	 *            True, if instantiating a new fragment should be enforced, even
+	 *            if a fragment instance of the same class is already shown,
+	 *            false otherwise. Must be true for transitions, which have been
+	 *            initiated manually by the user in order to support using the
+	 *            same fragment class for multiple preference headers
 	 */
 	private void showPreferenceScreenFragment(
-			final PreferenceHeader preferenceHeader, final Bundle params) {
+			final PreferenceHeader preferenceHeader, final Bundle params,
+			final boolean forceTransition) {
 		String fragmentName = preferenceHeader.getFragment();
 
-		if (preferenceScreenFragment == null
+		if (forceTransition
+				|| preferenceScreenFragment == null
 				|| !preferenceScreenFragment.getClass().getName()
 						.equals(fragmentName)) {
 			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
@@ -888,7 +911,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				}
 			} else if (navigationHidden) {
 				if (getListAdapter() != null && !getListAdapter().isEmpty()) {
-					showPreferenceScreen(getListAdapter().getItem(0), null);
+					showPreferenceScreen(getListAdapter().getItem(0), null,
+							false);
 				} else if (getListAdapter() != null) {
 					finish();
 				}
@@ -1922,7 +1946,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			final Bundle parameters) {
 		getListView().setItemChecked(position, true);
 		getListView().smoothScrollToPosition(position);
-		showPreferenceScreen(getListAdapter().getItem(position), parameters);
+		showPreferenceScreen(getListAdapter().getItem(position), parameters,
+				true);
 	}
 
 	/**
@@ -2561,7 +2586,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	@Override
 	public final void onItemClick(final AdapterView<?> parent, final View view,
 			final int position, final long id) {
-		showPreferenceScreen(getListAdapter().getItem(position), null);
+		showPreferenceScreen(getListAdapter().getItem(position), null, true);
 	}
 
 	@Override
@@ -2603,11 +2628,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 								selectedIndex - 1);
 					}
 
-					showPreferenceScreen(selectedPreferenceHeader, null);
+					showPreferenceScreen(selectedPreferenceHeader, null, false);
 				} else if (selectedIndex > position) {
 					getListView().setItemChecked(selectedIndex - 1, true);
 					showPreferenceScreen(
-							getListAdapter().getItem(selectedIndex - 1), null);
+							getListAdapter().getItem(selectedIndex - 1), null,
+							false);
 				}
 			}
 		} else {
