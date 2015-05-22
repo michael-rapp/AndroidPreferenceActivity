@@ -823,8 +823,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 		if (preferenceScreenFragment == null
 				|| !preferenceScreenFragment.getClass().getName()
-						.equals(fragmentName)
-				|| !preferenceHeader.equals(currentHeader)) {
+						.equals(fragmentName)) {
 			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
 					params);
 		}
