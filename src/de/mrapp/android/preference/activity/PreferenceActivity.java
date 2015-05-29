@@ -1145,48 +1145,22 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * Obtains all relevant attributes from the activity's current theme.
 	 */
 	private void obtainStyledAttributes() {
-		int theme = obtainTheme();
-
-		if (theme != 0) {
-			obtainNavigationBackground(theme);
-			obtainPreferenceScreenBackground(theme);
-			obtainWizardButtonBarBackground(theme);
-			obtainBreadCrumbBackground(theme);
-			obtainNavigationWidth(theme);
-			obtainOverrideNavigationIcon(theme);
-			obtainNavigationElevation(theme);
-			obtainWizardButtonBarElevation(theme);
-			obtainBreadCrumbElevation(theme);
-		}
-	}
-
-	/**
-	 * Obtains the resource id of the activity's current theme.
-	 * 
-	 * @return The resource id of the acitivty's current theme as an
-	 *         {@link Integer} value or 0, if an error occurred while obtaining
-	 *         the theme
-	 */
-	private int obtainTheme() {
-		try {
-			String packageName = getClass().getPackage().getName();
-			PackageInfo packageInfo = getPackageManager().getPackageInfo(
-					packageName, PackageManager.GET_META_DATA);
-			return packageInfo.applicationInfo.theme;
-		} catch (NameNotFoundException e) {
-			return 0;
-		}
+		obtainNavigationBackground();
+		obtainPreferenceScreenBackground();
+		obtainWizardButtonBarBackground();
+		obtainBreadCrumbBackground();
+		obtainNavigationWidth();
+		obtainOverrideNavigationIcon();
+		obtainNavigationElevation();
+		obtainWizardButtonBarElevation();
+		obtainBreadCrumbElevation();
 	}
 
 	/**
 	 * Obtains the background of the navigation from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainNavigationBackground(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainNavigationBackground() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.navigationBackground });
 		int color = typedArray.getColor(0, 0);
 
@@ -1203,13 +1177,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Obtains the background of the preference screen from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainPreferenceScreenBackground(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainPreferenceScreenBackground() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.preferenceScreenBackground });
 		int color = typedArray.getColor(0, 0);
 
@@ -1226,14 +1196,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Obtains the background of the wizard button bar from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainWizardButtonBarBackground(final int theme) {
+	private void obtainWizardButtonBarBackground() {
 		View wizardButtonBar = findViewById(R.id.wizard_button_bar);
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.wizardButtonBarBackground });
 		int color = typedArray.getColor(0, 0);
 
@@ -1255,8 +1221,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The resource id of the theme, the background should be
 	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainBreadCrumbBackground(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainBreadCrumbBackground() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.breadCrumbBackground });
 		int color = typedArray.getColor(0, 0);
 
@@ -1273,13 +1239,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Obtains the width of the navigation from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainNavigationWidth(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainNavigationWidth() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.navigationWidth });
 		int width = convertPixelsToDp(this,
 				typedArray.getDimensionPixelSize(0, 0));
@@ -1292,13 +1254,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	/**
 	 * Obtains, whether the behavior of the navigation icon should be
 	 * overridden, or not.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainOverrideNavigationIcon(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainOverrideNavigationIcon() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.overrideNavigationIcon });
 		overrideNavigationIcon(typedArray.getBoolean(0, true));
 	}
@@ -1310,8 +1268,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The resource id of the theme, the navigation width should be
 	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainNavigationElevation(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainNavigationElevation() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.navigationElevation });
 		int elevation = convertPixelsToDp(this,
 				typedArray.getDimensionPixelSize(0, 0));
@@ -1323,14 +1281,10 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Obtains the elevation of the button bar from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
 	 */
 	@SuppressWarnings("deprecation")
-	private void obtainWizardButtonBarElevation(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainWizardButtonBarElevation() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.wizardButtonBarElevation });
 		int elevation = convertPixelsToDp(this,
 				typedArray.getDimensionPixelSize(0, 0));
@@ -1363,13 +1317,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 	/**
 	 * Obtains the elevation of the bread crumb from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
 	 */
-	private void obtainBreadCrumbElevation(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
+	private void obtainBreadCrumbElevation() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
 				new int[] { R.attr.breadCrumbElevation });
 		int elevation = convertPixelsToDp(this,
 				typedArray.getDimensionPixelSize(0, 0));
