@@ -41,7 +41,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -74,7 +74,7 @@ import de.mrapp.android.preference.activity.view.ToolbarLarge;
  *
  * @since 1.0.0
  */
-public abstract class PreferenceActivity extends ActionBarActivity implements
+public abstract class PreferenceActivity extends AppCompatActivity implements
 		FragmentListener, OnItemClickListener, AdapterListener {
 
 	/**
