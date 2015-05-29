@@ -362,6 +362,8 @@ public class ToolbarLarge extends FrameLayout {
 						: R.dimen.bread_crumb_text_size);
 		breadCrumbTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
 				breadCrumbTextSize);
+		overlayView.setBackgroundColor(navigationHidden ? Color.TRANSPARENT
+				: getResources().getColor(R.color.overlay));
 
 		if (navigationHidden) {
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
