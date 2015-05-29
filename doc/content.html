@@ -119,16 +119,16 @@
                         <td>If specified by a resource ID, the ID must correspond to a valid string resource</td>
                     </tr>
                     <tr>
-                        <td><tt>getIconId():int</br>setIconId(int):void</tt></td>
-                        <td>Returns or sets the resource ID, which specifies the preference header's icon. When set to -1, no icon is used.</td>
-                        <td><center><tt>-1</tt></center></td>
-                        <td>The resource ID must correspond to a valid drawable resource</td>
+                        <td><tt>getIcon():Drawable</br>setIcon(Drawable):void</br>setIcon(Context,int):void</tt></td>
+                        <td>Returns or sets the preference header's icon. When set to null, no icon is used.</td>
+                        <td><center><tt>null</tt></center></td>
+                        <td>If specified by a resource ID, the ID must correspond to a valid drawable resource</td>
                     </tr>
                     <tr>
                         <td><tt>getFragment():String</br>setFragment(String):void<</tt></td>
                         <td>Returns or sets the full qualified class name of the fragment, which is shown when the preference header is selected. When set to null, an empty screen is shown instead.</td>
                         <td><center><tt>null</tt></center></td>
-                        <td>The class name must to an existing fragment</td>
+                        <td>The class name must correspond to an existing fragment</td>
                     </tr>
                     <tr>
                         <td><tt>getIntent():Intent</br>setIntent(Intent):void</tt></td>
@@ -304,7 +304,6 @@
                         <td><tt>PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE</tt></td>
                         <td>Allows to specify an alternative bread crumb title for the preference header, which should be initially shown.</td>
                         <td><center><tt>CharSequence, String</tt> or string resource</center></td>
-                    </tr>
                     <tr>
                         <td><tt>PreferenceActivity.EXTRA_SHOW_FRAGMENT_SHORT_TITLE</tt></td>
                         <td>Allows to specify an alternative bread crumb short title for the preference header, which should be intially shown.</td>
@@ -322,7 +321,7 @@
 
                 <h5><a name="how-to-use-an-activity-as-a-wizard">5.1 How to use an activity as a wizard</a></h5>
 
-                <p>To use the activity as a wizard an intent, which contains the following extras, must be passed to the activity when it is started:</p>
+                <p>To use the activity as a wizard, an intent, which contains the boolean extra <tt>EXTRA_SHOW_BUTTON_BAR</tt>, must be passed to the activity when it is started. The following table shows all extras, which are related to using the activity as a wizard:</p>
 
                 <table>
                     <tr>
@@ -421,12 +420,12 @@
 
                 <h5><a name="using-the-interface-wizard-listener">5.3 Using the interface WizardListener</a></h5>
 
-                <p>Furthermore, it is possible to register listeners, which therefore must implement the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> at a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which is used as a wizard. This interface defines methods, which are called when a wizard's next-, back- or finish-button are clicked by the user and when the user is about to finish the activity using the device's back button or the action bar's back button. All of these listener methods, which are listed below, must return a <tt>boolean</tt> value, which allows to determine, whether appropriate action should be executed, or not. For example, this allows to verify the data the user has been entered in the currently shown preference or to show a dialog, which asks for confirmation when the wizard is about to be skipped.</p>
+                <p>Furthermore, it is possible to register listeners, which therefore must implement the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> at a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which is used as a wizard. This interface defines methods, which are called when a wizard's next-, back- or finish-buttons are clicked by the user or when the user is about to finish the activity using the device's back button or the action bar's back button. All of these listener methods, which are listed below, must return an instance of the class <a href="http://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a>, which allows to determine, whether a several action should be executed, or not. If the returned bundle is not null, the action will be executed, otherwise not. For example, this allows to verify the data the user has entered in the currently shown preference or to show a dialog, which asks for confirmation when the wizard is about to be skipped.</p>
 
-                <p class="center"><tt>onNextStep(int, PreferenceHeader, Fragment):boolean</tt></p>
-                <p class="center"><tt>onPreviousStep(int, PreferenceHeader, Fragment):boolean</tt></p>
-                <p class="center"><tt>onFinish(int, PreferenceHeader, Fragment):boolean</tt></P>
-                <p class="center"><tt>onSkip(int, PreferenceHeader, Fragment):boolean</tt></p>
+                <p class="center"><tt>onNextStep(int, PreferenceHeader, Fragment):Bundle</tt></p>
+                <p class="center"><tt>onPreviousStep(int, PreferenceHeader, Fragment):Bundle</tt></p>
+                <p class="center"><tt>onFinish(int, PreferenceHeader, Fragment):Bundle</tt></P>
+                <p class="center"><tt>onSkip(int, PreferenceHeader, Fragment):Bundle</tt></p>
 
                 <p>As shown above, all methods of the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> define parameters, which contain the position of the currently selected preference header, the preference header itself and the fragment, which is currently shown. To add such a listener to an instance of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, its method <tt>addWizardListener(WizardListener):void</tt> may be used. In case a listener, which has been registered this way, should not be notified on the wizard's events anymore, the method <tt>removeWizardListener(WizardListener):void</tt> can be used to remove the listener from the activity.</p>
 
