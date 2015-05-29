@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -356,6 +357,11 @@ public class ToolbarLarge extends FrameLayout {
 		shadowView.setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
 		titleTextView.setVisibility(navigationHidden ? View.INVISIBLE
 				: View.VISIBLE);
+		float breadCrumbTextSize = getResources().getDimension(
+				navigationHidden ? R.dimen.toolbar_title_text_size
+						: R.dimen.bread_crumb_text_size);
+		breadCrumbTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+				breadCrumbTextSize);
 
 		if (navigationHidden) {
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
