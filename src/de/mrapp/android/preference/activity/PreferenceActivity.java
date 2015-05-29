@@ -1213,10 +1213,6 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 
 	/**
 	 * Obtains the background of the bread crumb from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
 	 */
 	private void obtainBreadCrumbBackground() {
 		TypedArray typedArray = getTheme().obtainStyledAttributes(
@@ -1260,10 +1256,6 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 
 	/**
 	 * Obtains the elevation of the navigation from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
 	 */
 	private void obtainNavigationElevation() {
 		TypedArray typedArray = getTheme().obtainStyledAttributes(
