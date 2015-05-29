@@ -115,10 +115,7 @@ public class ToolbarLarge extends FrameLayout {
 	 */
 	private void obtainStyledAttributes(final Context context,
 			final AttributeSet attributeSet) {
-		TypedArray typedArray = context.obtainStyledAttributes(attributeSet,
-				R.styleable.Toolbar);
-		int theme = obtainTheme(typedArray);
-		typedArray.recycle();
+		int theme = obtainTheme();
 
 		if (theme != 0) {
 			obtainBackgroundColor(theme);
@@ -130,13 +127,12 @@ public class ToolbarLarge extends FrameLayout {
 	 * Obtains the resource id of the theme, which should be applied on the
 	 * toolbar.
 	 * 
-	 * @param typedArray
-	 *            The typed array, the resource id of the theme should be
-	 *            obtained from, as an instance of the class {@link TypedArray}
 	 * @return The resource id of the theme as an {@link Integer} value
 	 */
-	private int obtainTheme(final TypedArray typedArray) {
-		return typedArray.getResourceId(R.styleable.Toolbar_theme, 0);
+	private int obtainTheme() {
+		TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(
+				new int[] { R.attr.toolbarTheme });
+		return typedArray.getResourceId(0, 0);
 	}
 
 	/**
