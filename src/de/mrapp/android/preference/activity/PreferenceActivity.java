@@ -51,6 +51,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.mrapp.android.preference.activity.adapter.AdapterListener;
@@ -259,6 +260,12 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	 * if no preference header is currently selected.
 	 */
 	private Fragment preferenceScreenFragment;
+
+	/**
+	 * The frame layout, which contains the activity's views. It is the
+	 * activity's root view.
+	 */
+	private FrameLayout frameLayout;
 
 	/**
 	 * The parent view of the fragment, which provides the navigation to each
@@ -1343,6 +1350,16 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	public final void removeWizardListener(final WizardListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		wizardListeners.remove(wizardListeners);
+	}
+
+	/**
+	 * Returns the frame layout, which contains the activity's views. It is the
+	 * activity's root view.
+	 * 
+	 * @return The frame layout, which contains the activity's views
+	 */
+	public final FrameLayout getFrameLayout() {
+		return frameLayout;
 	}
 
 	/**
@@ -2680,6 +2697,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 		this.savedInstanceState = savedInstanceState;
 		setContentView(R.layout.preference_activity);
+		frameLayout = (FrameLayout) findViewById(R.id.preference_activity_frame_layout);
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
