@@ -96,9 +96,8 @@ public abstract class PreferenceFragment extends
 	private ListView listView;
 
 	/**
-	 * The frame layout, which contains the list view, which contains the
-	 * fragment's preferences, as well as the button bar, which contains the
-	 * button, which allows to restore the preferences' default values.
+	 * The frame layout, which contains the fragment's views. It is the root
+	 * view of the fragment.
 	 */
 	private FrameLayout frameLayout;
 
@@ -553,12 +552,10 @@ public abstract class PreferenceFragment extends
 	}
 
 	/**
-	 * Returns the fragment's frame layout. It contains the list view, which
-	 * contains the fragment's preferences, as well as the button bar, which
-	 * contains the button, which allows to restore the preferences' default
-	 * values.
+	 * Returns the frame layout, which contains the fragment's views. It is the
+	 * root view of the fragment.
 	 * 
-	 * @return The fragment's frame layout
+	 * @return The frame layout, which contains the fragment's views
 	 */
 	public final FrameLayout getFrameLayout() {
 		return frameLayout;
