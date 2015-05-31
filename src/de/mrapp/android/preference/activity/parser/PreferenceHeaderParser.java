@@ -1,5 +1,5 @@
 /*
- * AndroidPreferenceActivity Copyright 2014 Michael Rapp
+ * AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
  *
  * This program is free software: you can redistribute it and/or modify 
  * it under the terms of the GNU Lesser General Public License as published 
