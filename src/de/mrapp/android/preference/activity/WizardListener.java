@@ -18,6 +18,7 @@
 package de.mrapp.android.preference.activity;
 
 import android.app.Fragment;
+import android.os.Bundle;
 
 /**
  * Defines the interface a class, which should be notified when the user
@@ -45,10 +46,12 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return True, if navigating to the next step of the wizard should be
-	 *         allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if navigating to the next step of the
+	 *         wizard should be allowed, as an instance of the class
+	 *         {@link Bundle}, null otherwise
 	 */
-	boolean onNextStep(int position, PreferenceHeader preferenceHeader,
+	Bundle onNextStep(int position, PreferenceHeader preferenceHeader,
 			Fragment fragment);
 
 	/**
@@ -64,10 +67,12 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return True, if navigating to the previous step of the wizard should be
-	 *         allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if navigating to the previous step of the
+	 *         wizard should be allowed, as an instance of the class
+	 *         {@link Bundle}, null otherwise
 	 */
-	boolean onPreviousStep(int position, PreferenceHeader preferenceHeader,
+	Bundle onPreviousStep(int position, PreferenceHeader preferenceHeader,
 			Fragment fragment);
 
 	/**
@@ -83,9 +88,12 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return True, if finishing the wizard should be allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if finishing the wizard should be
+	 *         allowed, as an instance of the class {@link Bundle}, null
+	 *         otherwise
 	 */
-	boolean onFinish(int position, PreferenceHeader preferenceHeader,
+	Bundle onFinish(int position, PreferenceHeader preferenceHeader,
 			Fragment fragment);
 
 	/**
@@ -100,9 +108,11 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return True, if skipping the wizard should be allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if skipping the wizard should be allowed,
+	 *         as an instance of the class {@link Bundle}, null otherwise
 	 */
-	boolean onSkip(int position, PreferenceHeader preferenceHeader,
+	Bundle onSkip(int position, PreferenceHeader preferenceHeader,
 			Fragment fragment);
 
 }

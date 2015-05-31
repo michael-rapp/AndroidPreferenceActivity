@@ -33,9 +33,6 @@ import java.util.Set;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -44,7 +41,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -54,6 +51,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.mrapp.android.preference.activity.adapter.AdapterListener;
@@ -77,7 +75,7 @@ import de.mrapp.android.preference.activity.view.ToolbarLarge;
  *
  * @since 1.0.0
  */
-public abstract class PreferenceActivity extends ActionBarActivity implements
+public abstract class PreferenceActivity extends AppCompatActivity implements
 		FragmentListener, OnItemClickListener, AdapterListener {
 
 	/**
@@ -143,6 +141,22 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * button when the last preference header is shown.
 	 */
 	public static final String EXTRA_FINISH_BUTTON_TEXT = "extra_prefs_set_finish_text";
+
+	/**
+	 * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code>,
+	 * this boolean extra can also used to specify, whether the number of the
+	 * currently shown wizard step and the number of total steps should be shown
+	 * as the bread crumb title.
+	 */
+	public static final String EXTRA_SHOW_PROGRESS = "extra_prefs_show_progress";
+
+	/**
+	 * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code> and
+	 * <code>EXTRA_SHOW_PROGRESS</code>, this string extra can also be specified
+	 * to supply a custom format for showing the progress. The string must be
+	 * formatted according to the following syntax: "*%d*%d*%s*"
+	 */
+	public static final String EXTRA_PROGRESS_FORMAT = "extra_prefs_progress_format";
 
 	/**
 	 * The name of the extra, which is used to save the parameters, which have
@@ -246,6 +260,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * if no preference header is currently selected.
 	 */
 	private Fragment preferenceScreenFragment;
+
+	/**
+	 * The frame layout, which contains the activity's views. It is the
+	 * activity's root view.
+	 */
+	private FrameLayout frameLayout;
 
 	/**
 	 * The parent view of the fragment, which provides the navigation to each
@@ -379,6 +399,18 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private TextView breadCrumb;
 
 	/**
+	 * True, if the progress should be shown as the bread crumb title, false
+	 * otherwise.
+	 */
+	private boolean showProgress;
+
+	/**
+	 * The text, which is used to format the progress, which is shown as the
+	 * bread crumb title.
+	 */
+	private String progressFormat;
+
+	/**
 	 * A set, which contains the listeners, which have registered to be notified
 	 * when the user navigates within the activity, if it used as a wizard.
 	 */
@@ -461,6 +493,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				EXTRA_BACK_BUTTON_TEXT);
 		CharSequence finishButtonText = getCharSequenceFromIntent(getIntent(),
 				EXTRA_FINISH_BUTTON_TEXT);
+		CharSequence progressFormatString = getCharSequenceFromIntent(
+				getIntent(), EXTRA_PROGRESS_FORMAT);
 
 		if (showButtonBar) {
 			showButtonBar(true);
@@ -475,6 +509,13 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 
 			if (finishButtonText != null) {
 				setFinishButtonText(finishButtonText);
+			}
+
+			showProgress(getIntent()
+					.getBooleanExtra(EXTRA_SHOW_PROGRESS, false));
+
+			if (progressFormatString != null) {
+				setProgressFormat(progressFormatString.toString());
 			}
 		}
 	}
@@ -536,9 +577,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			public void onClick(final View v) {
 				int currentIndex = getListAdapter().indexOf(currentHeader);
 
-				if (currentIndex < getNumberOfPreferenceHeaders() - 1
-						&& notifyOnNextStep()) {
-					selectPreferenceHeader(currentIndex + 1);
+				if (currentIndex < getNumberOfPreferenceHeaders() - 1) {
+					Bundle params = notifyOnNextStep();
+
+					if (params != null) {
+						selectPreferenceHeader(currentIndex + 1, params);
+					}
 				}
 			}
 
@@ -559,8 +603,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			public void onClick(final View v) {
 				int currentIndex = getListAdapter().indexOf(currentHeader);
 
-				if (currentIndex > 0 && notifyOnPreviousStep()) {
-					selectPreferenceHeader(currentIndex - 1);
+				if (currentIndex > 0) {
+					Bundle params = notifyOnPreviousStep();
+
+					if (params != null) {
+						selectPreferenceHeader(currentIndex - 1, params);
+					}
 				}
 			}
 
@@ -589,74 +637,114 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * Notifies all registered listeners that the user wants to navigate to the
 	 * next step of the wizard.
 	 * 
-	 * @return True, if navigating to the next step of the wizard should be
-	 *         allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if navigating to the next step of the
+	 *         wizard should be allowed, as an instance of the class
+	 *         {@link Bundle}, null otherwise
 	 */
-	private boolean notifyOnNextStep() {
-		boolean accepted = true;
+	private Bundle notifyOnNextStep() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onNextStep(
+			Bundle bundle = listener.onNextStep(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
 	 * Notifies all registered listeners that the user wants to navigate to the
 	 * previous step of the wizard.
 	 * 
-	 * @return True, if navigating to the previous step of the wizard should be
-	 *         allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if navigating to the previous step of the
+	 *         wizard should be allowed, as an instance of the class
+	 *         {@link Bundle}, null otherwise
 	 */
-	private boolean notifyOnPreviousStep() {
-		boolean accepted = true;
+	private Bundle notifyOnPreviousStep() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onPreviousStep(
+			Bundle bundle = listener.onPreviousStep(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
 	 * Notifies all registered listeners that the user wants to finish the last
 	 * step of the wizard.
 	 * 
-	 * @return True, if finishing the last step of the wizard should be allowed,
-	 *         false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if finishing the wizard should be
+	 *         allowed, as an instance of the class {@link Bundle}, null
+	 *         otherwise
 	 */
-	private boolean notifyOnFinish() {
-		boolean accepted = true;
+	private Bundle notifyOnFinish() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onFinish(
+			Bundle bundle = listener.onFinish(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
 	 * Notifies all registered listeners that the user wants to skip the wizard.
 	 * 
-	 * @return True, if skipping the wizard should be allowed, false otherwise
+	 * @return A bundle, which may contain key-value pairs, which have been
+	 *         acquired in the wizard, if skipping the wizard should be allowed,
+	 *         as an instance of the class {@link Bundle}, null otherwise
 	 */
-	private boolean notifyOnSkip() {
-		boolean accepted = true;
+	private Bundle notifyOnSkip() {
+		Bundle result = null;
 
 		for (WizardListener listener : wizardListeners) {
-			accepted &= listener.onSkip(
+			Bundle bundle = listener.onSkip(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+
+			if (bundle != null) {
+				if (result == null) {
+					result = new Bundle();
+				}
+
+				result.putAll(bundle);
+			}
 		}
 
-		return accepted;
+		return result;
 	}
 
 	/**
@@ -671,10 +759,21 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 *            The parameters, which should be passed to the fragment, as an
 	 *            instance of the class {@link Bundle} or null, if the
 	 *            preference header's extras should be used instead
+	 * @param forceTransition
+	 *            True, if instantiating a new fragment should be enforced, even
+	 *            if a fragment instance of the same class is already shown,
+	 *            false otherwise. Must be true for transitions, which have been
+	 *            initiated manually by the user in order to support using the
+	 *            same fragment class for multiple preference headers
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
-			final Bundle parameters) {
-		showPreferenceScreen(preferenceHeader, parameters, true);
+			final Bundle parameters, final boolean forceTransition) {
+		if (parameters != null && preferenceHeader.getExtras() != null) {
+			parameters.putAll(preferenceHeader.getExtras());
+		}
+
+		showPreferenceScreen(preferenceHeader, parameters, true,
+				forceTransition);
 	}
 
 	/**
@@ -692,21 +791,31 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	 * @param launchIntent
 	 *            True, if a preference header's intent should be launched,
 	 *            false otherwise
+	 * @param forceTransition
+	 *            True, if instantiating a new fragment should be enforced, even
+	 *            if a fragment instance of the same class is already shown,
+	 *            false otherwise. Must be true for transitions, which have been
+	 *            initiated manually by the user in order to support using the
+	 *            same fragment class for multiple preference headers
 	 */
 	private void showPreferenceScreen(final PreferenceHeader preferenceHeader,
-			final Bundle parameters, final boolean launchIntent) {
-		currentHeader = preferenceHeader;
-		adaptWizardButtons();
+			final Bundle parameters, final boolean launchIntent,
+			final boolean forceTransition) {
+		if (currentHeader == null || !currentHeader.equals(preferenceHeader)) {
+			currentHeader = preferenceHeader;
+			adaptWizardButtons();
 
-		if (preferenceHeader.getFragment() != null) {
-			showBreadCrumb(preferenceHeader);
-			currentBundle = (parameters != null) ? parameters
-					: preferenceHeader.getExtras();
-			showPreferenceScreen(preferenceHeader.getFragment(), currentBundle);
-		} else if (preferenceScreenFragment != null) {
-			showBreadCrumb(preferenceHeader);
-			removeFragment(preferenceScreenFragment);
-			preferenceScreenFragment = null;
+			if (preferenceHeader.getFragment() != null) {
+				showBreadCrumb(preferenceHeader);
+				currentBundle = (parameters != null) ? parameters
+						: preferenceHeader.getExtras();
+				showPreferenceScreenFragment(preferenceHeader, currentBundle,
+						forceTransition);
+			} else if (preferenceScreenFragment != null) {
+				showBreadCrumb(preferenceHeader);
+				removeFragment(preferenceScreenFragment);
+				preferenceScreenFragment = null;
+			}
 		}
 
 		if (launchIntent && preferenceHeader.getIntent() != null) {
@@ -717,17 +826,29 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	/**
 	 * Shows the fragment, which corresponds to a specific class name.
 	 * 
-	 * @param fragmentName
-	 *            The full qualified class name of the fragment, which should be
-	 *            shown, as a {@link String}
+	 * @param preferenceHeader
+	 *            The preference header, the fragment, which should be shown,
+	 *            corresponds to, as an instance of the class
+	 *            {@link PreferenceHeader}. The preference header may not be
+	 *            null
 	 * @param params
 	 *            The parameters, which should be passed to the fragment, as an
 	 *            instance of the class {@link Bundle} or null, if the
 	 *            preference header's extras should be used instead
+	 * @param forceTransition
+	 *            True, if instantiating a new fragment should be enforced, even
+	 *            if a fragment instance of the same class is already shown,
+	 *            false otherwise. Must be true for transitions, which have been
+	 *            initiated manually by the user in order to support using the
+	 *            same fragment class for multiple preference headers
 	 */
-	private void showPreferenceScreen(final String fragmentName,
-			final Bundle params) {
-		if (preferenceScreenFragment == null
+	private void showPreferenceScreenFragment(
+			final PreferenceHeader preferenceHeader, final Bundle params,
+			final boolean forceTransition) {
+		String fragmentName = preferenceHeader.getFragment();
+
+		if (forceTransition
+				|| preferenceScreenFragment == null
 				|| !preferenceScreenFragment.getClass().getName()
 						.equals(fragmentName)) {
 			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
@@ -794,7 +915,8 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				}
 			} else if (navigationHidden) {
 				if (getListAdapter() != null && !getListAdapter().isEmpty()) {
-					showPreferenceScreen(getListAdapter().getItem(0), null);
+					showPreferenceScreen(getListAdapter().getItem(0), null,
+							false);
 				} else if (getListAdapter() != null) {
 					finish();
 				}
@@ -945,10 +1067,11 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	private void showBreadCrumb(final CharSequence title,
 			final CharSequence shortTitle) {
 		this.currentTitle = title;
-		this.currentShortTitle = title;
+		this.currentShortTitle = shortTitle;
+		CharSequence breadCrumbTitle = createBreadCrumbTitle(title);
 
 		if (getBreadCrumb() != null) {
-			if (title != null || shortTitle != null) {
+			if (breadCrumbTitle != null) {
 				getBreadCrumb().setVisibility(View.VISIBLE);
 				breadCrumbShadowView.setVisibility(View.VISIBLE);
 			} else {
@@ -956,15 +1079,42 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				breadCrumbShadowView.setVisibility(View.GONE);
 			}
 
-			getBreadCrumb().setText(title);
+			getBreadCrumb().setText(breadCrumbTitle);
 		} else if (toolbarLarge != null) {
-			toolbarLarge.setBreadCrumbTitle(title);
-		} else if (title != null) {
+			toolbarLarge.setBreadCrumbTitle(breadCrumbTitle);
+		} else if (breadCrumbTitle != null) {
 			if (defaultTitle == null) {
 				defaultTitle = getTitle();
 			}
-			setTitle(title);
+			setTitle(breadCrumbTitle);
 		}
+	}
+
+	/**
+	 * Creates and returns the title of the bread crumb, depending on whether
+	 * the activity is used as a wizard and whether the progress should be
+	 * shown, or not.
+	 * 
+	 * @param title
+	 *            The title, which should be used by the bread crumb, as an
+	 *            instance of the class {@link CharSequence} or null, if no
+	 *            title should be used
+	 * @return The title, which has been created, as an instance of the class
+	 *         {@link CharSequence} or null, if no title should be used
+	 */
+	private CharSequence createBreadCrumbTitle(final CharSequence title) {
+		if (title != null) {
+			if (isProgressShown()) {
+				int currentStep = getListAdapter().indexOf(currentHeader) + 1;
+				int totalSteps = getListAdapter().getCount();
+				return String.format(getProgressFormat(), currentStep,
+						totalSteps, title);
+			} else {
+				return title;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -996,6 +1146,186 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
+	 * Obtains all relevant attributes from the activity's current theme.
+	 */
+	private void obtainStyledAttributes() {
+		obtainNavigationBackground();
+		obtainPreferenceScreenBackground();
+		obtainWizardButtonBarBackground();
+		obtainBreadCrumbBackground();
+		obtainNavigationWidth();
+		obtainOverrideNavigationIcon();
+		obtainNavigationElevation();
+		obtainWizardButtonBarElevation();
+		obtainBreadCrumbElevation();
+	}
+
+	/**
+	 * Obtains the background of the navigation from a specific theme.
+	 */
+	private void obtainNavigationBackground() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.navigationBackground });
+		int color = typedArray.getColor(0, 0);
+
+		if (color != 0) {
+			setNavigationBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, 0);
+
+			if (resourceId != 0) {
+				setNavigationBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the background of the preference screen from a specific theme.
+	 */
+	private void obtainPreferenceScreenBackground() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.preferenceScreenBackground });
+		int color = typedArray.getColor(0, 0);
+
+		if (color != 0) {
+			setPreferenceScreenBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, 0);
+
+			if (resourceId != 0) {
+				setPreferenceScreenBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the background of the wizard button bar from a specific theme.
+	 */
+	private void obtainWizardButtonBarBackground() {
+		View wizardButtonBar = findViewById(R.id.wizard_button_bar);
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.wizardButtonBarBackground });
+		int color = typedArray.getColor(0, 0);
+
+		if (color != 0) {
+			wizardButtonBar.setBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, 0);
+
+			if (resourceId != 0) {
+				wizardButtonBar.setBackgroundResource(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the background of the bread crumb from a specific theme.
+	 */
+	private void obtainBreadCrumbBackground() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.breadCrumbBackground });
+		int color = typedArray.getColor(0, 0);
+
+		if (color != 0) {
+			setBreadCrumbBackgroundColor(color);
+		} else {
+			int resourceId = typedArray.getResourceId(0, 0);
+
+			if (resourceId != 0) {
+				setBreadCrumbBackground(resourceId);
+			}
+		}
+	}
+
+	/**
+	 * Obtains the width of the navigation from a specific theme.
+	 */
+	private void obtainNavigationWidth() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.navigationWidth });
+		int width = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, 0));
+
+		if (width != 0) {
+			setNavigationWidth(width);
+		}
+	}
+
+	/**
+	 * Obtains, whether the behavior of the navigation icon should be
+	 * overridden, or not.
+	 */
+	private void obtainOverrideNavigationIcon() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.overrideNavigationIcon });
+		overrideNavigationIcon(typedArray.getBoolean(0, true));
+	}
+
+	/**
+	 * Obtains the elevation of the navigation from a specific theme.
+	 */
+	private void obtainNavigationElevation() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.navigationElevation });
+		int elevation = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, 0));
+
+		if (elevation != 0) {
+			setNavigationElevation(elevation);
+		}
+	}
+
+	/**
+	 * Obtains the elevation of the button bar from a specific theme.
+	 */
+	@SuppressWarnings("deprecation")
+	private void obtainWizardButtonBarElevation() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.wizardButtonBarElevation });
+		int elevation = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, 0));
+
+		if (elevation != 0) {
+			View shadowView = findViewById(R.id.wizard_button_bar_shadow_view);
+			String[] shadowColors = getResources().getStringArray(
+					R.array.button_bar_elevation_shadow_colors);
+			String[] shadowWidths = getResources().getStringArray(
+					R.array.button_bar_elevation_shadow_widths);
+			ensureAtLeast(elevation, 1, "The elevation must be at least 1");
+			ensureAtMaximum(elevation, shadowWidths.length,
+					"The elevation must be at maximum " + shadowWidths.length);
+
+			if (shadowView != null) {
+				this.buttonBarElevation = elevation;
+				int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
+				int shadowWidth = convertDpToPixels(this,
+						Integer.valueOf(shadowWidths[elevation - 1]));
+
+				GradientDrawable gradient = new GradientDrawable(
+						Orientation.BOTTOM_TOP, new int[] { shadowColor,
+								Color.TRANSPARENT });
+				shadowView.setBackgroundDrawable(gradient);
+				shadowView.getLayoutParams().height = shadowWidth;
+				shadowView.requestLayout();
+			}
+		}
+	}
+
+	/**
+	 * Obtains the elevation of the bread crumb from a specific theme.
+	 */
+	private void obtainBreadCrumbElevation() {
+		TypedArray typedArray = getTheme().obtainStyledAttributes(
+				new int[] { R.attr.breadCrumbElevation });
+		int elevation = convertPixelsToDp(this,
+				typedArray.getDimensionPixelSize(0, 0));
+
+		if (elevation != 0) {
+			setBreadCrumbElevation(elevation);
+		}
+	}
+
+	/**
 	 * Adds a new listener, which should be notified, when the user navigates
 	 * within the activity, if it is used as a wizard, to the activity.
 	 * 
@@ -1020,6 +1350,16 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	public final void removeWizardListener(final WizardListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		wizardListeners.remove(wizardListeners);
+	}
+
+	/**
+	 * Returns the frame layout, which contains the activity's views. It is the
+	 * activity's root view.
+	 * 
+	 * @return The frame layout, which contains the activity's views
+	 */
+	public final FrameLayout getFrameLayout() {
+		return frameLayout;
 	}
 
 	/**
@@ -1265,6 +1605,96 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	}
 
 	/**
+	 * Returns, whether the progress is shown, if the activity is used as a
+	 * wizard.
+	 * 
+	 * @return True, if the progress is shown, false otherwise or if the
+	 *         activity is not used as a wizard
+	 */
+	public final boolean isProgressShown() {
+		return isButtonBarShown() && showProgress;
+	}
+
+	/**
+	 * Shows or hides the progress, if the activity is used as a wizard.
+	 * 
+	 * @param showProgress
+	 *            True, if the progress should be shown, false otherwise
+	 * @return True, if the progress has been shown or hidden, false otherwise
+	 */
+	public final boolean showProgress(final boolean showProgress) {
+		if (isButtonBarShown()) {
+			this.showProgress = showProgress;
+
+			if (currentHeader != null) {
+				showBreadCrumb(currentHeader);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the string, which is used to format the progress, which may be
+	 * shown, if the activity is used as a wizard.
+	 * 
+	 * @return The string, which is used to format the progress, as a
+	 *         {@link String} or null, if the activity is not used as a wizard
+	 *         or if no progress is shown
+	 */
+	public final String getProgressFormat() {
+		if (isProgressShown()) {
+			return progressFormat != null ? progressFormat
+					: getString(R.string.progress_format);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Sets the string, which should be used to format the progress, if the
+	 * activity is used as a wizard and the progress is shown.
+	 * 
+	 * @param progressFormat
+	 *            The string, which should be set, as a {@link String}. The
+	 *            string may not be null. It must be formatted according to the
+	 *            following syntax: "*%d*%d*%s*"
+	 * @return True, if the string has been set, false otherwise
+	 */
+	public final boolean setProgressFormat(final String progressFormat) {
+		ensureNotNull(progressFormat, "The progress format may not be null");
+
+		if (isProgressShown()) {
+			this.progressFormat = progressFormat;
+
+			if (currentHeader != null) {
+				showBreadCrumb(currentHeader);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets the string, which should be used to format the progress, if the
+	 * activity is used as a wizard and the progress is shown.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the string, which should be set, as an
+	 *            {@link Integer} value. The resource id must correspond to a
+	 *            valid string resource. It must be formatted according to the
+	 *            following syntax: "*%d*%d*%s*"
+	 * @return True, if the string has been set, false otherwise
+	 */
+	public final boolean setProgressFormat(final int resourceId) {
+		return setProgressFormat(getString(resourceId));
+	}
+
+	/**
 	 * Returns the bread crumb, which is used to show the title of the currently
 	 * selected fragment on devices with a large screen, if the activity's
 	 * toolbar is not shown.
@@ -1471,7 +1901,9 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	public final void selectPreferenceHeader(final int position,
 			final Bundle parameters) {
 		getListView().setItemChecked(position, true);
-		showPreferenceScreen(getListAdapter().getItem(position), parameters);
+		getListView().smoothScrollToPosition(position);
+		showPreferenceScreen(getListAdapter().getItem(position), parameters,
+				true);
 	}
 
 	/**
@@ -2110,7 +2542,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 	@Override
 	public final void onItemClick(final AdapterView<?> parent, final View view,
 			final int position, final long id) {
-		showPreferenceScreen(getListAdapter().getItem(position), null);
+		showPreferenceScreen(getListAdapter().getItem(position), null, true);
 	}
 
 	@Override
@@ -2152,11 +2584,12 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 								selectedIndex - 1);
 					}
 
-					showPreferenceScreen(selectedPreferenceHeader, null);
+					showPreferenceScreen(selectedPreferenceHeader, null, false);
 				} else if (selectedIndex > position) {
 					getListView().setItemChecked(selectedIndex - 1, true);
 					showPreferenceScreen(
-							getListAdapter().getItem(selectedIndex - 1), null);
+							getListAdapter().getItem(selectedIndex - 1), null,
+							false);
 				}
 			}
 		} else {
@@ -2204,7 +2637,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
-				if (notifyOnSkip()) {
+				if (notifyOnSkip() != null) {
 					return super.onKeyDown(keyCode, event);
 				}
 
@@ -2226,7 +2659,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
-				if (notifyOnSkip()) {
+				if (notifyOnSkip() != null) {
 					return super.onOptionsItemSelected(item);
 				}
 
@@ -2264,6 +2697,7 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		this.savedInstanceState = savedInstanceState;
 		setContentView(R.layout.preference_activity);
+		frameLayout = (FrameLayout) findViewById(R.id.preference_activity_frame_layout);
 		preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
 		preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
 		preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
@@ -2316,244 +2750,6 @@ public abstract class PreferenceActivity extends ActionBarActivity implements
 			}
 		} else {
 			showPreferenceHeaders();
-		}
-	}
-
-	/**
-	 * Obtains all relevant attributes from the activity's current theme.
-	 */
-	private void obtainStyledAttributes() {
-		int theme = obtainTheme();
-
-		if (theme != 0) {
-			obtainNavigationBackground(theme);
-			obtainPreferenceScreenBackground(theme);
-			obtainWizardButtonBarBackground(theme);
-			obtainBreadCrumbBackground(theme);
-			obtainNavigationWidth(theme);
-			obtainOverrideNavigationIcon(theme);
-			obtainNavigationElevation(theme);
-			obtainWizardButtonBarElevation(theme);
-			obtainBreadCrumbElevation(theme);
-		}
-	}
-
-	/**
-	 * Obtains the resource id of the activity's current theme.
-	 * 
-	 * @return The resource id of the acitivty's current theme as an
-	 *         {@link Integer} value or 0, if an error occurred while obtaining
-	 *         the theme
-	 */
-	private int obtainTheme() {
-		try {
-			String packageName = getClass().getPackage().getName();
-			PackageInfo packageInfo = getPackageManager().getPackageInfo(
-					packageName, PackageManager.GET_META_DATA);
-			return packageInfo.applicationInfo.theme;
-		} catch (NameNotFoundException e) {
-			return 0;
-		}
-	}
-
-	/**
-	 * Obtains the background of the navigation from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainNavigationBackground(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.navigationBackground });
-		int color = typedArray.getColor(0, 0);
-
-		if (color != 0) {
-			setNavigationBackgroundColor(color);
-		} else {
-			int resourceId = typedArray.getResourceId(0, 0);
-
-			if (resourceId != 0) {
-				setNavigationBackground(resourceId);
-			}
-		}
-	}
-
-	/**
-	 * Obtains the background of the preference screen from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainPreferenceScreenBackground(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.preferenceScreenBackground });
-		int color = typedArray.getColor(0, 0);
-
-		if (color != 0) {
-			setPreferenceScreenBackgroundColor(color);
-		} else {
-			int resourceId = typedArray.getResourceId(0, 0);
-
-			if (resourceId != 0) {
-				setPreferenceScreenBackground(resourceId);
-			}
-		}
-	}
-
-	/**
-	 * Obtains the background of the wizard button bar from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainWizardButtonBarBackground(final int theme) {
-		View wizardButtonBar = findViewById(R.id.wizard_button_bar);
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.wizardButtonBarBackground });
-		int color = typedArray.getColor(0, 0);
-
-		if (color != 0) {
-			wizardButtonBar.setBackgroundColor(color);
-		} else {
-			int resourceId = typedArray.getResourceId(0, 0);
-
-			if (resourceId != 0) {
-				wizardButtonBar.setBackgroundResource(resourceId);
-			}
-		}
-	}
-
-	/**
-	 * Obtains the background of the bread crumb from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the background should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainBreadCrumbBackground(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.breadCrumbBackground });
-		int color = typedArray.getColor(0, 0);
-
-		if (color != 0) {
-			setBreadCrumbBackgroundColor(color);
-		} else {
-			int resourceId = typedArray.getResourceId(0, 0);
-
-			if (resourceId != 0) {
-				setBreadCrumbBackground(resourceId);
-			}
-		}
-	}
-
-	/**
-	 * Obtains the width of the navigation from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainNavigationWidth(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.navigationWidth });
-		int width = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, 0));
-
-		if (width != 0) {
-			setNavigationWidth(width);
-		}
-	}
-
-	/**
-	 * Obtains, whether the behavior of the navigation icon should be
-	 * overridden, or not.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainOverrideNavigationIcon(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.overrideNavigationIcon });
-		overrideNavigationIcon(typedArray.getBoolean(0, true));
-	}
-
-	/**
-	 * Obtains the elevation of the navigation from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainNavigationElevation(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.navigationElevation });
-		int elevation = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, 0));
-
-		if (elevation != 0) {
-			setNavigationElevation(elevation);
-		}
-	}
-
-	/**
-	 * Obtains the elevation of the button bar from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	@SuppressWarnings("deprecation")
-	private void obtainWizardButtonBarElevation(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.wizardButtonBarElevation });
-		int elevation = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, 0));
-
-		if (elevation != 0) {
-			View shadowView = findViewById(R.id.wizard_button_bar_shadow_view);
-			String[] shadowColors = getResources().getStringArray(
-					R.array.button_bar_elevation_shadow_colors);
-			String[] shadowWidths = getResources().getStringArray(
-					R.array.button_bar_elevation_shadow_widths);
-			ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-			ensureAtMaximum(elevation, shadowWidths.length,
-					"The elevation must be at maximum " + shadowWidths.length);
-
-			if (shadowView != null) {
-				this.buttonBarElevation = elevation;
-				int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-				int shadowWidth = convertDpToPixels(this,
-						Integer.valueOf(shadowWidths[elevation - 1]));
-
-				GradientDrawable gradient = new GradientDrawable(
-						Orientation.BOTTOM_TOP, new int[] { shadowColor,
-								Color.TRANSPARENT });
-				shadowView.setBackgroundDrawable(gradient);
-				shadowView.getLayoutParams().height = shadowWidth;
-				shadowView.requestLayout();
-			}
-		}
-	}
-
-	/**
-	 * Obtains the elevation of the bread crumb from a specific theme.
-	 * 
-	 * @param theme
-	 *            The resource id of the theme, the navigation width should be
-	 *            obtained from, as an {@link Integer} value
-	 */
-	private void obtainBreadCrumbElevation(final int theme) {
-		TypedArray typedArray = getTheme().obtainStyledAttributes(theme,
-				new int[] { R.attr.breadCrumbElevation });
-		int elevation = convertPixelsToDp(this,
-				typedArray.getDimensionPixelSize(0, 0));
-
-		if (elevation != 0) {
-			setBreadCrumbElevation(elevation);
 		}
 	}
 

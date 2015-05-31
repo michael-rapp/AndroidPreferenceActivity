@@ -39,6 +39,7 @@
                         <li><a href="content.html#referencing-the-child-views">Referencing the activity's child views</a></li>
                         <li><a href="content.html#methods-to-directly-manipulate-the-appearance">Methods to directly manipulate the appearance</a></li>
                         <li><a href="content.html#taking-influence-on-the-adapter">Taking influence on the adapter</a></li>
+			<li><a href="content.html#changing-appearance-of-preferences">Changing the appearance of preferences</a></li>
                     </ul>
                     <li><a href="content.html#changing-the-behavior">Changing the activity's behavior</a></li>
                     <ul>
@@ -119,16 +120,16 @@
                         <td>If specified by a resource ID, the ID must correspond to a valid string resource</td>
                     </tr>
                     <tr>
-                        <td><tt>getIconId():int</br>setIconId(int):void</tt></td>
-                        <td>Returns or sets the resource ID, which specifies the preference header's icon. When set to -1, no icon is used.</td>
-                        <td><center><tt>-1</tt></center></td>
-                        <td>The resource ID must correspond to a valid drawable resource</td>
+                        <td><tt>getIcon():Drawable</br>setIcon(Drawable):void</br>setIcon(Context,int):void</tt></td>
+                        <td>Returns or sets the preference header's icon. When set to null, no icon is used.</td>
+                        <td><center><tt>null</tt></center></td>
+                        <td>If specified by a resource ID, the ID must correspond to a valid drawable resource</td>
                     </tr>
                     <tr>
                         <td><tt>getFragment():String</br>setFragment(String):void<</tt></td>
                         <td>Returns or sets the full qualified class name of the fragment, which is shown when the preference header is selected. When set to null, an empty screen is shown instead.</td>
                         <td><center><tt>null</tt></center></td>
-                        <td>The class name must to an existing fragment</td>
+                        <td>The class name must correspond to an existing fragment</td>
                     </tr>
                     <tr>
                         <td><tt>getIntent():Intent</br>setIntent(Intent):void</tt></td>
@@ -185,6 +186,10 @@
                     <tr>
                         <th>Getter method</th>
                         <th>Explaination</th>
+                    </tr>
+                    <tr>
+                        <td><tt>getFrameLayout():FrameLayout</tt></td>
+                        <td>Returns the frame layout, which contains the activity's views. It is the root view of the activity. Additional views, such like floating action buttons, can be added to the frame layout in order to hover all other views of the activity.</td>
                     </tr>
                     <tr>
                         <td><tt>getPreferenceHeaderParentView():ViewGroup</tt></td>
@@ -265,6 +270,10 @@
 
                 <p>The class <a href="javadoc/de/mrapp/android/preference/activity/adapter/PreferenceHeaderAdapter.html" target="_blank" class="code">PreferenceHeaderAdapter</a> implements the method <tt>getView(int, View, ViewGroup):View</tt> to create and return the views, which are used to visualize the single preference headers. If it is necessary to take influence on how these views are created, it is possible to register an instance of the type <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeaderDecorator.html" target="_blank" class="code">PreferenceHeaderDecorator</a> at the adapter. This interface defines the method <tt>onApplyDecorator(int, PreferenceHeader, View, ViewHolder):void</tt>, which is called by the adapter whenever a specific preference header has to be visualized. The method's parameter contain the preference header, which should be visualized, as well as its position, the view, which has been created by the adapter and a view holder, which allows to performantly reference the view's child views. To add a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeaderDecorator.html" target="_blank" class="code">PreferenceHeaderDecorator</a>, which should be used to influence the creation of views, the method <tt>addDecorator(PreferenceHeaderDecorator):void</tt> of the class <a href="javadoc/de/mrapp/android/preference/activity/adapter/PreferenceHeaderAdapter.html" target="_blank" class="code">PreferenceHeaderAdapter</a> can be used. The method <tt>removeDecorator(PreferenceHeaderDecorator):void</tt> allows to remove the decorator afterwards.</p>
 
+                <h5><a name="changing-appearance-of-preferences">3.4 Changing the appearance of preferences</a></h5>
+
+		<p>The library overrides the default appearance of preferences using the custom preference layout file <tt>/res/layout/preference.xml</tt>. Overriding the layout is only performed, when no custom layout has been set by using the preference's <tt>android:layout</tt> attribute or by using the corresponding method <tt>setLayoutResource(int):void</tt>. If an indent should be added to single preferences, for example in order to create a hierarchy when using the attribute <tt>android:dependency</tt>, like it is possible by using specifying the attribute <tt>android:layout="?android:attr/preferenceLayoutChild"</tt> when using the Android SKD's built-in PreferenceActivity, the attributy <tt>android:layout="@layout/preference_child"</tt> should be used instead. This will add an additional left padding to the preference, while still being visualy consistent with the default preference appearance. Alternatively it is of course also possible to use any other custom layout by specifying the attribute <tt>android:layout</tt>. The layout should contain an ImageView with the ID <tt>@android:id/icon</tt> and two EditText widgets with the IDs <tt>@android:id/title</tt> and <tt>@android:id/summary</tt>. The previously mentioned file <tt>/res/layout/preference.xml</tt> may be used as a template.</p>
+
                 <h4><a name="changing-the-behavior">4 Changing the activity's behavior</a></h4> 
 
                 <p>This section is about the possibilities, which allow to take influence on the behavior of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>. These possibilities concern the behavior of the toolbar's or action bar's back button, the option to hide the navigation and to initially select a specific preference header when the activity is started.</p>
@@ -304,7 +313,6 @@
                         <td><tt>PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE</tt></td>
                         <td>Allows to specify an alternative bread crumb title for the preference header, which should be initially shown.</td>
                         <td><center><tt>CharSequence, String</tt> or string resource</center></td>
-                    </tr>
                     <tr>
                         <td><tt>PreferenceActivity.EXTRA_SHOW_FRAGMENT_SHORT_TITLE</tt></td>
                         <td>Allows to specify an alternative bread crumb short title for the preference header, which should be intially shown.</td>
@@ -322,7 +330,7 @@
 
                 <h5><a name="how-to-use-an-activity-as-a-wizard">5.1 How to use an activity as a wizard</a></h5>
 
-                <p>To use the activity as a wizard an intent, which contains the following extras, must be passed to the activity when it is started:</p>
+                <p>To use the activity as a wizard, an intent, which contains the boolean extra <tt>EXTRA_SHOW_BUTTON_BAR</tt>, must be passed to the activity when it is started. The following table shows all extras, which are related to using the activity as a wizard:</p>
 
                 <table>
                     <tr>
@@ -421,16 +429,16 @@
 
                 <h5><a name="using-the-interface-wizard-listener">5.3 Using the interface WizardListener</a></h5>
 
-                <p>Furthermore, it is possible to register listeners, which therefore must implement the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> at a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which is used as a wizard. This interface defines methods, which are called when a wizard's next-, back- or finish-button are clicked by the user and when the user is about to finish the activity using the device's back button or the action bar's back button. All of these listener methods, which are listed below, must return a <tt>boolean</tt> value, which allows to determine, whether appropriate action should be executed, or not. For example, this allows to verify the data the user has been entered in the currently shown preference or to show a dialog, which asks for confirmation when the wizard is about to be skipped.</p>
+                <p>Furthermore, it is possible to register listeners, which therefore must implement the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> at a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which is used as a wizard. This interface defines methods, which are called when a wizard's next-, back- or finish-buttons are clicked by the user or when the user is about to finish the activity using the device's back button or the action bar's back button. All of these listener methods, which are listed below, must return an instance of the class <a href="http://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a>, which allows to determine, whether a several action should be executed, or not. If the returned bundle is not null, the action will be executed, otherwise not. For example, this allows to verify the data the user has entered in the currently shown preference or to show a dialog, which asks for confirmation when the wizard is about to be skipped.</p>
 
-                <p class="center"><tt>onNextStep(int, PreferenceHeader, Fragment):boolean</tt></p>
-                <p class="center"><tt>onPreviousStep(int, PreferenceHeader, Fragment):boolean</tt></p>
-                <p class="center"><tt>onFinish(int, PreferenceHeader, Fragment):boolean</tt></P>
-                <p class="center"><tt>onSkip(int, PreferenceHeader, Fragment):boolean</tt></p>
+                <p class="center"><tt>onNextStep(int, PreferenceHeader, Fragment):Bundle</tt></p>
+                <p class="center"><tt>onPreviousStep(int, PreferenceHeader, Fragment):Bundle</tt></p>
+                <p class="center"><tt>onFinish(int, PreferenceHeader, Fragment):Bundle</tt></P>
+                <p class="center"><tt>onSkip(int, PreferenceHeader, Fragment):Bundle</tt></p>
 
                 <p>As shown above, all methods of the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> define parameters, which contain the position of the currently selected preference header, the preference header itself and the fragment, which is currently shown. To add such a listener to an instance of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, its method <tt>addWizardListener(WizardListener):void</tt> may be used. In case a listener, which has been registered this way, should not be notified on the wizard's events anymore, the method <tt>removeWizardListener(WizardListener):void</tt> can be used to remove the listener from the activity.</p>
 
-                <h4><a name="using-the-class-preference-fragment">6 Using the class PreferenceActivity</a></h4> 
+                <h4><a name="using-the-class-preference-fragment">6 Using the class PreferenceFragment</a></h4> 
 
                 <p>Since version 1.1.0 the library provides the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, which is extended from the Android SDK's equally named class. This class may be used to show the preferences, which belong to a preference header. In order to achieve this, the full qualified class name of a class, which is extended from the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a> must be passed to a preference header by either using the appropriate setter method or by specifying it via XML. In addition to the functionality, which is provided by the Android SDK's built-in class, the class, which is provided by this library, offers the possibility to show a button at the bottom of the fragment, which may be used to restore the default values of the fragment's preferences.</p>
 
@@ -442,10 +450,26 @@
 
                 <h5><a name="modifying-the-appearance-of-a-preferencefragment">6.2 Modifying the appearance of a PreferenceFragment</a></h5>
 
-                <p>To reference the button, which allows to restore the default values of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, respectively its parent view, the following methods may be used. If the button is currently not shown, both methods will return <tt>null</tt> instead.</p>
+                <p>In order to be able to change the appearance of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, the views, which are contained by the fragment, can be referenced by using the following getter methods. Beware, that if one of the views is currently not shown, the corresponding getter method will return <tt>null</tt>.</p>
 
-                <p class="center"><tt>getRestoreDefaultsButton():Button</tt></p>
-                <p class="center"><tt>getButtonBar():ViewGroup</tt></p>
+                <table>
+                    <tr>
+                        <th>Getter method</th>
+                        <th>Explaination</th>
+                    </tr>
+                    <tr>
+                        <td><tt>getFrameLayout():FrameLayout</tt></td>
+                        <td>Returns the frame layout, which contains the fragment's views. It is the root view of the fragment. Additional views, such like floating action buttons, can be added to the frame layout in order to hover all other views of the fragment.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getRestoreDefaultsButton():Button</tt></td>
+                        <td>Returns button, which allows restore the default values of the preferences, which are contained by the fragment. If the button is currently not shown, <tt>null</tt> will be returned instead.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getButtonBar():ViewGroup</tt></td>
+                        <td>Returns the view group, which contains the button, which allows to restore the default values of the fragment's preferences. If the button is currently not shown, <tt>null</tt> will be returned instead.</td>
+                    </tr>
+                </table>
                 
                 <p>To directly manipulate the appereance of the the button bar, the following methods are provided by the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>. The setter-methods can only be used when the button, which allows to restore the default values, is currently shown. Their <tt>boolean</tt> return values, indicate whether the appropriate values have been set, or not.</p>
 
