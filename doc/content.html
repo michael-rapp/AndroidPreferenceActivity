@@ -188,6 +188,10 @@
                         <th>Explaination</th>
                     </tr>
                     <tr>
+                        <td><tt>getFrameLayout():FrameLayout</tt></td>
+                        <td>Returns the frame layout, which contains the activity's views. It is the root view of the activity. Additional views, such like floating action buttons, can be added to the frame layout in order to hover all other views of the activity.</td>
+                    </tr>
+                    <tr>
                         <td><tt>getPreferenceHeaderParentView():ViewGroup</tt></td>
                         <td>Returns the parent view of the fragment, which contains the navigation. On smartphones this parent view is also used to show the appropriate fragment, when a preference header is selected.</td>
                     </tr>
@@ -434,7 +438,7 @@
 
                 <p>As shown above, all methods of the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> define parameters, which contain the position of the currently selected preference header, the preference header itself and the fragment, which is currently shown. To add such a listener to an instance of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, its method <tt>addWizardListener(WizardListener):void</tt> may be used. In case a listener, which has been registered this way, should not be notified on the wizard's events anymore, the method <tt>removeWizardListener(WizardListener):void</tt> can be used to remove the listener from the activity.</p>
 
-                <h4><a name="using-the-class-preference-fragment">6 Using the class PreferenceActivity</a></h4> 
+                <h4><a name="using-the-class-preference-fragment">6 Using the class PreferenceFragment</a></h4> 
 
                 <p>Since version 1.1.0 the library provides the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, which is extended from the Android SDK's equally named class. This class may be used to show the preferences, which belong to a preference header. In order to achieve this, the full qualified class name of a class, which is extended from the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a> must be passed to a preference header by either using the appropriate setter method or by specifying it via XML. In addition to the functionality, which is provided by the Android SDK's built-in class, the class, which is provided by this library, offers the possibility to show a button at the bottom of the fragment, which may be used to restore the default values of the fragment's preferences.</p>
 
@@ -446,10 +450,26 @@
 
                 <h5><a name="modifying-the-appearance-of-a-preferencefragment">6.2 Modifying the appearance of a PreferenceFragment</a></h5>
 
-                <p>To reference the button, which allows to restore the default values of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, respectively its parent view, the following methods may be used. If the button is currently not shown, both methods will return <tt>null</tt> instead.</p>
+                <p>In order to be able to change the appearance of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, the views, which are contained by the fragment, can be referenced by using the following getter methods. Beware, that if one of the views is currently not shown, the corresponding getter method will return <tt>null</tt>.</p>
 
-                <p class="center"><tt>getRestoreDefaultsButton():Button</tt></p>
-                <p class="center"><tt>getButtonBar():ViewGroup</tt></p>
+                <table>
+                    <tr>
+                        <th>Getter method</th>
+                        <th>Explaination</th>
+                    </tr>
+                    <tr>
+                        <td><tt>getFrameLayout():FrameLayout</tt></td>
+                        <td>Returns the frame layout, which contains the fragment's views. It is the root view of the fragment. Additional views, such like floating action buttons, can be added to the frame layout in order to hover all other views of the fragment.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getRestoreDefaultsButton():Button</tt></td>
+                        <td>Returns button, which allows restore the default values of the preferences, which are contained by the fragment. If the button is currently not shown, <tt>null</tt> will be returned instead.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getButtonBar():ViewGroup</tt></td>
+                        <td>Returns the view group, which contains the button, which allows to restore the default values of the fragment's preferences. If the button is currently not shown, <tt>null</tt> will be returned instead.</td>
+                    </tr>
+                </table>
                 
                 <p>To directly manipulate the appereance of the the button bar, the following methods are provided by the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>. The setter-methods can only be used when the button, which allows to restore the default values, is currently shown. Their <tt>boolean</tt> return values, indicate whether the appropriate values have been set, or not.</p>
 
