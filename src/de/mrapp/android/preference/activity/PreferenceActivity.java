@@ -412,9 +412,9 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 
 	/**
 	 * A set, which contains the listeners, which have been registered to be
-	 * notified when a preference header has been selected.
+	 * notified when the currently shown preference fragment has been changed.
 	 */
-	private Set<PreferenceHeaderListener> preferenceHeaderListeners = new LinkedHashSet<>();
+	private Set<PreferenceFragmentListener> preferenceFragmentListeners = new LinkedHashSet<>();
 
 	/**
 	 * A set, which contains the listeners, which have registered to be notified
@@ -754,14 +754,24 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	}
 
 	/**
-	 * Notifies all registered listeners that a preference header has been
-	 * selected.
+	 * Notifies all registered listeners that a preference fragment has been
+	 * shown.
 	 */
-	private void notifyOnPreferenceHeaderSelected() {
-		for (PreferenceHeaderListener listener : preferenceHeaderListeners) {
-			listener.onPreferenceHeaderSelected(
+	private void notifyOnPreferenceFragmentShown() {
+		for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+			listener.onPreferenceFragmentShown(
 					getListAdapter().indexOf(currentHeader), currentHeader,
 					preferenceScreenFragment);
+		}
+	}
+
+	/**
+	 * Nptifies all registered listeners that a preference fragment has been
+	 * hidden.
+	 */
+	private void notifyOnPreferenceFragmentHidden() {
+		for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+			listener.onPreferenceFragmentHidden();
 		}
 	}
 
@@ -839,8 +849,6 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		if (launchIntent && preferenceHeader.getIntent() != null) {
 			startActivity(preferenceHeader.getIntent());
 		}
-
-		notifyOnPreferenceHeaderSelected();
 	}
 
 	/**
@@ -873,6 +881,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 						.equals(fragmentName)) {
 			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
 					params);
+			notifyOnPreferenceFragmentShown();
 		}
 
 		if (isSplitScreen()) {
@@ -949,6 +958,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	 * header's fragment.
 	 */
 	private void showPreferenceHeaders() {
+		notifyOnPreferenceFragmentHidden();
 		int transition = 0;
 
 		if (isPreferenceHeaderSelected()) {
@@ -995,6 +1005,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	 *            class {@link Fragment}. The fragment may not be null
 	 */
 	private void removeFragment(final Fragment fragment) {
+		notifyOnPreferenceFragmentHidden();
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		transaction.remove(fragment);
@@ -1346,33 +1357,33 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	}
 
 	/**
-	 * Adds a new listener, which should be notified, when a preference header
-	 * has been selected, to the activity.
+	 * Adds a new listener, which should be notified, when the currently shown
+	 * preference fragment has been changed, to the activity.
 	 * 
 	 * @param listener
 	 *            The listener, which should be added, as an instance of the
 	 *            type {@link PreferenceHeaderListener}. The listener may not be
 	 *            null
 	 */
-	public final void addPreferenceHeaderListener(
-			final PreferenceHeaderListener listener) {
+	public final void addPreferenceFragmentListener(
+			final PreferenceFragmentListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
-		preferenceHeaderListeners.add(listener);
+		preferenceFragmentListeners.add(listener);
 	}
 
 	/**
-	 * Removes a specific listener, which should not be notified, when a
-	 * preference header has been selected, anymore.
+	 * Removes a specific listener, which should not be notified, when the
+	 * currently shown preference fragment has been changed, anymore.
 	 * 
 	 * @param listener
 	 *            The listener, which should be removed, as an instance of the
 	 *            type {@link PreferenceHeaderListener}. The listener may not be
 	 *            null
 	 */
-	public final void removePreferenceHeaderListener(
-			final PreferenceHeaderListener listener) {
+	public final void removePreferenceFragmentListener(
+			final PreferenceFragmentListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
-		preferenceHeaderListeners.remove(listener);
+		preferenceFragmentListeners.remove(listener);
 	}
 
 	/**
