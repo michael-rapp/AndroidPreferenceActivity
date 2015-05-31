@@ -839,6 +839,8 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		if (launchIntent && preferenceHeader.getIntent() != null) {
 			startActivity(preferenceHeader.getIntent());
 		}
+
+		notifyOnPreferenceHeaderSelected();
 	}
 
 	/**
@@ -1952,7 +1954,6 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		getListView().smoothScrollToPosition(position);
 		showPreferenceScreen(getListAdapter().getItem(position), parameters,
 				true);
-		notifyOnPreferenceHeaderSelected();
 	}
 
 	/**
