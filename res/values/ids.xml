@@ -40,5 +40,6 @@ License along with this program. If not, see
     <item name="restore_defaults_button_bar" type="id"/>
     <item name="restore_defaults_button_bar_shadow_view" type="id"/>
     <item name="preference_fragment_frame_layout" type="id"/>
+    <item name="preference_activity_frame_layout" type="id"/>
 
 </resources>
