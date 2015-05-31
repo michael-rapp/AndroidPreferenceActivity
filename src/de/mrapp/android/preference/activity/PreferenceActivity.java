@@ -411,6 +411,12 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	private String progressFormat;
 
 	/**
+	 * A set, which contains the listeners, which have been registered to be
+	 * notified when a preference header has been selected.
+	 */
+	private Set<PreferenceHeaderListener> preferenceHeaderListeners = new LinkedHashSet<>();
+
+	/**
 	 * A set, which contains the listeners, which have registered to be notified
 	 * when the user navigates within the activity, if it used as a wizard.
 	 */
@@ -745,6 +751,18 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		}
 
 		return result;
+	}
+
+	/**
+	 * Notifies all registered listeners that a preference header has been
+	 * selected.
+	 */
+	private void notifyOnPreferenceHeaderSelected() {
+		for (PreferenceHeaderListener listener : preferenceHeaderListeners) {
+			listener.onPreferenceHeaderSelected(
+					getListAdapter().indexOf(currentHeader), currentHeader,
+					preferenceScreenFragment);
+		}
 	}
 
 	/**
@@ -1326,6 +1344,36 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	}
 
 	/**
+	 * Adds a new listener, which should be notified, when a preference header
+	 * has been selected, to the activity.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link PreferenceHeaderListener}. The listener may not be
+	 *            null
+	 */
+	public final void addPreferenceHeaderListener(
+			final PreferenceHeaderListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		preferenceHeaderListeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified, when a
+	 * preference header has been selected, anymore.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            type {@link PreferenceHeaderListener}. The listener may not be
+	 *            null
+	 */
+	public final void removePreferenceHeaderListener(
+			final PreferenceHeaderListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		preferenceHeaderListeners.remove(listener);
+	}
+
+	/**
 	 * Adds a new listener, which should be notified, when the user navigates
 	 * within the activity, if it is used as a wizard, to the activity.
 	 * 
@@ -1904,6 +1952,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		getListView().smoothScrollToPosition(position);
 		showPreferenceScreen(getListAdapter().getItem(position), parameters,
 				true);
+		notifyOnPreferenceHeaderSelected();
 	}
 
 	/**
