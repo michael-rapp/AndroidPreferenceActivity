@@ -17,92 +17,98 @@ You should have received a copy of the GNU Lesser General Public
 License along with this program. If not, see
 <http://www.gnu.org/licenses/>. 
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/preference_activity_frame_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <de.mrapp.android.preference.activity.view.ToolbarLarge
-        android:id="@+id/toolbar_large"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_large_height"
-        android:visibility="gone"
-        app:theme="?attr/toolbarTheme" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <RelativeLayout
-            android:id="@id/preference_header_parent"
-            android:layout_width="@dimen/default_navigation_width"
-            android:layout_height="match_parent"
-            android:background="@color/navigation_background_light" />
-
-        <FrameLayout
+        <de.mrapp.android.preference.activity.view.ToolbarLarge
+            android:id="@+id/toolbar_large"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="@dimen/toolbar_large_height"
+            android:visibility="gone"
+            app:theme="?attr/toolbarTheme" />
 
-            <LinearLayout
-                android:id="@id/preference_screen_container"
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@id/preference_header_parent"
+                android:layout_width="@dimen/default_navigation_width"
                 android:layout_height="match_parent"
-                android:background="@color/preference_screen_background_light"
-                android:orientation="vertical"
-                android:paddingEnd="@dimen/preference_screen_horizontal_padding"
-                android:paddingStart="@dimen/preference_screen_horizontal_padding" >
+                android:background="@color/navigation_background_light" />
 
-                <TextView
-                    android:id="@id/bread_crumb_view"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@id/preference_screen_container"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bread_crumb_height"
-                    android:background="@color/button_bar_background_light"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical|start"
-                    android:paddingLeft="@dimen/preference_horizontal_padding"
-                    android:paddingRight="@dimen/preference_horizontal_padding"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="@dimen/bread_crumb_text_size"
-                    android:visibility="gone" />
+                    android:layout_height="match_parent"
+                    android:background="@color/preference_screen_background_light"
+                    android:orientation="vertical"
+                    android:paddingEnd="@dimen/preference_screen_horizontal_padding"
+                    android:paddingStart="@dimen/preference_screen_horizontal_padding" >
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" >
-
-                    <View
-                        android:id="@id/bread_crumb_shadow_view"
+                    <TextView
+                        android:id="@id/bread_crumb_view"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_gravity="top"
+                        android:layout_height="@dimen/bread_crumb_height"
+                        android:background="@color/button_bar_background_light"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical|start"
+                        android:paddingLeft="@dimen/preference_horizontal_padding"
+                        android:paddingRight="@dimen/preference_horizontal_padding"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="@dimen/bread_crumb_text_size"
                         android:visibility="gone" />
 
-                    <RelativeLayout
-                        android:id="@id/preference_screen_parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <View
-                        android:id="@id/wizard_button_bar_shadow_view"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_gravity="bottom"
-                        android:visibility="gone" />
-                </FrameLayout>
+                        android:layout_weight="1" >
 
-                <include layout="@layout/wizard_button_bar" />
-            </LinearLayout>
+                        <View
+                            android:id="@id/bread_crumb_shadow_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="top"
+                            android:visibility="gone" />
 
-            <View
-                android:id="@id/navigation_shadow_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </FrameLayout>
+                        <RelativeLayout
+                            android:id="@id/preference_screen_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <View
+                            android:id="@id/wizard_button_bar_shadow_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="bottom"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+                    <include layout="@layout/wizard_button_bar" />
+                </LinearLayout>
+
+                <View
+                    android:id="@id/navigation_shadow_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>

@@ -2,6 +2,34 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        2.1.0
+Release date:   05.31.2015
+--------------------------
+
+A feature release, which introduces the following changes:
+    
+    -   It is now possible to pass parameters within a Bundle from one fragment
+        of a wizard to an other. Therefore the method signatures of the interface
+        WizardListener have been changed.
+        
+    -   Fragment transitions are now properly handled, when multiple instances 
+        of the same class are used as the preference headers' fragments.
+    
+    -   Added the layout R.layout.preference_child, which can be used as a
+        preference's layout, if a left indent should be added. May be useful
+        for creating hierarchical preference screens together with the 
+        android:dependency attribute. 
+    
+    -   Added a FrameLayout to the PreferenceActivity. It can be accessed by 
+        using the ID R.id.preference_activity_frame_layout. Additionally, 
+        getFrameLayout-methods have been added to allow referencing a
+        PreferenceActivity's, respectively a PreferenceFragment's, frame layout.
+        
+    -   The issue https://sourceforge.net/p/androidpreferenceactivity/tickets/8/
+        has been solved. The library now relies on the AppCompat v7 revision 22
+        support library. Revision 21 is not supported anymore.
+
+
 Version:        2.0.8
 Release date:   04.19.2015
 --------------------------

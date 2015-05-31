@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -114,10 +115,7 @@ public class ToolbarLarge extends FrameLayout {
 	 */
 	private void obtainStyledAttributes(final Context context,
 			final AttributeSet attributeSet) {
-		TypedArray typedArray = context.obtainStyledAttributes(attributeSet,
-				R.styleable.Toolbar);
-		int theme = obtainTheme(typedArray);
-		typedArray.recycle();
+		int theme = obtainTheme();
 
 		if (theme != 0) {
 			obtainBackgroundColor(theme);
@@ -129,13 +127,12 @@ public class ToolbarLarge extends FrameLayout {
 	 * Obtains the resource id of the theme, which should be applied on the
 	 * toolbar.
 	 * 
-	 * @param typedArray
-	 *            The typed array, the resource id of the theme should be
-	 *            obtained from, as an instance of the class {@link TypedArray}
 	 * @return The resource id of the theme as an {@link Integer} value
 	 */
-	private int obtainTheme(final TypedArray typedArray) {
-		return typedArray.getResourceId(R.styleable.Toolbar_theme, 0);
+	private int obtainTheme() {
+		TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(
+				new int[] { R.attr.toolbarTheme });
+		return typedArray.getResourceId(0, 0);
 	}
 
 	/**
@@ -356,6 +353,13 @@ public class ToolbarLarge extends FrameLayout {
 		shadowView.setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
 		titleTextView.setVisibility(navigationHidden ? View.INVISIBLE
 				: View.VISIBLE);
+		float breadCrumbTextSize = getResources().getDimension(
+				navigationHidden ? R.dimen.toolbar_title_text_size
+						: R.dimen.bread_crumb_text_size);
+		breadCrumbTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+				breadCrumbTextSize);
+		overlayView.setBackgroundColor(navigationHidden ? Color.TRANSPARENT
+				: getResources().getColor(R.color.overlay));
 
 		if (navigationHidden) {
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) overlayView
