@@ -33,6 +33,7 @@
                         <li><a href="content.html#adding-preference-headers-on-activity-start">Adding preference headers when the activity is created</a></li>
                         <li><a href="content.html#adding-preference-headers-at-runtime">Adding preference headers at runtime</a></li>
                         <li><a href="content.html#programmatically-selecting-preference-headers">Programmatically selecting preference headers</a></li>
+			<li><a href="content.html#using-the-interface-preferencefragmentlistener">Using the interface PreferenceFragmentListener</a></li>
                     </ul>
                     <li><a href="content.html#manipulating-the-appearance">Manipulating the activity's appearance</a></li>
                     <ul>
@@ -173,6 +174,10 @@
                 <p class="center"><tt>isPreferenceHeaderSelected():boolean</tt></p>
                 <p class="center"><tt>getSelectedPreferenceHeader():PreferenceHeader</tt></p>
                 <p class="center"><tt>getSelectedPreferenceHeaderPosition():int</tt></p>
+
+		<h5><a name="using-the-interface-preferencefragmentlistener">2.4 Using the interface PreferenceFragmentListener</a></h5>
+
+		<p>The interface <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragmentListener.html" target="_blank" class="code">PreferenceFragmentListener</a> can be implemented by clases in order to be notified, when the currently shown preference fragment of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> has been changed. Therefore the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> provides the method <tt>addPreferenceFragmentListener(PreferenceFragmentListener):void</tt>, which allows to add such an listener to the activity. The method <tt>removePreferenceFragmentListener(PreferenceFragmentListener):void</tt> allows to remove a previously added listener. Listeners, which are implementing the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragmentListener.html" target="_blank" class="code">PreferenceFragmentListener</a> must override the two methods <tt>onPreferenceFragmentShown(int,PreferenceHeader,Fragment):void</tt> and <tt>onPreferenceFragmentHidden():void</tt>. The first method is invoked when a preference header has been selected and its fragment is shown. It contains the preference header, its position and the fragment, which has been shown, as parameters. The second method is invoked, when a previously shown fragment has been hidden. This method is only called when the preference headers become shown on a device with a small display, which therefore does not support to show the preferences split-screen, or if all preference headers have been removed.</p>
 
                 <h4><a name="manipulating-the-appearance">3 Manipulating the activity's appearance</a></h4> 
 

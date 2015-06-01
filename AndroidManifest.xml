@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-AndroidPreferenceActivity Copyright 2014 Michael Rapp
+AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
 
 This program is free software: you can redistribute it and/or modify 
 it under the terms of the GNU Lesser General Public License as published 
@@ -19,8 +19,8 @@ License along with this program. If not, see
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.mrapp.android.preference.activity"
-    android:versionCode="17"
-    android:versionName="2.1.0" >
+    android:versionCode="18"
+    android:versionName="2.1.1" >
 
     <uses-sdk
         android:minSdkVersion="11"
