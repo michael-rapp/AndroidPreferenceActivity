@@ -881,7 +881,6 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 						.equals(fragmentName)) {
 			preferenceScreenFragment = Fragment.instantiate(this, fragmentName,
 					params);
-			notifyOnPreferenceFragmentShown();
 		}
 
 		if (isSplitScreen()) {
@@ -894,6 +893,8 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			showToolbarNavigationIcon();
 		}
+		
+		notifyOnPreferenceFragmentShown();
 	}
 
 	/**
