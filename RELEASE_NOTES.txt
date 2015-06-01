@@ -2,6 +2,16 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        2.1.1
+Release date:   06.01.2015
+--------------------------
+
+A minor release, which provides the following changes:
+    
+    -   It is now possible to add listeners to the class PreferenceActivity,
+        which are notified, when the currently shown preference fragment changes.
+        
+        
 Version:        2.1.0
 Release date:   05.31.2015
 --------------------------
