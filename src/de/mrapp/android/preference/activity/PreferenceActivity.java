@@ -1,5 +1,5 @@
 /*
- * AndroidPreferenceActivity Copyright 2014 Michael Rapp
+ * AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
  *
  * This program is free software: you can redistribute it and/or modify 
  * it under the terms of the GNU Lesser General Public License as published 
@@ -411,6 +411,12 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	private String progressFormat;
 
 	/**
+	 * A set, which contains the listeners, which have been registered to be
+	 * notified when the currently shown preference fragment has been changed.
+	 */
+	private Set<PreferenceFragmentListener> preferenceFragmentListeners = new LinkedHashSet<>();
+
+	/**
 	 * A set, which contains the listeners, which have registered to be notified
 	 * when the user navigates within the activity, if it used as a wizard.
 	 */
@@ -748,6 +754,28 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	}
 
 	/**
+	 * Notifies all registered listeners that a preference fragment has been
+	 * shown.
+	 */
+	private void notifyOnPreferenceFragmentShown() {
+		for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+			listener.onPreferenceFragmentShown(
+					getListAdapter().indexOf(currentHeader), currentHeader,
+					preferenceScreenFragment);
+		}
+	}
+
+	/**
+	 * Nptifies all registered listeners that a preference fragment has been
+	 * hidden.
+	 */
+	private void notifyOnPreferenceFragmentHidden() {
+		for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+			listener.onPreferenceFragmentHidden();
+		}
+	}
+
+	/**
 	 * Shows the fragment, which corresponds to a specific preference header.
 	 * 
 	 * @param preferenceHeader
@@ -865,6 +893,8 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			showToolbarNavigationIcon();
 		}
+		
+		notifyOnPreferenceFragmentShown();
 	}
 
 	/**
@@ -929,6 +959,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	 * header's fragment.
 	 */
 	private void showPreferenceHeaders() {
+		notifyOnPreferenceFragmentHidden();
 		int transition = 0;
 
 		if (isPreferenceHeaderSelected()) {
@@ -975,6 +1006,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	 *            class {@link Fragment}. The fragment may not be null
 	 */
 	private void removeFragment(final Fragment fragment) {
+		notifyOnPreferenceFragmentHidden();
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		transaction.remove(fragment);
@@ -1323,6 +1355,36 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		if (elevation != 0) {
 			setBreadCrumbElevation(elevation);
 		}
+	}
+
+	/**
+	 * Adds a new listener, which should be notified, when the currently shown
+	 * preference fragment has been changed, to the activity.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link PreferenceHeaderListener}. The listener may not be
+	 *            null
+	 */
+	public final void addPreferenceFragmentListener(
+			final PreferenceFragmentListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		preferenceFragmentListeners.add(listener);
+	}
+
+	/**
+	 * Removes a specific listener, which should not be notified, when the
+	 * currently shown preference fragment has been changed, anymore.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            type {@link PreferenceHeaderListener}. The listener may not be
+	 *            null
+	 */
+	public final void removePreferenceFragmentListener(
+			final PreferenceFragmentListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		preferenceFragmentListeners.remove(listener);
 	}
 
 	/**
