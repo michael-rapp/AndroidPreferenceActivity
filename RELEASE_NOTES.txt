@@ -2,6 +2,19 @@ AndroidPreferenceActivity - RELEASE NOTES
 =========================================
 
 
+Version:        2.2.0
+Release date:   06.03.2015
+--------------------------
+
+A feature release, which introduces the following changes:
+    
+    -   The signatures of the methods of the class WizardListener have been
+        changed. Instances of the class Bundle are now only used as return
+        values, when the activity is not about to be closed. Additionally, Bundle
+        instances, which contain the arguments of the currently shown fragment,
+        are now passed to each method as a parameter.
+        
+        
 Version:        2.1.1
 Release date:   06.01.2015
 --------------------------
