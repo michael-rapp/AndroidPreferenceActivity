@@ -654,7 +654,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		for (WizardListener listener : wizardListeners) {
 			Bundle bundle = listener.onNextStep(
 					getListAdapter().indexOf(currentHeader), currentHeader,
-					preferenceScreenFragment);
+					preferenceScreenFragment, currentBundle);
 
 			if (bundle != null) {
 				if (result == null) {
@@ -683,7 +683,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 		for (WizardListener listener : wizardListeners) {
 			Bundle bundle = listener.onPreviousStep(
 					getListAdapter().indexOf(currentHeader), currentHeader,
-					preferenceScreenFragment);
+					preferenceScreenFragment, currentBundle);
 
 			if (bundle != null) {
 				if (result == null) {
@@ -701,26 +701,15 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	 * Notifies all registered listeners that the user wants to finish the last
 	 * step of the wizard.
 	 * 
-	 * @return A bundle, which may contain key-value pairs, which have been
-	 *         acquired in the wizard, if finishing the wizard should be
-	 *         allowed, as an instance of the class {@link Bundle}, null
-	 *         otherwise
+	 * @return True, if finishing the wizard should be allowed, false otherwise
 	 */
-	private Bundle notifyOnFinish() {
-		Bundle result = null;
+	private boolean notifyOnFinish() {
+		boolean result = true;
 
 		for (WizardListener listener : wizardListeners) {
-			Bundle bundle = listener.onFinish(
+			result &= listener.onFinish(
 					getListAdapter().indexOf(currentHeader), currentHeader,
-					preferenceScreenFragment);
-
-			if (bundle != null) {
-				if (result == null) {
-					result = new Bundle();
-				}
-
-				result.putAll(bundle);
-			}
+					preferenceScreenFragment, currentBundle);
 		}
 
 		return result;
@@ -729,25 +718,14 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 	/**
 	 * Notifies all registered listeners that the user wants to skip the wizard.
 	 * 
-	 * @return A bundle, which may contain key-value pairs, which have been
-	 *         acquired in the wizard, if skipping the wizard should be allowed,
-	 *         as an instance of the class {@link Bundle}, null otherwise
+	 * @return True, if skipping the wizard should be allowed, false otherwise
 	 */
-	private Bundle notifyOnSkip() {
-		Bundle result = null;
+	private boolean notifyOnSkip() {
+		boolean result = true;
 
 		for (WizardListener listener : wizardListeners) {
-			Bundle bundle = listener.onSkip(
-					getListAdapter().indexOf(currentHeader), currentHeader,
-					preferenceScreenFragment);
-
-			if (bundle != null) {
-				if (result == null) {
-					result = new Bundle();
-				}
-
-				result.putAll(bundle);
-			}
+			result &= listener.onSkip(getListAdapter().indexOf(currentHeader),
+					currentHeader, preferenceScreenFragment, currentBundle);
 		}
 
 		return result;
@@ -893,7 +871,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 					FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			showToolbarNavigationIcon();
 		}
-		
+
 		notifyOnPreferenceFragmentShown();
 	}
 
@@ -2699,7 +2677,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
-				if (notifyOnSkip() != null) {
+				if (notifyOnSkip()) {
 					return super.onKeyDown(keyCode, event);
 				}
 
@@ -2721,7 +2699,7 @@ public abstract class PreferenceActivity extends AppCompatActivity implements
 				resetTitle();
 				return true;
 			} else if (isButtonBarShown()) {
-				if (notifyOnSkip() != null) {
+				if (notifyOnSkip()) {
 					return super.onOptionsItemSelected(item);
 				}
 
