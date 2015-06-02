@@ -46,13 +46,16 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return A bundle, which may contain key-value pairs, which have been
-	 *         acquired in the wizard, if navigating to the next step of the
-	 *         wizard should be allowed, as an instance of the class
-	 *         {@link Bundle}, null otherwise
+	 * @param bundle
+	 *            A bundle, which contains the parameters, which have been
+	 *            passed to the currently shown fragment or null, if no
+	 *            parameters have been passed to the fragment
+	 * @return The bundle, which should be passed to the next fragment, as an
+	 *         instance of the class {@link Bundle} or null, if navigating to
+	 *         the next step of the wizard should not be allowed
 	 */
 	Bundle onNextStep(int position, PreferenceHeader preferenceHeader,
-			Fragment fragment);
+			Fragment fragment, final Bundle bundle);
 
 	/**
 	 * The method, which is invoked, when the user wants to navigate to the
@@ -67,13 +70,16 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return A bundle, which may contain key-value pairs, which have been
-	 *         acquired in the wizard, if navigating to the previous step of the
-	 *         wizard should be allowed, as an instance of the class
-	 *         {@link Bundle}, null otherwise
+	 * @param bundle
+	 *            A bundle, which contains the parameters, which have been
+	 *            passed to the currently shown fragment or null, if no
+	 *            parameters have been passed to the fragment
+	 * @return The bundle, which should be passed to the next fragment, as an
+	 *         instance of the class {@link Bundle} or null, if navigating to
+	 *         the previous step of the wizard should not be allowed
 	 */
 	Bundle onPreviousStep(int position, PreferenceHeader preferenceHeader,
-			Fragment fragment);
+			Fragment fragment, final Bundle bundle);
 
 	/**
 	 * The method, which is invoked, when the user wants to finish the last step
@@ -88,13 +94,14 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return A bundle, which may contain key-value pairs, which have been
-	 *         acquired in the wizard, if finishing the wizard should be
-	 *         allowed, as an instance of the class {@link Bundle}, null
-	 *         otherwise
+	 * @param bundle
+	 *            A bundle, which contains the parameters, which have been
+	 *            passed to the currently shown fragment or null, if no
+	 *            parameters have been passed to the fragment
+	 * @return True, if finishing the wizard should be allowed, false otherwise
 	 */
-	Bundle onFinish(int position, PreferenceHeader preferenceHeader,
-			Fragment fragment);
+	boolean onFinish(int position, PreferenceHeader preferenceHeader,
+			Fragment fragment, final Bundle bundle);
 
 	/**
 	 * The method, which is invoked, when the user wants to skip the wizard.
@@ -108,11 +115,13 @@ public interface WizardListener {
 	 * @param fragment
 	 *            The currently shown fragment as an instance of the class
 	 *            {@link Fragment}
-	 * @return A bundle, which may contain key-value pairs, which have been
-	 *         acquired in the wizard, if skipping the wizard should be allowed,
-	 *         as an instance of the class {@link Bundle}, null otherwise
+	 * @param bundle
+	 *            A bundle, which contains the parameters, which have been
+	 *            passed to the currently shown fragment or null, if no
+	 *            parameters have been passed to the fragment
+	 * @return True, if skipping the wizard should be allowed, false otherwise
 	 */
-	Bundle onSkip(int position, PreferenceHeader preferenceHeader,
-			Fragment fragment);
+	boolean onSkip(int position, PreferenceHeader preferenceHeader,
+			Fragment fragment, final Bundle bundle);
 
 }
