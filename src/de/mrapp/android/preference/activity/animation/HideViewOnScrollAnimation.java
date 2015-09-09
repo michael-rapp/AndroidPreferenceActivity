@@ -38,8 +38,7 @@ import android.widget.AbsListView.OnScrollListener;
  * 
  * @since 2.0.0
  */
-public class HideViewOnScrollAnimation extends Animation implements
-		OnScrollListener {
+public class HideViewOnScrollAnimation extends Animation implements OnScrollListener {
 
 	/**
 	 * Contains all possible directions, which can be used to translate the
@@ -122,8 +121,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *            The current scroll position of the list view's first item in
 	 *            pixels as an {@link Integer} value
 	 */
-	private void notifyOnScrollingDown(final View animatedView,
-			final int scrollPosition) {
+	private void notifyOnScrollingDown(final View animatedView, final int scrollPosition) {
 		for (HideViewOnScrollAnimationListener listener : listeners) {
 			listener.onScrollingDown(this, animatedView, scrollPosition);
 		}
@@ -141,8 +139,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *            The current scroll position of the list view's first item in
 	 *            pixels as an {@link Integer} value
 	 */
-	private void notifyOnScrollingUp(final View animatedView,
-			final int scrollPosition) {
+	private void notifyOnScrollingUp(final View animatedView, final int scrollPosition) {
 		for (HideViewOnScrollAnimationListener listener : listeners) {
 			listener.onScrollingUp(this, animatedView, scrollPosition);
 		}
@@ -190,16 +187,13 @@ public class HideViewOnScrollAnimation extends Animation implements
 			initialPosition = animatedView.getY();
 		}
 
-		float targetPosition = scrollingDown ? initialPosition
-				- animatedView.getHeight() : initialPosition;
+		float targetPosition = scrollingDown ? initialPosition - animatedView.getHeight() : initialPosition;
 
 		if (direction == Direction.DOWN) {
-			targetPosition = scrollingDown ? initialPosition
-					+ animatedView.getHeight() : initialPosition;
+			targetPosition = scrollingDown ? initialPosition + animatedView.getHeight() : initialPosition;
 		}
 
-		ObjectAnimator animation = ObjectAnimator.ofFloat(animatedView, "y",
-				animatedView.getY(), targetPosition);
+		ObjectAnimator animation = ObjectAnimator.ofFloat(animatedView, "y", animatedView.getY(), targetPosition);
 		animation.setInterpolator(new AccelerateDecelerateInterpolator());
 		animation.setDuration(animationDuration);
 		return animation;
@@ -241,12 +235,10 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *            the view, in milliseconds as a {@link Long} value. The
 	 *            duration must be greater than 0
 	 */
-	public HideViewOnScrollAnimation(final View view,
-			final Direction direction, final long animationDuration) {
+	public HideViewOnScrollAnimation(final View view, final Direction direction, final long animationDuration) {
 		ensureNotNull(view, "The view may not be null");
 		ensureNotNull(direction, "The direction may not be null");
-		ensureGreaterThan(animationDuration, 0,
-				"The animation duration must be greater than 0");
+		ensureGreaterThan(animationDuration, 0, "The animation duration must be greater than 0");
 		this.animatedView = view;
 		this.direction = direction;
 		this.animationDuration = animationDuration;
@@ -295,8 +287,7 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *            type {@link HideViewOnScrollAnimationListener}. The listener
 	 *            may not be null
 	 */
-	public final void addListener(
-			final HideViewOnScrollAnimationListener listener) {
+	public final void addListener(final HideViewOnScrollAnimationListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		listeners.add(listener);
 	}
@@ -310,45 +301,44 @@ public class HideViewOnScrollAnimation extends Animation implements
 	 *            tpye {@link HideViewOnScrollAnimationListener}. The listener
 	 *            may not be null
 	 */
-	public final void removeListener(
-			final HideViewOnScrollAnimationListener listener) {
+	public final void removeListener(final HideViewOnScrollAnimationListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		listeners.remove(listener);
 	}
 
 	@Override
-	public final void onScrollStateChanged(final AbsListView listView,
-			final int scrollState) {
+	public final void onScrollStateChanged(final AbsListView listView, final int scrollState) {
 		return;
 	}
 
 	@Override
-	public final void onScroll(final AbsListView listView,
-			final int firstVisibleItem, final int visibleItemCount,
+	public final void onScroll(final AbsListView listView, final int firstVisibleItem, final int visibleItemCount,
 			final int totalItemCount) {
-		View view = listView.getChildAt(0);
-		int position = (view == null) ? 0 : view.getTop();
+		if (animatedView.getHeight() > 0) {
+			View view = listView.getChildAt(0);
+			int position = (view == null) ? 0 : view.getTop();
 
-		if (firstVisibleItem == oldFirstVisibleItem) {
-			if (position > oldPosition) {
-				onScrollingUp();
-				notifyOnScrollingUp(animatedView, position);
-			} else if (position < oldPosition) {
-				onScrollingDown();
-				notifyOnScrollingDown(animatedView, position);
-			}
-		} else {
-			if (firstVisibleItem < oldFirstVisibleItem) {
-				onScrollingUp();
-				notifyOnScrollingUp(animatedView, position);
+			if (firstVisibleItem == oldFirstVisibleItem) {
+				if (position > oldPosition) {
+					onScrollingUp();
+					notifyOnScrollingUp(animatedView, position);
+				} else if (position < oldPosition) {
+					onScrollingDown();
+					notifyOnScrollingDown(animatedView, position);
+				}
 			} else {
-				onScrollingDown();
-				notifyOnScrollingDown(animatedView, position);
+				if (firstVisibleItem < oldFirstVisibleItem) {
+					onScrollingUp();
+					notifyOnScrollingUp(animatedView, position);
+				} else {
+					onScrollingDown();
+					notifyOnScrollingDown(animatedView, position);
+				}
 			}
-		}
 
-		oldPosition = position;
-		oldFirstVisibleItem = firstVisibleItem;
+			oldPosition = position;
+			oldFirstVisibleItem = firstVisibleItem;
+		}
 	}
 
 }
