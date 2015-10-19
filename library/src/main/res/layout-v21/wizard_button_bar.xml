@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify 
+it under the terms of the GNU Lesser General Public License as published 
+by the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public 
+License along with this program. If not, see
+<http://www.gnu.org/licenses/>. 
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/wizard_button_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/button_bar_background_light"
+    android:minHeight="@dimen/button_bar_min_height"
+    android:paddingEnd="@dimen/button_bar_horizontal_padding"
+    android:paddingStart="@dimen/button_bar_horizontal_padding"
+    android:visibility="gone" >
+
+    <Button
+        android:id="@id/back_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+        android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+        android:minWidth="150dp"
+        android:padding="@dimen/button_padding"
+        android:text="@string/back_button_label"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/button_text_size" />
+
+    <Button
+        android:id="@id/next_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+        android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+        android:minWidth="150dp"
+        android:padding="@dimen/button_padding"
+        android:text="@string/next_button_label"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/button_text_size" />
+
+    <Button
+        android:id="@id/finish_button"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
+        android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
+        android:minWidth="150dp"
+        android:padding="@dimen/button_padding"
+        android:text="@string/finish_button_label"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/button_text_size"
+        android:visibility="gone" />
+
+</RelativeLayout>
