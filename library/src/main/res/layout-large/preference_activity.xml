@@ -3,53 +3,51 @@
 <!--
 AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
 
-This program is free software: you can redistribute it and/or modify 
-it under the terms of the GNU Lesser General Public License as published 
-by the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public 
-License along with this program. If not, see
-<http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
     android:id="@id/preference_activity_frame_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <de.mrapp.android.preference.activity.view.ToolbarLarge
             android:id="@+id/toolbar_large"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_large_height"
             android:visibility="gone"
-            app:theme="?attr/toolbarTheme" />
+            app:theme="?attr/toolbarTheme"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@id/preference_header_parent"
                 android:layout_width="@dimen/default_navigation_width"
                 android:layout_height="match_parent"
-                android:background="@color/navigation_background_light" />
+                android:background="@color/navigation_background_light"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@id/preference_screen_container"
@@ -58,7 +56,7 @@ License along with this program. If not, see
                     android:background="@color/preference_screen_background_light"
                     android:orientation="vertical"
                     android:paddingEnd="@dimen/preference_screen_horizontal_padding"
-                    android:paddingStart="@dimen/preference_screen_horizontal_padding" >
+                    android:paddingStart="@dimen/preference_screen_horizontal_padding">
 
                     <TextView
                         android:id="@id/bread_crumb_view"
@@ -73,40 +71,40 @@ License along with this program. If not, see
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="?attr/colorPrimary"
                         android:textSize="@dimen/bread_crumb_text_size"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" >
+                        android:layout_weight="1">
 
                         <View
                             android:id="@id/bread_crumb_shadow_view"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_gravity="top"
-                            android:visibility="gone" />
+                            android:visibility="gone"/>
 
                         <RelativeLayout
                             android:id="@id/preference_screen_parent"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"/>
 
                         <View
                             android:id="@id/wizard_button_bar_shadow_view"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_gravity="bottom"
-                            android:visibility="gone" />
+                            android:visibility="gone"/>
                     </FrameLayout>
 
-                    <include layout="@layout/wizard_button_bar" />
+                    <include layout="@layout/wizard_button_bar"/>
                 </LinearLayout>
 
                 <View
                     android:id="@id/navigation_shadow_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

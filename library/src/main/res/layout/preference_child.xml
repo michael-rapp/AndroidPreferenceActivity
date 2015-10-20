@@ -3,32 +3,29 @@
 <!--
 AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
 
-This program is free software: you can redistribute it and/or modify 
-it under the terms of the GNU Lesser General Public License as published 
-by the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public 
-License along with this program. If not, see
-<http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_light"
-    android:baselineAligned="false"
-    android:clipToPadding="false"
-    android:gravity="center_vertical"
-    android:minHeight="@dimen/preference_min_height"
-    android:paddingEnd="@dimen/preference_horizontal_padding"
-    android:paddingLeft="@dimen/preference_child_horizontal_padding"
-    android:paddingRight="@dimen/preference_horizontal_padding"
-    android:paddingStart="@dimen/preference_child_horizontal_padding" >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_light"
+              android:baselineAligned="false"
+              android:clipToPadding="false"
+              android:gravity="center_vertical"
+              android:minHeight="@dimen/preference_min_height"
+              android:paddingEnd="@dimen/preference_horizontal_padding"
+              android:paddingLeft="@dimen/preference_child_horizontal_padding"
+              android:paddingRight="@dimen/preference_horizontal_padding"
+              android:paddingStart="@dimen/preference_child_horizontal_padding">
 
     <ImageView
         android:id="@android:id/icon"
@@ -37,14 +34,14 @@ License along with this program. If not, see
         android:layout_marginEnd="@dimen/preference_horizontal_padding"
         android:layout_marginRight="@dimen/preference_horizontal_padding"
         android:contentDescription="@null"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"/>
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingBottom="@dimen/preference_vertical_padding"
-        android:paddingTop="@dimen/preference_vertical_padding" >
+        android:paddingTop="@dimen/preference_vertical_padding">
 
         <TextView
             android:id="@android:id/title"
@@ -53,7 +50,7 @@ License along with this program. If not, see
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
             android:id="@android:id/summary"
@@ -65,7 +62,7 @@ License along with this program. If not, see
             android:ellipsize="end"
             android:maxLines="10"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textColor="?android:attr/textColorSecondary"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -74,6 +71,6 @@ License along with this program. If not, see
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/preference_horizontal_padding"
         android:layout_marginStart="@dimen/preference_horizontal_padding"
-        android:orientation="vertical" />
+        android:orientation="vertical"/>
 
 </LinearLayout>

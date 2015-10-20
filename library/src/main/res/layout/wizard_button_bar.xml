@@ -3,29 +3,27 @@
 <!--
 AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
 
-This program is free software: you can redistribute it and/or modify 
-it under the terms of the GNU Lesser General Public License as published 
-by the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public 
-License along with this program. If not, see
-<http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@id/wizard_button_bar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/button_bar_background_light"
     android:minHeight="@dimen/button_bar_min_height"
     android:paddingEnd="@dimen/button_bar_horizontal_padding"
     android:paddingStart="@dimen/button_bar_horizontal_padding"
-    android:visibility="gone" >
+    android:visibility="gone">
 
     <Button
         android:id="@id/back_button"
@@ -42,7 +40,7 @@ License along with this program. If not, see
         android:text="@string/back_button_label"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/button_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <Button
         android:id="@id/next_button"
@@ -59,7 +57,7 @@ License along with this program. If not, see
         android:text="@string/next_button_label"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/button_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <Button
         android:id="@id/finish_button"
@@ -77,6 +75,6 @@ License along with this program. If not, see
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/button_text_size"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

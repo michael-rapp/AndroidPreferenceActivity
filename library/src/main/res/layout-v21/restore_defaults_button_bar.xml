@@ -3,29 +3,26 @@
 <!--
 AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
 
-This program is free software: you can redistribute it and/or modify 
-it under the terms of the GNU Lesser General Public License as published 
-by the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public 
-License along with this program. If not, see
-<http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <View
         android:id="@id/restore_defaults_button_bar_shadow_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"/>
 
     <RelativeLayout
         android:id="@id/restore_defaults_button_bar"
@@ -34,7 +31,7 @@ License along with this program. If not, see
         android:background="@color/button_bar_background_light"
         android:minHeight="@dimen/button_bar_min_height"
         android:paddingEnd="@dimen/button_bar_horizontal_padding"
-        android:paddingStart="@dimen/button_bar_horizontal_padding" >
+        android:paddingStart="@dimen/button_bar_horizontal_padding">
 
         <Button
             android:id="@id/restore_defaults_button"
@@ -48,7 +45,7 @@ License along with this program. If not, see
             android:padding="@dimen/button_padding"
             android:text="@string/restore_defaults_button_label"
             android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size" />
+            android:textSize="@dimen/button_text_size"/>
     </RelativeLayout>
 
 </LinearLayout>
