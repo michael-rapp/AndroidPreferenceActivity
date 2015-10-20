@@ -56,8 +56,8 @@ import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 import de.mrapp.android.preference.activity.fragment.FragmentListener;
 import de.mrapp.android.preference.activity.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
-import de.mrapp.android.preference.activity.util.VisibleForTesting;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
+import de.mrapp.android.util.VisibleForTesting;
 
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
