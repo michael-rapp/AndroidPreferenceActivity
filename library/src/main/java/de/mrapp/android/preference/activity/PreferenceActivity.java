@@ -63,8 +63,8 @@ import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
+import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences, in which each group
@@ -1187,7 +1187,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainNavigationWidth() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.navigationWidth});
-        int width = convertPixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int width = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
 
         if (width != 0) {
             setNavigationWidth(width);
@@ -1209,7 +1209,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainNavigationElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.navigationElevation});
-        int elevation = convertPixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
 
         if (elevation != 0) {
             setNavigationElevation(elevation);
@@ -1223,7 +1223,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainWizardButtonBarElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.wizardButtonBarElevation});
-        int elevation = convertPixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
 
         if (elevation != 0) {
             View shadowView = findViewById(R.id.wizard_button_bar_shadow_view);
@@ -1238,8 +1238,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             if (shadowView != null) {
                 this.buttonBarElevation = elevation;
                 int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-                int shadowWidth =
-                        convertDpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
+                int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
 
                 GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
                         new int[]{shadowColor, Color.TRANSPARENT});
@@ -1256,7 +1255,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainBreadCrumbElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.breadCrumbElevation});
-        int elevation = convertPixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
 
         if (elevation != 0) {
             setBreadCrumbElevation(elevation);
@@ -1982,7 +1981,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (navigationShadowView != null) {
             this.navigationElevation = elevation;
             int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth = convertDpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
+            int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
 
             GradientDrawable gradient = new GradientDrawable(Orientation.LEFT_RIGHT,
                     new int[]{shadowColor, Color.TRANSPARENT});
@@ -2038,7 +2037,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (buttonBarShadowView != null) {
             this.buttonBarElevation = elevation;
             int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth = convertDpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
+            int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
 
             GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
                     new int[]{shadowColor, Color.TRANSPARENT});
@@ -2089,7 +2088,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (breadCrumbShadowView != null) {
             this.breadCrumbElevation = elevation;
             int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth = convertDpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
+            int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
 
             GradientDrawable gradient = new GradientDrawable(Orientation.TOP_BOTTOM,
                     new int[]{shadowColor, Color.TRANSPARENT});
@@ -2351,7 +2350,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final int getNavigationWidth() {
         if (isSplitScreen()) {
-            return convertPixelsToDp(this, getPreferenceHeaderParentView().getLayoutParams().width);
+            return pixelsToDp(this, getPreferenceHeaderParentView().getLayoutParams().width);
         } else {
             return -1;
         }
@@ -2370,8 +2369,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         ensureGreaterThan(width, 0, "The width must be greater than 0");
 
         if (isSplitScreen()) {
-            getPreferenceHeaderParentView().getLayoutParams().width =
-                    convertDpToPixels(this, width);
+            getPreferenceHeaderParentView().getLayoutParams().width = dpToPixels(this, width);
             getPreferenceHeaderParentView().requestLayout();
 
             if (toolbarLarge != null) {

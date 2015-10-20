@@ -54,8 +54,8 @@ import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
+import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a button, which allows to
@@ -229,7 +229,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     private void obtainButtonBarElevation(final int theme) {
         TypedArray typedArray = getActivity().getTheme()
                 .obtainStyledAttributes(theme, new int[]{R.attr.restoreDefaultsButtonBarElevation});
-        int elevation = convertPixelsToDp(getActivity(), typedArray.getDimensionPixelSize(0, 0));
+        int elevation = pixelsToDp(getActivity(), typedArray.getDimensionPixelSize(0, 0));
 
         if (elevation != 0) {
             this.buttonBarElevation = elevation;
@@ -646,7 +646,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
             this.buttonBarElevation = elevation;
             int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
             int shadowWidth =
-                    convertDpToPixels(getActivity(), Integer.valueOf(shadowWidths[elevation - 1]));
+                    dpToPixels(getActivity(), Integer.valueOf(shadowWidths[elevation - 1]));
 
             GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
                     new int[]{shadowColor, Color.TRANSPARENT});

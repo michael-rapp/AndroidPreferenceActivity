@@ -34,8 +34,8 @@ import de.mrapp.android.preference.activity.R;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
 import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertDpToPixels;
-import static de.mrapp.android.preference.activity.util.DisplayUtil.convertPixelsToDp;
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
+import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 /**
  * A custom view, which may be used to visualize a large toolbar on devices with a large screen.
@@ -98,7 +98,7 @@ public class ToolbarLarge extends FrameLayout {
         this.overlayView = findViewById(R.id.toolbar_overlay_view);
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams) overlayView.getLayoutParams();
-        this.navigationWidth = convertPixelsToDp(getContext(), layoutParams.leftMargin);
+        this.navigationWidth = pixelsToDp(getContext(), layoutParams.leftMargin);
         setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
     }
 
@@ -305,7 +305,7 @@ public class ToolbarLarge extends FrameLayout {
         this.navigationWidth = width;
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams) overlayView.getLayoutParams();
-        int widthInPixels = convertDpToPixels(getContext(), width);
+        int widthInPixels = dpToPixels(getContext(), width);
         layoutParams.leftMargin = widthInPixels;
         overlayView.requestLayout();
         int titleMaxWidth = widthInPixels - getContext().getResources()
@@ -380,8 +380,7 @@ public class ToolbarLarge extends FrameLayout {
 
         this.navigationElevation = elevation;
         int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-        int shadowWidth =
-                convertDpToPixels(getContext(), Integer.valueOf(shadowWidths[elevation - 1]));
+        int shadowWidth = dpToPixels(getContext(), Integer.valueOf(shadowWidths[elevation - 1]));
 
         GradientDrawable gradient = new GradientDrawable(Orientation.LEFT_RIGHT,
                 new int[]{shadowColor, Color.TRANSPARENT});
