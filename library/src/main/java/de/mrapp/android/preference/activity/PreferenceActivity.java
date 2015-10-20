@@ -59,10 +59,10 @@ import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.VisibleForTesting;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
-import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
+import static de.mrapp.android.util.Condition.ensureGreater;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
@@ -2366,7 +2366,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the width has been set, false otherwise
      */
     public final boolean setNavigationWidth(final int width) {
-        ensureGreaterThan(width, 0, "The width must be greater than 0");
+        ensureGreater(width, 0, "The width must be greater than 0");
 
         if (isSplitScreen()) {
             getPreferenceHeaderParentView().getLayoutParams().width = dpToPixels(this, width);

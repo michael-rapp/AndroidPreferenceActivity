@@ -28,7 +28,7 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.R;
 import de.mrapp.android.preference.activity.adapter.PreferenceHeaderAdapter;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A fragment, which shows multiple preference headers and provides navigation to each header's

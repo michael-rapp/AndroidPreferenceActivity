@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 
 import de.mrapp.android.preference.activity.R;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A decorator, which allows to apply Material style on specific preferences.

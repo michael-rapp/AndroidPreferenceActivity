@@ -42,7 +42,7 @@ import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.PreferenceHeaderDecorator;
 import de.mrapp.android.preference.activity.R;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An adapter, which provides instances of the class {@link PreferenceHeader} for visualization

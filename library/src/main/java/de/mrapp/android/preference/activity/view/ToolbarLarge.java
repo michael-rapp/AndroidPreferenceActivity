@@ -31,9 +31,9 @@ import android.widget.TextView;
 
 import de.mrapp.android.preference.activity.R;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureAtLeast;
-import static de.mrapp.android.preference.activity.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
+import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
@@ -301,7 +301,7 @@ public class ToolbarLarge extends FrameLayout {
      *         greater than 0
      */
     public final void setNavigationWidth(final int width) {
-        ensureGreaterThan(width, 0, "The width must be greater than 0");
+        ensureGreater(width, 0, "The width must be greater than 0");
         this.navigationWidth = width;
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams) overlayView.getLayoutParams();

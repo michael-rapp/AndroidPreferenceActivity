@@ -28,8 +28,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotEmpty;
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotEmpty;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A navigation item, which categorizes multiple preferences.

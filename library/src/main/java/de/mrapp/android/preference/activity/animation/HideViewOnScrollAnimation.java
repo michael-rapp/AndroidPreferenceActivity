@@ -25,8 +25,8 @@ import android.widget.AbsListView.OnScrollListener;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static de.mrapp.android.preference.activity.util.Condition.ensureGreaterThan;
-import static de.mrapp.android.preference.activity.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureGreater;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A scroll listener, which allows to animate a view to become hidden or shown depending on the
@@ -228,7 +228,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
                                      final long animationDuration) {
         ensureNotNull(view, "The view may not be null");
         ensureNotNull(direction, "The direction may not be null");
-        ensureGreaterThan(animationDuration, 0, "The animation duration must be greater than 0");
+        ensureGreater(animationDuration, 0, "The animation duration must be greater than 0");
         this.animatedView = view;
         this.direction = direction;
         this.animationDuration = animationDuration;
