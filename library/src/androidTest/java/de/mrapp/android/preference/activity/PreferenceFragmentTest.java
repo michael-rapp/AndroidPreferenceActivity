@@ -292,7 +292,7 @@ public class PreferenceFragmentTest extends ActivityUnitTestCase<Activity> {
         preferenceFragment.addRestoreDefaultsListener(listener);
         SharedPreferences sharedPreferences =
                 preferenceFragment.getPreferenceManager().getSharedPreferences();
-        sharedPreferences.edit().putBoolean("key", false).commit();
+        sharedPreferences.edit().putBoolean("key", false).apply();
         preferenceFragment.showRestoreDefaultsButton(true);
         preferenceFragment.addPreferencesFromResource(R.xml.preferences);
         Preference preference = preferenceFragment.findPreference("key");
@@ -318,7 +318,7 @@ public class PreferenceFragmentTest extends ActivityUnitTestCase<Activity> {
         preferenceFragment.addRestoreDefaultsListener(listener);
         SharedPreferences sharedPreferences =
                 preferenceFragment.getPreferenceManager().getSharedPreferences();
-        sharedPreferences.edit().putBoolean("key", false).commit();
+        sharedPreferences.edit().putBoolean("key", false).apply();
         preferenceFragment.showRestoreDefaultsButton(true);
         preferenceFragment.addPreferencesFromResource(R.xml.preferences);
         Preference preference = preferenceFragment.findPreference("key");
@@ -342,7 +342,7 @@ public class PreferenceFragmentTest extends ActivityUnitTestCase<Activity> {
         preferenceFragment.addRestoreDefaultsListener(listener);
         SharedPreferences sharedPreferences =
                 preferenceFragment.getPreferenceManager().getSharedPreferences();
-        sharedPreferences.edit().putBoolean("key", false).commit();
+        sharedPreferences.edit().putBoolean("key", false).apply();
         preferenceFragment.showRestoreDefaultsButton(true);
         preferenceFragment.addPreferencesFromResource(R.xml.preferences);
         Preference preference = preferenceFragment.findPreference("key");
