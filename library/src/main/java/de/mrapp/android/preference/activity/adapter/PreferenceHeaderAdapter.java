@@ -41,6 +41,7 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.PreferenceHeaderDecorator;
 import de.mrapp.android.preference.activity.R;
+import de.mrapp.android.util.VisibleForTesting;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -61,17 +62,20 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
         /**
          * The text view, which is used to show the preference header's title.
          */
-        private TextView titleTextView;
+        @VisibleForTesting
+        protected TextView titleTextView;
 
         /**
          * The text view, which is used to show the preference header's summary.
          */
-        private TextView summaryTextView;
+        @VisibleForTesting
+        protected TextView summaryTextView;
 
         /**
          * The image view, which is used to show the preference header's icon.
          */
-        private ImageView iconImageView;
+        @VisibleForTesting
+        protected ImageView iconImageView;
 
     }
 
