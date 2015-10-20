@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/appearance_preference_theme_category">
+        <ListPreference
+            android:defaultValue="@string/theme_preference_default_value"
+            android:entries="@array/theme_list_entries"
+            android:entryValues="@array/theme_list_values"
+            android:key="@string/theme_preference_key"
+            android:summary="@string/theme_preference_summary"
+            android:title="@string/theme_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/appearance_preference_navigation_category">
+        <ListPreference
+            android:defaultValue="@string/navigation_width_preference_default_value"
+            android:entries="@array/navigation_width_list_entries"
+            android:entryValues="@array/navigation_width_list_values"
+            android:key="@string/navigation_width_preference_key"
+            android:summary="@string/navigation_width_preference_summary"
+            android:title="@string/navigation_width_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/navigation_elevation_preference_default_value"
+            android:entries="@array/navigation_elevation_list_entries"
+            android:entryValues="@array/navigation_elevation_list_values"
+            android:key="@string/navigation_elevation_preference_key"
+            android:summary="@string/navigation_elevation_preference_summary"
+            android:title="@string/navigation_elevation_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/appearance_preference_wizard_category">
+        <ListPreference
+            android:defaultValue="@string/wizard_button_bar_elevation_preference_default_value"
+            android:entries="@array/wizard_button_bar_elevation_list_entries"
+            android:entryValues="@array/wizard_button_bar_elevation_list_values"
+            android:key="@string/wizard_button_bar_elevation_preference_key"
+            android:summary="@string/wizard_button_bar_elevation_preference_summary"
+            android:title="@string/wizard_button_bar_elevation_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/appearance_preference_preference_fragment_category">
+        <ListPreference
+            android:defaultValue="@string/preference_fragment_button_bar_elevation_preference_default_value"
+            android:entries="@array/preference_fragment_button_bar_elevation_list_entries"
+            android:entryValues="@array/preference_fragment_button_bar_elevation_list_values"
+            android:key="@string/preference_fragment_button_bar_elevation_preference_key"
+            android:summary="@string/preference_fragment_button_bar_elevation_preference_summary"
+            android:title="@string/preference_fragment_button_bar_elevation_preference_title"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

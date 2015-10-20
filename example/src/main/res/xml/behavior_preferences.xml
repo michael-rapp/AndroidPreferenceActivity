@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidPreferenceActivity Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/behavior_preference_navigation_category">
+        <CheckBoxPreference
+            android:defaultValue="@string/override_navigation_icon_preference_default_value"
+            android:key="@string/override_navigation_icon_preference_key"
+            android:summary="@string/override_navigation_icon_preference_summary"
+            android:title="@string/override_navigation_icon_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/behavior_preference_navigation_category">
+        <CheckBoxPreference
+            android:defaultValue="@string/hide_navigation_preference_default_value"
+            android:key="@string/hide_navigation_preference_key"
+            android:summary="@string/hide_navigation_preference_summary"
+            android:title="@string/hide_navigation_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/behavior_preference_initial_fragment_category">
+        <CheckBoxPreference
+            android:defaultValue="@string/use_alternative_title_preference_default_value"
+            android:key="@string/use_alternative_title_preference_key"
+            android:summary="@string/use_alternative_title_preference_summary"
+            android:title="@string/use_alternative_title_preference_title"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/alternative_title_preference_default_value"
+            android:dependency="@string/use_alternative_title_preference_key"
+            android:key="@string/alternative_title_preference_key"
+            android:summary="@string/alternative_title_preference_summary"
+            android:title="@string/alternative_title_preference_title"/>
+        <EditTextPreference
+            android:defaultValue="@string/alternative_short_title_preference_default_value"
+            android:dependency="@string/use_alternative_title_preference_key"
+            android:key="@string/alternative_short_title_preference_key"
+            android:summary="@string/alternative_short_title_preference_summary"
+            android:title="@string/alternative_short_title_preference_title"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
