@@ -18,11 +18,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -57,10 +54,10 @@ import de.mrapp.android.preference.activity.fragment.FragmentListener;
 import de.mrapp.android.preference.activity.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
+import de.mrapp.android.util.ElevationUtil;
+import de.mrapp.android.util.ElevationUtil.Orientation;
 import de.mrapp.android.util.VisibleForTesting;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
@@ -1210,10 +1207,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.navigationElevation});
         int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
-
-        if (elevation != 0) {
-            setNavigationElevation(elevation);
-        }
+        setNavigationElevation(elevation);
     }
 
     /**
@@ -1224,29 +1218,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.wizardButtonBarElevation});
         int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
-
-        if (elevation != 0) {
-            View shadowView = findViewById(R.id.wizard_button_bar_shadow_view);
-            String[] shadowColors =
-                    getResources().getStringArray(R.array.button_bar_elevation_shadow_colors);
-            String[] shadowWidths =
-                    getResources().getStringArray(R.array.button_bar_elevation_shadow_widths);
-            ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-            ensureAtMaximum(elevation, shadowWidths.length,
-                    "The elevation must be at maximum " + shadowWidths.length);
-
-            if (shadowView != null) {
-                this.buttonBarElevation = elevation;
-                int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-                int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
-
-                GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
-                        new int[]{shadowColor, Color.TRANSPARENT});
-                shadowView.setBackgroundDrawable(gradient);
-                shadowView.getLayoutParams().height = shadowWidth;
-                shadowView.requestLayout();
-            }
-        }
+        setButtonBarElevation(elevation);
     }
 
     /**
@@ -1256,10 +1228,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.breadCrumbElevation});
         int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
-
-        if (elevation != 0) {
-            setBreadCrumbElevation(elevation);
-        }
+        setBreadCrumbElevation(elevation);
     }
 
     /**
@@ -1965,27 +1934,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 5
+     *         must be at least 0 and at maximum 5
      * @return True, if the elevation has been set, false otherwise
      */
     @SuppressWarnings("deprecation")
     public final boolean setNavigationElevation(final int elevation) {
-        String[] shadowColors =
-                getResources().getStringArray(R.array.navigation_elevation_shadow_colors);
-        String[] shadowWidths =
-                getResources().getStringArray(R.array.navigation_elevation_shadow_widths);
-        ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-        ensureAtMaximum(elevation, shadowWidths.length,
-                "The elevation must be at maximum " + shadowWidths.length);
+        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.RIGHT);
+        int shadowWidth = ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.RIGHT);
 
         if (navigationShadowView != null) {
             this.navigationElevation = elevation;
-            int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
-
-            GradientDrawable gradient = new GradientDrawable(Orientation.LEFT_RIGHT,
-                    new int[]{shadowColor, Color.TRANSPARENT});
-            navigationShadowView.setBackgroundDrawable(gradient);
+            navigationShadowView.setBackgroundDrawable(shadow);
             navigationShadowView.getLayoutParams().width = shadowWidth;
             navigationShadowView.requestLayout();
 
@@ -2021,27 +1980,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 5
+     *         must be at least 0 and at maximum 5
      * @return True, if the elevation has been set, false otherwise
      */
     @SuppressWarnings("deprecation")
     public final boolean setButtonBarElevation(final int elevation) {
-        String[] shadowColors =
-                getResources().getStringArray(R.array.button_bar_elevation_shadow_colors);
-        String[] shadowWidths =
-                getResources().getStringArray(R.array.button_bar_elevation_shadow_widths);
-        ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-        ensureAtMaximum(elevation, shadowWidths.length,
-                "The elevation must be at maximum " + shadowWidths.length);
+        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.TOP);
+        int shadowWidth = ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.TOP);
 
         if (buttonBarShadowView != null) {
-            this.buttonBarElevation = elevation;
-            int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
-
-            GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
-                    new int[]{shadowColor, Color.TRANSPARENT});
-            buttonBarShadowView.setBackgroundDrawable(gradient);
+            buttonBarElevation = elevation;
+            buttonBarShadowView.setBackgroundDrawable(shadow);
             buttonBarShadowView.getLayoutParams().height = shadowWidth;
             buttonBarShadowView.requestLayout();
             return true;
@@ -2072,27 +2021,18 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 5
+     *         must be at least 0 and at maximum 5
      * @return True, if the elevation has been set, false otherwise
      */
     @SuppressWarnings("deprecation")
     public final boolean setBreadCrumbElevation(final int elevation) {
-        String[] shadowColors =
-                getResources().getStringArray(R.array.bread_crumb_elevation_shadow_colors);
-        String[] shadowWidths =
-                getResources().getStringArray(R.array.bread_crumb_elevation_shadow_widths);
-        ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-        ensureAtMaximum(elevation, shadowWidths.length,
-                "The elevation must be at maximum " + shadowWidths.length);
+        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.BOTTOM);
+        int shadowWidth =
+                ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.BOTTOM);
 
         if (breadCrumbShadowView != null) {
             this.breadCrumbElevation = elevation;
-            int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth = dpToPixels(this, Integer.valueOf(shadowWidths[elevation - 1]));
-
-            GradientDrawable gradient = new GradientDrawable(Orientation.TOP_BOTTOM,
-                    new int[]{shadowColor, Color.TRANSPARENT});
-            breadCrumbShadowView.setBackgroundDrawable(gradient);
+            breadCrumbShadowView.setBackgroundDrawable(shadow);
             breadCrumbShadowView.getLayoutParams().height = shadowWidth;
             breadCrumbShadowView.requestLayout();
             return true;

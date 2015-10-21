@@ -17,8 +17,7 @@ package de.mrapp.android.preference.activity.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -30,9 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.mrapp.android.preference.activity.R;
+import de.mrapp.android.util.ElevationUtil;
+import de.mrapp.android.util.ElevationUtil.Orientation;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
@@ -366,25 +365,16 @@ public class ToolbarLarge extends FrameLayout {
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 5
+     *         must be at least 0 and at maximum 5
      */
     @SuppressWarnings("deprecation")
     public final void setNavigationElevation(final int elevation) {
-        String[] shadowColors =
-                getResources().getStringArray(R.array.navigation_elevation_shadow_colors);
-        String[] shadowWidths =
-                getResources().getStringArray(R.array.navigation_elevation_shadow_widths);
-        ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-        ensureAtMaximum(elevation, shadowWidths.length,
-                "The elevation must be at maximum " + shadowWidths.length);
-
+        Drawable shadow =
+                ElevationUtil.createElevationShadow(getContext(), elevation, Orientation.RIGHT);
+        int shadowWidth =
+                ElevationUtil.getElevationShadowWidth(getContext(), elevation, Orientation.RIGHT);
         this.navigationElevation = elevation;
-        int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-        int shadowWidth = dpToPixels(getContext(), Integer.valueOf(shadowWidths[elevation - 1]));
-
-        GradientDrawable gradient = new GradientDrawable(Orientation.LEFT_RIGHT,
-                new int[]{shadowColor, Color.TRANSPARENT});
-        shadowView.setBackgroundDrawable(gradient);
+        shadowView.setBackgroundDrawable(shadow);
         shadowView.getLayoutParams().width = shadowWidth;
         shadowView.requestLayout();
     }
