@@ -204,6 +204,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getSimpleName() + "::FragmentBackStack";
 
     /**
+     * The default elevation of the activity's toolbar in dp.
+     */
+    private static final int DEFAULT_TOOLBAR_ELEVATION = 4;
+
+    /**
      * The default elevation of the navigation in dp.
      */
     private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
@@ -295,6 +300,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Button finishButton;
 
     /**
+     * The view, which is used to draw a shadow below the activity's toolbar.
+     */
+    private View toolbarShadowView;
+
+    /**
      * The view, which is used to draw a shadow below the bread crumb on devices with a large
      * screen.
      */
@@ -359,6 +369,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * devices with a large screen, is currently hidden or not.
      */
     private boolean navigationHidden;
+
+    /**
+     * The elevation of the toolbar in dp.
+     */
+    private int toolbarElevation;
 
     /**
      * The elevation of the navigation in dp.
@@ -1096,6 +1111,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainBreadCrumbBackground();
         obtainNavigationWidth();
         obtainOverrideNavigationIcon();
+        obtainToolbarElevation();
         obtainNavigationElevation();
         obtainWizardButtonBarElevation();
         obtainBreadCrumbElevation();
@@ -1198,6 +1214,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.overrideNavigationIcon});
         overrideNavigationIcon(typedArray.getBoolean(0, true));
+    }
+
+    /**
+     * Obtains the elevation of the navigation from a specific theme.
+     */
+    private void obtainToolbarElevation() {
+        TypedArray typedArray =
+                getTheme().obtainStyledAttributes(new int[]{R.attr.toolbarElevation});
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        setToolbarElevation(elevation);
     }
 
     /**
@@ -1912,6 +1938,31 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the elevation of the activity's toolbar.
+     *
+     * @return The elevation of the activity's toolbar in dp as an {@link Integer} value
+     */
+    public final int getToolbarElevation() {
+        return toolbarElevation;
+    }
+
+    /**
+     * Sets the elevation of the activity's toolbar.
+     *
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum 5
+     */
+    public final void setToolbarElevation(final int elevation) {
+        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.RIGHT);
+        int shadowWidth = ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.RIGHT);
+        toolbarElevation = elevation;
+        toolbarShadowView.setBackgroundDrawable(shadow);
+        toolbarShadowView.getLayoutParams().height = shadowWidth;
+        toolbarShadowView.requestLayout();
+    }
+
+    /**
      * Returns the elevation of the parent view of the fragment, which provides navigation to each
      * preference header's fragment on devices with a large screen.
      *
@@ -1943,7 +1994,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         int shadowWidth = ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.RIGHT);
 
         if (navigationShadowView != null) {
-            this.navigationElevation = elevation;
+            navigationElevation = elevation;
             navigationShadowView.setBackgroundDrawable(shadow);
             navigationShadowView.getLayoutParams().width = shadowWidth;
             navigationShadowView.requestLayout();
@@ -2031,7 +2082,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.BOTTOM);
 
         if (breadCrumbShadowView != null) {
-            this.breadCrumbElevation = elevation;
+            breadCrumbElevation = elevation;
             breadCrumbShadowView.setBackgroundDrawable(shadow);
             breadCrumbShadowView.getLayoutParams().height = shadowWidth;
             breadCrumbShadowView.requestLayout();
@@ -2506,6 +2557,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
         preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
         preferenceScreenContainer = (ViewGroup) findViewById(R.id.preference_screen_container);
+        toolbarShadowView = findViewById(R.id.toolbar_shadow_view);
         navigationShadowView = findViewById(R.id.navigation_shadow_view);
         preferenceHeaderFragment = new PreferenceHeaderFragment();
         preferenceHeaderFragment.addFragmentListener(this);
@@ -2516,10 +2568,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
             breadCrumbShadowView = findViewById(R.id.bread_crumb_shadow_view);
         }
 
+        obtainStyledAttributes();
         overrideNavigationIcon(true);
+        setToolbarElevation(DEFAULT_TOOLBAR_ELEVATION);
         setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
         setBreadCrumbElevation(DEFAULT_BREAD_CRUMB_ELEVATION);
-        obtainStyledAttributes();
 
         if (savedInstanceState != null) {
             restoredPreferenceScreenFragment = getFragmentManager()

@@ -25,6 +25,7 @@ not, see <http://www.gnu.org/licenses/>.
     <attr name="breadCrumbBackground" format="reference|color"/>
     <attr name="navigationWidth" format="dimension"/>
     <attr name="overrideNavigationIcon" format="boolean"/>
+    <attr name="toolbarElevation" format="dimension"/>
     <attr name="navigationElevation" format="dimension"/>
     <attr name="wizardButtonBarElevation" format="dimension"/>
     <attr name="restoreDefaultsButtonBarElevation" format="dimension"/>

@@ -40,17 +40,18 @@ not, see <http://www.gnu.org/licenses/>.
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <View
-                android:id="@id/toolbar_shadow_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="top"/>
-
             <RelativeLayout
                 android:id="@id/preference_header_parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/navigation_background_light"/>
+
+
+            <View
+                android:id="@id/toolbar_shadow_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"/>
 
             <View
                 android:id="@id/wizard_button_bar_shadow_view"
