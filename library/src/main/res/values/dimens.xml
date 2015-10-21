@@ -39,5 +39,9 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="button_bar_min_height">48dp</dimen>
     <dimen name="button_padding">8dp</dimen>
     <dimen name="button_text_size">14sp</dimen>
+    <dimen name="default_toolbar_elevation">3dp</dimen>
+    <dimen name="default_navigation_elevation">3dp</dimen>
+    <dimen name="default_button_bar_elevation">2dp</dimen>
+    <dimen name="default_bread_crumb_elevation">2dp</dimen>
 
 </resources>

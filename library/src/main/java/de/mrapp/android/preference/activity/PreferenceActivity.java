@@ -204,28 +204,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getSimpleName() + "::FragmentBackStack";
 
     /**
-     * The default elevation of the activity's toolbar in dp.
-     */
-    private static final int DEFAULT_TOOLBAR_ELEVATION = 3;
-
-    /**
-     * The default elevation of the navigation in dp.
-     */
-    private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
-
-    /**
-     * The default elevation of the button bar, which contains the buttons, which are shown when the
-     * activity is used as a wizard.
-     */
-    private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
-
-    /**
-     * The default elevation of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown.
-     */
-    private static final int DEFAULT_BREAD_CRUMB_ELEVATION = 2;
-
-    /**
      * The saved instance state, which has been passed to the activity, when it has been created.
      */
     private Bundle savedInstanceState;
@@ -1222,7 +1200,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainToolbarElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.toolbarElevation});
-        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int defaultElevation =
+                getResources().getDimensionPixelSize(R.dimen.default_toolbar_elevation);
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultElevation));
         setToolbarElevation(elevation);
     }
 
@@ -1232,7 +1212,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainNavigationElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.navigationElevation});
-        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int defaultElevation =
+                getResources().getDimensionPixelSize(R.dimen.default_navigation_elevation);
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultElevation));
         setNavigationElevation(elevation);
     }
 
@@ -1243,7 +1225,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainWizardButtonBarElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.wizardButtonBarElevation});
-        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int defaultElevation =
+                getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultElevation));
         setButtonBarElevation(elevation);
     }
 
@@ -1253,7 +1237,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainBreadCrumbElevation() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.breadCrumbElevation});
-        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
+        int defaultElevation =
+                getResources().getDimensionPixelSize(R.dimen.default_bread_crumb_elevation);
+        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultElevation));
         setBreadCrumbElevation(elevation);
     }
 
@@ -1879,11 +1865,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
             buttonBar.setVisibility(View.VISIBLE);
             buttonBarShadowView = findViewById(R.id.wizard_button_bar_shadow_view);
             buttonBarShadowView.setVisibility(View.VISIBLE);
-
-            if (buttonBarElevation == 0) {
-                setButtonBarElevation(DEFAULT_BUTTON_BAR_ELEVATION);
-            }
-
             nextButton = (Button) findViewById(R.id.next_button);
             nextButton.setOnClickListener(createNextButtonListener());
             finishButton = (Button) findViewById(R.id.finish_button);
@@ -2571,9 +2552,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         obtainStyledAttributes();
         overrideNavigationIcon(true);
-        setToolbarElevation(DEFAULT_TOOLBAR_ELEVATION);
-        setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
-        setBreadCrumbElevation(DEFAULT_BREAD_CRUMB_ELEVATION);
 
         if (savedInstanceState != null) {
             restoredPreferenceScreenFragment = getFragmentManager()
