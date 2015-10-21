@@ -1954,8 +1954,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 5
      */
     public final void setToolbarElevation(final int elevation) {
-        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.RIGHT);
-        int shadowWidth = ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.RIGHT);
+        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.BOTTOM);
+        int shadowWidth =
+                ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.BOTTOM);
         toolbarElevation = elevation;
         toolbarShadowView.setBackgroundDrawable(shadow);
         toolbarShadowView.getLayoutParams().height = shadowWidth;
