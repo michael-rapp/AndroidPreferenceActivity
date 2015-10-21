@@ -206,7 +206,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     /**
      * The default elevation of the activity's toolbar in dp.
      */
-    private static final int DEFAULT_TOOLBAR_ELEVATION = 4;
+    private static final int DEFAULT_TOOLBAR_ELEVATION = 3;
 
     /**
      * The default elevation of the navigation in dp.
