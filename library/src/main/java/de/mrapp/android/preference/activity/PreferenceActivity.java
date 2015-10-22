@@ -40,7 +40,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -283,12 +282,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private View toolbarShadowView;
 
     /**
-     * The view, which is used to draw a shadow below the bread crumb on devices with a large
-     * screen.
-     */
-    private View breadCrumbShadowView;
-
-    /**
      * The view, which is used to draw a shadow above the button bar when the activity is used as a
      * wizard.
      */
@@ -313,13 +306,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Bundle currentBundle;
 
     /**
-     * The title, which is currently used by the bread crumb or null, if no bread crumb are
+     * The title, which is currently used by the bread crumb or null, if no bread crumb is
      * currently shown.
      */
     private CharSequence currentTitle;
 
     /**
-     * The short title, which is currently used by the bread crumb or null, if no bread crumb are
+     * The short title, which is currently used by the bread crumb or null, if no bread crumb is
      * currently shown.
      */
     private CharSequence currentShortTitle;
@@ -364,17 +357,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private int buttonBarElevation;
 
     /**
-     * The elevation of the bread crumb in dp.
-     */
-    private int breadCrumbElevation;
-
-    /**
-     * The bread crumb, which is used to show the title of the currently selected fragment on
-     * devices with a large screen, if the activity's toolbar is not shown.
-     */
-    private TextView breadCrumb;
-
-    /**
      * True, if the progress should be shown as the bread crumb title, false otherwise.
      */
     private boolean showProgress;
@@ -400,19 +382,23 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Initializes the action bar's toolbar.
      */
     private void initializeToolbar() {
-        if (getSupportActionBar() == null) {
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-            if (isSplitScreen()) {
-                toolbarLarge = (ToolbarLarge) findViewById(R.id.toolbar_large);
-                toolbarLarge.setVisibility(View.VISIBLE);
-            } else {
-                toolbar.setVisibility(View.VISIBLE);
-            }
-
-            setSupportActionBar(toolbar);
-            setTitle(getTitle());
+        if (getSupportActionBar() != null) {
+            throw new IllegalStateException("An action bar is already attached to the activity. " +
+                    "Use the theme \"@style/Theme.AppCompat.NoActionBar\" or " +
+                    "\"@style/Theme.AppCompat.Light.NoActionBar\" as the activity's theme");
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        if (isSplitScreen()) {
+            toolbarLarge = (ToolbarLarge) findViewById(R.id.toolbar_large);
+            toolbarLarge.setVisibility(View.VISIBLE);
+        } else {
+            toolbar.setVisibility(View.VISIBLE);
+        }
+
+        setSupportActionBar(toolbar);
+        setTitle(getTitle());
     }
 
     /**
@@ -1009,17 +995,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         this.currentShortTitle = shortTitle;
         CharSequence breadCrumbTitle = createBreadCrumbTitle(title);
 
-        if (getBreadCrumb() != null) {
-            if (breadCrumbTitle != null) {
-                getBreadCrumb().setVisibility(View.VISIBLE);
-                breadCrumbShadowView.setVisibility(View.VISIBLE);
-            } else {
-                getBreadCrumb().setVisibility(View.GONE);
-                breadCrumbShadowView.setVisibility(View.GONE);
-            }
-
-            getBreadCrumb().setText(breadCrumbTitle);
-        } else if (toolbarLarge != null) {
+        if (toolbarLarge != null) {
             toolbarLarge.setBreadCrumbTitle(breadCrumbTitle);
         } else if (breadCrumbTitle != null) {
             if (defaultTitle == null) {
@@ -1086,13 +1062,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainNavigationBackground();
         obtainPreferenceScreenBackground();
         obtainWizardButtonBarBackground();
-        obtainBreadCrumbBackground();
         obtainNavigationWidth();
         obtainOverrideNavigationIcon();
         obtainToolbarElevation();
         obtainNavigationElevation();
         obtainWizardButtonBarElevation();
-        obtainBreadCrumbElevation();
     }
 
     /**
@@ -1154,25 +1128,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Obtains the background of the bread crumb from a specific theme.
-     */
-    private void obtainBreadCrumbBackground() {
-        TypedArray typedArray =
-                getTheme().obtainStyledAttributes(new int[]{R.attr.breadCrumbBackground});
-        int color = typedArray.getColor(0, 0);
-
-        if (color != 0) {
-            setBreadCrumbBackgroundColor(color);
-        } else {
-            int resourceId = typedArray.getResourceId(0, 0);
-
-            if (resourceId != 0) {
-                setBreadCrumbBackground(resourceId);
-            }
-        }
-    }
-
-    /**
      * Obtains the width of the navigation from a specific theme.
      */
     private void obtainNavigationWidth() {
@@ -1229,18 +1184,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
         int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultElevation));
         setButtonBarElevation(elevation);
-    }
-
-    /**
-     * Obtains the elevation of the bread crumb from a specific theme.
-     */
-    private void obtainBreadCrumbElevation() {
-        TypedArray typedArray =
-                getTheme().obtainStyledAttributes(new int[]{R.attr.breadCrumbElevation});
-        int defaultElevation =
-                getResources().getDimensionPixelSize(R.dimen.default_bread_crumb_elevation);
-        int elevation = pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultElevation));
-        setBreadCrumbElevation(elevation);
     }
 
     /**
@@ -1615,17 +1558,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final boolean setProgressFormat(@StringRes final int resourceId) {
         return setProgressFormat(getString(resourceId));
-    }
-
-    /**
-     * Returns the bread crumb, which is used to show the title of the currently selected fragment
-     * on devices with a large screen, if the activity's toolbar is not shown.
-     *
-     * @return The bread crumb, which is used to show the title of the currently selected fragment
-     * or null, if the device has a small screen or the activity's toolbar is shown
-     */
-    public final TextView getBreadCrumb() {
-        return breadCrumb;
     }
 
     /**
@@ -2033,48 +1965,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Returns the elevation of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown.
-     *
-     * @return The elevation of the bread crumb in dp as an {@link Integer} value or -1, if the
-     * device has a small screen or the activity's toolbar is shown
-     */
-    public final int getBreadCrumbElevation() {
-        if (getBreadCrumb() != null) {
-            return breadCrumbElevation;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * Sets the elevation of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown. The
-     * elevation is only set when the bread crumb is shown.
-     *
-     * @param elevation
-     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 0 and at maximum 5
-     * @return True, if the elevation has been set, false otherwise
-     */
-    @SuppressWarnings("deprecation")
-    public final boolean setBreadCrumbElevation(final int elevation) {
-        Drawable shadow = ElevationUtil.createElevationShadow(this, elevation, Orientation.BOTTOM);
-        int shadowWidth =
-                ElevationUtil.getElevationShadowWidth(this, elevation, Orientation.BOTTOM);
-
-        if (breadCrumbShadowView != null) {
-            breadCrumbElevation = elevation;
-            breadCrumbShadowView.setBackgroundDrawable(shadow);
-            breadCrumbShadowView.getLayoutParams().height = shadowWidth;
-            breadCrumbShadowView.requestLayout();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Returns the background of the view group, which contains all views, which are shown when a
      * preference header is selected on devices with a large screen.
      *
@@ -2242,71 +2132,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public final boolean setButtonBarBackground(@Nullable final Drawable drawable) {
         if (getButtonBar() != null) {
             getButtonBar().setBackgroundDrawable(drawable);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns the background of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown.
-     *
-     * @return The background of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown, as
-     * an instance of the class {@link Drawable} or null, if no background is set or the bread crumb
-     * is not shown
-     */
-    public final Drawable getBreadCrumbBackground() {
-        if (getBreadCrumb() != null) {
-            return getBreadCrumb().getBackground();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Sets the background of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown. The
-     * background is only set when the bread crumb is shown.
-     *
-     * @param resourceId
-     *         The resource id of the background, which should be set, as an {@link Integer} value.
-     *         The resource id must correspond to a valid drawable resource
-     * @return True, if the background has been set, false otherwise
-     */
-    @SuppressWarnings("deprecation")
-    public final boolean setBreadCrumbBackground(@DrawableRes final int resourceId) {
-        return setBreadCrumbBackground(getResources().getDrawable(resourceId));
-    }
-
-    /**
-     * Sets the background color of the bread crumb, which is used to show the title of the
-     * currently selected fragment on devices with a large screen, if the activity's toolbar is not
-     * shown. The background color is only set when the bread crumb is shown.
-     *
-     * @param color
-     *         The background color, which should be set, as an {@link Integer} value
-     * @return True, if the background color has been set, false otherwise
-     */
-    public final boolean setBreadCrumbBackgroundColor(@ColorInt final int color) {
-        return setBreadCrumbBackground(new ColorDrawable(color));
-    }
-
-    /**
-     * Sets the background of the bread crumb, which is used to show the title of the currently
-     * selected fragment on devices with a large screen, if the activity's toolbar is not shown. The
-     * background is only set when the bread crumb is shown.
-     *
-     * @param drawable
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
-     *         null, if no background should be set
-     * @return True, if the background has been set, false otherwise
-     */
-    @SuppressWarnings("deprecation")
-    public final boolean setBreadCrumbBackground(@Nullable final Drawable drawable) {
-        if (getBreadCrumb() != null) {
-            getBreadCrumb().setBackgroundDrawable(drawable);
             return true;
         }
 
@@ -2544,11 +2369,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
         preferenceHeaderFragment = new PreferenceHeaderFragment();
         preferenceHeaderFragment.addFragmentListener(this);
         initializeToolbar();
-
-        if (toolbarLarge == null) {
-            breadCrumb = (TextView) findViewById(R.id.bread_crumb_view);
-            breadCrumbShadowView = findViewById(R.id.bread_crumb_shadow_view);
-        }
 
         obtainStyledAttributes();
         overrideNavigationIcon(true);

@@ -22,14 +22,12 @@ not, see <http://www.gnu.org/licenses/>.
     <attr name="preferenceScreenBackground" format="reference|color"/>
     <attr name="wizardButtonBarBackground" format="reference|color"/>
     <attr name="restoreDefaultsButtonBarBackground" format="reference|color"/>
-    <attr name="breadCrumbBackground" format="reference|color"/>
     <attr name="navigationWidth" format="dimension"/>
     <attr name="overrideNavigationIcon" format="boolean"/>
     <attr name="toolbarElevation" format="dimension"/>
     <attr name="navigationElevation" format="dimension"/>
     <attr name="wizardButtonBarElevation" format="dimension"/>
     <attr name="restoreDefaultsButtonBarElevation" format="dimension"/>
-    <attr name="breadCrumbElevation" format="dimension"/>
     <attr name="preferenceHeaderSelector" format="reference"/>
 
     <declare-styleable name="PreferenceHeader">

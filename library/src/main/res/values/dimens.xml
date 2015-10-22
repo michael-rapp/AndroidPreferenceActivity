@@ -31,7 +31,6 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="toolbar_title_margin_left">104dp</dimen>
     <dimen name="toolbar_title_text_size">34sp</dimen>
     <dimen name="bread_crumb_text_size">20sp</dimen>
-    <dimen name="bread_crumb_height">64dp</dimen>
     <dimen name="preference_screen_horizontal_padding">0dp</dimen>
     <dimen name="default_navigation_width">360dp</dimen>
     <dimen name="button_bar_vertical_button_margin">8dp</dimen>
@@ -42,6 +41,5 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="default_toolbar_elevation">3dp</dimen>
     <dimen name="default_navigation_elevation">3dp</dimen>
     <dimen name="default_button_bar_elevation">2dp</dimen>
-    <dimen name="default_bread_crumb_elevation">2dp</dimen>
 
 </resources>

@@ -58,32 +58,10 @@ not, see <http://www.gnu.org/licenses/>.
                     android:paddingEnd="@dimen/preference_screen_horizontal_padding"
                     android:paddingStart="@dimen/preference_screen_horizontal_padding">
 
-                    <TextView
-                        android:id="@id/bread_crumb_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/bread_crumb_height"
-                        android:background="@color/button_bar_background_light"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical|start"
-                        android:paddingLeft="@dimen/preference_horizontal_padding"
-                        android:paddingRight="@dimen/preference_horizontal_padding"
-                        android:singleLine="true"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="@dimen/bread_crumb_text_size"
-                        android:visibility="gone"/>
-
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1">
-
-                        <View
-                            android:id="@id/bread_crumb_shadow_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_gravity="top"
-                            android:visibility="gone"/>
 
                         <RelativeLayout
                             android:id="@id/preference_screen_parent"
