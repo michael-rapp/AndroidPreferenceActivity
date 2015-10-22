@@ -46,8 +46,8 @@ not, see <http://www.gnu.org/licenses/>.
         android:summary="@string/intent_preference_header_summary"
         android:title="@string/intent_preference_header_title">
         <intent
-            android:targetClass="de.mrapp.android.preference.activity.IntentActivity"
-            android:targetPackage="de.mrapp.android.preference.activity"/>
+            android:targetClass="de.mrapp.android.preference.activity.example.IntentActivity"
+            android:targetPackage="de.mrapp.android.preference.activity.example"/>
     </header>
 
 </preference-headers>
