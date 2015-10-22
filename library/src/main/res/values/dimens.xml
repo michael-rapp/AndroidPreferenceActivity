@@ -28,8 +28,7 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="subheader_height">48dp</dimen>
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="toolbar_large_height">144dp</dimen>
-    <dimen name="toolbar_title_margin_left">104dp</dimen>
-    <dimen name="toolbar_title_text_size">34sp</dimen>
+    <dimen name="preference_header_toolbar_padding_left">104dp</dimen>
     <dimen name="bread_crumb_text_size">20sp</dimen>
     <dimen name="preference_screen_horizontal_padding">0dp</dimen>
     <dimen name="default_navigation_width">360dp</dimen>

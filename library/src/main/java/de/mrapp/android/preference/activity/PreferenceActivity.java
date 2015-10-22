@@ -996,7 +996,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         CharSequence breadCrumbTitle = createBreadCrumbTitle(title);
 
         if (toolbarLarge != null) {
-            toolbarLarge.setBreadCrumbTitle(breadCrumbTitle);
+            // TODO
+            // toolbarLarge.setBreadCrumbTitle(breadCrumbTitle);
         } else if (breadCrumbTitle != null) {
             if (defaultTitle == null) {
                 defaultTitle = getTitle();
@@ -1914,7 +1915,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             navigationShadowView.requestLayout();
 
             if (toolbarLarge != null) {
-                toolbarLarge.setNavigationElevation(elevation);
+                // TODO
+                // toolbarLarge.setNavigationElevation(elevation);
             }
 
             return true;
