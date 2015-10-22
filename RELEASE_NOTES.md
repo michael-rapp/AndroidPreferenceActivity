@@ -1,6 +1,6 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
-## Version 3.0.0 (Oct. 21th 2015)
+## Version 3.0.0 (Oct. 22th 2015)
 
 A major release, which introduces the following changes:
 
