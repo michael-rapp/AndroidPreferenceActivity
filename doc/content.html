@@ -208,10 +208,6 @@
                         <td><tt>getPreferenceScreenContainer():ViewGroup</tt></td>
                         <td>Returns the view group, which contains the view, which can be referenced by the <tt>getPreferenceScreenParentView</tt>-method. This view is used to apply a horizontal margin. On smartphones this method always returns <tt>null</tt>.</td>
                     </tr>
-                    <tr>
-                        <td><tt>getBreadCrumb():TextView</tt></td>
-                        <td>Returns the view, which is used to display the title of the currently selected preference header. On smartphones or if the library's custom toolbar is used, this method always returns <tt>null</tt>, as the title is shown in the toolbar instead.</td>
-                    </tr>
                 </table>
 
                 <h5><a name="methods-to-directly-manipulate-the-appearance">3.2 Methods to directly manipulate the appearance</a></h5>
@@ -244,22 +240,16 @@
                         <td>When specifying a resource ID, the ID must correspond to a valid drawable resource. When specifying a color, the color must specify a valid RGB color.</td>
                     </tr>
                     <tr>
-                        <td><tt>getBreadCrumbBackground():Drawable<br/>setBreadCrumbBackground(int):boolean<br/>setBreadCrumbBackground(Drawable):boolean<br/>setBreadCrumbBackgroundColor(int):boolean</tt></td>
-                        <td>Returns or sets the background of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used.</td>
-                        <td><center><tt>R.color.button_bar_</br>background_light</tt> or <tt>null</tt> on smartphones or when the library's custom toolbar is used</center></td>
-                        <td>The value must specify a valid RGB color</td>
+                        <td><tt>getToolbarElevation():int<br/>setToolbarElevation(int):void</tt></td>
+                        <td>Returns or sets the elevation of the activity's toolbar.</td>
+                        <td><center><tt>3dp</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 5</td>
                     </tr>
                     <tr>
                         <td><tt>getNavigationElevation():int<br/>setNavigationElevation(int):boolean</tt></td>
                         <td>Returns or sets the elevation of the navigation in dp. The methods are only available on tablets.</td>
                         <td><center><tt>3dp</tt> or <tt>-1</tt> on smartphones</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
-                    </tr>
-                    <tr>
-                        <td><tt>getBreadCrumbElevation():int<br/>setBreadCrumbElevation(int):boolean</tt></td>
-                        <td>Returns or sets the elevation of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used, in dp.</td>
-                        <td><center><tt>3dp</tt> or <tt>-1</tt> on smartphones or when the library's custom toolbar is used</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td>The value must be at least 0 and at maximum 5</td>
                     </tr>
                 </table>
 
@@ -331,7 +321,7 @@
 
                 <p>A <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> can also be used as a wizard, which causes the navigation to be replaced by a different one, which provides additional buttons to step to the next or previous preference header. On smartphones the navigation will become completely hidden, when the activity is used as a wizard, on tablets the navigation will only become unsensitive for clicking the single items instead. The following screenshots illustrate the appearance of such a wizard on tablets, respectively on smartphones:</p>
 
-                <p><center><a href="images/example-wizard.png" target="_blank".><img src="images/example-wizard.png" width=800" alt="Example"></center></a></p>
+                <p><center><a href="images/example-wizard.png" target="_blank".><img src="images/example-wizard.png" width=800" alt="Example"></a></center></p>
 
                 <h5><a name="how-to-use-an-activity-as-a-wizard">5.1 How to use an activity as a wizard</a></h5>
 
@@ -428,7 +418,7 @@
                         <td><tt>getButtonBarElevation():int<br/>setButtonBarElevation(int):boolean</tt></td>
                         <td>Returns or sets the elevation of the button bar, which contains the buttons, which are shown when the activity is used as a wizard, in dp.</td>
                         <td><center><tt>3dp</tt> or <tt>-1</tt> when the acitivty is not used as a wizard</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td>The value must be at least 0 and at maximum 5</td>
                     </tr>
                 </table>
 
@@ -499,7 +489,7 @@
                         <td><tt>getButtonBarElevation():int<br/>setButtonBarElevation(int):boolean</tt></td>
                         <td>Returns or sets the elevation of the button bar, which contains the button, which allows to restore the default values, in dp.</td>
                         <td><center><tt>3dp</tt> or <tt>-1</tt> when the button, which allows to restore the default values, is not shown</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td>The value must be at least 0 and at maximum 5</td>
                     </tr>
                 </table>
 
@@ -568,11 +558,6 @@
                         <td>The drawable resource or color of the background of the view group, which contains the button, which allows to restore a PreferenceFragment's default values</td>
                     </tr>
                     <tr>
-                        <td><tt>breadCrumbBackground</tt></td>
-                        <td><center><tt>reference</tt> or <tt>color</tt></center></td>
-                        <td>The drawable resource or color of the background of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used</td>
-                    </tr>
-                    <tr>
                         <td><tt>navigationWidth</tt></td>
                         <td><center><tt>dimension</tt></center></td>
                         <td>The width of the navigation in dp</td>
@@ -581,6 +566,11 @@
                         <td><tt>overrideNavigationIcon</tt></td>
                         <td><center><tt>boolean</tt></center></td>
                         <td>True, if behavior of the navigation icon should be overridden, false otherwise</td>
+                    </tr>
+                    <tr>
+                        <td><tt>toolbarElevation</tt></td>
+                        <td><center><tt>dimension</tt></center></td>
+                        <td>The elevation of the activity's toolbar in dp</td>
                     </tr>
                     <tr>
                         <td><tt>navigationElevation</tt></td>
@@ -596,11 +586,6 @@
                         <td><tt>restoreDefaultsButtonBarElevation</tt></td>
                         <td><center><tt>dimension</tt></center></td>
                         <td>The elevation of the view group, which contains the button, which allows to restore a PreferenceFragment's default values, in dp</td>
-                    </tr>
-                    <tr>
-                        <td><tt>breadCrumbElevation</tt></td>
-                        <td><center><tt>dimension</tt></center></td>
-                        <td>The elevation of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used, in dp</td>
                     </tr>
                     <tr>
                         <td><tt>preferenceHeaderSelector</tt></td>

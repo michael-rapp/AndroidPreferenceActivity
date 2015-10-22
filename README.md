@@ -106,7 +106,6 @@ The following content of an Android app's `res/values/styles.xml` can be used to
         <item name="navigationBackground">@color/navigation_background_dark</item> 
         <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item> 
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item> 
-        <item name="breadCrumbBackground">@color/button_bar_background_dark</item> 
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item> 
         <item name="preferenceHeaderSelector">@drawable/selector_dark</item> 
     </style/> 
