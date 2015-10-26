@@ -43,6 +43,13 @@ not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/preference_screen_elevation_preference_summary"
             android:title="@string/preference_screen_elevation_preference_title"/>
         <ListPreference
+            android:defaultValue="@string/bread_crumb_elevation_preference_default_value"
+            android:entries="@array/bread_crumb_elevation_list_entries"
+            android:entryValues="@array/bread_crumb_elevation_list_values"
+            android:key="@string/bread_crumb_elevation_preference_key"
+            android:summary="@string/bread_crumb_elevation_preference_summary"
+            android:title="@string/bread_crumb_elevation_preference_title"/>
+        <ListPreference
             android:defaultValue="@string/preference_fragment_button_bar_elevation_preference_default_value"
             android:entries="@array/preference_fragment_button_bar_elevation_list_entries"
             android:entryValues="@array/preference_fragment_button_bar_elevation_list_values"

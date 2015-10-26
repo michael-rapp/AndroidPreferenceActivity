@@ -94,6 +94,26 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Creates and returns a listener, which allows to adapt the elevation of the bread crumbs, when
+     * the value of the corresponding preference has been changed.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPreferenceChangeListener}
+     */
+    private OnPreferenceChangeListener createBreadCrumbElevationChangeListener() {
+        return new OnPreferenceChangeListener() {
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int elevation = Integer.valueOf((String) newValue);
+                ((PreferenceActivity) getActivity()).setBreadCrumbElevation(elevation);
+                return true;
+            }
+
+        };
+    }
+
+    /**
      * Creates and returns a listener, which allows to adapt the elevation of a wizard's button bar,
      * when the value of the corresponding preference has been changed.
      *
@@ -148,6 +168,10 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
                 findPreference(getString(R.string.preference_screen_elevation_preference_key));
         preferenceScreenElevationPreference
                 .setOnPreferenceChangeListener(createPreferenceScreenElevationChangeListener());
+        Preference breadCrumbElevationPreference =
+                findPreference(getString(R.string.bread_crumb_elevation_preference_key));
+        breadCrumbElevationPreference
+                .setOnPreferenceChangeListener(createBreadCrumbElevationChangeListener());
         Preference wizardButtonBarElevationPreference =
                 findPreference(getString(R.string.wizard_button_bar_elevation_preference_key));
         wizardButtonBarElevationPreference
@@ -187,6 +211,9 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
                 .equals(getString(R.string.preference_screen_elevation_preference_key))) {
             createPreferenceScreenElevationChangeListener()
                     .onPreferenceChange(preference, newValue);
+        } else if (preference.getKey()
+                .equals(getString(R.string.bread_crumb_elevation_preference_key))) {
+            createBreadCrumbElevationChangeListener().onPreferenceChange(preference, newValue);
         } else if (preference.getKey()
                 .equals(getString(R.string.wizard_button_bar_elevation_preference_key))) {
             createWizardButtonBarElevationChangeListener().onPreferenceChange(preference, newValue);

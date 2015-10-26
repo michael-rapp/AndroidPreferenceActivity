@@ -60,6 +60,20 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
     }
 
     /**
+     * Initializes the elevation of the bread crumbs.
+     *
+     * @param sharedPreferences
+     *         The shared preferences, which should be used, as an instance of the type {@link
+     *         SharedPreferences}
+     */
+    private void initializeBreadCrumbElevation(final SharedPreferences sharedPreferences) {
+        String key = getString(R.string.bread_crumb_elevation_preference_key);
+        String defaultValue = getString(R.string.bread_crumb_elevation_preference_default_value);
+        int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
+        setBreadCrumbElevation(elevation);
+    }
+
+    /**
      * Initializes the elevation of a wizard's button bar.
      *
      * @param sharedPreferences
@@ -124,6 +138,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         initializeNavigationWidth(sharedPreferences);
         initializePreferenceScreenElevation(sharedPreferences);
+        initializeBreadCrumbElevation(sharedPreferences);
         initializeOverrideBackButton(sharedPreferences);
         initializeHideNavigation(sharedPreferences);
         ActionBar actionBar = getSupportActionBar();
