@@ -1976,6 +1976,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 "The elevation must be at least " + ElevationUtil.MAX_ELEVATION);
 
         if (preferenceScreenContainer != null) {
+            preferenceScreenElevation = elevation;
             preferenceScreenContainer.setCardElevation(elevation);
             return true;
         }
