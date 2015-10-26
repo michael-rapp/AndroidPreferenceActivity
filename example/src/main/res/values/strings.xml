@@ -89,7 +89,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="wizard_button_bar_elevation_preference_key">wizard_button_bar_elevation_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="wizard_button_bar_elevation_preference_default_value">4</string>
+    <string name="wizard_button_bar_elevation_preference_default_value">6</string>
     <!-- suppress MissingTranslation -->
     <string name="appearance_preference_preference_screen_category">Preference screen</string>
     <!-- suppress MissingTranslation -->
@@ -99,7 +99,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="preference_fragment_button_bar_elevation_preference_key">preference_fragment_button_bar_elevation_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="preference_fragment_button_bar_elevation_preference_default_value">4</string>
+    <string name="preference_fragment_button_bar_elevation_preference_default_value">6</string>
     <!-- suppress MissingTranslation -->
     <string name="behavior_preference_header_title">Behavior</string>
     <!-- suppress MissingTranslation -->
@@ -301,9 +301,9 @@ not, see <http://www.gnu.org/licenses/>.
         <item>1 dp</item>
         <item>2 dp</item>
         <item>3 dp</item>
-        <item>4 dp (default)</item>
+        <item>4 dp</item>
         <item>5 dp</item>
-        <item>6 dp</item>
+        <item>6 dp (default)</item>
         <item>7 dp</item>
         <item>8 dp</item>
         <item>9 dp</item>
@@ -343,9 +343,9 @@ not, see <http://www.gnu.org/licenses/>.
         <item>1 dp</item>
         <item>2 dp</item>
         <item>3 dp</item>
-        <item>4 dp (default)</item>
+        <item>4 dp</item>
         <item>5 dp</item>
-        <item>6 dp</item>
+        <item>6 dp (default)</item>
         <item>7 dp</item>
         <item>8 dp</item>
         <item>9 dp</item>
