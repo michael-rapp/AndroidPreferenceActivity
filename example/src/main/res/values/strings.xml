@@ -71,7 +71,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="preference_screen_elevation_preference_key">preference_screen_elevation_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="preference_screen_elevation_preference_default_value">8</string>
+    <string name="preference_screen_elevation_preference_default_value">14</string>
 
     <!-- suppress MissingTranslation -->
     <string name="appearance_preference_wizard_category">Wizard</string>
@@ -82,7 +82,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="wizard_button_bar_elevation_preference_key">wizard_button_bar_elevation_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="wizard_button_bar_elevation_preference_default_value">2</string>
+    <string name="wizard_button_bar_elevation_preference_default_value">4</string>
     <!-- suppress MissingTranslation -->
     <string name="appearance_preference_preference_screen_category">Preference screen</string>
     <!-- suppress MissingTranslation -->
@@ -92,7 +92,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="preference_fragment_button_bar_elevation_preference_key">preference_fragment_button_bar_elevation_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="preference_fragment_button_bar_elevation_preference_default_value">2</string>
+    <string name="preference_fragment_button_bar_elevation_preference_default_value">4</string>
     <!-- suppress MissingTranslation -->
     <string name="behavior_preference_header_title">Behavior</string>
     <!-- suppress MissingTranslation -->
@@ -256,38 +256,86 @@ not, see <http://www.gnu.org/licenses/>.
 
     <!-- suppress MissingTranslation -->
     <string-array name="wizard_button_bar_elevation_list_entries">
+        <item>0 dp</item>
         <item>1 dp</item>
-        <item>2 dp (default)</item>
+        <item>2 dp</item>
         <item>3 dp</item>
-        <item>4 dp</item>
+        <item>4 dp (default)</item>
         <item>5 dp</item>
+        <item>6 dp</item>
+        <item>7 dp</item>
+        <item>8 dp</item>
+        <item>9 dp</item>
+        <item>10 dp</item>
+        <item>11 dp</item>
+        <item>12 dp</item>
+        <item>13 dp</item>
+        <item>14 dp</item>
+        <item>15 dp</item>
+        <item>16 dp</item>
     </string-array>
 
     <!-- suppress MissingTranslation -->
     <string-array name="wizard_button_bar_elevation_list_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </string-array>
 
     <!-- suppress MissingTranslation -->
     <string-array name="preference_fragment_button_bar_elevation_list_entries">
+        <item>0 dp</item>
         <item>1 dp</item>
-        <item>2 dp (default)</item>
+        <item>2 dp</item>
         <item>3 dp</item>
-        <item>4 dp</item>
+        <item>4 dp (default)</item>
         <item>5 dp</item>
+        <item>6 dp</item>
+        <item>7 dp</item>
+        <item>8 dp</item>
+        <item>9 dp</item>
+        <item>10 dp</item>
+        <item>11 dp</item>
+        <item>12 dp</item>
+        <item>13 dp</item>
+        <item>14 dp</item>
+        <item>15 dp</item>
+        <item>16 dp</item>
     </string-array>
 
     <!-- suppress MissingTranslation -->
     <string-array name="preference_fragment_button_bar_elevation_list_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </string-array>
 
 </resources>

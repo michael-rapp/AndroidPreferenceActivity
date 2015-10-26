@@ -34,6 +34,6 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- Default values -->
     <dimen name="default_navigation_width">384dp</dimen>
     <dimen name="default_bread_crumb_elevation">2dp</dimen>
-    <dimen name="default_preference_screen_elevation">8dp</dimen>
+    <dimen name="default_preference_screen_elevation">14dp</dimen>
 
 </resources>
