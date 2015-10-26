@@ -63,7 +63,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="navigation_width_preference_key">navigation_width_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="navigation_width_preference_default_value">320</string>
+    <string name="navigation_width_preference_default_value">384</string>
     <!-- suppress MissingTranslation -->
     <string name="navigation_elevation_preference_title">Navigation elevation</string>
     <!-- suppress MissingTranslation -->
@@ -200,16 +200,16 @@ not, see <http://www.gnu.org/licenses/>.
 
     <!-- suppress MissingTranslation -->
     <string-array name="navigation_width_list_entries">
-        <item>240 dp</item>
-        <item>360 dp (default)</item>
-        <item>480 dp</item>
+        <item>256 dp</item>
+        <item>384 dp (default)</item>
+        <item>512 dp</item>
     </string-array>
 
     <!-- suppress MissingTranslation -->
     <string-array name="navigation_width_list_values">
-        <item>240</item>
-        <item>320</item>
-        <item>480</item>
+        <item>256</item>
+        <item>384</item>
+        <item>512</item>
     </string-array>
 
     <!-- suppress MissingTranslation -->
