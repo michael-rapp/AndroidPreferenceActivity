@@ -110,14 +110,6 @@ public class MainActivity extends AppCompatActivity {
                     String titleKey = getString(R.string.alternative_title_preference_key);
                     String title = sharedPreferences.getString(titleKey, titleDefaultValue);
                     intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE, title);
-
-                    String shortTitleDefaultValue =
-                            getString(R.string.alternative_short_title_preference_default_value);
-                    String shortTitleKey =
-                            getString(R.string.alternative_short_title_preference_key);
-                    String shortTitle =
-                            sharedPreferences.getString(shortTitleKey, shortTitleDefaultValue);
-                    intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_SHORT_TITLE, shortTitle);
                 }
 
                 startActivity(intent);

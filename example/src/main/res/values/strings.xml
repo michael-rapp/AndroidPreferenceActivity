@@ -134,14 +134,6 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="alternative_title_preference_key">alternative_title_preference_key</string>
     <!-- suppress MissingTranslation -->
-    <string name="alternative_short_title_preference_title">Alternative short title</string>
-    <!-- suppress MissingTranslation -->
-    <string name="alternative_short_title_preference_summary">The alternative short title, which should be used when an initial fragment is shown</string>
-    <!-- suppress MissingTranslation -->
-    <string name="alternative_short_title_preference_default_value">Alternative title</string>
-    <!-- suppress MissingTranslation -->
-    <string name="alternative_short_title_preference_key">alternative_short_title_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="intent_preference_header_title">Intent</string>
     <!-- suppress MissingTranslation -->
     <string name="intent_preference_header_summary">This preference header launches an other activity</string>

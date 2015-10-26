@@ -43,12 +43,6 @@ not, see <http://www.gnu.org/licenses/>.
             android:key="@string/alternative_title_preference_key"
             android:summary="@string/alternative_title_preference_summary"
             android:title="@string/alternative_title_preference_title"/>
-        <EditTextPreference
-            android:defaultValue="@string/alternative_short_title_preference_default_value"
-            android:dependency="@string/use_alternative_title_preference_key"
-            android:key="@string/alternative_short_title_preference_key"
-            android:summary="@string/alternative_short_title_preference_summary"
-            android:title="@string/alternative_short_title_preference_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
