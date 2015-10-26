@@ -2241,8 +2241,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (isSplitScreen()) {
             this.navigationWidth = width;
             int pixelWidth = dpToPixels(this, width);
-            getPreferenceHeaderParentView().getLayoutParams().width = pixelWidth;
-            getPreferenceHeaderParentView().requestLayout();
+            int displayWidth = getResources().getDisplayMetrics().widthPixels;
+            getPreferenceHeaderParentView().setPadding(0, 0, displayWidth - pixelWidth, 0);
 
             if (!isNavigationHidden()) {
                 FrameLayout.LayoutParams preferenceScreenLayoutParams =
