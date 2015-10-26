@@ -45,9 +45,9 @@ public class ToolbarLarge extends FrameLayout {
     private View backgroundView;
 
     /**
-     * The text view, which is used to show the toolbar's title.
+     * The toolbar, which is used to show the title.
      */
-    private Toolbar preferenceHeaderToolbar;
+    private Toolbar toolbar;
 
     /**
      * The width of the navigation in dp.
@@ -60,9 +60,9 @@ public class ToolbarLarge extends FrameLayout {
     private void inflate() {
         inflate(getContext(), R.layout.toolbar_large, this);
         this.backgroundView = findViewById(R.id.toolbar_background_view);
-        this.preferenceHeaderToolbar = (Toolbar) findViewById(R.id.navigation_toolbar);
+        this.toolbar = (Toolbar) findViewById(R.id.navigation_toolbar);
         RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) preferenceHeaderToolbar.getLayoutParams();
+                (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
         this.navigationWidth = pixelsToDp(getContext(), layoutParams.width);
     }
 
@@ -127,7 +127,7 @@ public class ToolbarLarge extends FrameLayout {
 
         if (textColorPrimary != 0) {
             int titleColor = getContext().getResources().getColor(textColorPrimary);
-            preferenceHeaderToolbar.setTitleTextColor(titleColor);
+            toolbar.setTitleTextColor(titleColor);
         }
     }
 
@@ -190,7 +190,7 @@ public class ToolbarLarge extends FrameLayout {
      * title is set
      */
     public final CharSequence getTitle() {
-        return preferenceHeaderToolbar.getTitle();
+        return toolbar.getTitle();
     }
 
     /**
@@ -201,7 +201,7 @@ public class ToolbarLarge extends FrameLayout {
      *         null, if no title should be set
      */
     public final void setTitle(@Nullable final CharSequence title) {
-        preferenceHeaderToolbar.setTitle(title);
+        toolbar.setTitle(title);
     }
 
     /**
@@ -212,7 +212,7 @@ public class ToolbarLarge extends FrameLayout {
      *         resource id must correspond to a valid string resource
      */
     public final void setTitle(@StringRes final int resourceId) {
-        preferenceHeaderToolbar.setTitle(resourceId);
+        toolbar.setTitle(resourceId);
     }
 
     /**
@@ -237,9 +237,9 @@ public class ToolbarLarge extends FrameLayout {
 
         if (!isNavigationHidden()) {
             RelativeLayout.LayoutParams layoutParams =
-                    (RelativeLayout.LayoutParams) preferenceHeaderToolbar.getLayoutParams();
+                    (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
             layoutParams.width = dpToPixels(getContext(), width);
-            preferenceHeaderToolbar.requestLayout();
+            toolbar.requestLayout();
         }
     }
 
@@ -249,7 +249,7 @@ public class ToolbarLarge extends FrameLayout {
      * @return True, if the navigation is hidden, false otherwise
      */
     public final boolean isNavigationHidden() {
-        return preferenceHeaderToolbar.getVisibility() != View.VISIBLE;
+        return toolbar.getVisibility() != View.VISIBLE;
     }
 
     /**
@@ -260,11 +260,21 @@ public class ToolbarLarge extends FrameLayout {
      */
     @SuppressWarnings("deprecation")
     public final void hideNavigation(final boolean navigationHidden) {
-        preferenceHeaderToolbar.setVisibility(navigationHidden ? View.INVISIBLE : View.VISIBLE);
+        toolbar.setVisibility(navigationHidden ? View.INVISIBLE : View.VISIBLE);
 
         if (!navigationHidden) {
             setNavigationWidth(navigationWidth);
         }
+    }
+
+    /**
+     * Returns the toolbar, which is used to show the title.
+     *
+     * @return The toolbar, which is used to show the title, as an instance of the class {@link
+     * Toolbar}
+     */
+    public final Toolbar getToolbar() {
+        return toolbar;
     }
 
 }

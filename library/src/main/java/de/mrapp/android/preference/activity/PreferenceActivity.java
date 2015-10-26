@@ -1336,6 +1336,38 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the toolbar, which is used to show the activity's title on devices with a large
+     * screen.
+     *
+     * @return The toolbar, which is used to show the activity's title on devices with a large
+     * screen, as an instance of the class {@link Toolbar} or null, if the device has a small
+     * screen
+     */
+    public final Toolbar getNavigationToolbar() {
+        if (isSplitScreen()) {
+            return toolbarLarge.getToolbar();
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the toolbar, which is used to show the title of the currently selected preference
+     * header on devices with a large screen.
+     *
+     * @return The toolbar, which is used to show the title of the currently selected preference
+     * header on devices with a large screen, as an instance of the class {@link Toolbar} or null,
+     * if the device has a small screen
+     */
+    public final Toolbar getBreadCrumbToolbar() {
+        if (isSplitScreen()) {
+            return breadCrumbToolbar;
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the view group, which contains the buttons, which are shown when the activity is used
      * as a wizard.
      *
