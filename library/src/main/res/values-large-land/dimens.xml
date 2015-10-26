@@ -17,6 +17,7 @@ not, see <http://www.gnu.org/licenses/>.
 <resources>
 
     <!-- Preference screen -->
-    <dimen name="preference_screen_horizontal_margin">128dp</dimen>
+    <dimen name="preference_screen_margin_right">128dp</dimen>
+    <dimen name="preference_screen_horizontal_margin">250dp</dimen>
 
 </resources>

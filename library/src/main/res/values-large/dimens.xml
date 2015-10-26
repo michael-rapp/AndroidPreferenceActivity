@@ -22,6 +22,10 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="preference_vertical_padding">16dp</dimen>
     <dimen name="preference_child_horizontal_padding">48dp</dimen>
 
+    <!-- Preference screen -->
+    <dimen name="preference_screen_margin_right">32dp</dimen>
+    <dimen name="preference_screen_horizontal_margin">64dp</dimen>
+
     <!-- List views -->
     <dimen name="list_view_item_min_height">64dp</dimen>
     <dimen name="list_view_item_horizontal_padding">24dp</dimen>

@@ -234,10 +234,13 @@ public class ToolbarLarge extends FrameLayout {
     public final void setNavigationWidth(final int width) {
         ensureGreater(width, 0, "The width must be greater than 0");
         this.navigationWidth = width;
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) preferenceHeaderToolbar.getLayoutParams();
-        layoutParams.width = dpToPixels(getContext(), width);
-        preferenceHeaderToolbar.requestLayout();
+
+        if (!isNavigationHidden()) {
+            RelativeLayout.LayoutParams layoutParams =
+                    (RelativeLayout.LayoutParams) preferenceHeaderToolbar.getLayoutParams();
+            layoutParams.width = dpToPixels(getContext(), width);
+            preferenceHeaderToolbar.requestLayout();
+        }
     }
 
     /**

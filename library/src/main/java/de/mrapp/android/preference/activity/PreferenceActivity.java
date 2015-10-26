@@ -32,6 +32,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -346,6 +347,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * small screen.
      */
     private boolean overrideNavigationIcon;
+
+    /**
+     * The width of the parent view of the fragment, which provides navigation to each preference
+     * header's fragment on devices with a large screen, in dp.
+     */
+    private int navigationWidth;
 
     /**
      * True, if the fragment, which provides navigation to each preference header's fragment on
@@ -852,10 +859,18 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (isSplitScreen()) {
             getPreferenceHeaderParentView()
                     .setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
-
-            if (toolbarLarge != null) {
-                toolbarLarge.hideNavigation(navigationHidden);
-            }
+            FrameLayout.LayoutParams preferenceScreenLayoutParams =
+                    (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
+            preferenceScreenLayoutParams.leftMargin = navigationHidden ? getResources()
+                    .getDimensionPixelSize(R.dimen.preference_screen_horizontal_margin) :
+                    dpToPixels(this, getNavigationWidth());
+            preferenceScreenLayoutParams.rightMargin = getResources().getDimensionPixelSize(
+                    navigationHidden ? R.dimen.preference_screen_horizontal_margin :
+                            R.dimen.preference_screen_margin_right);
+            preferenceScreenLayoutParams.gravity =
+                    navigationHidden ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY;
+            getPreferenceScreenContainer().requestLayout();
+            toolbarLarge.hideNavigation(navigationHidden);
         } else {
             if (isPreferenceHeaderSelected()) {
                 if (navigationHidden) {
@@ -2205,7 +2220,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final int getNavigationWidth() {
         if (isSplitScreen()) {
-            return pixelsToDp(this, getPreferenceHeaderParentView().getLayoutParams().width);
+            return navigationWidth;
         }
 
         return -1;
@@ -2224,18 +2239,19 @@ public abstract class PreferenceActivity extends AppCompatActivity
         ensureGreater(width, 0, "The width must be greater than 0");
 
         if (isSplitScreen()) {
-            getPreferenceHeaderParentView().getLayoutParams().width = dpToPixels(this, width);
+            this.navigationWidth = width;
+            int pixelWidth = dpToPixels(this, width);
+            getPreferenceHeaderParentView().getLayoutParams().width = pixelWidth;
             getPreferenceHeaderParentView().requestLayout();
-            FrameLayout.LayoutParams preferenceScreenLayoutParams =
-                    (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
-            preferenceScreenLayoutParams.leftMargin = dpToPixels(this, width);
-            getPreferenceScreenContainer().setLayoutParams(preferenceScreenLayoutParams);
-            getPreferenceScreenContainer().requestLayout();
 
-            if (toolbarLarge != null) {
-                toolbarLarge.setNavigationWidth(width);
+            if (!isNavigationHidden()) {
+                FrameLayout.LayoutParams preferenceScreenLayoutParams =
+                        (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
+                preferenceScreenLayoutParams.leftMargin = pixelWidth;
+                getPreferenceScreenContainer().requestLayout();
             }
 
+            toolbarLarge.setNavigationWidth(width);
             return true;
         }
 
@@ -2399,7 +2415,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         super.setTitle(title);
         ActionBar actionBar = getSupportActionBar();
 
-        if (toolbarLarge != null) {
+        if (isSplitScreen()) {
             toolbarLarge.setTitle(title);
 
             if (actionBar != null) {
