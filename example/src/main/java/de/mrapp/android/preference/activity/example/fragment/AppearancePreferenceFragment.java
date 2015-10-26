@@ -36,7 +36,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
 
     /**
      * Creates and returns a listener, which allows to adapt the app's theme, when the value of the
-     * appropriate preference has been changed.
+     * corresponding preference has been changed.
      *
      * @return The listener, which has been created, as an instance of the type {@link
      * OnPreferenceChangeListener}
@@ -55,7 +55,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
 
     /**
      * Creates and returns a listener, which allows to adapt the width of the navigation, when the
-     * value of the appropriate preference has been changed.
+     * value of the corresponding preference has been changed.
      *
      * @return The listener, which has been created, as an instance of the type {@link
      * OnPreferenceChangeListener}
@@ -74,20 +74,19 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
     }
 
     /**
-     * Creates and returns a listener, which allows to adapt the elevation of the navigation, when
-     * the value of the appropriate preference has been changed.
+     * Creates and returns a listener, which allows to adapt the elevation of the preference screen,
+     * when the value of the corresponding preference has been changed.
      *
      * @return The listener, which has been created, as an instance of the type {@link
      * OnPreferenceChangeListener}
      */
-    private OnPreferenceChangeListener createNavigationElevationChangeListener() {
+    private OnPreferenceChangeListener createPreferenceScreenElevationChangeListener() {
         return new OnPreferenceChangeListener() {
 
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-               // TODO
-               // ((PreferenceActivity) getActivity()).setNavigationElevation(elevation);
+                ((PreferenceActivity) getActivity()).setPreferenceScreenElevation(elevation);
                 return true;
             }
 
@@ -96,7 +95,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
 
     /**
      * Creates and returns a listener, which allows to adapt the elevation of a wizard's button bar,
-     * when the value of the appropriate preference has been changed.
+     * when the value of the corresponding preference has been changed.
      *
      * @return The listener, which has been created, as an instance of the type {@link
      * OnPreferenceChangeListener}
@@ -116,7 +115,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
 
     /**
      * Creates and returns a listener, which allows to adapt the elevation of a preference
-     * fragment's button bar, when the value of the appropriate preference has been changed.
+     * fragment's button bar, when the value of the corresponding preference has been changed.
      *
      * @return The listener, which has been created, as an instance of the type {@link
      * OnPreferenceChangeListener}
@@ -145,10 +144,10 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
                 findPreference(getString(R.string.navigation_width_preference_key));
         navigationWidthPreference
                 .setOnPreferenceChangeListener(createNavigationWidthChangeListener());
-        Preference navigationElevationPreference =
-                findPreference(getString(R.string.navigation_elevation_preference_key));
-        navigationElevationPreference
-                .setOnPreferenceChangeListener(createNavigationElevationChangeListener());
+        Preference preferenceScreenElevationPreference =
+                findPreference(getString(R.string.preference_screen_elevation_preference_key));
+        preferenceScreenElevationPreference
+                .setOnPreferenceChangeListener(createPreferenceScreenElevationChangeListener());
         Preference wizardButtonBarElevationPreference =
                 findPreference(getString(R.string.wizard_button_bar_elevation_preference_key));
         wizardButtonBarElevationPreference
@@ -185,8 +184,9 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
                 .equals(getString(R.string.navigation_width_preference_key))) {
             createNavigationWidthChangeListener().onPreferenceChange(preference, newValue);
         } else if (preference.getKey()
-                .equals(getString(R.string.navigation_elevation_preference_key))) {
-            createNavigationElevationChangeListener().onPreferenceChange(preference, newValue);
+                .equals(getString(R.string.preference_screen_elevation_preference_key))) {
+            createPreferenceScreenElevationChangeListener()
+                    .onPreferenceChange(preference, newValue);
         } else if (preference.getKey()
                 .equals(getString(R.string.wizard_button_bar_elevation_preference_key))) {
             createWizardButtonBarElevationChangeListener().onPreferenceChange(preference, newValue);

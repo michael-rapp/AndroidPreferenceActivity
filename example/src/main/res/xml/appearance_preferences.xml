@@ -33,13 +33,22 @@ not, see <http://www.gnu.org/licenses/>.
             android:key="@string/navigation_width_preference_key"
             android:summary="@string/navigation_width_preference_summary"
             android:title="@string/navigation_width_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/appearance_preference_preference_screen_category">
         <ListPreference
-            android:defaultValue="@string/navigation_elevation_preference_default_value"
-            android:entries="@array/navigation_elevation_list_entries"
-            android:entryValues="@array/navigation_elevation_list_values"
-            android:key="@string/navigation_elevation_preference_key"
-            android:summary="@string/navigation_elevation_preference_summary"
-            android:title="@string/navigation_elevation_preference_title"/>
+            android:defaultValue="@string/preference_screen_elevation_preference_default_value"
+            android:entries="@array/preference_screen_elevation_list_entries"
+            android:entryValues="@array/preference_screen_elevation_list_values"
+            android:key="@string/preference_screen_elevation_preference_key"
+            android:summary="@string/preference_screen_elevation_preference_summary"
+            android:title="@string/preference_screen_elevation_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/preference_fragment_button_bar_elevation_preference_default_value"
+            android:entries="@array/preference_fragment_button_bar_elevation_list_entries"
+            android:entryValues="@array/preference_fragment_button_bar_elevation_list_values"
+            android:key="@string/preference_fragment_button_bar_elevation_preference_key"
+            android:summary="@string/preference_fragment_button_bar_elevation_preference_summary"
+            android:title="@string/preference_fragment_button_bar_elevation_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/appearance_preference_wizard_category">
         <ListPreference
@@ -49,15 +58,6 @@ not, see <http://www.gnu.org/licenses/>.
             android:key="@string/wizard_button_bar_elevation_preference_key"
             android:summary="@string/wizard_button_bar_elevation_preference_summary"
             android:title="@string/wizard_button_bar_elevation_preference_title"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/appearance_preference_preference_fragment_category">
-        <ListPreference
-            android:defaultValue="@string/preference_fragment_button_bar_elevation_preference_default_value"
-            android:entries="@array/preference_fragment_button_bar_elevation_list_entries"
-            android:entryValues="@array/preference_fragment_button_bar_elevation_list_values"
-            android:key="@string/preference_fragment_button_bar_elevation_preference_key"
-            android:summary="@string/preference_fragment_button_bar_elevation_preference_summary"
-            android:title="@string/preference_fragment_button_bar_elevation_preference_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

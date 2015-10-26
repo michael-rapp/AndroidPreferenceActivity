@@ -45,18 +45,18 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
     }
 
     /**
-     * Initializes the elevation of the navigation.
+     * Initializes the elevation of the preference screen.
      *
      * @param sharedPreferences
      *         The shared preferences, which should be used, as an instance of the type {@link
      *         SharedPreferences}
      */
-    private void initializeNavigationElevation(final SharedPreferences sharedPreferences) {
-        String key = getString(R.string.navigation_elevation_preference_key);
-        String defaultValue = getString(R.string.navigation_elevation_preference_default_value);
+    private void initializePreferenceScreenElevation(final SharedPreferences sharedPreferences) {
+        String key = getString(R.string.preference_screen_elevation_preference_key);
+        String defaultValue =
+                getString(R.string.preference_screen_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-       // TODO
-       // setNavigationElevation(elevation);
+        setPreferenceScreenElevation(elevation);
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         initializeNavigationWidth(sharedPreferences);
-        initializeNavigationElevation(sharedPreferences);
+        initializePreferenceScreenElevation(sharedPreferences);
         initializeOverrideBackButton(sharedPreferences);
         initializeHideNavigation(sharedPreferences);
         ActionBar actionBar = getSupportActionBar();
