@@ -19,10 +19,12 @@ not, see <http://www.gnu.org/licenses/>.
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <View
+    <ImageView
         android:id="@id/restore_defaults_button_bar_shadow_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"/>
 
     <RelativeLayout
         android:id="@id/restore_defaults_button_bar"

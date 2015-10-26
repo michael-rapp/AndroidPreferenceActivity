@@ -22,47 +22,4 @@ not, see <http://www.gnu.org/licenses/>.
     <string name="restore_defaults_button_label">RESTORE DEFAULTS</string>
     <string name="progress_format" formatted="false">Step %d of %d: %s</string>
 
-    <string-array name="navigation_elevation_shadow_widths">
-        <item>1</item>
-        <item>3</item>
-        <item>10</item>
-        <item>14</item>
-        <item>19</item>
-    </string-array>
-    <string-array name="navigation_elevation_shadow_colors">
-        <item>#1f000000</item>
-        <item>#29000000</item>
-        <item>#31000000</item>
-        <item>#40000000</item>
-        <item>#4d000000</item>
-    </string-array>
-    <string-array name="button_bar_elevation_shadow_widths">
-        <item>1</item>
-        <item>3</item>
-        <item>10</item>
-        <item>14</item>
-        <item>19</item>
-    </string-array>
-    <string-array name="button_bar_elevation_shadow_colors">
-        <item>#1f000000</item>
-        <item>#29000000</item>
-        <item>#31000000</item>
-        <item>#40000000</item>
-        <item>#4d000000</item>
-    </string-array>
-    <string-array name="bread_crumb_elevation_shadow_widths">
-        <item>1</item>
-        <item>3</item>
-        <item>6</item>
-        <item>10</item>
-        <item>15</item>
-    </string-array>
-    <string-array name="bread_crumb_elevation_shadow_colors">
-        <item>#3d000000</item>
-        <item>#3b000000</item>
-        <item>#3b000000</item>
-        <item>#38000000</item>
-        <item>#38000000</item>
-    </string-array>
-
 </resources>

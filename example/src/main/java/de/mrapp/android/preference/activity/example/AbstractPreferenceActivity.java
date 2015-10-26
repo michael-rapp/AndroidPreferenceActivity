@@ -55,7 +55,8 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.navigation_elevation_preference_key);
         String defaultValue = getString(R.string.navigation_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setNavigationElevation(elevation);
+       // TODO
+       // setNavigationElevation(elevation);
     }
 
     /**

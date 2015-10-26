@@ -60,7 +60,7 @@ public class ToolbarLarge extends FrameLayout {
     private void inflate() {
         inflate(getContext(), R.layout.toolbar_large, this);
         this.backgroundView = findViewById(R.id.toolbar_background_view);
-        this.preferenceHeaderToolbar = (Toolbar) findViewById(R.id.preference_header_toolbar);
+        this.preferenceHeaderToolbar = (Toolbar) findViewById(R.id.navigation_toolbar);
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams) preferenceHeaderToolbar.getLayoutParams();
         this.navigationWidth = pixelsToDp(getContext(), layoutParams.width);

@@ -22,6 +22,8 @@ not, see <http://www.gnu.org/licenses/>.
         <item name="colorAccent">#ffd64937</item>
         <item name="toolbarTheme">@style/ToolbarTheme</item>
         <item name="toolbarPopupTheme">@style/LightToolbarPopupTheme</item>
+        <item name="invertedToolbarTheme">@style/LightInvertedToolbarTheme</item>
+        <item name="invertedToolbarPopupTheme">@style/DarkToolbarPopupTheme</item>
     </style>
 
     <style name="DarkTheme" parent="@style/Theme.AppCompat.NoActionBar">
@@ -30,6 +32,8 @@ not, see <http://www.gnu.org/licenses/>.
         <item name="colorAccent">#ffd64937</item>
         <item name="toolbarTheme">@style/ToolbarTheme</item>
         <item name="toolbarPopupTheme">@style/DarkToolbarPopupTheme</item>
+        <item name="invertedToolbarTheme">@style/DarkInvertedToolbarTheme</item>
+        <item name="invertedToolbarPopupTheme">@style/LightToolbarPopupTheme</item>
         <item name="navigationBackground">@color/navigation_background_dark</item>
         <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item>
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
@@ -40,6 +44,18 @@ not, see <http://www.gnu.org/licenses/>.
     <style name="ToolbarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#ffd64937</item>
         <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+    </style>
+
+    <style name="LightInvertedToolbarTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#ffd64937</item>
+        <item name="android:textColorPrimary">@color/abc_secondary_text_material_light</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
+    </style>
+
+    <style name="DarkInvertedToolbarTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#ffd64937</item>
+        <item name="android:textColorPrimary">@color/abc_secondary_text_material_dark</item>
         <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
     </style>
 

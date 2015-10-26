@@ -16,8 +16,6 @@ not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
-    <color name="navigation_background_dark">#ff1a1a1a</color>
-    <color name="preference_screen_background_light">#fffafafa</color>
-    <color name="button_bar_background_light">#fff6f6f6</color>
+    <dimen name="preference_screen_horizontal_margin">128dp</dimen>
 
 </resources>

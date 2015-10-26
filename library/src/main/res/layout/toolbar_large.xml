@@ -32,7 +32,7 @@ not, see <http://www.gnu.org/licenses/>.
         app:theme="?attr/toolbarTheme"/>
 
     <android.support.v7.widget.Toolbar
-        android:id="@id/preference_header_toolbar"
+        android:id="@id/navigation_toolbar"
         android:layout_width="@dimen/default_navigation_width"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentBottom="true"

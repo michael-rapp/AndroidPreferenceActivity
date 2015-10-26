@@ -18,6 +18,8 @@ not, see <http://www.gnu.org/licenses/>.
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
+    <attr name="invertedToolbarTheme" format="reference"/>
+    <attr name="invertedToolbarPopupTheme" format="reference"/>
     <attr name="navigationBackground" format="reference|color"/>
     <attr name="preferenceScreenBackground" format="reference|color"/>
     <attr name="wizardButtonBarBackground" format="reference|color"/>
@@ -25,7 +27,8 @@ not, see <http://www.gnu.org/licenses/>.
     <attr name="navigationWidth" format="dimension"/>
     <attr name="overrideNavigationIcon" format="boolean"/>
     <attr name="toolbarElevation" format="dimension"/>
-    <attr name="navigationElevation" format="dimension"/>
+    <attr name="breadCrumbElevation" format="dimension"/>
+    <attr name="preferenceScreenElevation" format="dimension"/>
     <attr name="wizardButtonBarElevation" format="dimension"/>
     <attr name="restoreDefaultsButtonBarElevation" format="dimension"/>
     <attr name="preferenceHeaderSelector" format="reference"/>
