@@ -28,6 +28,10 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="list_view_item_vertical_padding">24dp</dimen>
     <dimen name="list_view_item_icon_size">56dp</dimen>
 
+    <!-- Toolbars -->
+    <dimen name="navigation_toolbar_padding_left">100dp</dimen>
+    <dimen name="bread_crumb_toolbar_horizontal_padding">28dp</dimen>
+
     <!-- Buttons -->
     <dimen name="button_bar_horizontal_padding">32dp</dimen>
 

@@ -24,7 +24,6 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="preference_child_horizontal_padding">32dp</dimen>
 
     <!-- Preference screen -->
-    <dimen name="preference_header_toolbar_padding_left">104dp</dimen>
     <dimen name="preference_screen_horizontal_padding">0dp</dimen>
     <dimen name="preference_screen_horizontal_margin">32dp</dimen>
     <dimen name="preference_screen_margin_top">80dp</dimen>
@@ -39,6 +38,8 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- Toolbars -->
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="toolbar_large_height">144dp</dimen>
+    <dimen name="navigation_toolbar_padding_left">0dp</dimen>
+    <dimen name="bread_crumb_toolbar_horizontal_padding">0dp</dimen>
 
     <!-- Buttons -->
     <dimen name="button_bar_vertical_button_margin">8dp</dimen>

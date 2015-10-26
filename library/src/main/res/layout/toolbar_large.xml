@@ -39,8 +39,8 @@ not, see <http://www.gnu.org/licenses/>.
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/toolbar_height"
-        android:paddingLeft="@dimen/preference_header_toolbar_padding_left"
-        android:paddingStart="@dimen/preference_header_toolbar_padding_left"
+        android:paddingLeft="@dimen/navigation_toolbar_padding_left"
+        android:paddingStart="@dimen/navigation_toolbar_padding_left"
         app:popupTheme="?attr/toolbarPopupTheme"
         app:theme="?attr/toolbarTheme"/>
 
