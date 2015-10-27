@@ -20,8 +20,8 @@ not, see <http://www.gnu.org/licenses/>.
     <color name="navigation_background_dark">#ff303030</color>
     <color name="preference_screen_background_light">#ffeeeeee</color>
     <color name="preference_screen_background_dark">#ff303030</color>
-    <color name="button_bar_background_light">#fff6f6f6</color>
-    <color name="button_bar_background_dark">#ff303030</color>
+    <color name="button_bar_background_light">#ffeaeaea</color>
+    <color name="button_bar_background_dark">#ff2a2a2a</color>
     <color name="selection_light">#16000000</color>
     <color name="selection_dark">#32ffffff</color>
     <color name="border">#31000000</color>
