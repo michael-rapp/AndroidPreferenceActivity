@@ -31,6 +31,20 @@ import de.mrapp.android.preference.activity.PreferenceActivity;
 public abstract class AbstractPreferenceActivity extends PreferenceActivity {
 
     /**
+     * Initializes the elevation of the activity's toolbar.
+     *
+     * @param sharedPreferences
+     *         The shared preferences, which should be used, as an instance of the type {@link
+     *         SharedPreferences}
+     */
+    private void initializeToolbarElevation(final SharedPreferences sharedPreferences) {
+        String key = getString(R.string.toolbar_elevation_preference_key);
+        String defaultValue = getString(R.string.toolbar_elevation_preference_default_value);
+        int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
+        setToolbarElevation(elevation);
+    }
+
+    /**
      * Initializes the width of the navigation.
      *
      * @param sharedPreferences
@@ -40,22 +54,37 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
     private void initializeNavigationWidth(final SharedPreferences sharedPreferences) {
         String key = getString(R.string.navigation_width_preference_key);
         String defaultValue = getString(R.string.navigation_width_preference_default_value);
-        int width = Integer.valueOf((sharedPreferences.getString(key, defaultValue)));
+        int width = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
         setNavigationWidth(width);
     }
 
     /**
-     * Initializes the elevation of the navigation.
+     * Initializes the elevation of the preference screen.
      *
      * @param sharedPreferences
      *         The shared preferences, which should be used, as an instance of the type {@link
      *         SharedPreferences}
      */
-    private void initializeNavigationElevation(final SharedPreferences sharedPreferences) {
-        String key = getString(R.string.navigation_elevation_preference_key);
-        String defaultValue = getString(R.string.navigation_elevation_preference_default_value);
+    private void initializePreferenceScreenElevation(final SharedPreferences sharedPreferences) {
+        String key = getString(R.string.preference_screen_elevation_preference_key);
+        String defaultValue =
+                getString(R.string.preference_screen_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setNavigationElevation(elevation);
+        setPreferenceScreenElevation(elevation);
+    }
+
+    /**
+     * Initializes the elevation of the bread crumbs.
+     *
+     * @param sharedPreferences
+     *         The shared preferences, which should be used, as an instance of the type {@link
+     *         SharedPreferences}
+     */
+    private void initializeBreadCrumbElevation(final SharedPreferences sharedPreferences) {
+        String key = getString(R.string.bread_crumb_elevation_preference_key);
+        String defaultValue = getString(R.string.bread_crumb_elevation_preference_default_value);
+        int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
+        setBreadCrumbElevation(elevation);
     }
 
     /**
@@ -121,8 +150,10 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        initializeToolbarElevation(sharedPreferences);
         initializeNavigationWidth(sharedPreferences);
-        initializeNavigationElevation(sharedPreferences);
+        initializePreferenceScreenElevation(sharedPreferences);
+        initializeBreadCrumbElevation(sharedPreferences);
         initializeOverrideBackButton(sharedPreferences);
         initializeHideNavigation(sharedPreferences);
         ActionBar actionBar = getSupportActionBar();

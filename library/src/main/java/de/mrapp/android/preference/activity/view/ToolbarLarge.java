@@ -16,23 +16,17 @@ package de.mrapp.android.preference.activity.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import de.mrapp.android.preference.activity.R;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
@@ -46,35 +40,14 @@ import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 public class ToolbarLarge extends FrameLayout {
 
     /**
-     * The default elevation of the navigation in dp.
-     */
-    private static final int DEFAULT_NAVIGATION_ELEVATION = 3;
-
-    /**
      * The view, which is used to visualize the toolbar's background.
      */
     private View backgroundView;
 
     /**
-     * The text view, which is used to show the toolbar's title.
+     * The toolbar, which is used to show the title.
      */
-    private TextView titleTextView;
-
-    /**
-     * The text view, which is used to show the bread crumb title of the currently selected
-     * preference header.
-     */
-    private TextView breadCrumbTextView;
-
-    /**
-     * The view, which is used to visualize the shadow of the navigation.
-     */
-    private View shadowView;
-
-    /**
-     * The view, which is used to overlay the toolbar's background.
-     */
-    private View overlayView;
+    private Toolbar toolbar;
 
     /**
      * The width of the navigation in dp.
@@ -82,24 +55,15 @@ public class ToolbarLarge extends FrameLayout {
     private int navigationWidth;
 
     /**
-     * The elevation of the navigation in dp.
-     */
-    private int navigationElevation;
-
-    /**
      * Inflates the view's layout.
      */
     private void inflate() {
         inflate(getContext(), R.layout.toolbar_large, this);
         this.backgroundView = findViewById(R.id.toolbar_background_view);
-        this.titleTextView = (TextView) findViewById(android.R.id.title);
-        this.breadCrumbTextView = (TextView) findViewById(R.id.toolbar_bread_crumb_view);
-        this.shadowView = findViewById(R.id.toolbar_shadow_view);
-        this.overlayView = findViewById(R.id.toolbar_overlay_view);
+        this.toolbar = (Toolbar) findViewById(R.id.navigation_toolbar);
         RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) overlayView.getLayoutParams();
-        this.navigationWidth = pixelsToDp(getContext(), layoutParams.leftMargin);
-        setNavigationElevation(DEFAULT_NAVIGATION_ELEVATION);
+                (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+        this.navigationWidth = pixelsToDp(getContext(), layoutParams.width);
     }
 
     /**
@@ -163,8 +127,7 @@ public class ToolbarLarge extends FrameLayout {
 
         if (textColorPrimary != 0) {
             int titleColor = getContext().getResources().getColor(textColorPrimary);
-            titleTextView.setTextColor(titleColor);
-            breadCrumbTextView.setTextColor(titleColor);
+            toolbar.setTitleTextColor(titleColor);
         }
     }
 
@@ -227,7 +190,7 @@ public class ToolbarLarge extends FrameLayout {
      * title is set
      */
     public final CharSequence getTitle() {
-        return titleTextView.getText();
+        return toolbar.getTitle();
     }
 
     /**
@@ -238,7 +201,7 @@ public class ToolbarLarge extends FrameLayout {
      *         null, if no title should be set
      */
     public final void setTitle(@Nullable final CharSequence title) {
-        titleTextView.setText(title);
+        toolbar.setTitle(title);
     }
 
     /**
@@ -249,39 +212,7 @@ public class ToolbarLarge extends FrameLayout {
      *         resource id must correspond to a valid string resource
      */
     public final void setTitle(@StringRes final int resourceId) {
-        titleTextView.setText(resourceId);
-    }
-
-    /**
-     * Returns the bread crumb title of the currently selected preference header.
-     *
-     * @return The bread crumb title of the currently selected preference header as an instance of
-     * the class {@link CharSequence} or null, if no bread crumb title is set
-     */
-    public final CharSequence getBreadCrumbTitle() {
-        return breadCrumbTextView.getText();
-    }
-
-    /**
-     * Sets the bread crumb title of the currently selected preference header.
-     *
-     * @param title
-     *         The bread crumb title, which should be set, as an instance of the class {@link
-     *         CharSequence} or null, of no bread crumb title should be set
-     */
-    public final void setBreadCrumbTitle(@Nullable final CharSequence title) {
-        breadCrumbTextView.setText(title);
-    }
-
-    /**
-     * Sets the bread crumb title of the currently selected preference header.
-     *
-     * @param resourceId
-     *         The resource id of the bread crumb title, which should be set, as an {@link Integer}
-     *         value. The resource id must correspond to a valid string resource
-     */
-    public final void setBreadCrumbTitle(@StringRes final int resourceId) {
-        breadCrumbTextView.setText(resourceId);
+        toolbar.setTitle(resourceId);
     }
 
     /**
@@ -303,16 +234,13 @@ public class ToolbarLarge extends FrameLayout {
     public final void setNavigationWidth(final int width) {
         ensureGreater(width, 0, "The width must be greater than 0");
         this.navigationWidth = width;
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) overlayView.getLayoutParams();
-        int widthInPixels = dpToPixels(getContext(), width);
-        layoutParams.leftMargin = widthInPixels;
-        overlayView.requestLayout();
-        int titleMaxWidth = widthInPixels - getContext().getResources()
-                .getDimensionPixelSize(R.dimen.toolbar_title_margin_left) -
-                getContext().getResources()
-                        .getDimensionPixelSize(R.dimen.list_view_item_horizontal_padding);
-        titleTextView.setMaxWidth(titleMaxWidth);
+
+        if (!isNavigationHidden()) {
+            RelativeLayout.LayoutParams layoutParams =
+                    (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
+            layoutParams.width = dpToPixels(getContext(), width);
+            toolbar.requestLayout();
+        }
     }
 
     /**
@@ -321,9 +249,7 @@ public class ToolbarLarge extends FrameLayout {
      * @return True, if the navigation is hidden, false otherwise
      */
     public final boolean isNavigationHidden() {
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) overlayView.getLayoutParams();
-        return layoutParams.leftMargin == 0;
+        return toolbar.getVisibility() != View.VISIBLE;
     }
 
     /**
@@ -334,59 +260,20 @@ public class ToolbarLarge extends FrameLayout {
      */
     @SuppressWarnings("deprecation")
     public final void hideNavigation(final boolean navigationHidden) {
-        shadowView.setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
-        titleTextView.setVisibility(navigationHidden ? View.INVISIBLE : View.VISIBLE);
-        float breadCrumbTextSize = getResources().getDimension(
-                navigationHidden ? R.dimen.toolbar_title_text_size : R.dimen.bread_crumb_text_size);
-        breadCrumbTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, breadCrumbTextSize);
-        overlayView.setBackgroundColor(
-                navigationHidden ? Color.TRANSPARENT : getResources().getColor(R.color.overlay));
+        toolbar.setVisibility(navigationHidden ? View.INVISIBLE : View.VISIBLE);
 
-        if (navigationHidden) {
-            RelativeLayout.LayoutParams layoutParams =
-                    (RelativeLayout.LayoutParams) overlayView.getLayoutParams();
-            layoutParams.leftMargin = 0;
-            overlayView.requestLayout();
-        } else {
+        if (!navigationHidden) {
             setNavigationWidth(navigationWidth);
         }
     }
 
     /**
-     * Returns the elevation of the navigation.
+     * Returns the toolbar, which is used to show the title.
      *
-     * @return The elevation of the navigation in dp as an {@link Integer} value
+     * @return The toolbar, which is used to show the title, as an instance of the class Toolbar
      */
-    public final int getNavigationElevation() {
-        return navigationElevation;
-    }
-
-    /**
-     * Sets the elevation of the navigation.
-     *
-     * @param elevation
-     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 5
-     */
-    @SuppressWarnings("deprecation")
-    public final void setNavigationElevation(final int elevation) {
-        String[] shadowColors =
-                getResources().getStringArray(R.array.navigation_elevation_shadow_colors);
-        String[] shadowWidths =
-                getResources().getStringArray(R.array.navigation_elevation_shadow_widths);
-        ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-        ensureAtMaximum(elevation, shadowWidths.length,
-                "The elevation must be at maximum " + shadowWidths.length);
-
-        this.navigationElevation = elevation;
-        int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-        int shadowWidth = dpToPixels(getContext(), Integer.valueOf(shadowWidths[elevation - 1]));
-
-        GradientDrawable gradient = new GradientDrawable(Orientation.LEFT_RIGHT,
-                new int[]{shadowColor, Color.TRANSPARENT});
-        shadowView.setBackgroundDrawable(gradient);
-        shadowView.getLayoutParams().width = shadowWidth;
-        shadowView.requestLayout();
+    public final Toolbar getToolbar() {
+        return toolbar;
     }
 
 }

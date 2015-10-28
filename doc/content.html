@@ -65,7 +65,7 @@
 
                 <h4><a name="implementation-details">1 Implementation details</a></h4>
 
-                <p>The activity <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which is provided by this library is an abstract class, which is extended from the Android SDK's class <a href="http://developer.android.com/reference/android/app/Activity.html" target="_blank" class="code">Activity</a>. In order to use the library, the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> simply has to be extended and the preference headers, which specify categories of preferences, must be added to the activity. Although it is possible to add the preference headers at runtime, the usual requirement is to initialize them once the activity is created. Therefore the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> offers the protected method <tt>onCreatePreferenceHeaders():void</tt>, which amends the activity's lifecycle and is called after the <tt>onCreate</tt>-, but before the <tt>onStart</tt>-method in order to add the preference headers which should be shown as soon as the activity becomes visible. Multiple ways to override this method in order to add preference headers will be discussed in the following section "<a href="content.html#adding-and-removing-preference-headers">Adding and removing preference headers</a>". The preference headers itself are represented by instances of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeader.html" target="_blank" class="code">PreferenceHeader</a>. Such a class instance must at least specify a title, which is shown in the navigation to represent the preference header. Furthermore, a summary, which describes the preference header more detailed, an alternative title, which is shown when the preference header is currently selected, and an icon can be specified using the classes' setter methods. The preferences, which should be shown, when a preference header is selected by the user, must be contained by a fragment, which can be implemented by extending the Android SDK's class <a href="http://developer.android.com/reference/android/preference/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>. Since version 1.1.0 the library does also provide the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, which is extended from the Android SDK's class to add the possibility to show a button, which allows to restore the default values of the fragment's preferences. Alternatively, every fragment, which is extended from the SDK's class <a href="http://developer.android.com/reference/android/app/Fragment.html" target="_blank" class="code">Fragment</a> and therefore must not necessarely contain preferences, can be shown by using the library. The fragment, which should be shown, when a specific preference header is selected, can be specified by passing its full qualified name to the appropriate setter method of the <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeader.html" target="_blank" class="code">PreferenceHeader</a>-instance. Besides, there is an other setter method, which allows to specify an intent, which is launched to start an activity once the preference header becomes selected. A fragment and an intent can be specified at the same time, but both of them can also be used on their own. The class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> does override the methods <tt>onSaveInstanceState(Bundle):void</tt> and <tt>onRestoreInstanceState(Bundle):void</tt>, which are called by the Android SDK during the activity's lifecycle in order to restore the activity's current state, when it is temporary destroyed. For this reason, the currently selected preference header will remain selected, even if the orientation of the device changes or if the activity is temporary brought to the background.</p>
+                <p>The activity <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which is provided by this library is an abstract class, which is extended from the Android SDK's class <a href="http://developer.android.com/reference/android/app/Activity.html" target="_blank" class="code">Activity</a>. In order to use the library, the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> simply has to be extended and the preference headers, which specify categories of preferences, must be added to the activity. Although it is possible to add the preference headers at runtime, the usual requirement is to initialize them once the activity is created. Therefore the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> offers the protected method <tt>onCreatePreferenceHeaders():void</tt>, which amends the activity's lifecycle and is called after the <tt>onCreate</tt>-, but before the <tt>onStart</tt>-method in order to add the preference headers which should be shown as soon as the activity becomes visible. Multiple ways to override this method in order to add preference headers will be discussed in the following section "<a href="content.html#adding-and-removing-preference-headers">Adding and removing preference headers</a>". The preference headers themselves are represented by instances of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeader.html" target="_blank" class="code">PreferenceHeader</a>. Such a class instance must at least specify a title, which is shown in the navigation to represent the preference header. Furthermore, a summary, which describes the preference header more detailed, an alternative title, which is shown when the preference header is currently selected, and an icon can be specified using the classes' setter methods. The preferences, which should be shown, when a preference header is selected by the user, must be contained by a fragment, which can be implemented by extending the Android SDK's class <a href="http://developer.android.com/reference/android/preference/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>. Since version 1.1.0 the library does also provide the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceFragment.html" target="_blank" class="code">PreferenceFragment</a>, which is extended from the Android SDK's class to add the possibility to show a button, which allows to restore the default values of the fragment's preferences. Alternatively, every fragment, which is extended from the SDK's class <a href="http://developer.android.com/reference/android/app/Fragment.html" target="_blank" class="code">Fragment</a> and therefore must not necessarely contain preferences, can be shown by using the library. The fragment, which should be shown, when a specific preference header is selected, can be specified by passing its full qualified name to the appropriate setter method of the <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeader.html" target="_blank" class="code">PreferenceHeader</a>-instance. Besides, there is an other setter method, which allows to specify an intent, which is launched to start an activity once the preference header becomes selected. A fragment and an intent can be specified at the same time, but both of them can also be used on their own. The class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> does override the methods <tt>onSaveInstanceState(Bundle):void</tt> and <tt>onRestoreInstanceState(Bundle):void</tt>, which are called by the Android SDK during the activity's lifecycle in order to restore the activity's current state, when it is temporary destroyed. For this reason, the currently selected preference header will remain selected, even if the orientation of the device changes or if the activity is temporary brought to the background.</p>
 
                 <p>The activity <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> has been designed in order to allow optical manipulations as easy as possible. Therefore the class offers various methods to access the activity's child views and to directly manipulate their most important properties (e.g. the width of the navigation on tablets). These methods, as well as the child views, which are used to realize the varying appearance on tablets and smartphones, will be discussed in the section "<a href="content.html#manipulating-the-appearance">Manipulating the activity's appearance</a>". Further manipulations, which take influence on the activity's behavior, will be discussed in the section "<a href="content.html#changing-the-behavior">Changing the activity's behavior</a>". To retrieve, whether the activity is run on a tablet and therefore the navigation and the currently selected fragment are shown split-screen, the method <tt>isSplitScreen():boolean</tt> can be used.</p>
 
@@ -205,12 +205,16 @@
                         <td>Returns the parent view of the fragment, which contains the fragment of the currently selected preference header. On smartphones this method always returns <tt>null</tt>.</td>
                     </tr>
                     <tr>
-                        <td><tt>getPreferenceScreenContainer():ViewGroup</tt></td>
+                        <td><tt>getPreferenceScreenContainer():CardView</tt></td>
                         <td>Returns the view group, which contains the view, which can be referenced by the <tt>getPreferenceScreenParentView</tt>-method. This view is used to apply a horizontal margin. On smartphones this method always returns <tt>null</tt>.</td>
                     </tr>
                     <tr>
-                        <td><tt>getBreadCrumb():TextView</tt></td>
-                        <td>Returns the view, which is used to display the title of the currently selected preference header. On smartphones or if the library's custom toolbar is used, this method always returns <tt>null</tt>, as the title is shown in the toolbar instead.</td>
+                        <td><tt>getNavigationToolbar():Toolbar</tt></td>
+                        <td>Returns the toolbar, which is used to show the activity's title. On smartphones this method always returns <tt>null</tt> and the method <tt>getSupportActionBar():ActionBar</tt> can be used instead.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getBreadCrumbToolbar():Toolbar</tt></td>
+                        <td>Returns the toolbar, which is used to show the title of the currently selected preference header. On smartphones this method always returns <tt>null</tt>.</td>
                     </tr>
                 </table>
 
@@ -244,22 +248,22 @@
                         <td>When specifying a resource ID, the ID must correspond to a valid drawable resource. When specifying a color, the color must specify a valid RGB color.</td>
                     </tr>
                     <tr>
-                        <td><tt>getBreadCrumbBackground():Drawable<br/>setBreadCrumbBackground(int):boolean<br/>setBreadCrumbBackground(Drawable):boolean<br/>setBreadCrumbBackgroundColor(int):boolean</tt></td>
-                        <td>Returns or sets the background of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used.</td>
-                        <td><center><tt>R.color.button_bar_</br>background_light</tt> or <tt>null</tt> on smartphones or when the library's custom toolbar is used</center></td>
-                        <td>The value must specify a valid RGB color</td>
+                        <td><tt>getToolbarElevation():int<br/>setToolbarElevation(int):void</tt></td>
+                        <td>Returns or sets the elevation of the activity's toolbar.</td>
+                        <td><center><tt>4dp</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 16</td>
                     </tr>
                     <tr>
-                        <td><tt>getNavigationElevation():int<br/>setNavigationElevation(int):boolean</tt></td>
-                        <td>Returns or sets the elevation of the navigation in dp. The methods are only available on tablets.</td>
-                        <td><center><tt>3dp</tt> or <tt>-1</tt> on smartphones</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td><tt>getPreferenceScreenElevation():int<br/>setPreferenceScreenElevation(int):boolean</tt></td>
+                        <td>Returns or sets the elevation of the parent view of the fragment, which contains the fragment of the currently selected preference header. The methods are only available on tablets.</td>
+                        <td><center><tt>14dp</tt> or <tt>-1</tt> on smartphones</center></td>
+                        <td>The value must be at least 0 and at maximum 16</td>
                     </tr>
                     <tr>
                         <td><tt>getBreadCrumbElevation():int<br/>setBreadCrumbElevation(int):boolean</tt></td>
-                        <td>Returns or sets the elevation of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used, in dp.</td>
-                        <td><center><tt>3dp</tt> or <tt>-1</tt> on smartphones or when the library's custom toolbar is used</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td>Returns or sets the elevation of the view, which is used to show the title of the currently selected preference header. The methods are only available on tablets.</td>
+                        <td><center><tt>2dp</tt> or <tt>-1</tt> on smartphones</center></td>
+                        <td>The value must be at least 0 and at maximum 16</td>
                     </tr>
                 </table>
 
@@ -267,7 +271,7 @@
 
                 <h5><a name="taking-influence-on-the-adapter">3.3 Taking influence on the PreferenceHeaderAdapter</a></h5>
 
-                <p>The methods, which have been discussed in the previous two sections of this documentation do only allow to modify the appearance of the navigation and preference screen, but not of the preference headers itself. The adapter, which is used to visualize these preference headers can be retrieved by using the method <tt>getListAdapter():PreferenceHeaderAdapter</tt>, which returns an instance of the class <a href="javadoc/de/mrapp/android/preference/activity/adapter/PreferenceHeaderAdapter.html" target="_blank" class="code">PreferenceHeaderAdapter</a>. This class offers methods, which allow take influence on how the preference headers are visualized.</p>
+                <p>The methods, which have been discussed in the previous two sections of this documentation do only allow to modify the appearance of the navigation and preference screen, but not of the preference headers themselves. The adapter, which is used to visualize these preference headers can be retrieved by using the method <tt>getListAdapter():PreferenceHeaderAdapter</tt>, which returns an instance of the class <a href="javadoc/de/mrapp/android/preference/activity/adapter/PreferenceHeaderAdapter.html" target="_blank" class="code">PreferenceHeaderAdapter</a>. This class offers methods, which allow take influence on how the preference headers are visualized.</p>
 
                 <p>The first possibility to change the appearance of the preference header is to change the selector, which is used to highlight the currently selected navigation item. The selector, which is used by default, is defined within the drawable resource <tt>R.drawable.selector_light</tt>. To use a custom drawable instead, the method <tt>setSelectorId(int):void</tt> can be used to pass the drawable's resource ID to the adapter. To retrieve the resource ID of the selector, which is currently used, the adapter offers the method <tt>getSelectorId():int</tt>. As an alternative to the default selector, which is meant to be used together with light themes, the drawable resource <tt>R.drawable.selector_light</tt> provides a selector for dark themes. In the last section of this documentation, the possibility to specify the selector and further attributes from within a theme, will be discussed.</p>
 
@@ -331,7 +335,7 @@
 
                 <p>A <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> can also be used as a wizard, which causes the navigation to be replaced by a different one, which provides additional buttons to step to the next or previous preference header. On smartphones the navigation will become completely hidden, when the activity is used as a wizard, on tablets the navigation will only become unsensitive for clicking the single items instead. The following screenshots illustrate the appearance of such a wizard on tablets, respectively on smartphones:</p>
 
-                <p><center><a href="images/example-wizard.png" target="_blank".><img src="images/example-wizard.png" width=800" alt="Example"></center></a></p>
+                <p><center><a href="images/example-wizard.png" target="_blank".><img src="images/example-wizard.png" width=800" alt="Example"></a></center></p>
 
                 <h5><a name="how-to-use-an-activity-as-a-wizard">5.1 How to use an activity as a wizard</a></h5>
 
@@ -426,9 +430,9 @@
                     </tr>
                     <tr>
                         <td><tt>getButtonBarElevation():int<br/>setButtonBarElevation(int):boolean</tt></td>
-                        <td>Returns or sets the elevation of the button bar, which contains the buttons, which are shown when the activity is used as a wizard, in dp.</td>
-                        <td><center><tt>3dp</tt> or <tt>-1</tt> when the acitivty is not used as a wizard</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td>Returns or sets the elevation of the button bar, which is used when the activity is used as a wizard.</td>
+                        <td><center><tt>6dp</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 16</td>
                     </tr>
                 </table>
 
@@ -497,9 +501,9 @@
                     </tr>
                     <tr>
                         <td><tt>getButtonBarElevation():int<br/>setButtonBarElevation(int):boolean</tt></td>
-                        <td>Returns or sets the elevation of the button bar, which contains the button, which allows to restore the default values, in dp.</td>
-                        <td><center><tt>3dp</tt> or <tt>-1</tt> when the button, which allows to restore the default values, is not shown</center></td>
-                        <td>The value must be at least 1 and at maximum 5</td>
+                        <td>Returns or sets the elevation of the button bar, which contains the button, which allows to restore the default values.</td>
+                        <td><center><tt>6dp</tt> or <tt>-1</tt> when the button, which allows to restore the default values, is not shown.</center></td>
+                        <td>The value must be at least 0 and at maximum 16</td>
                     </tr>
                 </table>
 
@@ -530,12 +534,22 @@
                     <tr>
                         <td><tt>toolbarTheme</tt></td>
                         <td><center><tt>reference</tt></td>
-                        <td>The theme, which should be applied on the toolbar itself</td>
+                        <td>The theme, which should be applied on the toolbar, which is used to show the activity's title.</td>
                     </tr>
                     <tr>
                         <td><tt>toolbarPopupTheme</tt></td>
                         <td><center><tt>reference</tt></center></td>
-                        <td>The theme, which should be applied on the toolbar's popup menus</td>
+                        <td>The theme, which should be applied on the popup menu of the toolbar, which is used to show the activity's title.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>inverseToolbarTheme</tt></td>
+                        <td><center><tt>reference</tt></center></td>
+                        <td>The theme, which should be applied on the toolbar, which is used to show the title of the currently selected preference header on tablets. This attribute is not considered on smartphones.</td>
+                    </tr>
+                    <tr>
+                        <td><tt>inverseToolbarPopupTheme</tt></td>
+                        <td><center><tt>reference</tt></center></td>
+                        <td>The theme, which should be applied on the popup menu of the toolbar, which is used to show the title of the currently selected preference header on tablets. This attribute is not considered on smartphones.</td>
                     </tr>
                 </table>
 
@@ -568,11 +582,6 @@
                         <td>The drawable resource or color of the background of the view group, which contains the button, which allows to restore a PreferenceFragment's default values</td>
                     </tr>
                     <tr>
-                        <td><tt>breadCrumbBackground</tt></td>
-                        <td><center><tt>reference</tt> or <tt>color</tt></center></td>
-                        <td>The drawable resource or color of the background of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used</td>
-                    </tr>
-                    <tr>
                         <td><tt>navigationWidth</tt></td>
                         <td><center><tt>dimension</tt></center></td>
                         <td>The width of the navigation in dp</td>
@@ -583,9 +592,9 @@
                         <td>True, if behavior of the navigation icon should be overridden, false otherwise</td>
                     </tr>
                     <tr>
-                        <td><tt>navigationElevation</tt></td>
+                        <td><tt>toolbarElevation</tt></td>
                         <td><center><tt>dimension</tt></center></td>
-                        <td>The elevation of the navigation in dp</td>
+                        <td>The elevation of the activity's toolbar in dp</td>
                     </tr>
                     <tr>
                         <td><tt>wizardButtonBarElevation</tt></td>
@@ -598,9 +607,14 @@
                         <td>The elevation of the view group, which contains the button, which allows to restore a PreferenceFragment's default values, in dp</td>
                     </tr>
                     <tr>
+                        <td><tt>preferenceScreenElevation</tt></td>
+                        <td><center><tt>dimension</tt></center></td>
+                        <td>The elevation of the parent view of the fragment, which is used to show the fragment of the currently selected preference header, in dp. This attribute is only considered on tablets.</td>
+                    </tr>
+                    <tr>
                         <td><tt>breadCrumbElevation</tt></td>
                         <td><center><tt>dimension</tt></center></td>
-                        <td>The elevation of the bread crumb, which is used to show the title of the currently selected preference header when a Holo-styled ActionBar is used, in dp</td>
+                        <td>The elevation of the view, which is used to show the title of the currently selected preference header, in dp. This attribute is only considered on tablets.</td>
                     </tr>
                     <tr>
                         <td><tt>preferenceHeaderSelector</tt></td>

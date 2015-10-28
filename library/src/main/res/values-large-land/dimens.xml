@@ -16,10 +16,8 @@ not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
-    <string name="back_button_label">BACK</string>
-    <string name="next_button_label">NEXT</string>
-    <string name="finish_button_label">FINISH</string>
-    <string name="restore_defaults_button_label">RESTORE DEFAULTS</string>
-    <string name="progress_format" formatted="false">Step %d of %d: %s</string>
+    <!-- Preference screen -->
+    <dimen name="preference_screen_margin_right">128dp</dimen>
+    <dimen name="preference_screen_horizontal_margin">250dp</dimen>
 
 </resources>

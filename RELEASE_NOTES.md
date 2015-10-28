@@ -1,5 +1,12 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.0.0 (Oct. 28th 2015)
+
+A major release, which introduces the following changes:
+
+- An customizable elevation has been added to a `PreferenceActivity`'s toolbar on smartphones, as well as on tablet devices.
+- The design of the `PreferenceActivity` on tablets has been reworked. A `CardView` is now used to show the currently active fragment. If you prefer the previous style of the activity, you can continue to use the 3.x.x-development branch. Critical bugfixes (not upcoming new features) are planned to be ported back to this branch.  
+
 ## Version 3.0.0 (Oct. 22th 2015)
 
 A major release, which introduces the following changes:

@@ -19,11 +19,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
@@ -41,6 +39,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -50,12 +49,11 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
+import de.mrapp.android.util.ElevationUtil.Orientation;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureNotNull;
-import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
+import static de.mrapp.android.util.ElevationUtil.createElevationShadow;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a button, which allows to
@@ -114,9 +112,9 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     private ViewGroup buttonBar;
 
     /**
-     * The view, which is used to draw a shadow above the button bar.
+     * The image view, which is used to draw a shadow above the button bar.
      */
-    private View shadowView;
+    private ImageView shadowView;
 
     /**
      * The button, which allows to restore the preferences' default values.
@@ -162,7 +160,8 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
             restoreDefaultsButton =
                     (Button) buttonBarParent.findViewById(R.id.restore_defaults_button);
             restoreDefaultsButton.setOnClickListener(createRestoreDefaultsListener());
-            shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
+            shadowView = (ImageView) buttonBarParent
+                    .findViewById(R.id.restore_defaults_button_bar_shadow_view);
             obtainStyledAttributes();
         }
     }
@@ -618,9 +617,9 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     public final int getButtonBarElevation() {
         if (isRestoreDefaultsButtonShown()) {
             return buttonBarElevation;
-        } else {
-            return -1;
         }
+
+        return -1;
     }
 
     /**
@@ -629,30 +628,16 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 5
+     *         must be at least 1 and at maximum 16
      * @return True, if the elevation has been set, false otherwise
      */
     @SuppressWarnings("deprecation")
     public final boolean setButtonBarElevation(final int elevation) {
-        String[] shadowColors =
-                getResources().getStringArray(R.array.button_bar_elevation_shadow_colors);
-        String[] shadowWidths =
-                getResources().getStringArray(R.array.button_bar_elevation_shadow_widths);
-        ensureAtLeast(elevation, 1, "The elevation must be at least 1");
-        ensureAtMaximum(elevation, shadowWidths.length,
-                "The elevation must be at maximum " + shadowWidths.length);
+        Bitmap shadow = createElevationShadow(getActivity(), elevation, Orientation.TOP);
 
         if (isRestoreDefaultsButtonShown()) {
             this.buttonBarElevation = elevation;
-            int shadowColor = Color.parseColor(shadowColors[elevation - 1]);
-            int shadowWidth =
-                    dpToPixels(getActivity(), Integer.valueOf(shadowWidths[elevation - 1]));
-
-            GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
-                    new int[]{shadowColor, Color.TRANSPARENT});
-            shadowView.setBackgroundDrawable(gradient);
-            shadowView.getLayoutParams().height = shadowWidth;
-            shadowView.requestLayout();
+            shadowView.setImageBitmap(shadow);
             return true;
         }
 

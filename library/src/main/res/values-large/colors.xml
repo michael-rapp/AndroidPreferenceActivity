@@ -16,10 +16,8 @@ not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
-    <color name="navigation_background_light">#ffffffff</color>
     <color name="navigation_background_dark">#ff1a1a1a</color>
     <color name="preference_screen_background_light">#fffafafa</color>
-    <color name="preference_screen_background_dark">#ff303030</color>
-    <color name="button_bar_background_light">#ffeeeeee</color>
+    <color name="button_bar_background_light">#fff3f3f3</color>
 
 </resources>

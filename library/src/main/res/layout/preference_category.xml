@@ -18,7 +18,7 @@ not, see <http://www.gnu.org/licenses/>.
     android:id="@android:id/title"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/subheader_height"
+    android:layout_height="@dimen/preference_category_height"
     android:ellipsize="end"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/preference_horizontal_padding"

@@ -14,19 +14,17 @@ General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along with this program. If
 not, see <http://www.gnu.org/licenses/>.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
     <item name="toolbar" type="id"/>
     <item name="toolbar_large" type="id"/>
+    <item name="navigation_toolbar" type="id"/>
     <item name="preference_header_parent" type="id"/>
     <item name="preference_screen_parent" type="id"/>
     <item name="preference_screen_container" type="id"/>
-    <item name="navigation_shadow_view" type="id"/>
     <item name="toolbar_shadow_view" type="id"/>
     <item name="toolbar_background_view" type="id"/>
-    <item name="toolbar_overlay_view" type="id"/>
-    <item name="toolbar_bread_crumb_view" type="id"/>
-    <item name="bread_crumb_view" type="id"/>
+    <item name="bread_crumb_toolbar" type="id"/>
     <item name="bread_crumb_shadow_view" type="id"/>
     <item name="wizard_button_bar" type="id"/>
     <item name="wizard_button_bar_shadow_view" type="id"/>

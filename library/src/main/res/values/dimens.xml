@@ -16,28 +16,49 @@ not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
+    <!-- Preferences -->
+    <dimen name="preference_category_height">48dp</dimen>
+    <dimen name="preference_min_height">64dp</dimen>
+    <dimen name="preference_horizontal_padding">16dp</dimen>
+    <dimen name="preference_vertical_padding">8dp</dimen>
+    <dimen name="preference_child_horizontal_padding">32dp</dimen>
+
+    <!-- Preference screen -->
+    <dimen name="preference_screen_horizontal_padding">0dp</dimen>
+    <dimen name="preference_screen_margin_right">0dp</dimen>
+    <dimen name="preference_screen_margin_top">0dp</dimen>
+    <dimen name="preference_screen_horizontal_margin">0dp</dimen>
+    <dimen name="preference_screen_container_vertical_offset">0dp</dimen>
+    <dimen name="preference_screen_vertical_offset">0dp</dimen>
+
+    <!-- List views -->
     <dimen name="list_view_padding_top">8dp</dimen>
     <dimen name="list_view_item_min_height">56dp</dimen>
     <dimen name="list_view_item_horizontal_padding">16dp</dimen>
     <dimen name="list_view_item_vertical_padding">16dp</dimen>
     <dimen name="list_view_item_icon_size">40dp</dimen>
-    <dimen name="preference_min_height">64dp</dimen>
-    <dimen name="preference_horizontal_padding">16dp</dimen>
-    <dimen name="preference_child_horizontal_padding">32dp</dimen>
-    <dimen name="preference_vertical_padding">8dp</dimen>
-    <dimen name="subheader_height">48dp</dimen>
+
+    <!-- Toolbars -->
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="toolbar_large_height">144dp</dimen>
-    <dimen name="toolbar_title_margin_left">104dp</dimen>
-    <dimen name="toolbar_title_text_size">34sp</dimen>
-    <dimen name="bread_crumb_text_size">20sp</dimen>
-    <dimen name="bread_crumb_height">64dp</dimen>
-    <dimen name="preference_screen_horizontal_padding">0dp</dimen>
-    <dimen name="default_navigation_width">360dp</dimen>
+    <dimen name="navigation_toolbar_padding_left">0dp</dimen>
+    <dimen name="bread_crumb_toolbar_horizontal_padding">0dp</dimen>
+
+    <!-- Buttons -->
     <dimen name="button_bar_vertical_button_margin">8dp</dimen>
     <dimen name="button_bar_horizontal_padding">16dp</dimen>
     <dimen name="button_bar_min_height">48dp</dimen>
     <dimen name="button_padding">8dp</dimen>
     <dimen name="button_text_size">14sp</dimen>
+
+    <!-- Default values -->
+    <dimen name="default_navigation_width">0dp</dimen>
+    <dimen name="default_toolbar_elevation">4dp</dimen>
+    <dimen name="default_button_bar_elevation">6dp</dimen>
+    <dimen name="default_bread_crumb_elevation">0dp</dimen>
+    <dimen name="default_preference_screen_elevation">0dp</dimen>
+
+    <!-- Misc -->
+    <dimen name="card_view_intrinsic_margin">22dp</dimen>
 
 </resources>
