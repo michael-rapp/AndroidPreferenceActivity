@@ -270,8 +270,7 @@ public class ToolbarLarge extends FrameLayout {
     /**
      * Returns the toolbar, which is used to show the title.
      *
-     * @return The toolbar, which is used to show the title, as an instance of the class {@link
-     * Toolbar}
+     * @return The toolbar, which is used to show the title, as an instance of the class Toolbar
      */
     public final Toolbar getToolbar() {
         return toolbar;

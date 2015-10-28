@@ -1330,8 +1330,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * screen.
      *
      * @return The view group, which contains all views, which are shown when a preference header is
-     * selected, as an instance of the class {@link CardView} or null, if the device has a small
-     * screen
+     * selected, as an instance of the class CardView or null, if the device has a small screen
      */
     public final CardView getPreferenceScreenContainer() {
         return preferenceScreenContainer;
@@ -1342,8 +1341,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * screen.
      *
      * @return The toolbar, which is used to show the activity's title on devices with a large
-     * screen, as an instance of the class {@link Toolbar} or null, if the device has a small
-     * screen
+     * screen, as an instance of the class Toolbar or null, if the device has a small screen
      */
     public final Toolbar getNavigationToolbar() {
         if (isSplitScreen()) {
@@ -1358,8 +1356,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * header on devices with a large screen.
      *
      * @return The toolbar, which is used to show the title of the currently selected preference
-     * header on devices with a large screen, as an instance of the class {@link Toolbar} or null,
-     * if the device has a small screen
+     * header on devices with a large screen, as an instance of the class Toolbar or null, if the
+     * device has a small screen
      */
     public final Toolbar getBreadCrumbToolbar() {
         if (isSplitScreen()) {
