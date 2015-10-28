@@ -76,6 +76,8 @@
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorAccent"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"toolbarTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/ToolbarTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"toolbarPopupTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/DarkToolbarPopupTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"invertedToolbarTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/DarkInvertedToolbarTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"invertedToolbarPopupTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/LightToolbarPopupView</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"navigationBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/navigation_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"preferenceScreenBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/preference_screen_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"wizardButtonBarBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/button_bar_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
@@ -83,11 +85,19 @@
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"preferenceHeaderSelector"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@drawable/selector_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
 
-<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"ToolbarTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font>
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"ToolbarTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.Light.NoActionBar"</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_primary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorSecondary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
+
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkInvertedToolbarTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorSecondary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
+
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"LightToolbarPopupTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.Light.NoActionBar"</font> <font color='#3f7f5f'>/&gt;</font>
 
 <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkToolbarPopupTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font> <font color='#3f7f5f'>/&gt;</font>
 
