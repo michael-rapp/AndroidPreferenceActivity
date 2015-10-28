@@ -54,6 +54,26 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Creates and returns a listener, which allows to adapt the elevation of the toolbar, when the
+     * value of the corresponding preference has been changed.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPreferenceChangeListener}
+     */
+    private OnPreferenceChangeListener createToolbarElevationChangeListener() {
+        return new OnPreferenceChangeListener() {
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int elevation = Integer.valueOf((String) newValue);
+                ((PreferenceActivity) getActivity()).setToolbarElevation(elevation);
+                return true;
+            }
+
+        };
+    }
+
+    /**
      * Creates and returns a listener, which allows to adapt the width of the navigation, when the
      * value of the corresponding preference has been changed.
      *
@@ -160,6 +180,10 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
 
         Preference themePreference = findPreference(getString(R.string.theme_preference_key));
         themePreference.setOnPreferenceChangeListener(createThemeChangeListener());
+        Preference toolbarElevationPreference =
+                findPreference(getString(R.string.toolbar_elevation_preference_key));
+        toolbarElevationPreference
+                .setOnPreferenceChangeListener(createToolbarElevationChangeListener());
         Preference navigationWidthPreference =
                 findPreference(getString(R.string.navigation_width_preference_key));
         navigationWidthPreference
@@ -204,6 +228,9 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
                                              final Object oldValue, final Object newValue) {
         if (preference.getKey().equals(getString(R.string.theme_preference_key))) {
             createThemeChangeListener().onPreferenceChange(preference, newValue);
+        } else if (preference.getKey()
+                .equals(getString(R.string.toolbar_elevation_preference_key))) {
+            createToolbarElevationChangeListener().onPreferenceChange(preference, newValue);
         } else if (preference.getKey()
                 .equals(getString(R.string.navigation_width_preference_key))) {
             createNavigationWidthChangeListener().onPreferenceChange(preference, newValue);

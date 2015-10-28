@@ -24,6 +24,13 @@ not, see <http://www.gnu.org/licenses/>.
             android:key="@string/theme_preference_key"
             android:summary="@string/theme_preference_summary"
             android:title="@string/theme_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/toolbar_elevation_preference_default_value"
+            android:entries="@array/toolbar_elevation_list_entries"
+            android:entryValues="@array/toolbar_elevation_list_values"
+            android:key="@string/toolbar_elevation_preference_key"
+            android:summary="@string/toolbar_elevation_preference_summary"
+            android:title="@string/toolbar_elevation_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/appearance_preference_navigation_category">
         <ListPreference

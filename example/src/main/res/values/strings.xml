@@ -55,6 +55,14 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- suppress MissingTranslation -->
     <string name="theme_preference_key">theme_preference_key</string>
     <!-- suppress MissingTranslation -->
+    <string name="toolbar_elevation_preference_title">Toolbar elevation</string>
+    <!-- suppress MissingTranslation -->
+    <string name="toolbar_elevation_preference_default_value">4</string>
+    <!-- suppress MissingTranslation -->
+    <string name="toolbar_elevation_preference_summary">The elevation of the activity\'s toolbar</string>
+    <!-- suppress MissingTranslation -->
+    <string name="toolbar_elevation_preference_key">toolbar_elevation_preference_key</string>
+    <!-- suppress MissingTranslation -->
     <string name="appearance_preference_navigation_category">Navigation</string>
     <!-- suppress MissingTranslation -->
     <string name="navigation_width_preference_title">Navigation width</string>
@@ -195,6 +203,48 @@ not, see <http://www.gnu.org/licenses/>.
     <string-array name="theme_list_values">
         <item>0</item>
         <item>1</item>
+    </string-array>
+
+    <!-- suppress MissingTranslation -->
+    <string-array name="toolbar_elevation_list_entries">
+        <item>0 dp</item>
+        <item>1 dp</item>
+        <item>2 dp</item>
+        <item>3 dp</item>
+        <item>4 dp (default)</item>
+        <item>5 dp</item>
+        <item>6 dp</item>
+        <item>7 dp</item>
+        <item>8 dp</item>
+        <item>9 dp</item>
+        <item>10 dp</item>
+        <item>11 dp</item>
+        <item>12 dp</item>
+        <item>13 dp</item>
+        <item>14 dp</item>
+        <item>15 dp</item>
+        <item>16 dp</item>
+    </string-array>
+
+    <!-- suppress MissingTranslation -->
+    <string-array name="toolbar_elevation_list_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </string-array>
 
     <!-- suppress MissingTranslation -->
