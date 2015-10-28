@@ -24,7 +24,10 @@ not, see <http://www.gnu.org/licenses/>.
 
     <!-- Preference screen -->
     <dimen name="preference_screen_margin_right">32dp</dimen>
+    <dimen name="preference_screen_margin_top">59dp</dimen>
     <dimen name="preference_screen_horizontal_margin">64dp</dimen>
+    <dimen name="preference_screen_container_vertical_offset">-24dp</dimen>
+    <dimen name="preference_screen_vertical_offset">2dp</dimen>
 
     <!-- List views -->
     <dimen name="list_view_item_min_height">64dp</dimen>

@@ -59,20 +59,17 @@ not, see <http://www.gnu.org/licenses/>.
         android:id="@id/preference_screen_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="-8dp"
-        android:layout_marginEnd="@dimen/preference_screen_horizontal_margin"
-        android:layout_marginLeft="@dimen/default_navigation_width"
-        android:layout_marginRight="@dimen/preference_screen_horizontal_margin"
-        android:layout_marginStart="@dimen/default_navigation_width"
+        android:layout_marginBottom="@dimen/preference_screen_container_vertical_offset"
         android:layout_marginTop="@dimen/preference_screen_margin_top"
         android:background="@color/preference_screen_background_light"
-        app:cardElevation="@dimen/default_preference_screen_elevation">
+        app:cardElevation="@dimen/default_preference_screen_elevation"
+        app:cardPreventCornerOverlap="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="8dp"
+            android:paddingBottom="@dimen/preference_screen_vertical_offset"
             android:paddingEnd="@dimen/preference_screen_horizontal_padding"
             android:paddingStart="@dimen/preference_screen_horizontal_padding">
 

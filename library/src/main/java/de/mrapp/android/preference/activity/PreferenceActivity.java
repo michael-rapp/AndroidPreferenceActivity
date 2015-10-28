@@ -861,12 +861,14 @@ public abstract class PreferenceActivity extends AppCompatActivity
                     .setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
             FrameLayout.LayoutParams preferenceScreenLayoutParams =
                     (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
-            preferenceScreenLayoutParams.leftMargin = navigationHidden ? getResources()
+            preferenceScreenLayoutParams.leftMargin = (navigationHidden ? getResources()
                     .getDimensionPixelSize(R.dimen.preference_screen_horizontal_margin) :
-                    dpToPixels(this, getNavigationWidth());
+                    dpToPixels(this, getNavigationWidth())) -
+                    getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
             preferenceScreenLayoutParams.rightMargin = getResources().getDimensionPixelSize(
                     navigationHidden ? R.dimen.preference_screen_horizontal_margin :
-                            R.dimen.preference_screen_margin_right);
+                            R.dimen.preference_screen_margin_right) -
+                    getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
             preferenceScreenLayoutParams.gravity =
                     navigationHidden ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY;
             getPreferenceScreenContainer().requestLayout();
@@ -2279,7 +2281,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             if (!isNavigationHidden()) {
                 FrameLayout.LayoutParams preferenceScreenLayoutParams =
                         (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
-                preferenceScreenLayoutParams.leftMargin = pixelWidth;
+                preferenceScreenLayoutParams.leftMargin = pixelWidth -
+                        getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
                 getPreferenceScreenContainer().requestLayout();
             }
 

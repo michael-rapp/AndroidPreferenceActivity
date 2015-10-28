@@ -26,8 +26,10 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- Preference screen -->
     <dimen name="preference_screen_horizontal_padding">0dp</dimen>
     <dimen name="preference_screen_margin_right">0dp</dimen>
-    <dimen name="preference_screen_margin_top">80dp</dimen>
+    <dimen name="preference_screen_margin_top">0dp</dimen>
     <dimen name="preference_screen_horizontal_margin">0dp</dimen>
+    <dimen name="preference_screen_container_vertical_offset">0dp</dimen>
+    <dimen name="preference_screen_vertical_offset">0dp</dimen>
 
     <!-- List views -->
     <dimen name="list_view_padding_top">8dp</dimen>
@@ -55,5 +57,8 @@ not, see <http://www.gnu.org/licenses/>.
     <dimen name="default_button_bar_elevation">6dp</dimen>
     <dimen name="default_bread_crumb_elevation">0dp</dimen>
     <dimen name="default_preference_screen_elevation">0dp</dimen>
+
+    <!-- Misc -->
+    <dimen name="card_view_intrinsic_margin">22dp</dimen>
 
 </resources>
