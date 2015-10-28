@@ -78,10 +78,8 @@ not, see <http://www.gnu.org/licenses/>.
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 android:background="@android:color/transparent"
-                android:paddingEnd="@dimen/preference_horizontal_padding"
                 android:paddingLeft="@dimen/preference_horizontal_padding"
                 android:paddingRight="@dimen/preference_horizontal_padding"
-                android:paddingStart="@dimen/preference_horizontal_padding"
                 app:popupTheme="?attr/invertedToolbarPopupTheme"
                 app:theme="?attr/invertedToolbarTheme"/>
 
