@@ -97,26 +97,36 @@ The following content of an Android app's `res/values/styles.xml` can be used to
 <?xml version="1.0" encoding="utf-8"?> 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"> 
 
-    <style name="DarkTheme" parent="@style/Theme.AppCompat.NoActionBar" 
-        <item name="colorPrimary">#ffd64937</item> 
-        <item name="colorPrimaryDark">#ffd64937</item> 
-        <item name="colorAccent">#ffd64937</item> 
-        <item name="toolbarTheme">@style/ToolbarTheme</item> 
-        <item name="toolbarPopupTheme">@style/DarkToolbarPopupTheme</item> 
-        <item name="navigationBackground">@color/navigation_background_dark</item> 
-        <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item> 
-        <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item> 
-        <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item> 
-        <item name="preferenceHeaderSelector">@drawable/selector_dark</item> 
-    </style/> 
+    <style name="DarkTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#ffd64937</item>
+        <item name="colorPrimaryDark">#ffd64937</item>
+        <item name="colorAccent">#ffd64937</item>
+        <item name="toolbarTheme">@style/ToolbarTheme</item>
+        <item name="toolbarPopupTheme">@style/DarkToolbarPopupTheme</item>
+        <item name="invertedToolbarTheme">@style/DarkInvertedToolbarTheme</item>
+        <item name="invertedToolbarPopupTheme">@style/LightToolbarPopupTheme</item>
+        <item name="navigationBackground">@color/navigation_background_dark</item>
+        <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item>
+        <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
+        <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
+        <item name="preferenceHeaderSelector">@drawable/selector_dark</item>
+    </style>
 
-    <style name="ToolbarTheme" parent="@style/Theme.AppCompat.NoActionBar" 
-        <item name="colorPrimary">#ffd64937</item> 
-        <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item> 
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item> 
-    </style/> 
-
-    <style name="DarkToolbarPopupTheme" parent="@style/Theme.AppCompat.NoActionBar" /> 
+    <style name="ToolbarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#ffd64937</item>
+        <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+    </style>
+        
+    <style name="DarkInvertedToolbarTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#ffd64937</item>
+        <item name="android:textColorPrimary">@color/abc_secondary_text_material_dark</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+    </style>
+    
+    <style name="LightToolbarPopupTheme" parent="@style/Theme.AppCompat.Light.NoActionBar"/>
+    
+    <style name="DarkToolbarPopupTheme" parent="@style/Theme.AppCompat.NoActionBar"/>
 
 </resources>
 ```
