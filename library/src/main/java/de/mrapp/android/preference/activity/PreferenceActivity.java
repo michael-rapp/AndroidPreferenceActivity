@@ -1955,10 +1955,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Returns the elevation of the toolbar, which is used to show the bread crumb of the currently
+     * Returns the elevation of the toolbar, which is used to show the title of the currently
      * selected preference header on devices with a large screen.
      *
-     * @return The elevation of the toolbar, which is used to show the bread crumb of the currently
+     * @return The elevation of the toolbar, which is used to show the title of the currently
      * selected preference header on devices with a large screen, in dp as an {@link Integer} value
      * or -1, if the device has a small screen
      */
@@ -1971,9 +1971,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Sets the elevation of the toolbar, which is used to show the bread crumb of the currently
-     * selected preference header on devices with a large screen. The elevation is only set on
-     * devices with a large screen.
+     * Sets the elevation of the toolbar, which is used to show the title of the currently selected
+     * preference header on devices with a large screen. The elevation is only set on devices with a
+     * large screen.
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
