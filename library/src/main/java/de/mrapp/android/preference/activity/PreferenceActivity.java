@@ -1947,7 +1947,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 16
      */
     public final void setToolbarElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(this, elevation, Orientation.BOTTOM);
+        Bitmap shadow = createElevationShadow(this, elevation, Orientation.BOTTOM, true);
         toolbarElevation = elevation;
         toolbarShadowView.setImageBitmap(shadow);
     }
@@ -1979,7 +1979,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the elevation has been set, false otherwise
      */
     public final boolean setBreadCrumbElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(this, elevation, Orientation.BOTTOM);
+        Bitmap shadow = createElevationShadow(this, elevation, Orientation.BOTTOM, true);
 
         if (breadCrumbShadowView != null) {
             breadCrumbElevation = elevation;
@@ -2057,7 +2057,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the elevation has been set, false otherwise
      */
     public final boolean setButtonBarElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(this, elevation, Orientation.TOP);
+        Bitmap shadow = createElevationShadow(this, elevation, Orientation.TOP, true);
 
         if (buttonBarShadowView != null) {
             buttonBarElevation = elevation;

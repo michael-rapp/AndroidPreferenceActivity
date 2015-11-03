@@ -54,7 +54,7 @@ not, see <http://www.gnu.org/licenses/>.
     <!-- Default values -->
     <dimen name="default_navigation_width">0dp</dimen>
     <dimen name="default_toolbar_elevation">4dp</dimen>
-    <dimen name="default_button_bar_elevation">6dp</dimen>
+    <dimen name="default_button_bar_elevation">2dp</dimen>
     <dimen name="default_bread_crumb_elevation">0dp</dimen>
     <dimen name="default_preference_screen_elevation">0dp</dimen>
 

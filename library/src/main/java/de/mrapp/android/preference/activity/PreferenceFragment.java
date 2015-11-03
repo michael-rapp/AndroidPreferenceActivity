@@ -633,7 +633,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      */
     @SuppressWarnings("deprecation")
     public final boolean setButtonBarElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(getActivity(), elevation, Orientation.TOP);
+        Bitmap shadow = createElevationShadow(getActivity(), elevation, Orientation.TOP, true);
 
         if (isRestoreDefaultsButtonShown()) {
             this.buttonBarElevation = elevation;
