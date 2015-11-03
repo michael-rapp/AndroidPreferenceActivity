@@ -4,7 +4,7 @@
 
 A minor release, which introduces the following changes:
 
-- The default elevation of button bar has been reduced from 6dp to 2dp. Furthermore, the functionality to use parallel lightning for emulating the shadows of emulated views of version 1.2.1 of the library "AndroidUtil" is now used in order to ensure, that the elevation of button bars appears identically to the elevation of bread crumbs. 
+- The default elevation of button bars has been reduced from 6dp to 2dp. Furthermore, the functionality to use parallel illumination for emulating the shadows of elevated views of version 1.2.1 of the library "AndroidUtil" is now used in order to ensure, that the elevation of button bars appears identically to the elevation of bread crumbs. 
 
 ## Version 4.0.0 (Oct. 28th 2015)
 
