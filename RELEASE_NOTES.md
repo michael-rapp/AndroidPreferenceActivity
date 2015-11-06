@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.0.2 (Nov. 6th 2015)
+
+A minor release, which introduces the following changes:
+
+- The view `ElevationShadowView`, which is provided by version 2.1.1 of the library "AndroidUtil", is now used to visualize elevations.
+
 ## Version 4.0.1 (Nov. 3rd 2015)
 
 A minor release, which introduces the following changes:
