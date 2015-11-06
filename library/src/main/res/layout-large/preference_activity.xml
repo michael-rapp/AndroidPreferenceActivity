@@ -18,6 +18,7 @@ not, see <http://www.gnu.org/licenses/>.
     android:id="@id/preference_activity_frame_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -45,13 +46,13 @@ not, see <http://www.gnu.org/licenses/>.
                 android:layout_height="match_parent"
                 android:background="@color/navigation_background_light"/>
 
-            <ImageView
+            <de.mrapp.android.util.view.ElevationShadowView
                 android:id="@id/toolbar_shadow_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:contentDescription="@null"
-                android:scaleType="fitXY"/>
+                custom:emulateParallelLight="true"
+                custom:shadowOrientation="bottom"/>
         </FrameLayout>
     </LinearLayout>
 
@@ -93,22 +94,22 @@ not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-                <ImageView
+                <de.mrapp.android.util.view.ElevationShadowView
                     android:id="@id/bread_crumb_shadow_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:contentDescription="@null"
-                    android:scaleType="fitXY"/>
+                    custom:emulateParallelLight="true"
+                    custom:shadowOrientation="bottom"/>
 
-                <ImageView
+                <de.mrapp.android.util.view.ElevationShadowView
                     android:id="@id/wizard_button_bar_shadow_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:contentDescription="@null"
-                    android:scaleType="fitXY"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    custom:emulateParallelLight="true"
+                    custom:shadowOrientation="top"/>
             </FrameLayout>
 
             <include layout="@layout/wizard_button_bar"/>

@@ -19,7 +19,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -49,11 +47,10 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
-import de.mrapp.android.util.ElevationUtil.Orientation;
+import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
-import static de.mrapp.android.util.ElevationUtil.createElevationShadow;
 
 /**
  * A fragment, which allows to show multiple preferences. Additionally, a button, which allows to
@@ -112,9 +109,9 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     private ViewGroup buttonBar;
 
     /**
-     * The image view, which is used to draw a shadow above the button bar.
+     * The view, which is used to draw a shadow above the button bar.
      */
-    private ImageView shadowView;
+    private ElevationShadowView shadowView;
 
     /**
      * The button, which allows to restore the preferences' default values.
@@ -160,7 +157,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
             restoreDefaultsButton =
                     (Button) buttonBarParent.findViewById(R.id.restore_defaults_button);
             restoreDefaultsButton.setOnClickListener(createRestoreDefaultsListener());
-            shadowView = (ImageView) buttonBarParent
+            shadowView = (ElevationShadowView) buttonBarParent
                     .findViewById(R.id.restore_defaults_button_bar_shadow_view);
             obtainStyledAttributes();
         }
@@ -633,11 +630,9 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      */
     @SuppressWarnings("deprecation")
     public final boolean setButtonBarElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(getActivity(), elevation, Orientation.TOP, true);
-
         if (isRestoreDefaultsButtonShown()) {
-            this.buttonBarElevation = elevation;
-            shadowView.setImageBitmap(shadow);
+            buttonBarElevation = elevation;
+            shadowView.setShadowElevation(elevation);
             return true;
         }
 

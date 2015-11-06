@@ -15,16 +15,17 @@ You should have received a copy of the GNU Lesser General Public License along w
 not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <ImageView
+    <de.mrapp.android.util.view.ElevationShadowView
         android:id="@id/restore_defaults_button_bar_shadow_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:scaleType="fitXY"/>
+        custom:emulateParallelLight="true"
+        custom:shadowOrientation="top"/>
 
     <RelativeLayout
         android:id="@id/restore_defaults_button_bar"

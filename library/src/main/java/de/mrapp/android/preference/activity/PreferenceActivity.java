@@ -42,7 +42,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -60,6 +59,7 @@ import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ElevationUtil.Orientation;
 import de.mrapp.android.util.VisibleForTesting;
+import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureAtMaximum;
@@ -267,10 +267,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Toolbar breadCrumbToolbar;
 
     /**
-     * The image view, which is used to draw a shadow below the toolbar, which is used to show the
-     * bread crumb of the currently selected preference header on devices with a large screen.
+     * The view, which is used to draw a shadow below the toolbar, which is used to show the bread
+     * crumb of the currently selected preference header on devices with a large screen.
      */
-    private ImageView breadCrumbShadowView;
+    private ElevationShadowView breadCrumbShadowView;
 
     /**
      * The view group, which contains the buttons, which are shown when the activity is used as a
@@ -296,15 +296,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Button finishButton;
 
     /**
-     * The image view, which is used to draw a shadow below the activity's toolbar.
+     * The view, which is used to draw a shadow below the activity's toolbar.
      */
-    private ImageView toolbarShadowView;
+    private ElevationShadowView toolbarShadowView;
 
     /**
-     * The image view, which is used to draw a shadow above the button bar when the activity is used
-     * as a wizard.
+     * The view, which is used to draw a shadow above the button bar when the activity is used as a
+     * wizard.
      */
-    private ImageView buttonBarShadowView;
+    private ElevationShadowView buttonBarShadowView;
 
     /**
      * The preference header, which is currently selected or null, if no preference header is
@@ -361,26 +361,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private boolean navigationHidden;
 
     /**
-     * The elevation of the toolbar in dp.
-     */
-    private int toolbarElevation;
-
-    /**
-     * The elevation of the toolbar, which is used to show the bread crumb of the currently selected
-     * preference header on devices with a large screen.
-     */
-    private int breadCrumbElevation;
-
-    /**
      * The elevation of the view group, which contains the views, which are shown when a preference
      * screen is selected on a device with a large screen, in dp.
      */
     private int preferenceScreenElevation;
-
-    /**
-     * The elevation of the button bar in dp.
-     */
-    private int buttonBarElevation;
 
     /**
      * True, if the progress should be shown as the bread crumb title, when the activity is used as
@@ -1875,7 +1859,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (showButtonBar) {
             buttonBar = (ViewGroup) findViewById(R.id.wizard_button_bar);
             buttonBar.setVisibility(View.VISIBLE);
-            buttonBarShadowView = (ImageView) findViewById(R.id.wizard_button_bar_shadow_view);
+            buttonBarShadowView =
+                    (ElevationShadowView) findViewById(R.id.wizard_button_bar_shadow_view);
             buttonBarShadowView.setVisibility(View.VISIBLE);
             nextButton = (Button) findViewById(R.id.next_button);
             nextButton.setOnClickListener(createNextButtonListener());
@@ -1936,7 +1921,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return The elevation of the activity's toolbar in dp as an {@link Integer} value
      */
     public final int getToolbarElevation() {
-        return toolbarElevation;
+        return toolbarShadowView.getShadowElevation();
     }
 
     /**
@@ -1947,9 +1932,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 16
      */
     public final void setToolbarElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(this, elevation, Orientation.BOTTOM, true);
-        toolbarElevation = elevation;
-        toolbarShadowView.setImageBitmap(shadow);
+        toolbarShadowView.setShadowElevation(elevation);
     }
 
     /**
@@ -1962,7 +1945,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final int getBreadCrumbElevation() {
         if (isSplitScreen()) {
-            return breadCrumbElevation;
+            return breadCrumbShadowView.getShadowElevation();
         }
 
         return -1;
@@ -1979,11 +1962,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the elevation has been set, false otherwise
      */
     public final boolean setBreadCrumbElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(this, elevation, Orientation.BOTTOM, true);
-
         if (breadCrumbShadowView != null) {
-            breadCrumbElevation = elevation;
-            breadCrumbShadowView.setImageBitmap(shadow);
+            breadCrumbShadowView.setShadowElevation(elevation);
             return true;
         }
 
@@ -2040,7 +2020,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final int getButtonBarElevation() {
         if (isButtonBarShown()) {
-            return buttonBarElevation;
+            return buttonBarShadowView.getShadowElevation();
         }
 
         return -1;
@@ -2060,8 +2040,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         Bitmap shadow = createElevationShadow(this, elevation, Orientation.TOP, true);
 
         if (buttonBarShadowView != null) {
-            buttonBarElevation = elevation;
-            buttonBarShadowView.setImageBitmap(shadow);
+            buttonBarShadowView.setShadowElevation(elevation);
             return true;
         }
 
@@ -2475,11 +2454,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
         preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
         preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
         preferenceScreenContainer = (CardView) findViewById(R.id.preference_screen_container);
-        toolbarShadowView = (ImageView) findViewById(R.id.toolbar_shadow_view);
+        toolbarShadowView = (ElevationShadowView) findViewById(R.id.toolbar_shadow_view);
 
         if (isSplitScreen()) {
             breadCrumbToolbar = (Toolbar) findViewById(R.id.bread_crumb_toolbar);
-            breadCrumbShadowView = (ImageView) findViewById(R.id.bread_crumb_shadow_view);
+            breadCrumbShadowView = (ElevationShadowView) findViewById(R.id.bread_crumb_shadow_view);
         }
 
         preferenceHeaderFragment = new PreferenceHeaderFragment();
