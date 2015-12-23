@@ -1151,13 +1151,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Obtains the width of the navigation from a specific theme.
      */
     private void obtainNavigationWidth() {
+        int defaultValue = getResources().getDimensionPixelSize(R.dimen.default_navigation_width);
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.navigationWidth});
-        int width = pixelsToDp(this, typedArray.getDimensionPixelSize(0, 0));
-
-        if (width != 0) {
-            setNavigationWidth(width);
-        }
+        setNavigationWidth(pixelsToDp(this, typedArray.getDimensionPixelSize(0, defaultValue)));
     }
 
     /**
