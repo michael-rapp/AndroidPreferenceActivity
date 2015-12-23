@@ -55,14 +55,14 @@ not, see <http://www.gnu.org/licenses/>.
                 custom:emulateParallelLight="true"
                 custom:shadowOrientation="bottom"/>
 
-            <ImageView
+            <de.mrapp.android.util.view.ElevationShadowView
                 android:id="@id/wizard_button_bar_shadow_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:contentDescription="@null"
-                android:scaleType="fitXY"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                custom:emulateParallelLight="true"
+                custom:shadowOrientation="top"/>
         </FrameLayout>
 
         <include layout="@layout/wizard_button_bar"/>
