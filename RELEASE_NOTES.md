@@ -1,6 +1,12 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
-## Version 4.0.4 (Dec 24th 2015)
+## Version 4.0.5 (Jan. 3rd 2016)
+
+A minor release, which introduces the following changes:
+
+- Updated dependency "AndroidUtil" to version 1.3.0.
+
+## Version 4.0.4 (Dec. 24th 2015)
 
 A bugfix release, which fixes the following issues:
 
