@@ -23,6 +23,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,6 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.PreferenceHeaderDecorator;
 import de.mrapp.android.preference.activity.R;
-import de.mrapp.android.util.VisibleForTesting;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
