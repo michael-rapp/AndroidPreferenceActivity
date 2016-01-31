@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.0.6 (Jan. 31th 2016)
+
+A minor release, which introduces the following changes:
+
+- Added `showView`- and `hideView`-methods, which allow to manually show or hide the animated view, to the class `HideViewOnScrollAnimation`.
+
 ## Version 4.0.5 (Jan. 3rd 2016)
 
 A minor release, which introduces the following changes:
