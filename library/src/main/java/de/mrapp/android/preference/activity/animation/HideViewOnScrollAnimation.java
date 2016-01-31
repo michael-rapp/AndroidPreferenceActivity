@@ -146,7 +146,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
             scrollingDown = false;
 
             if (animatedView.getAnimation() == null) {
-                ObjectAnimator animator = createAnimator();
+                ObjectAnimator animator = createAnimator(false);
                 animator.start();
             }
         }
@@ -160,7 +160,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
             scrollingDown = true;
 
             if (animatedView.getAnimation() == null) {
-                ObjectAnimator animator = createAnimator();
+                ObjectAnimator animator = createAnimator(true);
                 animator.start();
             }
         }
@@ -170,20 +170,20 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
      * Creates and returns an animator, which allows to translate the animated view to become shown
      * or hidden.
      *
+     * @param hide
+     *         True, if the view should become hidden, false otherwise
      * @return The animator, which has been created, as an instance of the class {@link
      * ObjectAnimator}
      */
-    private ObjectAnimator createAnimator() {
+    private ObjectAnimator createAnimator(final boolean hide) {
         if (initialPosition == -1.0f) {
             initialPosition = animatedView.getY();
         }
 
-        float targetPosition =
-                scrollingDown ? initialPosition - animatedView.getHeight() : initialPosition;
+        float targetPosition = hide ? initialPosition - animatedView.getHeight() : initialPosition;
 
         if (direction == Direction.DOWN) {
-            targetPosition =
-                    scrollingDown ? initialPosition + animatedView.getHeight() : initialPosition;
+            targetPosition = hide ? initialPosition + animatedView.getHeight() : initialPosition;
         }
 
         ObjectAnimator animation =
@@ -233,6 +233,30 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
         this.direction = direction;
         this.animationDuration = animationDuration;
         this.listeners = new LinkedHashSet<>();
+    }
+
+    /**
+     * Shows the view.
+     */
+    public final void showView() {
+        if (animatedView.getAnimation() != null) {
+            cancel();
+        }
+
+        ObjectAnimator animator = createAnimator(false);
+        animator.start();
+    }
+
+    /**
+     * Hides the view.
+     */
+    public final void hideView() {
+        if (animatedView.getAnimation() != null) {
+            cancel();
+        }
+
+        ObjectAnimator animator = createAnimator(true);
+        animator.start();
     }
 
     /**
