@@ -28,7 +28,7 @@ The latest release of this library can be downloaded as a zip archive from the d
 
 Alternatively, the library can be added to your Android app as a Gradle dependency by adding the following to the respective module's `build.gradle` file:
 
-```
+```groovy
 dependencies {
     compile 'com.github.michael-rapp:android-preference-activity:4.0.7'
 }
@@ -44,7 +44,7 @@ The following examples provide a quick overview on how to use the activity, whic
 
 The XML code below shows how to declare multiple preference headers within a XML resource.
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?> 
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android" 
 
@@ -78,7 +78,7 @@ As seen in the example above, it is possible to specify a fragment, which should
 
 The Java code below shows how the class `PreferenceActivity` can be extended to create an activity whose preference headers are loaded at startup from the XML resource shown above:
 
-```
+```java
 public class PreferenceActivity extends de.mrapp.android.preference.PreferenceActivity { 
 
     @Override 
@@ -93,7 +93,7 @@ public class PreferenceActivity extends de.mrapp.android.preference.PreferenceAc
 
 The following content of an Android app's `res/values/styles.xml` can be used to easily adapt the appearance of a `PreferenceActivity` to a dark theme. The theme `DarkTheme` has to be applied on the corresponding activity in the app's `AndroidManifest.xml`.
  
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?> 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"> 
 
