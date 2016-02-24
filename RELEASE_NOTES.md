@@ -1,6 +1,6 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
-## Version 4.0.7 (Jan. 24th 2016)
+## Version 4.0.7 (Feb. 24th 2016)
 
 A minor release, which introduces the following changes:
 
