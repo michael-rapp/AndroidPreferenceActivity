@@ -242,10 +242,10 @@
                         <td>The width must be greater than 0.</td>
                     </tr>
                     <tr>
-                        <td><tt>getPreferenceScreenBackground():Drawable<br/>setPreferenceScreenBackground(int):boolean<br/>setPreferenceScreenBackground(Drawable):boolean<br/>setPreferenceScreenBackgroundColor(int):boolean</tt></td>
-                        <td>Returns or sets the background of the view group, which contains the fragment of the currently selected preference header.</td>
+                        <td><tt>getPreferenceScreenBackgroundColor():int<br/>setPreferenceScreenBackgroundColor(int):boolean</tt></td>
+                        <td>Returns or sets the background color of the view group, which contains the fragment of the currently selected preference header.</td>
                         <td><center><tt>R.color.preference_screen_</br>background_light</tt></center></td>
-                        <td>When specifying a resource ID, the ID must correspond to a valid drawable resource. When specifying a color, the color must specify a valid RGB color.</td>
+                        <td>The color must specify a valid RGB color.</td>
                     </tr>
                     <tr>
                         <td><tt>getToolbarElevation():int<br/>setToolbarElevation(int):void</tt></td>
@@ -568,8 +568,8 @@
                     </tr>
                     <tr>
                         <td><tt>preferenceScreenBackground</tt></td>
-                        <td><center><tt>reference</tt> or <tt>color</tt></center></td>
-                        <td>The drawable reosurce or color of the background of the view group, which contains the fragment of the currently selected preference header</td>
+                        <td><center><tt>color</tt></center></td>
+                        <td>The color of the background of the view group, which contains the fragment of the currently selected preference header</td>
                     </tr>
                     <tr>
                         <td><tt>wizardButtonBarBackground</tt></td>
