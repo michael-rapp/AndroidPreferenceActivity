@@ -1,5 +1,15 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.1.0 (Mar. 17th 2016)
+
+A feature release, which introduces the following changes:
+
+- Fixed issue https://github.com/michael-rapp/AndroidPreferenceActivity/issues/14
+- Removed the `setPreferenceScreenBackground` and `getPreferenceScreenBackground`-methods from the class `PreferenceActivity`, because setting the background drawable of a `CardView` leads to issues. However, it is still possible to set a background color using the `setPreferenceScreenBackgroundColor`-method.
+- Updated dependency "AndroidUtil" to version 1.4.5.
+- Updated the AppCompat v7 support library to version 23.2.1.
+- Updated the CardView v7 support library to version 23.2.1.
+
 ## Version 4.0.7 (Feb. 24th 2016)
 
 A minor release, which introduces the following changes:
