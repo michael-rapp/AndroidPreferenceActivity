@@ -29,7 +29,6 @@ import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -60,6 +59,7 @@ import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ElevationUtil.Orientation;
+import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -2099,10 +2099,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         null, if no background should be set
      * @return True, if the background has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setPreferenceScreenBackground(@Nullable final Drawable drawable) {
         if (getPreferenceScreenContainer() != null) {
-            getPreferenceScreenContainer().setBackgroundDrawable(drawable);
+            ViewUtil.setBackground(getPreferenceScreenContainer(), drawable);
             return true;
         }
 
@@ -2152,9 +2151,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The background, which should be set, as an instance of the class {@link Drawable} or
      *         null, if no background should be set
      */
-    @SuppressWarnings("deprecation")
     public final void setNavigationBackground(@Nullable final Drawable drawable) {
-        getPreferenceHeaderParentView().setBackgroundDrawable(drawable);
+        ViewUtil.setBackground(getPreferenceHeaderParentView(), drawable);
     }
 
     /**
@@ -2210,10 +2208,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         null, if no background should be set
      * @return True, if the background has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setButtonBarBackground(@Nullable final Drawable drawable) {
         if (getButtonBar() != null) {
-            getButtonBar().setBackgroundDrawable(drawable);
+            ViewUtil.setBackground(getButtonBar(), drawable);
             return true;
         }
 

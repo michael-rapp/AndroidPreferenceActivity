@@ -47,6 +47,7 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
+import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -594,10 +595,9 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *         null, if no background should be set
      * @return True, if the background has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setButtonBarBackground(@Nullable final Drawable drawable) {
         if (getButtonBar() != null) {
-            getButtonBar().setBackgroundDrawable(drawable);
+            ViewUtil.setBackground(getButtonBar(), drawable);
             return true;
         }
 
