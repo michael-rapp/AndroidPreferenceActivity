@@ -362,6 +362,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private boolean navigationHidden;
 
     /**
+     * The background color of the view group, which contains the views, which are shown when a
+     * preference screen is selected on a device with a large screen.
+     */
+    private int preferenceScreenBackgroundColor;
+
+    /**
      * The elevation of the view group, which contains the views, which are shown when a preference
      * screen is selected on a device with a large screen, in dp.
      */
@@ -1119,12 +1125,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (color != 0) {
             setPreferenceScreenBackgroundColor(color);
-        } else {
-            int resourceId = typedArray.getResourceId(0, 0);
-
-            if (resourceId != 0) {
-                setPreferenceScreenBackground(resourceId);
-            }
         }
     }
 
@@ -2050,32 +2050,19 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Returns the background of the view group, which contains all views, which are shown when a
-     * preference header is selected on devices with a large screen.
+     * Returns the background color of the view group, which contains all views, which are shown
+     * when a preference header is selected on devices with a large screen.
      *
-     * @return The background of the view group, which contains all views, which are shown when a
-     * preference header is selected or null, if no background has been set or device has a small
-     * screen
+     * @return The background color of the view group, which contains all views, which are shown
+     * when a preference header is selected, as an {@link Integer} value, or -1, if no background
+     * color has been set or if the device has a small screen
      */
-    public final Drawable getPreferenceScreenBackground() {
+    public final int getPreferenceScreenBackgroundColor() {
         if (getPreferenceScreenContainer() != null) {
-            return getPreferenceScreenContainer().getBackground();
+            return preferenceScreenBackgroundColor;
         } else {
-            return null;
+            return -1;
         }
-    }
-
-    /**
-     * Sets the background of the view group, which contains all views, which are shown when a
-     * preference header is selected. The background is only set on devices with a large screen.
-     *
-     * @param resourceId
-     *         The resource id of the background, which should be set, as an {@link Integer} value.
-     *         The resource id must correspond to a valid drawable resource
-     * @return True, if the background has been set, false otherwise
-     */
-    public final boolean setPreferenceScreenBackground(@DrawableRes final int resourceId) {
-        return setPreferenceScreenBackground(ContextCompat.getDrawable(this, resourceId));
     }
 
     /**
@@ -2087,21 +2074,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the background has been set, false otherwise
      */
     public final boolean setPreferenceScreenBackgroundColor(@ColorInt final int color) {
-        return setPreferenceScreenBackground(new ColorDrawable(color));
-    }
-
-    /**
-     * Sets the background of the view group, which contains all views, which are shown when a
-     * preference header is selected. The background is only set on devices with a large screen.
-     *
-     * @param drawable
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
-     *         null, if no background should be set
-     * @return True, if the background has been set, false otherwise
-     */
-    public final boolean setPreferenceScreenBackground(@Nullable final Drawable drawable) {
         if (getPreferenceScreenContainer() != null) {
-            ViewUtil.setBackground(getPreferenceScreenContainer(), drawable);
+            preferenceScreenBackgroundColor = color;
+            getPreferenceScreenContainer().setCardBackgroundColor(color);
             return true;
         }
 

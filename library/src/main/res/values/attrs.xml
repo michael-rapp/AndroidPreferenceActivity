@@ -20,7 +20,7 @@ License.
     <attr name="invertedToolbarTheme" format="reference"/>
     <attr name="invertedToolbarPopupTheme" format="reference"/>
     <attr name="navigationBackground" format="reference|color"/>
-    <attr name="preferenceScreenBackground" format="reference|color"/>
+    <attr name="preferenceScreenBackground" format="color"/>
     <attr name="wizardButtonBarBackground" format="reference|color"/>
     <attr name="restoreDefaultsButtonBarBackground" format="reference|color"/>
     <attr name="navigationWidth" format="dimension"/>
