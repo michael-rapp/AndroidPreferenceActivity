@@ -18,6 +18,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
@@ -67,12 +68,8 @@ public class ToolbarLarge extends FrameLayout {
 
     /**
      * Obtains all attributes from a specific attribute set.
-     *
-     * @param attributeSet
-     *         The attribute set, the attributes should be obtained from, as an instance of the type
-     *         {@link AttributeSet} or null, if no attributes should be obtained
      */
-    private void obtainStyledAttributes(@Nullable final AttributeSet attributeSet) {
+    private void obtainStyledAttributes() {
         int theme = obtainTheme();
 
         if (theme != 0) {
@@ -117,7 +114,6 @@ public class ToolbarLarge extends FrameLayout {
      *         The resource id of the theme, which should be applied on the toolbar, as an {@link
      *         Integer} value
      */
-    @SuppressWarnings("deprecation")
     private void obtainTitleColor(final int theme) {
         TypedArray typedArray = getContext().getTheme()
                 .obtainStyledAttributes(theme, new int[]{android.R.attr.textColorPrimary});
@@ -125,7 +121,7 @@ public class ToolbarLarge extends FrameLayout {
         typedArray.recycle();
 
         if (textColorPrimary != 0) {
-            int titleColor = getContext().getResources().getColor(textColorPrimary);
+            int titleColor = ContextCompat.getColor(getContext(), textColorPrimary);
             toolbar.setTitleTextColor(titleColor);
         }
     }
@@ -157,7 +153,7 @@ public class ToolbarLarge extends FrameLayout {
     public ToolbarLarge(@NonNull final Context context, @Nullable final AttributeSet attributeSet) {
         super(context, attributeSet);
         inflate();
-        obtainStyledAttributes(attributeSet);
+        obtainStyledAttributes();
     }
 
     /**
@@ -179,7 +175,7 @@ public class ToolbarLarge extends FrameLayout {
                         final int defaultStyle) {
         super(context, attributeSet, defaultStyle);
         inflate();
-        obtainStyledAttributes(attributeSet);
+        obtainStyledAttributes();
     }
 
     /**
@@ -257,7 +253,6 @@ public class ToolbarLarge extends FrameLayout {
      * @param navigationHidden
      *         True, if the navigation should be hidden, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final void hideNavigation(final boolean navigationHidden) {
         toolbar.setVisibility(navigationHidden ? View.INVISIBLE : View.VISIBLE);
 

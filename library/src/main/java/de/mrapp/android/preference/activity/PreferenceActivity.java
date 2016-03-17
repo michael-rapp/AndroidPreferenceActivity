@@ -28,6 +28,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -2072,9 +2074,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The resource id must correspond to a valid drawable resource
      * @return True, if the background has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setPreferenceScreenBackground(@DrawableRes final int resourceId) {
-        return setPreferenceScreenBackground(getResources().getDrawable(resourceId));
+        return setPreferenceScreenBackground(ContextCompat.getDrawable(this, resourceId));
     }
 
     /**
@@ -2128,9 +2129,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The resource id of the background, which should be set, as an {@link Integer} value.
      *         The resource id must correspond to a valid drawable resource
      */
-    @SuppressWarnings("deprecation")
     public final void setNavigationBackground(@DrawableRes final int resourceId) {
-        setNavigationBackground(getResources().getDrawable(resourceId));
+        setNavigationBackground(ContextCompat.getDrawable(this, resourceId));
     }
 
     /**
@@ -2183,9 +2183,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The resource id must correspond to a valid drawable resource
      * @return True, if the background has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setButtonBarBackground(@DrawableRes final int resourceId) {
-        return setButtonBarBackground(getResources().getDrawable(resourceId));
+        return setButtonBarBackground(ContextCompat.getDrawable(this, resourceId));
     }
 
     /**

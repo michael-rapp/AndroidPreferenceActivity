@@ -25,6 +25,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import static de.mrapp.android.util.Condition.ensureNotEmpty;
@@ -321,9 +322,8 @@ public class PreferenceHeader implements Parcelable {
      *         The resource id of the icon, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid drawable resource
      */
-    @SuppressWarnings("deprecation")
     public final void setIcon(@NonNull final Context context, @DrawableRes final int resourceId) {
-        this.icon = context.getResources().getDrawable(resourceId);
+        this.icon = ContextCompat.getDrawable(context, resourceId);
     }
 
     /**

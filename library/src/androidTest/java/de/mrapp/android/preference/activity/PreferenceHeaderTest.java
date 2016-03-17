@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.support.v4.content.ContextCompat;
 import android.test.AndroidTestCase;
 
 import junit.framework.Assert;
@@ -213,9 +214,8 @@ public class PreferenceHeaderTest extends AndroidTestCase {
      * Tests the functionality of the method, which allows to set the preference header's icon and
      * expects a drawable as a parameter.
      */
-    @SuppressWarnings("deprecation")
     public final void testSetIconWithDrawableParameter() {
-        Drawable icon = getContext().getResources().getDrawable(android.R.drawable.ic_delete);
+        Drawable icon = ContextCompat.getDrawable(getContext(), android.R.drawable.ic_delete);
         PreferenceHeader preferenceHeader = new PreferenceHeader("foo");
         preferenceHeader.setIcon(icon);
         assertEquals(icon, preferenceHeader.getIcon());
@@ -271,13 +271,12 @@ public class PreferenceHeaderTest extends AndroidTestCase {
     /**
      * Tests the functionality of the writeToParcel-method.
      */
-    @SuppressWarnings("deprecation")
     public final void testWriteToParcel() {
         CharSequence title = "title";
         CharSequence summary = "summary";
         CharSequence breadCrumbTitle = "breadCrumbTitle";
         CharSequence breadCrumbShortTitle = "breadCrumbShortTitle";
-        Drawable icon = getContext().getResources().getDrawable(android.R.drawable.ic_delete);
+        Drawable icon = ContextCompat.getDrawable(getContext(), android.R.drawable.ic_delete);
         String fragment = "com.android.Fragment";
         Intent intent = new Intent();
         Bundle extras = new Bundle();
@@ -306,13 +305,12 @@ public class PreferenceHeaderTest extends AndroidTestCase {
      * Tests the createFromParcel-method of the creator, which allows to create instances from a
      * {@link Parcel}.
      */
-    @SuppressWarnings("deprecation")
     public final void testCreatorCreateFromParcel() {
         CharSequence title = "title";
         CharSequence summary = "summary";
         CharSequence breadCrumbTitle = "breadCrumbTitle";
         CharSequence breadCrumbShortTitle = "breadCrumbShortTitle";
-        Drawable icon = getContext().getResources().getDrawable(android.R.drawable.ic_delete);
+        Drawable icon = ContextCompat.getDrawable(getContext(), android.R.drawable.ic_delete);
         String fragment = "com.android.Fragment";
         Intent intent = new Intent();
         Bundle extras = new Bundle();

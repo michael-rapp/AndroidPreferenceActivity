@@ -29,6 +29,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.XmlRes;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -567,9 +568,8 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *         The resource id must correspond to a valid drawable resource
      * @return True, if the background has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setButtonBarBackground(@DrawableRes final int resourceId) {
-        return setButtonBarBackground(getResources().getDrawable(resourceId));
+        return setButtonBarBackground(ContextCompat.getDrawable(getActivity(), resourceId));
     }
 
     /**
@@ -627,7 +627,6 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *         must be at least 1 and at maximum 16
      * @return True, if the elevation has been set, false otherwise
      */
-    @SuppressWarnings("deprecation")
     public final boolean setButtonBarElevation(final int elevation) {
         if (isRestoreDefaultsButtonShown()) {
             buttonBarElevation = elevation;
