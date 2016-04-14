@@ -24,5 +24,4 @@ License.
     android:paddingRight="@dimen/preference_horizontal_padding"
     android:singleLine="true"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-    android:textColor="?attr/colorAccent"
-    android:textStyle="bold"/>
+    android:textColor="?attr/colorAccent"/>
