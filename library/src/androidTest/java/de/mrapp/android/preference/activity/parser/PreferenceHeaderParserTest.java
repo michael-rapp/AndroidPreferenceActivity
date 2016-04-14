@@ -42,7 +42,7 @@ public class PreferenceHeaderParserTest extends AndroidTestCase {
         Iterator<PreferenceHeader> iterator = preferenceHeaders.iterator();
         PreferenceHeader preferenceHeader = iterator.next();
 
-        assertEquals("de.mrapp.android.preference.activity.Fragment",
+        assertEquals("de.mrapp.android.preference.activity.PreferenceFragment",
                 preferenceHeader.getFragment());
         assertEquals("breadCrumbTitle", preferenceHeader.getBreadCrumbTitle());
         assertEquals("breadCrumbShortTitle", preferenceHeader.getBreadCrumbShortTitle());

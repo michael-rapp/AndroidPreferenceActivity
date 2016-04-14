@@ -20,7 +20,7 @@ License.
     <header
         android:breadCrumbShortTitle="breadCrumbShortTitle"
         android:breadCrumbTitle="breadCrumbTitle"
-        android:fragment="de.mrapp.android.preference.activity.Fragment"
+        android:fragment="de.mrapp.android.preference.activity.PreferenceFragment"
         android:summary="summary"
         android:title="title"/>
     <header android:title="title">
