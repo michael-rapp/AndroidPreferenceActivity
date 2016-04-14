@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.preference.activity.adapter;
 
+import android.support.annotation.NonNull;
 import android.test.AndroidTestCase;
 import android.text.TextUtils;
 import android.view.View;
@@ -71,8 +72,8 @@ public class PreferenceHeaderAdapterTest extends AndroidTestCase {
         private ViewHolder viewHolder;
 
         @Override
-        public void onApplyDecorator(final int position, final PreferenceHeader preferenceHeader,
-                                     final View view, final ViewHolder viewHolder) {
+        public void onApplyDecorator(final int position, @NonNull final PreferenceHeader preferenceHeader,
+                                     @NonNull final View view, @NonNull final ViewHolder viewHolder) {
             this.position = position;
             this.preferenceHeader = preferenceHeader;
             this.view = view;
