@@ -113,7 +113,7 @@ public class PreferenceHeader implements Parcelable {
         setBreadCrumbShortTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
         setIcon(new BitmapDrawable((Bitmap) source.readParcelable(Bitmap.class.getClassLoader())));
         setFragment(source.readString());
-        setExtras(source.readBundle());
+        setExtras(source.readBundle(getClass().getClassLoader()));
 
         if (source.readInt() != 0) {
             setIntent(Intent.CREATOR.createFromParcel(source));
