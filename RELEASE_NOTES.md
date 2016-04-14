@@ -1,5 +1,14 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.1.1 (Apr. 15th 2016)
+
+A minor release, which introduces the following changes:
+
+- Changed the appearance of preference categories on pre-Lollipop devices.
+- The divider after the last item of a `PreferenceActivity`'s navigation is not shown anymore.
+- Updated the AppCompat v7 support library to version 23.3.0.
+- Updated the CardView v7 support library to version 23.3.0.
+
 ## Version 4.1.0 (Mar. 17th 2016)
 
 A feature release, which introduces the following changes:
