@@ -120,6 +120,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public static final String EXTRA_NO_HEADERS = ":android:no_headers";
 
     /**
+     * When starting this activity, the invoking intent can contain this extra boolean that the
+     * toolbar, which is used to show the title of the currently selected preference header, should
+     * not be displayed.
+     */
+    public static final String EXTRA_NO_BREAD_CRUMBS = ":extra_prefs_no_bread_crumbs";
+
+    /**
      * When starting this activity, the invoking intent can contain this extra boolean to display
      * back and next buttons in order to use the activity as a wizard.
      */
@@ -221,6 +228,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * recreated or null, if no preference header has been previously selected.
      */
     private Fragment restoredPreferenceScreenFragment;
+
+    /**
+     * The activity's main toolbar.
+     */
+    private Toolbar toolbar;
 
     /**
      * The view, which is used to visualize a large toolbar on devices with a large screen.
@@ -392,6 +404,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private String progressFormat;
 
     /**
+     * The visibility of the toolbar, which is used to show the title of the currently selected
+     * preference header.
+     */
+    private int breadCrumbVisibility = View.VISIBLE;
+
+    /**
      * A set, which contains the listeners, which have been registered to be notified when the
      * currently shown preference fragment has been changed.
      */
@@ -413,7 +431,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
                     "\"@style/Theme.AppCompat.Light.NoActionBar\" as the activity's theme");
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         if (isSplitScreen()) {
             toolbarLarge = (ToolbarLarge) findViewById(R.id.toolbar_large);
@@ -514,6 +532,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
             hideNavigation(getIntent().getExtras().getBoolean(EXTRA_NO_HEADERS));
         } else {
             hideNavigation(isNavigationHidden());
+        }
+    }
+
+    /**
+     * Handles the extra of the intent, which has been used to start the activity, that allows to
+     * hide the bread crumbs.
+     */
+    private void handleHideBreadCrumbsIntent() {
+        if (getIntent().getExtras() != null &&
+                getIntent().getExtras().containsKey(EXTRA_NO_BREAD_CRUMBS)) {
+            setBreadCrumbVisibility(View.GONE);
         }
     }
 
@@ -773,6 +802,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (currentHeader == null || !currentHeader.equals(preferenceHeader)) {
             currentHeader = preferenceHeader;
             adaptWizardButtons();
+            adaptBreadCrumbVisibility(
+                    parameters != null ? parameters : preferenceHeader.getExtras());
 
             if (preferenceHeader.getFragment() != null) {
                 showBreadCrumb(preferenceHeader);
@@ -848,6 +879,42 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Adapts the visibility of the toolbar, which is used to show the title of the currently
+     * selected preference header, depending on the currently selected preference header.
+     *
+     * @param parameters
+     *         The parameters of the currently selected preference header as an instance of the
+     *         class {@link Bundle} or null, if the preference header contains no parameters
+     */
+    private void adaptBreadCrumbVisibility(@Nullable final Bundle parameters) {
+        if (parameters != null && parameters.containsKey(EXTRA_NO_BREAD_CRUMBS)) {
+            boolean hideBreadCrumb = parameters.getBoolean(EXTRA_NO_BREAD_CRUMBS, false);
+            adaptBreadCrumbVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
+        } else {
+            adaptBreadCrumbVisibility(breadCrumbVisibility);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the toolbar, which is used to show the title of the currently
+     * selected preference header.
+     *
+     * @param visibility
+     *         The visibility, which should be set, as an {@link Integer} value. The visibility may
+     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
+     *         <code>View.GONE</code>
+     */
+    private void adaptBreadCrumbVisibility(final int visibility) {
+        if (isSplitScreen()) {
+            breadCrumbToolbar.setVisibility(visibility);
+            breadCrumbShadowView.setVisibility(visibility);
+        } else {
+            toolbar.setVisibility(visibility);
+            toolbarShadowView.setVisibility(visibility);
+        }
+    }
+
+    /**
      * Adapts the GUI, depending on whether the navigation is currently hidden or not.
      *
      * @param navigationHidden
@@ -901,6 +968,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             preferenceScreenFragment = null;
         }
 
+        adaptBreadCrumbVisibility(breadCrumbVisibility);
         replaceFragment(preferenceHeaderFragment, R.id.preference_header_parent, transition);
     }
 
@@ -1035,6 +1103,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             if (defaultTitle == null) {
                 defaultTitle = getTitle();
             }
+
             setTitle(breadCrumbTitle);
         }
     }
@@ -2329,6 +2398,32 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Returns the visibility of the toolbar, which is used to show the title of the currently
+     * selected preference header.
+     *
+     * @return The visibility of the toolbar, which is used to show the title of the currently
+     * selected preference header, as an {@link Integer} value. The visibility must either be
+     * <code>View.VISIBLE</code>, <code>View.INVISIBLE</code>, <code>View.GONE</code>
+     */
+    public final int getBreadCrumbVisibility() {
+        return breadCrumbVisibility;
+    }
+
+    /**
+     * Sets the visibility of the toolbar, which is used to show the title of the currently selected
+     * preference header. This takes effect regardless of the device's screen size.
+     *
+     * @param visibility
+     *         The visibility, which should be set, as an {@link Integer} value. The visibility must
+     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
+     *         <code>View.GONE</code>
+     */
+    public final void setBreadCrumbVisibility(final int visibility) {
+        breadCrumbVisibility = visibility;
+        adaptBreadCrumbVisibility(visibility);
+    }
+
     @Override
     public final void onItemClick(final AdapterView<?> parent, final View view, final int position,
                                   final long id) {
@@ -2414,6 +2509,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         handleShowButtonBarIntent();
         handleHideNavigationIntent();
+        handleHideBreadCrumbsIntent();
     }
 
     @Override
