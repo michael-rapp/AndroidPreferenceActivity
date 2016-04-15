@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.1 (Apr. 15th 2016)
+
+A minor release, which introduces the following changes:
+
+- Added the `unselectPreferenceHeader`-method, which allows to programmatically return to the navigation on smartphones, to the class `PreferenceActivity`.
+
 ## Version 4.2.0 (Apr. 15th 2016)
 
 A feature release, which introduces the following changes:
