@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.2 (Apr. 15th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed the return value of the `unselectPreferenceHeader`-method of the class `PreferenceActivity`.
+
 ## Version 4.2.1 (Apr. 15th 2016)
 
 A minor release, which introduces the following changes:
