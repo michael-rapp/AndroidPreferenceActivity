@@ -1840,6 +1840,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             showPreferenceHeaders();
             hideToolbarNavigationIcon();
             resetTitle();
+            return true;
         }
 
         return false;
