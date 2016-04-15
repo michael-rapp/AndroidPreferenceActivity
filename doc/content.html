@@ -46,6 +46,7 @@
                     <ul>
                         <li><a href="content.html#overriding-the-back-button">Overriding the back button</a></li>
                         <li><a href="content.html#hiding-the-navigation">Hiding the navigation</a></li>
+                        <li><a href="content.html#hiding-the-bread-crumbs">Hiding the bread crumbs</a></li>
                         <li><a href="content.html#initially-selecting-a-preference-header">Initially selecting a preference header</a></li>
                     </ul>
                     <li><a href="content.html#using-the-activity-as-a-wizard">Using the activity as a wizard</a></li>
@@ -301,7 +302,11 @@
 
                 <p>Another possibility to take influence on the activity's behavior is to hide the navigation. This prevents the user to switch between the currently selected preference header and an other one. To hide or show the navigation, the method <tt>hideNavigation(boolean):void</tt> can be used. To retrieve, whether the navigation is currently hidden, the method <tt>isNavigationHidden():boolean</tt> is provided. Alternatively, a boolean extra can be passed via the intent, which is used to start the activity. The extra must contain the key <tt>PreferenceActivity.EXTRA_NO_HEADERS</tt>. Hiding the navigation espacially makes sense, when the acticity is launched with a specific preference header initially selected (see the folling section for further information).</p>
 
-                <h5><a name="initially-selecting-a-preference-header">4.3 Initially selecting a preference header</a></h5>
+                <h5><a name="hiding-the-bread-crumbs">4.3 Hiding the bread crumbs</a></h5>
+                
+                <p>Besides hiding the activity's navigation, it is also possible to hide the bread crumbs, which are used to show the title of the currently selected preference header. This can achieved globally - for all preference headers - by either using the method <tt>setBreadCrumbVisibility(int):void</tt> of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, or by passing a boolean extra with the key <tt>PreferenceActivity.EXTRA_NO_BREAD_CRUMBS</tt> via the intent, which is used to launch the activity. If the visibility of the bread crumbs should vary depending on the currently selected preference header, it is also possible to include the same boolean extra in the <a href="http://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a>, which is associated with the corresponding <a href="javadoc/de/mrapp/android/preference/activity/PreferenceHeader.html" target="_blank" class="code">PreferenceHeader</a>.</p>
+
+                <h5><a name="initially-selecting-a-preference-header">4.4 Initially selecting a preference header</a></h5>
 
                 <p>It is possible to use the intent, which is passed to the activity when it is started, to specify a preference header, which should be initially selected. This option allows to start the actvity in order to offer a specific group of preferences to the user. At the moment, it is only possible to initially select a preference header, which specifies a fragment. This decision has been made in order to preserve compatibility to the Android SKD's built-in <a href="http://developer.android.com/reference/android/preference/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, which offers the same functionality using the same intent extras, which will be discussed in the following.</p>
 
