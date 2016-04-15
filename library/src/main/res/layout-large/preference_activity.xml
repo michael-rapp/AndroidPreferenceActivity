@@ -77,7 +77,7 @@ License.
                 android:id="@id/bread_crumb_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
-                android:background="@android:color/transparent"
+                android:background="@drawable/breadcrumb_background"
                 android:paddingLeft="@dimen/preference_horizontal_padding"
                 android:paddingRight="@dimen/preference_horizontal_padding"
                 app:popupTheme="?attr/invertedToolbarPopupTheme"

@@ -59,5 +59,6 @@ License.
 
     <!-- Misc -->
     <dimen name="card_view_intrinsic_margin">22dp</dimen>
+    <dimen name="card_view_corner_radius">2dp</dimen>
 
 </resources>

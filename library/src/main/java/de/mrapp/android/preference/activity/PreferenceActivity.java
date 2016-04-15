@@ -20,6 +20,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -366,6 +367,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * preference screen is selected on a device with a large screen.
      */
     private int preferenceScreenBackgroundColor;
+
+    /**
+     * The background color of the toolbar, which is used to show the title of the currently
+     * selected preference header on devices with a large screen.
+     */
+    private int breadCrumbBackgroundColor;
 
     /**
      * The elevation of the view group, which contains the views, which are shown when a preference
@@ -1087,7 +1094,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private void obtainStyledAttributes() {
         obtainNavigationBackground();
-        obtainPreferenceScreenBackground();
+        obtainPreferenceScreenBackgroundColor();
+        obtainBreadCrumbBackgroundColor();
         obtainWizardButtonBarBackground();
         obtainNavigationWidth();
         obtainOverrideNavigationIcon();
@@ -1116,15 +1124,28 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Obtains the background of the preference screen from a specific theme.
+     * Obtains the background color of the preference screen from a specific theme.
      */
-    private void obtainPreferenceScreenBackground() {
+    private void obtainPreferenceScreenBackgroundColor() {
         TypedArray typedArray =
                 getTheme().obtainStyledAttributes(new int[]{R.attr.preferenceScreenBackground});
         int color = typedArray.getColor(0, 0);
 
         if (color != 0) {
             setPreferenceScreenBackgroundColor(color);
+        }
+    }
+
+    /**
+     * Obtains the background color of the bread crumb from a specific theme.
+     */
+    private void obtainBreadCrumbBackgroundColor() {
+        TypedArray typedArray =
+                getTheme().obtainStyledAttributes(new int[]{R.attr.breadCrumbBackground});
+        int color = typedArray.getColor(0, 0);
+
+        if (color != 0) {
+            setBreadCrumbBackgroundColor(color);
         }
     }
 
@@ -2077,6 +2098,42 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (getPreferenceScreenContainer() != null) {
             preferenceScreenBackgroundColor = color;
             getPreferenceScreenContainer().setCardBackgroundColor(color);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the background color of the toolbar, which is used to show the title of the currently
+     * selected preference header on devices with a large screen.
+     *
+     * @return The background color of the toolbar, which is used to show the title of the currently
+     * selected preference header on devices with a large screen, as an {@link Integer} value, or
+     * -1, if no background color has been set or if the device has a small screen
+     */
+    public final int getBreadCrumbBackgroundColor() {
+        if (getBreadCrumbToolbar() != null) {
+            return breadCrumbBackgroundColor;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * Sets the background color of the toolbar, which is used to show the title of the currently
+     * selected preference header on devices with a large screen.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     * @return True, if the background has been set, false otherwise
+     */
+    public final boolean setBreadCrumbBackgroundColor(@ColorInt final int color) {
+        if (getBreadCrumbToolbar() != null) {
+            GradientDrawable background = (GradientDrawable) ContextCompat
+                    .getDrawable(this, R.drawable.breadcrumb_background);
+            background.setColor(color);
+            ViewUtil.setBackground(getBreadCrumbToolbar(), background);
             return true;
         }
 
