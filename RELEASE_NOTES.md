@@ -1,5 +1,12 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.0 (Apr. 15th 2016)
+
+A feature release, which introduces the following changes:
+
+- It is now possible to change the background color of the bread crumbs on tablets programmatically or via a theme attribute.
+- It is now possible to hide bread crumbs (on tablets and smartphones) globally or per preference header using a setter method or via Intent extras.
+
 ## Version 4.1.1 (Apr. 15th 2016)
 
 A minor release, which introduces the following changes:
