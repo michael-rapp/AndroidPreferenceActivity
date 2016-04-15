@@ -248,6 +248,12 @@
                         <td>The color must specify a valid RGB color.</td>
                     </tr>
                     <tr>
+                        <td><tt>getBreadCrumbBackgroundColor():int<br/>setBreadCrumbBackgroundColor(int):boolean</tt></td>
+                        <td>Returns or sets the background color of the toolbar, which is used to show the title of the currently selected preference header on devices with a large screen.</td>
+                        <td><center><tt>android.R.color.transparent</tt></center></td>
+                        <td>The color must specify a valid RGB color.</td>
+                    </tr>
+                    <tr>
                         <td><tt>getToolbarElevation():int<br/>setToolbarElevation(int):void</tt></td>
                         <td>Returns or sets the elevation of the activity's toolbar.</td>
                         <td><center><tt>4dp</tt></center></td>
@@ -447,7 +453,7 @@
 
                 <p>As shown above, all methods of the interface <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> define parameters, which contain the position of the currently selected preference header, the preference header itself and the fragment, which is currently shown. Additionally, a bundle is passed, which contains the parameters, which have been passed to the currently shown fragment.</p>
 
-		<p>The return values of thelistener methods are used to determine, whether the several action should be performed, or not. The <tt>onFinish</tt>- and <tt>onSkip</tt>-methods must return a <tt>boolean</tt> value in order to return this information, the <tt>onNextStep</tt>- and <tt>onPreviousStep</tt>-methods must return a <a href="http://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a> instead. If the returned bundle is not null, the action will be performed. Such a bundle allows to pass data to the next fragment, which will be shown. In general, preventing an action from being performed may be useful, if for example the data, the user has entered in the currently shown preference, should be validated or if a dialog, which asks for confirmation when the wizard is about to be skipped, should be shown.</p>
+		<p>The return values of the listener methods are used to determine, whether the several action should be performed, or not. The <tt>onFinish</tt>- and <tt>onSkip</tt>-methods must return a <tt>boolean</tt> value in order to return this information, the <tt>onNextStep</tt>- and <tt>onPreviousStep</tt>-methods must return a <a href="http://developer.android.com/reference/android/os/Bundle.html" target="_blank" class="code">Bundle</a> instead. If the returned bundle is not null, the action will be performed. Such a bundle allows to pass data to the next fragment, which will be shown. In general, preventing an action from being performed may be useful, if for example the data, the user has entered in the currently shown preference, should be validated or if a dialog, which asks for confirmation when the wizard is about to be skipped, should be shown.</p>
 
 		<p>Adding a <a href="javadoc/de/mrapp/android/preference/activity/WizardListener.html" target="_blank" class="code">WizardListener</a> to an instance of the class <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a>, is possible by using the method <tt>addWizardListener(WizardListener):void</tt>. In case a listener, which has been registered this way, should not be notified on the wizard's events anymore, the method <tt>removeWizardListener(WizardListener):void</tt> can be used to remove the listener from the activity.</p>
 
@@ -570,6 +576,11 @@
                         <td><tt>preferenceScreenBackground</tt></td>
                         <td><center><tt>color</tt></center></td>
                         <td>The color of the background of the view group, which contains the fragment of the currently selected preference header</td>
+                    </tr>
+                    <tr>
+                        <td><tt>breadCrumbBackground</tt></td>
+                        <td><center><tt>color</tt></center></td>
+                        <td>The color of the background of the toolbar, which is used to show the title of the currently selected preference header on devices with a large screen</td>
                     </tr>
                     <tr>
                         <td><tt>wizardButtonBarBackground</tt></td>
