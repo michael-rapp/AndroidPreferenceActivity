@@ -1829,6 +1829,23 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Unselects the currently selected preference header and shows the navigation on devices with a
+     * small screen, if the navigation is not hidden.
+     *
+     * @return True, if a preference header has been unselected, false otherwise
+     */
+    public final boolean unselectPreferenceHeader() {
+        if (!isSplitScreen() && isPreferenceHeaderSelected() && !isNavigationHidden() &&
+                !isButtonBarShown()) {
+            showPreferenceHeaders();
+            hideToolbarNavigationIcon();
+            resetTitle();
+        }
+
+        return false;
+    }
+
+    /**
      * Selects a specific preference header.
      *
      * @param preferenceHeader
@@ -2515,11 +2532,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!isSplitScreen() && isPreferenceHeaderSelected() && !isNavigationHidden() &&
-                    !isButtonBarShown()) {
-                showPreferenceHeaders();
-                hideToolbarNavigationIcon();
-                resetTitle();
+            if (unselectPreferenceHeader()) {
                 return true;
             } else if (isButtonBarShown()) {
                 return !notifyOnSkip() || super.onKeyDown(keyCode, event);
