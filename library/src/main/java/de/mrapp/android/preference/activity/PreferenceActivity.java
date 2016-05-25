@@ -22,6 +22,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -2505,6 +2506,30 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     @Override
+    public final void setTitle(@Nullable final CharSequence title) {
+        super.setTitle(title);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (isSplitScreen()) {
+            toolbarLarge.setTitle(title);
+
+            if (actionBar != null) {
+                actionBar.setTitle(null);
+            }
+        } else {
+            if (actionBar != null) {
+                actionBar.setTitle(title);
+            }
+        }
+    }
+
+    @Override
+    public final void setTitle(@StringRes final int resourceId) {
+        setTitle(getText(resourceId));
+    }
+
+    @CallSuper
+    @Override
     public void onFragmentCreated(@NonNull final Fragment fragment) {
         getListView().setOnItemClickListener(PreferenceActivity.this);
         getListAdapter().addListener(PreferenceActivity.this);
@@ -2530,6 +2555,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         handleHideBreadCrumbsIntent();
     }
 
+    @CallSuper
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -2543,6 +2569,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
+    @CallSuper
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -2560,29 +2587,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public final void setTitle(@Nullable final CharSequence title) {
-        super.setTitle(title);
-        ActionBar actionBar = getSupportActionBar();
-
-        if (isSplitScreen()) {
-            toolbarLarge.setTitle(title);
-
-            if (actionBar != null) {
-                actionBar.setTitle(null);
-            }
-        } else {
-            if (actionBar != null) {
-                actionBar.setTitle(title);
-            }
-        }
-    }
-
-    @Override
-    public final void setTitle(@StringRes final int resourceId) {
-        setTitle(getText(resourceId));
-    }
-
+    @CallSuper
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -2614,6 +2619,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         showPreferenceHeaders();
     }
 
+    @CallSuper
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
         Bundle bundle = savedInstanceState.getBundle(CURRENT_BUNDLE_EXTRA);
@@ -2639,6 +2645,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
     }
 
+    @CallSuper
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
