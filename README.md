@@ -93,7 +93,7 @@ public class PreferenceActivity extends de.mrapp.android.preference.PreferenceAc
 
 ### Specifying the activity's theme
 
-The library comes with a predefined dark and light theme. The dark theme can be referenced using the resource ID `@style/PreferenceActivity` and the light theme corresponds to the resource ID `@style/PreferenceActivity.Light`. The following example shows how the appearance of a `PreferenceActivity` can be easily adapted, by assigning either one of these themes in the app's `AndroidManifest.xml` file.
+The library comes with a predefined dark and light theme. The dark theme can be referenced using the resource ID `@style/PreferenceActivity` and the light theme corresponds to the resource ID `@style/PreferenceActivity.Light`. The following example shows how the appearance of a `PreferenceActivity` can be easily adapted by assigning either one of these themes in the app's `AndroidManifest.xml` file.
  
 ```xml
 <activity
@@ -102,7 +102,21 @@ The library comes with a predefined dark and light theme. The dark theme can be 
     android:theme="@style/PreferenceActivity"/>
 ```
 
-The screenshots below show the appearance of a `PreferenceActivity`, when the dark theme has been applied like shown above.
+Furthermore, it might be useful to extend one of the predefined themes in order to overwrite some of its theme attributes. For example, it is a common use-case to override the attributes `colorPrimary` and `colorAccent`, which are used to specify the colors of the activity's toolbar and widgets. In such case, a new stle resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. Its resource ID must then be used to specify the activity's theme like shown above. The following example illustrates how a custom style can be defined:
+
+```xml
+<resources>
+
+    <style name="CustomPreferenceActivity" parent="@style/PreferenceActivity">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+</resources>
+```
+
+The screenshots below show the appearance of a `PreferenceActivity`, when the dark theme has been applied.
 
 ![](doc/images/example-tablet-dark.png)
 
