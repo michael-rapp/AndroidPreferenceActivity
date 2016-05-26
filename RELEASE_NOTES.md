@@ -4,6 +4,7 @@
 
 A minor release, which introduces the following changes:
 
+- The library does now provide a built-in dark and light theme.
 - Slightly adjusted button sizes and paddings.
 - Updated AppCompat v7 support library to version 23.4.0.
 
