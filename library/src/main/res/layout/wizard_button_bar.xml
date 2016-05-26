@@ -16,6 +16,7 @@ License.
 <RelativeLayout
     android:id="@id/wizard_button_bar"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/button_bar_background_light"
@@ -57,7 +58,8 @@ License.
         android:text="@string/next_button_label"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/button_text_size"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:ignore="RelativeOverlap"/>
 
     <Button
         android:id="@id/finish_button"
