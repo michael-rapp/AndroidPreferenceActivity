@@ -38,9 +38,6 @@ License.
     <dimen name="navigation_toolbar_padding_left">100dp</dimen>
     <dimen name="bread_crumb_toolbar_horizontal_padding">28dp</dimen>
 
-    <!-- Buttons -->
-    <dimen name="button_bar_horizontal_padding">32dp</dimen>
-
     <!-- Default values -->
     <dimen name="default_navigation_width">384dp</dimen>
     <dimen name="default_bread_crumb_elevation">2dp</dimen>

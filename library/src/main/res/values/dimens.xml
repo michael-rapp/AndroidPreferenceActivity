@@ -44,11 +44,12 @@ License.
     <dimen name="bread_crumb_toolbar_horizontal_padding">0dp</dimen>
 
     <!-- Buttons -->
-    <dimen name="button_bar_vertical_button_margin">8dp</dimen>
-    <dimen name="button_bar_horizontal_padding">16dp</dimen>
-    <dimen name="button_bar_min_height">48dp</dimen>
-    <dimen name="button_padding">8dp</dimen>
+    <dimen name="button_bar_horizontal_padding">12dp</dimen>
+    <dimen name="button_bar_vertical_padding">4dp</dimen>
+    <dimen name="button_horizontal_padding">16dp</dimen>
     <dimen name="button_text_size">14sp</dimen>
+    <dimen name="button_min_width">88dp</dimen>
+    <dimen name="button_min_height">54dp</dimen>
 
     <!-- Default values -->
     <dimen name="default_navigation_width">0dp</dimen>

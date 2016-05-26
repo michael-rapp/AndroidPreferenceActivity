@@ -31,9 +31,10 @@ License.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/button_bar_background_light"
-        android:minHeight="@dimen/button_bar_min_height"
+        android:paddingBottom="@dimen/button_bar_vertical_padding"
         android:paddingEnd="@dimen/button_bar_horizontal_padding"
-        android:paddingStart="@dimen/button_bar_horizontal_padding">
+        android:paddingStart="@dimen/button_bar_horizontal_padding"
+        android:paddingTop="@dimen/button_bar_vertical_padding">
 
         <Button
             android:id="@id/restore_defaults_button"
@@ -41,10 +42,10 @@ License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/button_bar_vertical_button_margin"
-            android:layout_marginTop="@dimen/button_bar_vertical_button_margin"
-            android:minWidth="150dp"
-            android:padding="@dimen/button_padding"
+            android:minHeight="@dimen/button_min_height"
+            android:minWidth="@dimen/button_min_width"
+            android:paddingLeft="@dimen/button_horizontal_padding"
+            android:paddingRight="@dimen/button_horizontal_padding"
             android:text="@string/restore_defaults_button_label"
             android:textColor="?attr/colorAccent"
             android:textSize="@dimen/button_text_size"/>
