@@ -2524,8 +2524,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @CallSuper
     @Override
     public void onFragmentCreated(@NonNull final Fragment fragment) {
-        getListView().setOnItemClickListener(PreferenceActivity.this);
-        getListAdapter().addListener(PreferenceActivity.this);
+        getListView().setOnItemClickListener(this);
+        getListAdapter().addListener(this);
 
         if (savedInstanceState == null) {
             onCreatePreferenceHeaders();
