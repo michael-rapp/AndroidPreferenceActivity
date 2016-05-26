@@ -7,15 +7,15 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 23
+        versionName project.VERSION_NAME
+        versionCode project.VERSION_CODE.toInteger()
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-
     lintOptions {
         disable 'MissingTranslation'
     }
