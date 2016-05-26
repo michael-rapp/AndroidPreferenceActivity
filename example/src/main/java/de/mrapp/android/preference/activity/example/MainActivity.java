@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,14 +31,6 @@ import de.mrapp.android.preference.activity.example.fragment.BehaviorPreferenceF
  * @author Michael Rapp
  */
 public class MainActivity extends AppCompatActivity {
-
-    /**
-     * Initializes the activity's toolbar.
-     */
-    private void initializeToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
 
     /**
      * Initializes the button, which allows to show a default {@link PreferenceActivity}.
@@ -197,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initializeToolbar();
         initializePreferenceButton();
         initializePreferenceInitialFragmentButton();
         initializeDynamicPreferenceButton();

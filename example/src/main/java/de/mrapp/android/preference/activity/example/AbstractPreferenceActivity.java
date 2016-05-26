@@ -139,9 +139,9 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         int theme = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
 
         if (theme != 0) {
-            super.setTheme(R.style.DarkTheme);
+            super.setTheme(R.style.DarkPreferenceActivityTheme);
         } else {
-            super.setTheme(R.style.LightTheme);
+            super.setTheme(R.style.LightPreferenceActivityTheme);
         }
     }
 
