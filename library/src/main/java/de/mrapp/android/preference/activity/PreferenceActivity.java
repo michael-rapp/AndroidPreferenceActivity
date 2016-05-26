@@ -214,12 +214,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getSimpleName() + "::PreferenceScreenFragment";
 
     /**
-     * The name which is used to store fragment transitions of the back stack.
-     */
-    private static final String FRAGMENT_BACK_STACK =
-            PreferenceActivity.class.getSimpleName() + "::FragmentBackStack";
-
-    /**
      * The saved instance state, which has been passed to the activity, when it has been created.
      */
     private Bundle savedInstanceState;
@@ -991,7 +985,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
                                  final int transition) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.setTransition(transition);
-        transaction.addToBackStack(FRAGMENT_BACK_STACK);
         transaction.replace(parentViewId, fragment);
         transaction.commit();
     }
