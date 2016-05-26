@@ -1,5 +1,12 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.3 (May 26th 2016)
+
+A minor release, which introduces the following changes:
+
+- Slightly adjusted button sizes and paddings.
+- Updated AppCompat v7 support library to version 23.4.0.
+
 ## Version 4.2.2 (Apr. 15th 2016)
 
 A bugfix release, which fixes the following issues:
