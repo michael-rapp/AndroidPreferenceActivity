@@ -42,20 +42,18 @@ License.
 
     <style name="ToolbarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
+        <item name="android:textColorPrimary">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">?android:attr/textColorSecondaryInverse</item>
     </style>
 
     <style name="LightInvertedToolbarTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="android:textColorPrimary">@color/abc_secondary_text_material_light</item>
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
+        <item name="android:textColorPrimary">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">?android:attr/textColorSecondaryInverse</item>
     </style>
 
     <style name="DarkInvertedToolbarTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="android:textColorPrimary">@color/abc_secondary_text_material_dark</item>
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
     </style>
 
     <style name="LightToolbarPopupTheme" parent="@style/Theme.AppCompat.Light.NoActionBar"/>
