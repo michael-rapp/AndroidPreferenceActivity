@@ -64,50 +64,28 @@
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;}
 <br/><br/>}</div>
 
-                <h4>Adapting the activity's appearance to dark theme</h4>
+                <h4>Specifying the theme of a PreferenceActivity</h4>
 
-                <p>The following content of an Android app's XML resource <tt>res/values/styles.xml</tt> can be used to easily adapt the apperarance of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> to a dark theme. The theme <tt>DarkTheme</tt> has to be applied on the appropriate activity in the app's <tt>AndroidManifest.xml</tt>.</p>
+                <p>The library comes with a predefined dark and light theme. The dark theme can be referenced by using the resource ID <tt>@style/PreferenceActivity</tt> and the light theme corresponds to the resource ID <tt>@style/PreferenceActivity.Light</tt>. The following example shows how the appearance of a <a href="javadoc/de/mrapp/android/preference/activity/PreferenceActivity.html" target="_blank" class="code">PreferenceActivity</a> can easily be adapted by assigning either one of these themes in the app's <tt>AndroidManifest.xml</tt> file</p>
 
-                <div class="xml-block"><font color='#3f7f5f'>&lt;?xml</font>&nbsp;version=<font color='#2a00ff'>"1.0"</font>&nbsp;encoding=<font color='#2a00ff'>"utf-8"</font>?&gt;
-<br/><font color='#3f7f5f'>&lt;resources&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android"</font><font color='#3f7f5f'>&gt;</font>
-<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimaryDark"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorAccent"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"toolbarTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/ToolbarTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"toolbarPopupTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/DarkToolbarPopupTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"invertedToolbarTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/DarkInvertedToolbarTheme</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"invertedToolbarPopupTheme"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@style/LightToolbarPopupView</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"navigationBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/navigation_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"preferenceScreenBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/preference_screen_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"wizardButtonBarBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/button_bar_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"restoreDefaultsButtonBarBackground"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/button_bar_background_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"preferenceHeaderSelector"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@drawable/selector_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
+                <div class="xml-block"><font color='#3f7f5f'>&lt;activity</br></font>
+&nbsp;&nbsp;&nbsp;&nbsp;android:name=<font color='#2a00ff'>"com.example.PreferenceActivity"</font></br>
+&nbsp;&nbsp;&nbsp;&nbsp;android:label=<font color='#2a00ff'>"@string/preference_activity_title"</font></br>
+&nbsp;&nbsp;&nbsp;&nbsp;android:theme=<font color='#2a00ff'>"@style/PreferenceActivity"</font><font color='#3f7f5f'>/&gt;</font></div>
 
-<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"ToolbarTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.Light.NoActionBar"</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_primary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorSecondary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
+                <div>Furthermore, it might be useful to extend one of the predefined themes in order to overwrite some of its theme attributes. For example, it is a common use-case to overwrite the attributes <tt>colorPrimary</tt> and <tt>colorAccent</tt>, which are used to specify the colors of the activity's toolbar and widgets. In such case, a new style resource, which extends one of the built-in themes, must be added to your app's <tt>res/values/styles.xml</tt> file. Its resource ID must then be used to specify the activity's theme in the <tt>AndroidManifest.xml</tt> file like shown above. The following example illustrates how a custom theme can be defined:</div>
 
-<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkInvertedToolbarTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>#ffd64937</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font> name=<font color='#2a00ff'>"android:textColorSecondary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/abc_secondary_text_material_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style/&gt;</font>
-
-<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"LightToolbarPopupTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.Light.NoActionBar"</font> <font color='#3f7f5f'>/&gt;</font>
-
-<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font> name=<font color='#2a00ff'>"DarkToolbarPopupTheme"</font> parent=<font color='#2a00ff'>"@style/Theme.AppCompat.NoActionBar"</font> <font color='#3f7f5f'>/&gt;</font>
-
+                <div class="xml-block"><font color='#3f7f5f'>&lt;resources&gt;</font>
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;style</font>&nbsp;name=<font color='#2a00ff'>"CustomPreferenceActivity"</font>&nbsp;parent=<font color='#2a00ff'>"@style/PreferenceActivity"</font><font color='#3f7f5f'>&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font>&nbsp;name=<font color='#2a00ff'>"colorPrimary"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/color_primary</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font>&nbsp;name=<font color='#2a00ff'>"colorPrimaryDark"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/color_primary_dark</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;item</font>&nbsp;name=<font color='#2a00ff'>"colorAccent"</font><font color='#3f7f5f'>&gt;</font><font color='#000000'>@color/color_accent</font><font color='#3f7f5f'>&lt;/item&gt;</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#3f7f5f'>&lt;/style&gt;</font>
 <br/><br/><font color='#3f7f5f'>&lt;/resources&gt;</font></div>
 
-                 <p>The screenshots below show the appearance of a <tt>PreferenceActivity</tt>, the above theme has applied on, when used on a tablet:</p>
+                 <p>The screenshots below show the appearance of a <tt>PreferenceActivity</tt>, when the dark theme has been applied:</p>
 
                  <p><center><a href="images/example-tablet.png" target="_blank".><img src="images/example-tablet-dark.png" width=640" alt="Example"></center></a></p>
-
-                 <p>The screenshot below show the appearance of the dark-themed <tt>PreferenceActivity</tt> when used on a smartphone:</p>
 
                  <p><center><a href="images/example-smartphone.png" target="_blank".><img src="images/example-smartphone-dark.png" width="640" alt="Example"></center></a></p>
             </div>

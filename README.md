@@ -102,7 +102,7 @@ The library comes with a predefined dark and light theme. The dark theme can be 
     android:theme="@style/PreferenceActivity"/>
 ```
 
-Furthermore, it might be useful to extend one of the predefined themes in order to overwrite some of its theme attributes. For example, it is a common use-case to override the attributes `colorPrimary` and `colorAccent`, which are used to specify the colors of the activity's toolbar and widgets. In such case, a new stle resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. Its resource ID must then be used to specify the activity's theme like shown above. The following example illustrates how a custom style can be defined:
+Furthermore, it might be useful to extend one of the predefined themes in order to overwrite some of its theme attributes. For example, it is a common use-case to overwrite the attributes `colorPrimary` and `colorAccent`, which are used to specify the colors of the activity's toolbar and widgets. In such case, a new style resource, which extends one of the built-in themes, must be added to your app's `res/values/styles.xml` file. Its resource ID must then be used to specify the activity's theme in the `AndroidManifest.xml` file like shown above. The following example illustrates how a custom style can be defined:
 
 ```xml
 <resources>
@@ -116,7 +116,7 @@ Furthermore, it might be useful to extend one of the predefined themes in order 
 </resources>
 ```
 
-The screenshots below show the appearance of a `PreferenceActivity`, when the dark theme has been applied.
+The screenshots below show the appearance of a `PreferenceActivity`, when the dark theme has been applied:
 
 ![](doc/images/example-tablet-dark.png)
 
