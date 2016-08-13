@@ -138,6 +138,11 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         parentView.removeView(listView);
         frameLayout = new FrameLayout(getActivity());
         frameLayout.setId(R.id.preference_fragment_frame_layout);
+
+        if (frameLayout.getParent() != null) {
+            parentView.removeView(frameLayout);
+        }
+
         parentView.addView(frameLayout, listView.getLayoutParams());
         frameLayout.addView(listView, FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
