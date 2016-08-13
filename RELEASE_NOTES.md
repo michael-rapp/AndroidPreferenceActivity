@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.4 (Aug. 14th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- A possible `IllegalStateException` when resuming a `PreferenceFragment` has been fixed.
+
 ## Version 4.2.3 (May 26th 2016)
 
 A minor release, which introduces the following changes:
