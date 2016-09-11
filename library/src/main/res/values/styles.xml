@@ -13,43 +13,25 @@ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e
 implied. See the License for the specific language governing permissions and limitations under the
 License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
     <style name="PreferenceActivity.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="toolbarTheme">@style/PreferenceActivity.Toolbar</item>
-        <item name="toolbarPopupTheme">@style/PreferenceActivity.Light.Toolbar.Popup</item>
-        <item name="invertedToolbarTheme">@style/PreferenceActivity.Light.Toolbar.Inverted</item>
-        <item name="invertedToolbarPopupTheme">@style/PreferenceActivity.Toolbar.Popup</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="PreferenceActivity" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="toolbarTheme">@style/PreferenceActivity.Toolbar</item>
-        <item name="toolbarPopupTheme">@style/PreferenceActivity.Toolbar.Popup</item>
-        <item name="invertedToolbarTheme">@style/PreferenceActivity.Toolbar.Inverted</item>
-        <item name="invertedToolbarPopupTheme">@style/PreferenceActivity.Light.Toolbar.Popup</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="navigationBackground">@color/navigation_background_dark</item>
         <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item>
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="preferenceHeaderSelector">@drawable/selector_dark</item>
     </style>
-
-    <style name="PreferenceActivity.Toolbar" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">?colorPrimary</item>
-    </style>
-
-    <style name="PreferenceActivity.Toolbar.Inverted" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">?colorPrimary</item>
-        <item name="android:textColorPrimary">?android:attr/textColorSecondary</item>
-    </style>
-
-    <style name="PreferenceActivity.Toolbar.Popup" parent="@style/Theme.AppCompat.NoActionBar"/>
-
-    <style name="PreferenceActivity.Light.Toolbar.Inverted" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">?colorPrimary</item>
-        <item name="android:textColorPrimary">?android:attr/textColorSecondary</item>
-    </style>
-
-    <style name="PreferenceActivity.Light.Toolbar.Popup" parent="@style/Theme.AppCompat.Light.NoActionBar"/>
 
 </resources>
