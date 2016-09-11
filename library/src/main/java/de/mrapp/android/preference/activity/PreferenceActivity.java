@@ -2211,6 +2211,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final boolean setBreadCrumbBackgroundColor(@ColorInt final int color) {
         if (getBreadCrumbToolbar() != null) {
+            breadCrumbBackgroundColor = color;
             GradientDrawable background = (GradientDrawable) ContextCompat
                     .getDrawable(this, R.drawable.breadcrumb_background);
             background.setColor(color);
