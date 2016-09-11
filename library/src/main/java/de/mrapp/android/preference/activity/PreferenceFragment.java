@@ -20,6 +20,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
@@ -135,14 +136,17 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      */
     private void initializeListView() {
         listView = (ListView) parentView.findViewById(android.R.id.list);
-        parentView.removeView(listView);
-        frameLayout = new FrameLayout(getActivity());
-        frameLayout.setId(R.id.preference_fragment_frame_layout);
 
-        if (frameLayout.getParent() != null) {
-            parentView.removeView(frameLayout);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            FrameLayout listContainer =
+                    (FrameLayout) parentView.findViewById(android.R.id.list_container);
+            listContainer.removeView(listView);
+        } else {
+            parentView.removeView(listView);
         }
 
+        frameLayout = new FrameLayout(getActivity());
+        frameLayout.setId(R.id.preference_fragment_frame_layout);
         parentView.addView(frameLayout, listView.getLayoutParams());
         frameLayout.addView(listView, FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
