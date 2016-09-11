@@ -7,6 +7,9 @@ A bugfix release, which fixes the following issues:
 - Fixed issue https://github.com/michael-rapp/AndroidPreferenceActivity/issues/15
 - Fixed issue https://github.com/michael-rapp/AndroidPreferenceActivity/issues/16
 - Updated `targetSdkVersion` to API level 24 (Android 7.0)
+- Updated dependency "AndroidUtil" to version 1.11.1.
+- Updated Appcompat v7 support library to version 24.2.0.
+- Updated CardView v7 support library to version 24.2.0.
 
 ## Version 4.2.4 (Aug. 14th 2016)
 
