@@ -1,5 +1,13 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.5 (Sep. 11th 2016)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed issue https://github.com/michael-rapp/AndroidPreferenceActivity/issues/15
+- Fixed issue https://github.com/michael-rapp/AndroidPreferenceActivity/issues/16
+- Updated `targetSdkVersion` to API level 24 (Android 7.0)
+
 ## Version 4.2.4 (Aug. 14th 2016)
 
 A bugfix release, which fixes the following issues:
