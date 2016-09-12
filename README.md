@@ -122,6 +122,10 @@ The screenshots below show the appearance of a `PreferenceActivity`, when the da
 
 ![](doc/images/example-smartphone-dark.png)
 
+## Troubleshooting
+
+This library is incompatible with the [v7 Preference Support Library](https://developer.android.com/topic/libraries/support-library/features.html#v7-preference). Using both libraries together in one project may result in unexpected behavior, e.g. the preferences may become unclickable (see [this](https://github.com/michael-rapp/AndroidPreferenceActivity/issues/19) issue).
+
 ## Contact information
 
 For personal feedback or questions feel free to contact me via the mail address, which is mentioned on my [Github profile](https://github.com/michael-rapp). If you have found any bugs or want to post a feature request please use the [bugtracker](https://github.com/michael-rapp/AndroidPreferenceActivity/issues) to report them.
