@@ -2649,7 +2649,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putParcelable(CURRENT_PREFERENCE_HEADER_EXTRA, currentHeader);
         outState.putParcelableArrayList(PREFERENCE_HEADERS_EXTRA, getListAdapter().getAllItems());
 
-        if (preferenceScreenFragment != null) {
+        if (preferenceScreenFragment != null && preferenceScreenFragment.isAdded()) {
             getFragmentManager().putFragment(outState, PREFERENCE_SCREEN_FRAGMENT_EXTRA,
                     preferenceScreenFragment);
         }
