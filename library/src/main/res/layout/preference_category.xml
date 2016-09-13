@@ -15,14 +15,8 @@ License.
 -->
 <TextView
     android:id="@android:id/title"
+    style="@style/PreferenceActivity.PreferenceCategory"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/preference_category_height"
-    android:ellipsize="end"
-    android:gravity="center_vertical"
-    android:paddingLeft="@dimen/preference_horizontal_padding"
-    android:paddingRight="@dimen/preference_horizontal_padding"
-    android:singleLine="true"
-    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-    android:textColor="?attr/colorAccent"
-    android:textStyle="bold"/>
+    android:gravity="center_vertical"/>

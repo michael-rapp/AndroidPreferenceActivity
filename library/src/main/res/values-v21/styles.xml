@@ -15,25 +15,6 @@ License.
 -->
 <resources>
 
-    <style name="PreferenceActivity.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-    </style>
-
-    <style name="PreferenceActivity" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="navigationBackground">@color/navigation_background_dark</item>
-        <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item>
-        <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
-        <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
-        <item name="preferenceHeaderSelector">@drawable/selector_dark</item>
-    </style>
-
     <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">@dimen/button_min_height</item>
         <item name="android:minWidth">@dimen/button_min_width</item>
@@ -41,7 +22,7 @@ License.
         <item name="android:paddingRight">@dimen/button_horizontal_padding</item>
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="PreferenceActivity.PreferenceCategory">
@@ -51,7 +32,7 @@ License.
         <item name="android:singleLine">true</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
         <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
 </resources>

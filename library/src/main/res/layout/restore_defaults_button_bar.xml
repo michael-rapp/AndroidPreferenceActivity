@@ -38,18 +38,11 @@ License.
 
         <Button
             android:id="@id/restore_defaults_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/PreferenceActivity.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:minHeight="@dimen/button_min_height"
-            android:minWidth="@dimen/button_min_width"
-            android:paddingLeft="@dimen/button_horizontal_padding"
-            android:paddingRight="@dimen/button_horizontal_padding"
-            android:text="@string/restore_defaults_button_label"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/button_text_size"
-            android:textStyle="bold"/>
+            android:text="@string/restore_defaults_button_label"/>
     </RelativeLayout>
 
 </LinearLayout>
