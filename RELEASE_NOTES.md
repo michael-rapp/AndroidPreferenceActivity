@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.8 (Sep. 13th 2016)
+
+A minor release, which introduces the following changes:
+
+- The font Roboto Medium is now used on devices with API level 21 or greater.
+
 ## Version 4.2.7 (Sep. 12th 2016)
 
 A bugfix release, which fixes the following issues:
