@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.2.10 (Feb 16th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed possible errors when restoring default values in the example app (https://github.com/michael-rapp/AndroidPreferenceActivity/issues/20)
+
 ## Version 4.2.9 (Jan. 26th 2017)
 
 A minor release, which introduces the following changes:
