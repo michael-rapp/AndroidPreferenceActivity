@@ -86,21 +86,6 @@ public class BehaviorPreferenceFragment extends AbstractPreferenceFragment
                 findPreference(getString(R.string.hide_navigation_preference_key));
         hideNavigationPreference
                 .setOnPreferenceChangeListener(createHideNavigationChangeListener());
-        addRestoreDefaultsListener(new RestoreDefaultsDialogListener(getActivity()));
-        addRestoreDefaultsListener(this);
-    }
-
-    @Override
-    public final boolean onRestoreDefaultValuesRequested(
-            @NonNull final PreferenceFragment fragment) {
-        return true;
-    }
-
-    @Override
-    public final boolean onRestoreDefaultValueRequested(@NonNull final PreferenceFragment fragment,
-                                                        @NonNull final Preference preference,
-                                                        final Object currentValue) {
-        return true;
     }
 
     @Override

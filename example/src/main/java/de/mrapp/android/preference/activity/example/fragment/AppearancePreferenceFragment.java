@@ -203,22 +203,6 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
                 getString(R.string.preference_fragment_button_bar_elevation_preference_key));
         preferenceFragmentButtonBarElevationPreference.setOnPreferenceChangeListener(
                 createPreferenceFragmentButtonBarElevationChangeListener());
-
-        addRestoreDefaultsListener(new RestoreDefaultsDialogListener(getActivity()));
-        addRestoreDefaultsListener(this);
-    }
-
-    @Override
-    public final boolean onRestoreDefaultValuesRequested(
-            @NonNull final PreferenceFragment fragment) {
-        return true;
-    }
-
-    @Override
-    public final boolean onRestoreDefaultValueRequested(@NonNull final PreferenceFragment fragment,
-                                                        @NonNull final Preference preference,
-                                                        final Object currentValue) {
-        return true;
     }
 
     @Override
