@@ -46,8 +46,12 @@ public class BehaviorPreferenceFragment extends AbstractPreferenceFragment
 
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                boolean overrideNavigationIcon = (boolean) newValue;
-                ((PreferenceActivity) getActivity()).overrideNavigationIcon(overrideNavigationIcon);
+                if (newValue != null) {
+                    boolean overrideNavigationIcon = (boolean) newValue;
+                    ((PreferenceActivity) getActivity())
+                            .overrideNavigationIcon(overrideNavigationIcon);
+                }
+
                 return true;
             }
 
@@ -66,8 +70,11 @@ public class BehaviorPreferenceFragment extends AbstractPreferenceFragment
 
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                boolean hideNavigation = (boolean) newValue;
-                ((PreferenceActivity) getActivity()).hideNavigation(hideNavigation);
+                if (newValue != null) {
+                    boolean hideNavigation = (boolean) newValue;
+                    ((PreferenceActivity) getActivity()).hideNavigation(hideNavigation);
+                }
+
                 return true;
             }
 
