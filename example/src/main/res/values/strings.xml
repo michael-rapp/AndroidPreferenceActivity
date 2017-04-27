@@ -15,196 +15,105 @@ License.
 -->
 <resources>
 
-    <!-- suppress MissingTranslation -->
     <string name="app_name">AndroidPreferenceActivity Example</string>
-    <!-- suppress MissingTranslation -->
     <string name="activity_preference_title">Preferences</string>
-    <!-- suppress MissingTranslation -->
     <string name="activity_intent_title">Intent activity</string>
-    <!-- suppress MissingTranslation -->
     <string name="activity_wizard_title">Wizard</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_hint">This example app shows some use cases of the library "AndroidPreferenceActivity". Click the button below to see the default appearance of the library\'s PreferenceActivity. The activity\'s appearance varies depending on the device\'s screen size.</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_button">Show PreferenceActivity</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_initial_fragment_hint">It is also possible to pass the fragment, which should be shown by default, to the PreferenceActivity. Click the button below to show the \'Behavior\' section of the PreferenceActivity.</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_initial_fragment_button">Show section \'Behavior\'</string>
-    <!-- suppress MissingTranslation -->
     <string name="dynamic_preference_hint">Normally the headers of a PreferenceActivity are loaded when the activity is started, but it is also possible to add or remove such headers dynamically at runtime. Click the button below to show a PreferenceActivity, whose headers can be modified by using the activity\'s menu.</string>
-    <!-- suppress MissingTranslation -->
     <string name="dynamic_preference_button">Show dynamic PreferenceActivity</string>
-    <!-- suppress MissingTranslation -->
     <string name="wizard_hint">Furthermore, the library\'s PreferenceActivity can also be used as a wizard, which provides buttons to step from one preference header to an other, instead of the default navigation. Click the button below to see the appearance of the PreferenceActivity when used as a wizard.</string>
-    <!-- suppress MissingTranslation -->
     <string name="wizard_button">Show Wizard</string>
-    <!-- suppress MissingTranslation -->
     <string name="introduction_preference_header_title">Introduction</string>
-    <!-- suppress MissingTranslation -->
     <string name="appearance_preference_header_title">Appearance</string>
-    <!-- suppress MissingTranslation -->
     <string name="appearance_preference_theme_category">Theme</string>
-    <!-- suppress MissingTranslation -->
     <string name="theme_preference_title">Theme</string>
-    <!-- suppress MissingTranslation -->
     <string name="theme_preference_default_value">0</string>
-    <!-- suppress MissingTranslation -->
     <string name="theme_preference_summary">The theme, which should be used by the app</string>
-    <!-- suppress MissingTranslation -->
     <string name="theme_preference_key">theme_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="toolbar_elevation_preference_title">Toolbar elevation</string>
-    <!-- suppress MissingTranslation -->
     <string name="toolbar_elevation_preference_default_value">4</string>
-    <!-- suppress MissingTranslation -->
     <string name="toolbar_elevation_preference_summary">The elevation of the activity\'s toolbar</string>
-    <!-- suppress MissingTranslation -->
     <string name="toolbar_elevation_preference_key">toolbar_elevation_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="appearance_preference_navigation_category">Navigation</string>
-    <!-- suppress MissingTranslation -->
     <string name="navigation_width_preference_title">Navigation width</string>
-    <!-- suppress MissingTranslation -->
     <string name="navigation_width_preference_summary">The width of the navigation in dp</string>
-    <!-- suppress MissingTranslation -->
     <string name="navigation_width_preference_key">navigation_width_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="navigation_width_preference_default_value">384</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_screen_elevation_preference_title">Preference screen elevation</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_screen_elevation_preference_summary">The elevation of the preference screen in dp</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_screen_elevation_preference_key">preference_screen_elevation_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_screen_elevation_preference_default_value">14</string>
-    <!-- suppress MissingTranslation -->
     <string name="bread_crumb_elevation_preference_title">Bread crumb elevation</string>
-    <!-- suppress MissingTranslation -->
     <string name="bread_crumb_elevation_preference_summary">The elevation of bread crumbs in dp</string>
-    <!-- suppress MissingTranslation -->
     <string name="bread_crumb_elevation_preference_key">bread_crumb_elevation_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="bread_crumb_elevation_preference_default_value">2</string>
-    <!-- suppress MissingTranslation -->
     <string name="appearance_preference_wizard_category">Wizard</string>
-    <!-- suppress MissingTranslation -->
     <string name="wizard_button_bar_elevation_preference_title">Button bar elevation</string>
-    <!-- suppress MissingTranslation -->
     <string name="wizard_button_bar_elevation_preference_summary">The elevation of a wizard\'s button bar in dp</string>
-    <!-- suppress MissingTranslation -->
     <string name="wizard_button_bar_elevation_preference_key">wizard_button_bar_elevation_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="wizard_button_bar_elevation_preference_default_value">2</string>
-    <!-- suppress MissingTranslation -->
     <string name="appearance_preference_preference_screen_category">Preference screen</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_fragment_button_bar_elevation_preference_title">Button bar elevation</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_fragment_button_bar_elevation_preference_summary">The elevation of a preference fragment\'s button bar in dp</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_fragment_button_bar_elevation_preference_key">preference_fragment_button_bar_elevation_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="preference_fragment_button_bar_elevation_preference_default_value">2</string>
-    <!-- suppress MissingTranslation -->
     <string name="behavior_preference_header_title">Behavior</string>
-    <!-- suppress MissingTranslation -->
     <string name="behavior_preference_navigation_icon_category">Navigation icon</string>
-    <!-- suppress MissingTranslation -->
     <string name="override_navigation_icon_preference_title">Override navigation icon</string>
-    <!-- suppress MissingTranslation -->
     <string name="override_navigation_icon_preference_summary">Whether the behavior of the app bar\'s navigation icon should be overridden, or not</string>
-    <!-- suppress MissingTranslation -->
     <string name="override_navigation_icon_preference_default_value">true</string>
-    <!-- suppress MissingTranslation -->
     <string name="override_navigation_icon_preference_key">override_back_button_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="behavior_preference_navigation_category">Navigation</string>
-    <!-- suppress MissingTranslation -->
     <string name="hide_navigation_preference_title">Hide navigation</string>
-    <!-- suppress MissingTranslation -->
     <string name="hide_navigation_preference_summary">Whether the navigation should be hidden, or not</string>
-    <!-- suppress MissingTranslation -->
     <string name="hide_navigation_preference_default_value">false</string>
-    <!-- suppress MissingTranslation -->
     <string name="hide_navigation_preference_key">hide_navigation_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="behavior_preference_initial_fragment_category">Initial fragment</string>
-    <!-- suppress MissingTranslation -->
     <string name="use_alternative_title_preference_title">Use alternative title</string>
-    <!-- suppress MissingTranslation -->
     <string name="use_alternative_title_preference_summary">Whether an alternative title should be used when an initial fragment is shown, or not</string>
-    <!-- suppress MissingTranslation -->
     <string name="use_alternative_title_preference_default_value">true</string>
-    <!-- suppress MissingTranslation -->
     <string name="use_alternative_title_preference_key">use_alternative_title_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="alternative_title_preference_title">Alternative title</string>
-    <!-- suppress MissingTranslation -->
     <string name="alternative_title_preference_summary">The alternative title, which should be used when an initial fragment is shown</string>
-    <!-- suppress MissingTranslation -->
     <string name="alternative_title_preference_default_value">This is an alternative title</string>
-    <!-- suppress MissingTranslation -->
     <string name="alternative_title_preference_key">alternative_title_preference_key</string>
-    <!-- suppress MissingTranslation -->
     <string name="intent_preference_header_title">Intent</string>
-    <!-- suppress MissingTranslation -->
     <string name="intent_preference_header_summary">This preference header launches an other activity</string>
-    <!-- suppress MissingTranslation -->
     <string name="add_preference_header_menu_item">Add preference header</string>
-    <!-- suppress MissingTranslation -->
     <string name="remove_preference_header_menu_item">Remove preference header</string>
-    <!-- suppress MissingTranslation -->
     <string name="clear_preference_headers_menu_item">Clear preference headers</string>
-    <!-- suppress MissingTranslation -->
     <string name="new_preference_header_title">New preference header</string>
-    <!-- suppress MissingTranslation -->
     <string name="new_preference_header_fragment_text">This fragment has been created dynamically at runtime!</string>
-    <!-- suppress MissingTranslation -->
     <string name="intent_activity_text">This activity has been launched by a preference header\'s intent!</string>
-    <!-- suppress MissingTranslation -->
     <string name="introduction_fragment_text">The appearance and behavior of this PreferenceActivity can be adjusted by using the settings, provided by the sections \'Appearance\' and \'Behavior\'.</string>
-    <!-- suppress MissingTranslation -->
     <string name="remove_preference_header_dialog_title">Remove preference header</string>
-    <!-- suppress MissingTranslation -->
     <string name="remove_preference_header_dialog_message">Select the preference header, which should be removed, from the list below.</string>
-    <!-- suppress MissingTranslation -->
     <string name="finish_wizard_dialog_title">Wizard finished</string>
-    <!-- suppress MissingTranslation -->
     <string name="finish_wizard_dialog_message">The wizard has been successfully completed!</string>
-    <!-- suppress MissingTranslation -->
     <string name="skip_wizard_dialog_title">Skip wizard?</string>
-    <!-- suppress MissingTranslation -->
     <string name="skip_wizard_dialog_message">Do you really want to skip the wizard?</string>
-    <!-- suppress MissingTranslation -->
     <string name="restore_defaults_dialog_title">Restore defaults?</string>
-    <!-- suppress MissingTranslation -->
     <string name="restore_defaults_dialog_message">Do you really want to restore the default values?</string>
-    <!-- suppress MissingTranslation -->
     <string name="next">NEXT</string>
-    <!-- suppress MissingTranslation -->
     <string name="back">BACK</string>
-    <!-- suppress MissingTranslation -->
     <string name="finish">FINISH</string>
-    <!-- suppress MissingTranslation -->
     <string name="restore_defaults">RESTORE DEFAULTS</string>
-    <!-- suppress MissingTranslation -->
     <string name="progress" formatted="false">Step %d of %d: %s</string>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="theme_list_entries">
         <item>Light (default)</item>
         <item>Dark</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="theme_list_values">
         <item>0</item>
         <item>1</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="toolbar_elevation_list_entries">
         <item>0 dp</item>
         <item>1 dp</item>
@@ -225,7 +134,6 @@ License.
         <item>16 dp</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="toolbar_elevation_list_values">
         <item>0</item>
         <item>1</item>
@@ -246,21 +154,18 @@ License.
         <item>16</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="navigation_width_list_entries">
         <item>256 dp</item>
         <item>384 dp (default)</item>
         <item>512 dp</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="navigation_width_list_values">
         <item>256</item>
         <item>384</item>
         <item>512</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="preference_screen_elevation_list_entries">
         <item>0 dp</item>
         <item>1 dp</item>
@@ -281,7 +186,6 @@ License.
         <item>16 dp</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="preference_screen_elevation_list_values">
         <item>0</item>
         <item>1</item>
@@ -302,7 +206,6 @@ License.
         <item>16</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="bread_crumb_elevation_list_entries">
         <item>0 dp</item>
         <item>1 dp</item>
@@ -323,7 +226,6 @@ License.
         <item>16 dp</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="bread_crumb_elevation_list_values">
         <item>0</item>
         <item>1</item>
@@ -344,7 +246,6 @@ License.
         <item>16</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="wizard_button_bar_elevation_list_entries">
         <item>0 dp</item>
         <item>1 dp</item>
@@ -365,7 +266,6 @@ License.
         <item>16 dp</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="wizard_button_bar_elevation_list_values">
         <item>0</item>
         <item>1</item>
@@ -386,7 +286,6 @@ License.
         <item>16</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="preference_fragment_button_bar_elevation_list_entries">
         <item>0 dp</item>
         <item>1 dp</item>
@@ -407,7 +306,6 @@ License.
         <item>16 dp</item>
     </string-array>
 
-    <!-- suppress MissingTranslation -->
     <string-array name="preference_fragment_button_bar_elevation_list_values">
         <item>0</item>
         <item>1</item>
