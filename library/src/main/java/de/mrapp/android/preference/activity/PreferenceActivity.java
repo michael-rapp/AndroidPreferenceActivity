@@ -31,6 +31,8 @@ import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MarginLayoutParamsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -921,14 +923,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
                     .setVisibility(navigationHidden ? View.GONE : View.VISIBLE);
             FrameLayout.LayoutParams preferenceScreenLayoutParams =
                     (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
-            preferenceScreenLayoutParams.leftMargin = (navigationHidden ? getResources()
-                    .getDimensionPixelSize(R.dimen.preference_screen_horizontal_margin) :
-                    dpToPixels(this, getNavigationWidth())) -
-                    getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
-            preferenceScreenLayoutParams.rightMargin = getResources().getDimensionPixelSize(
-                    navigationHidden ? R.dimen.preference_screen_horizontal_margin :
-                            R.dimen.preference_screen_margin_right) -
-                    getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
+            MarginLayoutParamsCompat.setMarginStart(preferenceScreenLayoutParams,
+                    (navigationHidden ? getResources()
+                            .getDimensionPixelSize(R.dimen.preference_screen_horizontal_margin) :
+                            dpToPixels(this, getNavigationWidth())) - getResources()
+                            .getDimensionPixelSize(R.dimen.card_view_intrinsic_margin));
+            MarginLayoutParamsCompat.setMarginEnd(preferenceScreenLayoutParams, getResources()
+                    .getDimensionPixelSize(
+                            navigationHidden ? R.dimen.preference_screen_horizontal_margin :
+                                    R.dimen.preference_screen_margin_right) -
+                    getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin));
             preferenceScreenLayoutParams.gravity =
                     navigationHidden ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY;
             getPreferenceScreenContainer().requestLayout();
@@ -2363,13 +2367,14 @@ public abstract class PreferenceActivity extends AppCompatActivity
             this.navigationWidth = width;
             int pixelWidth = dpToPixels(this, width);
             int displayWidth = getResources().getDisplayMetrics().widthPixels;
-            getPreferenceHeaderParentView().setPadding(0, 0, displayWidth - pixelWidth, 0);
+            ViewCompat.setPaddingRelative(getPreferenceHeaderParentView(), 0, 0,
+                    displayWidth - pixelWidth, 0);
 
             if (!isNavigationHidden()) {
                 FrameLayout.LayoutParams preferenceScreenLayoutParams =
                         (FrameLayout.LayoutParams) getPreferenceScreenContainer().getLayoutParams();
-                preferenceScreenLayoutParams.leftMargin = pixelWidth -
-                        getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
+                MarginLayoutParamsCompat.setMarginStart(preferenceScreenLayoutParams, pixelWidth -
+                        getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin));
                 getPreferenceScreenContainer().requestLayout();
             }
 
