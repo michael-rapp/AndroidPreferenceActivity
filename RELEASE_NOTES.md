@@ -1,6 +1,15 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
-## Version 4.2.10 (Feb 16th 2017)
+## Version 4.2.11 (Apr. 28th 2017)
+ 
+A minor release, which introduces the following changes:
+ 
+ - Improved RTL support.
+ - Updated dependency "AndroidUtil" to version 1.15.2.
+ - Updated Appcompat v7 support library to version 25.3.1.
+ - Updated CardView v7 support library to version 25.3.1.
+
+## Version 4.2.10 (Feb. 16th 2017)
 
 A bugfix release, which fixes the following issues:
 
