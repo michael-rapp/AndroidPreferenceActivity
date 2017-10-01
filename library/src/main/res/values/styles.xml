@@ -31,7 +31,6 @@ License.
         <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item>
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
-        <item name="preferenceHeaderSelector">@drawable/selector_dark</item>
     </style>
 
     <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">

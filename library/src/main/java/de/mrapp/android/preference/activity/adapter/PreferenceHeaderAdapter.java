@@ -18,6 +18,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -41,6 +42,8 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.PreferenceHeaderDecorator;
 import de.mrapp.android.preference.activity.R;
+import de.mrapp.android.util.ThemeUtil;
+import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -139,20 +142,20 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
     }
 
     /**
-     * Adapts a view to visualize a specific preference header.
+     * Adapts the background of a view, which is used ot visualize a preference header.
      *
-     * @param viewHolder
-     *         The view holder, which contains the children of the view, which should be adapted, as
-     *         an instance of the class {@link ViewHolder}. The view holder may not be null
-     * @param preferenceHeader
-     *         The preference header, which should be visualized, as an instance of the class {@link
-     *         PreferenceHeader}. The preference header may not be null
+     * @param view
+     *         The view, which is used to visualize the preference header, as an instance of the
+     *         class {@link View}. The view may not be null
      */
-    private void visualizePreferenceHeader(@NonNull final ViewHolder viewHolder,
-                                           @NonNull final PreferenceHeader preferenceHeader) {
-        visualizePreferenceHeaderTitle(viewHolder, preferenceHeader);
-        visualizePreferenceHeaderSummary(viewHolder, preferenceHeader);
-        visualizePreferenceHeaderIcon(viewHolder, preferenceHeader);
+    private void initializeBackground(@NonNull final View view) {
+        if (selectorId != -1) {
+            view.setBackgroundResource(getSelectorId());
+        } else {
+            Drawable background =
+                    ThemeUtil.getDrawable(context, android.R.attr.selectableItemBackground);
+            ViewUtil.setBackground(view, background);
+        }
     }
 
     /**
@@ -165,8 +168,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
      *         The preference header, whose title should be visualized, as an instance of the class
      *         {@link PreferenceHeader}. The preference header may not be null
      */
-    private void visualizePreferenceHeaderTitle(@NonNull final ViewHolder viewHolder,
-                                                @NonNull final PreferenceHeader preferenceHeader) {
+    private void initializeTitle(@NonNull final ViewHolder viewHolder,
+                                 @NonNull final PreferenceHeader preferenceHeader) {
         if (viewHolder.titleTextView != null) {
             viewHolder.titleTextView.setText(preferenceHeader.getTitle());
         }
@@ -182,8 +185,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
      *         The preference header, whose summary should be visualized, as an instance of the
      *         class {@link PreferenceHeader}. The preference header may not be null
      */
-    private void visualizePreferenceHeaderSummary(@NonNull final ViewHolder viewHolder,
-                                                  @NonNull final PreferenceHeader preferenceHeader) {
+    private void initializeSummary(@NonNull final ViewHolder viewHolder,
+                                   @NonNull final PreferenceHeader preferenceHeader) {
         if (viewHolder.summaryTextView != null) {
             if (TextUtils.isEmpty(preferenceHeader.getSummary())) {
                 viewHolder.summaryTextView.setVisibility(View.GONE);
@@ -204,8 +207,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
      *         The preference header, whose icon should be visualized, as an instance of the class
      *         {@link PreferenceHeader}. The preference header may not be null
      */
-    private void visualizePreferenceHeaderIcon(@NonNull final ViewHolder viewHolder,
-                                               @NonNull final PreferenceHeader preferenceHeader) {
+    private void initializeIcon(@NonNull final ViewHolder viewHolder,
+                                @NonNull final PreferenceHeader preferenceHeader) {
         if (viewHolder.iconImageView != null) {
             viewHolder.iconImageView.setImageDrawable(preferenceHeader.getIcon());
         }
@@ -279,12 +282,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
     private void obtainStyledAttributes() {
         int theme = obtainTheme();
 
-        if (theme != 0) {
+        if (theme != -1) {
             obtainSelector(theme);
-        }
-
-        if (selectorId == 0) {
-            selectorId = R.drawable.selector_light;
         }
     }
 
@@ -301,7 +300,7 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
                     .getPackageInfo(packageName, PackageManager.GET_META_DATA);
             return packageInfo.applicationInfo.theme;
         } catch (NameNotFoundException e) {
-            return 0;
+            return -1;
         }
     }
 
@@ -315,9 +314,9 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
     private void obtainSelector(final int theme) {
         TypedArray typedArray = context.getTheme()
                 .obtainStyledAttributes(theme, new int[]{R.attr.preferenceHeaderSelector});
-        int resourceId = typedArray.getResourceId(0, 0);
+        int resourceId = typedArray.getResourceId(0, -1);
 
-        if (resourceId != 0) {
+        if (resourceId != -1) {
             this.selectorId = resourceId;
         }
     }
@@ -368,7 +367,8 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
      * is used to visualize the adapter's items.
      *
      * @return The resource id of the selector, which is used as the background of the view, which
-     * is used to visualize the adapter's items, as an {@link Integer} value
+     * is used to visualize the adapter's items, as an {@link Integer} value or -1, if the default
+     * selector is used
      */
     public final int getSelectorId() {
         return selectorId;
@@ -379,8 +379,9 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
      * which is used to visualize the adapter's items.
      *
      * @param selectorId
-     *         The resource id, which should be set, as an {@link Integer} value. The resource id
-     *         must correspond to a valid drawable resource
+     *         The resource id, which should be set, as an {@link Integer} value or -1, if the
+     *         default selector should be used. If not set to -1, the resource id must correspond to
+     *         a valid drawable resource
      */
     public final void setSelectorId(@DrawableRes final int selectorId) {
         this.selectorId = selectorId;
@@ -562,11 +563,13 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
             view = inflateView(parent);
         }
 
-        view.setBackgroundResource(getSelectorId());
-
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         PreferenceHeader preferenceHeader = getItem(position);
-        visualizePreferenceHeader(viewHolder, getItem(position));
+
+        initializeBackground(view);
+        initializeTitle(viewHolder, preferenceHeader);
+        initializeSummary(viewHolder, preferenceHeader);
+        initializeIcon(viewHolder, preferenceHeader);
 
         applyDecorators(position, preferenceHeader, view, viewHolder);
         return view;
