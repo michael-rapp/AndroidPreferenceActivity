@@ -20,7 +20,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,16 +27,13 @@ import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import static de.mrapp.android.util.Condition.ensureNotEmpty;
-import static de.mrapp.android.util.Condition.ensureNotNull;
-
 /**
  * A navigation item, which categorizes multiple preferences.
  *
  * @author Michael Rapp
  * @since 1.0.0
  */
-public class PreferenceHeader implements Parcelable {
+public class PreferenceHeader extends AbstractNavigationItem {
 
     /**
      * A creator, which allows to create instances of the class {@link PreferenceHeader} from
@@ -56,11 +52,6 @@ public class PreferenceHeader implements Parcelable {
         }
 
     };
-
-    /**
-     * The title of the navigation item.
-     */
-    private CharSequence title;
 
     /**
      * The summary, which describes the preferences, which belong to the navigation item.
@@ -107,7 +98,7 @@ public class PreferenceHeader implements Parcelable {
      */
     @SuppressWarnings("deprecation")
     private PreferenceHeader(@NonNull final Parcel source) {
-        setTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
+        super(source);
         setSummary(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
         setBreadCrumbTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
         setBreadCrumbShortTitle(TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source));
@@ -128,7 +119,7 @@ public class PreferenceHeader implements Parcelable {
      *         The title may neither be null, nor empty
      */
     public PreferenceHeader(@NonNull final CharSequence title) {
-        setTitle(title);
+        super(title);
     }
 
     /**
@@ -142,44 +133,7 @@ public class PreferenceHeader implements Parcelable {
      *         resource id must correspond to a valid string resource
      */
     public PreferenceHeader(@NonNull final Context context, @StringRes final int titleId) {
-        setTitle(context, titleId);
-    }
-
-    /**
-     * Returns the title of the navigation item.
-     *
-     * @return The title of the navigation item as an instance of the class {@link CharSequence}.
-     * The title may neither be null, nor empty
-     */
-    public final CharSequence getTitle() {
-        return title;
-    }
-
-    /**
-     * Sets the title of the navigation item.
-     *
-     * @param title
-     *         The title, which should be set, as an instance of the class {@link CharSequence}. The
-     *         title may neither be null, nor empty
-     */
-    public final void setTitle(@NonNull final CharSequence title) {
-        ensureNotNull(title, "The title may not be null");
-        ensureNotEmpty(title, "The title may not be empty");
-        this.title = title;
-    }
-
-    /**
-     * Sets the title of the navigation item.
-     *
-     * @param context
-     *         The context, which should be used to retrieve the string resource, as an instance of
-     *         the class {@link Context}. The context may not be null
-     * @param resourceId
-     *         The resource id of the title, which should be set, as an {@link Integer} value. The
-     *         resource id must correspond to a valid string resource
-     */
-    public final void setTitle(@NonNull final Context context, @StringRes final int resourceId) {
-        setTitle(context.getString(resourceId));
+        super(context, titleId);
     }
 
     /**
@@ -395,13 +349,8 @@ public class PreferenceHeader implements Parcelable {
     }
 
     @Override
-    public final int describeContents() {
-        return 0;
-    }
-
-    @Override
     public final void writeToParcel(final Parcel dest, final int flags) {
-        TextUtils.writeToParcel(getTitle(), dest, flags);
+        super.writeToParcel(dest, flags);
         TextUtils.writeToParcel(getSummary(), dest, flags);
         TextUtils.writeToParcel(getBreadCrumbTitle(), dest, flags);
         TextUtils.writeToParcel(getBreadCrumbShortTitle(), dest, flags);
