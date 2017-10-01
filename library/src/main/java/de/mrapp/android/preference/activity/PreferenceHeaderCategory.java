@@ -18,6 +18,12 @@ import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static de.mrapp.android.util.Condition.ensureNotNull;
+
 /**
  * A navigation item, which categorizes multiple preference headers.
  *
@@ -46,6 +52,11 @@ public class PreferenceHeaderCategory extends AbstractNavigationItem {
             };
 
     /**
+     * A list, which contains the preference headers, which belong to the category.
+     */
+    private final List<PreferenceHeader> preferenceHeaders;
+
+    /**
      * Creates a new navigation item, which categorizes multiple preference headers.
      *
      * @param source
@@ -54,6 +65,8 @@ public class PreferenceHeaderCategory extends AbstractNavigationItem {
      */
     private PreferenceHeaderCategory(@NonNull final Parcel source) {
         super(source);
+        preferenceHeaders = new ArrayList<>();
+        source.readTypedList(preferenceHeaders, PreferenceHeader.CREATOR);
     }
 
     /**
@@ -65,6 +78,7 @@ public class PreferenceHeaderCategory extends AbstractNavigationItem {
      */
     public PreferenceHeaderCategory(@NonNull final CharSequence title) {
         super(title);
+        this.preferenceHeaders = new ArrayList<>();
     }
 
     /**
@@ -79,6 +93,76 @@ public class PreferenceHeaderCategory extends AbstractNavigationItem {
      */
     public PreferenceHeaderCategory(@NonNull final Context context, @StringRes final int titleId) {
         super(context, titleId);
+        this.preferenceHeaders = new ArrayList<>();
+    }
+
+    /**
+     * Adds a new preference header to the category.
+     *
+     * @param preferenceHeader
+     *         The preference header, which should be added, as an instance of the class {@link
+     *         PreferenceHeader}. The preference header may not be null
+     */
+    public final void addPreferenceHeader(@NonNull final PreferenceHeader preferenceHeader) {
+        ensureNotNull(preferenceHeader, "The preference header may not be null");
+        this.preferenceHeaders.add(preferenceHeader);
+    }
+
+    /**
+     * Adds all preference headers, which are contained by a specific collection, to the category.
+     *
+     * @param preferenceHeaders
+     *         A collection, which contains the preference headers, which should be added, as an
+     *         instance of the type {@link Collection} or an empty collection, if no preference
+     *         headers should be added
+     */
+    public final void addAllPreferenceHeaders(
+            @NonNull final Collection<PreferenceHeader> preferenceHeaders) {
+        ensureNotNull(preferenceHeaders, "The collection may not be null");
+
+        for (PreferenceHeader preferenceHeader : preferenceHeaders) {
+            addPreferenceHeader(preferenceHeader);
+        }
+    }
+
+    /**
+     * Removes a specific preference header from the category.
+     *
+     * @param preferenceHeader
+     *         The preference header, which should be removed, as an instance of the class {@link
+     *         PreferenceHeader}. The preference header may not be null
+     */
+    public final void removePreferenceHeader(@NonNull final PreferenceHeader preferenceHeader) {
+        ensureNotNull(preferenceHeader, "The preference header may not be null");
+        this.preferenceHeaders.remove(preferenceHeader);
+    }
+
+    /**
+     * Removes all preference headers, which are contained by a specific collection, from the
+     * category.
+     *
+     * @param preferenceHeaders
+     *         A collection, which contains the preference headers, which should be removed, as an
+     *         instance of the type {@link Collection} or an empty collection, if no preference
+     *         headers should be removed
+     */
+    public final void removeAllPreferenceHeaders(
+            @NonNull final Collection<PreferenceHeader> preferenceHeaders) {
+        ensureNotNull(preferenceHeaders, "The collection may not be null");
+        this.preferenceHeaders.removeAll(preferenceHeaders);
+    }
+
+    /**
+     * Removes all preference headers from the category.
+     */
+    public final void clear() {
+        this.preferenceHeaders.clear();
+    }
+
+    @Override
+    public final void writeToParcel(final Parcel dest, final int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeTypedList(preferenceHeaders);
     }
 
 }
