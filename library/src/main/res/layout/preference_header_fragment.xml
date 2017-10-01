@@ -19,5 +19,5 @@ License.
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
-    android:footerDividersEnabled="false"
+    android:divider="@null"
     android:paddingTop="@dimen/list_view_padding_top"/>
