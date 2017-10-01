@@ -114,7 +114,7 @@ public class PreferenceHeaderFragment extends Fragment {
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.preference_header_fragment, container, false);
-        listView = (ListView) view.findViewById(android.R.id.list);
+        listView = view.findViewById(android.R.id.list);
         return view;
     }
 

@@ -135,11 +135,10 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      * Initializes the list view, which is used to show the fragment's preferences.
      */
     private void initializeListView() {
-        listView = (ListView) parentView.findViewById(android.R.id.list);
+        listView = parentView.findViewById(android.R.id.list);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            FrameLayout listContainer =
-                    (FrameLayout) parentView.findViewById(android.R.id.list_container);
+            FrameLayout listContainer = parentView.findViewById(android.R.id.list_container);
             listContainer.removeView(listView);
         } else {
             parentView.removeView(listView);
@@ -163,12 +162,10 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
             LayoutInflater layoutInflater = getActivity().getLayoutInflater();
             buttonBarParent = (ViewGroup) layoutInflater
                     .inflate(R.layout.restore_defaults_button_bar, frameLayout, false);
-            buttonBar = (ViewGroup) buttonBarParent.findViewById(R.id.restore_defaults_button_bar);
-            restoreDefaultsButton =
-                    (Button) buttonBarParent.findViewById(R.id.restore_defaults_button);
+            buttonBar = buttonBarParent.findViewById(R.id.restore_defaults_button_bar);
+            restoreDefaultsButton = buttonBarParent.findViewById(R.id.restore_defaults_button);
             restoreDefaultsButton.setOnClickListener(createRestoreDefaultsListener());
-            shadowView = (ElevationShadowView) buttonBarParent
-                    .findViewById(R.id.restore_defaults_button_bar_shadow_view);
+            shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
             obtainStyledAttributes();
         }
     }

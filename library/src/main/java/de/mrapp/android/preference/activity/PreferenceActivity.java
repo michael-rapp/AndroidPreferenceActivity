@@ -17,7 +17,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -62,7 +61,6 @@ import de.mrapp.android.preference.activity.fragment.PreferenceHeaderFragment;
 import de.mrapp.android.preference.activity.parser.PreferenceHeaderParser;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.ElevationUtil;
-import de.mrapp.android.util.ElevationUtil.Orientation;
 import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
@@ -72,7 +70,6 @@ import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
-import static de.mrapp.android.util.ElevationUtil.createElevationShadow;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences, in which each group
@@ -1965,16 +1962,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final void showButtonBar(final boolean showButtonBar) {
         if (showButtonBar) {
-            buttonBar = (ViewGroup) findViewById(R.id.wizard_button_bar);
+            buttonBar = findViewById(R.id.wizard_button_bar);
             buttonBar.setVisibility(View.VISIBLE);
-            buttonBarShadowView =
-                    (ElevationShadowView) findViewById(R.id.wizard_button_bar_shadow_view);
+            buttonBarShadowView = findViewById(R.id.wizard_button_bar_shadow_view);
             buttonBarShadowView.setVisibility(View.VISIBLE);
-            nextButton = (Button) findViewById(R.id.next_button);
+            nextButton = findViewById(R.id.next_button);
             nextButton.setOnClickListener(createNextButtonListener());
-            finishButton = (Button) findViewById(R.id.finish_button);
+            finishButton = findViewById(R.id.finish_button);
             finishButton.setOnClickListener(createFinishButtonListener());
-            backButton = (Button) findViewById(R.id.back_button);
+            backButton = findViewById(R.id.back_button);
             backButton.setOnClickListener(createBackButtonListener());
 
             if (!isSplitScreen()) {
@@ -2145,8 +2141,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the elevation has been set, false otherwise
      */
     public final boolean setButtonBarElevation(final int elevation) {
-        Bitmap shadow = createElevationShadow(this, elevation, Orientation.TOP, true);
-
         if (buttonBarShadowView != null) {
             buttonBarShadowView.setShadowElevation(elevation);
             return true;
@@ -2592,15 +2586,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.preference_activity);
-        frameLayout = (FrameLayout) findViewById(R.id.preference_activity_frame_layout);
-        preferenceHeaderParentView = (ViewGroup) findViewById(R.id.preference_header_parent);
-        preferenceScreenParentView = (ViewGroup) findViewById(R.id.preference_screen_parent);
-        preferenceScreenContainer = (CardView) findViewById(R.id.preference_screen_container);
-        toolbarShadowView = (ElevationShadowView) findViewById(R.id.toolbar_shadow_view);
+        frameLayout = findViewById(R.id.preference_activity_frame_layout);
+        preferenceHeaderParentView = findViewById(R.id.preference_header_parent);
+        preferenceScreenParentView = findViewById(R.id.preference_screen_parent);
+        preferenceScreenContainer = findViewById(R.id.preference_screen_container);
+        toolbarShadowView = findViewById(R.id.toolbar_shadow_view);
 
         if (isSplitScreen()) {
-            breadCrumbToolbar = (Toolbar) findViewById(R.id.bread_crumb_toolbar);
-            breadCrumbShadowView = (ElevationShadowView) findViewById(R.id.bread_crumb_shadow_view);
+            breadCrumbToolbar = findViewById(R.id.bread_crumb_toolbar);
+            breadCrumbShadowView = findViewById(R.id.bread_crumb_shadow_view);
         }
 
         preferenceHeaderFragment = new PreferenceHeaderFragment();

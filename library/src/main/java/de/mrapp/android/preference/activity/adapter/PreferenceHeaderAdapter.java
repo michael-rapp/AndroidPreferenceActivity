@@ -131,9 +131,9 @@ public class PreferenceHeaderAdapter extends BaseAdapter {
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(getViewId(), parent, false);
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.titleTextView = (TextView) view.findViewById(android.R.id.title);
-        viewHolder.summaryTextView = (TextView) view.findViewById(android.R.id.summary);
-        viewHolder.iconImageView = (ImageView) view.findViewById(android.R.id.icon);
+        viewHolder.titleTextView = view.findViewById(android.R.id.title);
+        viewHolder.summaryTextView = view.findViewById(android.R.id.summary);
+        viewHolder.iconImageView = view.findViewById(android.R.id.icon);
         view.setTag(viewHolder);
         return view;
     }
