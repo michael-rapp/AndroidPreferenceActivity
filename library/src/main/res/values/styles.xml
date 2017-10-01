@@ -20,6 +20,7 @@ License.
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:listDivider">@null</item>
     </style>
 
     <style name="PreferenceActivity" parent="@style/Theme.AppCompat.NoActionBar">
@@ -31,6 +32,7 @@ License.
         <item name="preferenceScreenBackground">@color/preference_screen_background_dark</item>
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
+        <item name="android:listDivider">@null</item>
     </style>
 
     <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
