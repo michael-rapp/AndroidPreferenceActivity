@@ -1,5 +1,15 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 4.3.0 (Oct. 1st 2017)
+
+A feature release, which introduces the following changes.
+
+- Updated `targetSdkVersion` to API level 26 (Android 8.0).
+- Updated dependency "AndroidUtil" to version 1.18.0.
+- Updated AppCompat v7 support library to version 26.1.0.
+- Updated CardView v7 support library to version 26.1.0.
+- Updating the dependencies required to update the `minSdkVersion` to API level 14.
+
 ## Version 4.2.11 (Apr. 28th 2017)
  
 A minor release, which introduces the following changes:
