@@ -19,9 +19,11 @@ import android.database.DataSetObserver;
 import android.os.Build;
 import android.preference.PreferenceCategory;
 import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -65,6 +67,11 @@ public class PreferenceListView extends ListView {
          * The adapter, which is encapsulated by the adapter.
          */
         private final ListAdapter encapsulatedAdapter;
+
+        /**
+         * The color of the divider's which are shown above preference categories.
+         */
+        private int dividerColor;
 
         /**
          * Creates and returns a data set observer, which notifies the adapter, when the
@@ -132,6 +139,23 @@ public class PreferenceListView extends ListView {
         }
 
         /**
+         * Adapts the background color of a divider.
+         *
+         * @param divider
+         *         The divider, whose background color should be adapted, as an instance of the
+         *         class {@link View}. The view may not be null
+         */
+        private void adaptDividerColor(@NonNull final View divider) {
+            int color = dividerColor;
+
+            if (color == -1) {
+                color = ContextCompat.getColor(context, R.color.preference_divider_color_light);
+            }
+
+            divider.setBackgroundColor(color);
+        }
+
+        /**
          * Creates a new list adapter, which encapsulates another adapter in order to add items,
          * which are visualized as dividers, above preference categories.
          *
@@ -149,6 +173,18 @@ public class PreferenceListView extends ListView {
             this.context = context;
             this.encapsulatedAdapter = encapsulatedAdapter;
             encapsulatedAdapter.registerDataSetObserver(createDataSetObserver());
+        }
+
+        /**
+         * Sets the color of the dividers, which are shown above preference categories.
+         *
+         * @param color
+         *         The color, which should be set, as an {@link Integer} value or -1, if the default
+         *         color should be used
+         */
+        public final void setDividerColor(@ColorInt final int color) {
+            this.dividerColor = color;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -195,6 +231,7 @@ public class PreferenceListView extends ListView {
                     view = layoutInflater.inflate(R.layout.preference_divider, parent, false);
                 }
 
+                adaptDividerColor(view);
                 return view;
             } else {
                 return encapsulatedAdapter.getView(pair.second, convertView, parent);
@@ -220,6 +257,11 @@ public class PreferenceListView extends ListView {
         }
 
     }
+
+    /**
+     * The color of the divider's which are shown above preference categories.
+     */
+    private int dividerColor;
 
     /**
      * Creates a custom {@link ListView}, whose adapter is wrapped in order to display dividers
@@ -297,10 +339,29 @@ public class PreferenceListView extends ListView {
         super(context, attributeSet, defaultStyle, defaultStyleResource);
     }
 
+    /**
+     * Sets the color of the dividers, which are shown above preference categories.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value or -1, if the default
+     *         color should be used
+     */
+    public final void setDividerColor(@ColorInt final int color) {
+        this.dividerColor = color;
+        ListAdapter adapter = getAdapter();
+
+        if (adapter instanceof PreferenceGroupAdapterWrapper) {
+            ((PreferenceGroupAdapterWrapper) adapter).setDividerColor(color);
+        }
+    }
+
     @Override
     public final void setAdapter(@Nullable final ListAdapter adapter) {
         if (adapter != null) {
-            super.setAdapter(new PreferenceGroupAdapterWrapper(getContext(), adapter));
+            PreferenceGroupAdapterWrapper adapterWrapper =
+                    new PreferenceGroupAdapterWrapper(getContext(), adapter);
+            adapterWrapper.setDividerColor(dividerColor);
+            super.setAdapter(adapterWrapper);
         } else {
             super.setAdapter(null);
         }

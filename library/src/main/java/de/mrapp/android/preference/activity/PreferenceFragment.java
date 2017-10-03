@@ -50,6 +50,7 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
+import de.mrapp.android.preference.activity.view.PreferenceListView;
 import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
@@ -93,7 +94,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     /**
      * The list view, which contains the fragment's preferences.
      */
-    private ListView listView;
+    private PreferenceListView listView;
 
     /**
      * The frame layout, which contains the fragment's views. It is the root view of the fragment.
@@ -128,6 +129,11 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     private int buttonBarElevation;
 
     /**
+     * The color of the divider's which are shown above preference categories.
+     */
+    private int dividerColor = -1;
+
+    /**
      * A set, which contains the listeners, which should be notified, when the preferences' default
      * values should be restored.
      */
@@ -157,8 +163,9 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      */
     private void inflateListView() {
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        listView = (ListView) layoutInflater
+        listView = (PreferenceListView) layoutInflater
                 .inflate(R.layout.preference_list_view, frameLayout, false);
+        listView.setDividerColor(getDividerColor());
         frameLayout.addView(listView);
     }
 
@@ -188,6 +195,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         if (theme != 0) {
             obtainButtonBarBackground(theme);
             obtainButtonBarElevation(theme);
+            obtainDividerColor(theme);
         }
     }
 
@@ -235,8 +243,8 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      * Obtains the elevation of the button bar from a specific theme.
      *
      * @param theme
-     *         The resource id of the theme, the navigation width should be obtained from, as an
-     *         {@link Integer} value
+     *         The resource id of the theme, the elevation should be obtained from, as an {@link
+     *         Integer} value
      */
     private void obtainButtonBarElevation(final int theme) {
         TypedArray typedArray = getActivity().getTheme()
@@ -246,6 +254,20 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         if (elevation != 0) {
             this.buttonBarElevation = elevation;
         }
+    }
+
+    /**
+     * Obtains the color of the dividers, which are shown above preference categories, from a
+     * specific theme.
+     *
+     * @param theme
+     *         The resource id of the theme, the color  should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainDividerColor(final int theme) {
+        TypedArray typedArray = getActivity().getTheme()
+                .obtainStyledAttributes(theme, new int[]{R.attr.dividerColor});
+        setDividerColor(typedArray.getColor(0, 0));
     }
 
     /**
@@ -551,10 +573,21 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      * Returns the frame layout, which contains the fragment's views. It is the root view of the
      * fragment.
      *
-     * @return The frame layout, which contains the fragment's views
+     * @return The frame layout, which contains the fragment's views, as an instance of the class
+     * {@link FrameLayout} or null, if the fragment has not been created yet
      */
     public final FrameLayout getFrameLayout() {
         return frameLayout;
+    }
+
+    /**
+     * Returns the list view, which is used to show the fragment's preferences.
+     *
+     * @return The list view, which is used to show the fragment's preferences, as an instance of
+     * the class {@link ListView} or null, if the fragment has not been created yet
+     */
+    public final ListView getListView() {
+        return listView;
     }
 
     /**
@@ -563,7 +596,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *
      * @return The view group, which contains the button, which allows to restore the preferences'
      * default values, as an instance of the class {@link ViewGroup} or null, if the button is not
-     * shown
+     * shown or if the fragment has not been created yet
      */
     public final ViewGroup getButtonBar() {
         return buttonBar;
@@ -717,6 +750,32 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      */
     public final boolean setRestoreDefaultsButtonText(@StringRes final int resourceId) {
         return setRestoreDefaultsButtonText(getText(resourceId));
+    }
+
+    /**
+     * Returns the color of the dividers, which are shown above preference categories.
+     *
+     * @return The color of the dividers, which are shown above preference categories, as an {@link
+     * Integer} value or -1, if the default color is used
+     */
+    @ColorInt
+    public final int getDividerColor() {
+        return dividerColor;
+    }
+
+    /**
+     * Sets the color of the dividers, which are shown above preference categories.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value or -1, if the default
+     *         color should be used
+     */
+    public final void setDividerColor(@ColorInt final int color) {
+        this.dividerColor = color;
+
+        if (listView != null) {
+            listView.setDividerColor(color);
+        }
     }
 
     @CallSuper

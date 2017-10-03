@@ -32,6 +32,7 @@ License.
     <attr name="wizardButtonBarElevation" format="dimension"/>
     <attr name="restoreDefaultsButtonBarElevation" format="dimension"/>
     <attr name="preferenceHeaderSelector" format="reference"/>
+    <attr name="dividerColor" format="color"/>
 
     <declare-styleable name="PreferenceHeader">
         <attr name="android:title"/>
