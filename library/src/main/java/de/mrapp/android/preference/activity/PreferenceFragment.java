@@ -328,7 +328,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
 
         if (getPreferenceScreen() != null) {
-            applyMaterialStyle(getPreferenceScreen(), decorator);
+            applyMaterialStyle(getPreferenceScreen(), null, decorator);
         }
     }
 
@@ -340,20 +340,35 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *         The preference group, at whose preferences the Material style should be applied on,
      *         as an instance of the class {@link PreferenceGroup}. The preference group may not be
      *         null
+     * @param predecessor
+     *         The previous preference, Material style has been applied to, as an instance of the
+     *         class {@link Preference} or null, if Material style has not been applied to any
+     *         preference yet
      * @param decorator
      *         The decorator, which should be used to apply the Material style, as an instance of
      *         the class {@link PreferenceDecorator}. The decorator may not be null
+     * @return The last preference, which is contained by the given preference group, as an instance
+     * of the class {@link Preference}
      */
-    private void applyMaterialStyle(@NonNull final PreferenceGroup preferenceGroup,
-                                    @NonNull final PreferenceDecorator decorator) {
+    private Preference applyMaterialStyle(@NonNull final PreferenceGroup preferenceGroup,
+                                          @Nullable final Preference predecessor,
+                                          @NonNull final PreferenceDecorator decorator) {
+        Preference previousPreference = predecessor;
+
         for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
             Preference preference = preferenceGroup.getPreference(i);
-            decorator.applyDecorator(preference);
+            decorator.applyDecorator(preference, previousPreference);
 
             if (preference instanceof PreferenceGroup) {
-                applyMaterialStyle((PreferenceGroup) preference, decorator);
+                previousPreference =
+                        applyMaterialStyle((PreferenceGroup) preference, previousPreference,
+                                decorator);
+            } else {
+                previousPreference = preference;
             }
         }
+
+        return previousPreference;
     }
 
     /**

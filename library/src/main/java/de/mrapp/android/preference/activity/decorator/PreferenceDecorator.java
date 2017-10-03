@@ -17,6 +17,7 @@ import android.content.Context;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import de.mrapp.android.preference.activity.R;
 
@@ -59,10 +60,18 @@ public class PreferenceDecorator {
      * @param preference
      *         The preference, whose layout resource should be set, as an instance of the class
      *         {@link Preference}. The preference may not be null
+     * @param predecessor
+     *         The predecessor of the given preference, as an instance of the class {@link
+     *         Preference} or null, if the preference does not have a predecessor
      */
-    private void setLayoutResource(@NonNull final Preference preference) {
+    private void setLayoutResource(@NonNull final Preference preference,
+                                   @Nullable final Preference predecessor) {
         if (preference instanceof PreferenceCategory) {
-            preference.setLayoutResource(R.layout.preference_category);
+            if (predecessor == null) {
+                preference.setLayoutResource(R.layout.preference_category_no_divider);
+            } else {
+                preference.setLayoutResource(R.layout.preference_category);
+            }
         } else {
             preference.setLayoutResource(R.layout.preference);
         }
@@ -87,10 +96,14 @@ public class PreferenceDecorator {
      * @param preference
      *         The preference, the decorator should be applied on, as an instance of the class
      *         {@link Preference}. The preference may not be null
+     * @param predecessor
+     *         The predecessor of the given preference, as an instance of the class {@link
+     *         Preference} or null, if the preference does not have a predecessor
      */
-    public final void applyDecorator(@NonNull final Preference preference) {
+    public final void applyDecorator(@NonNull final Preference preference,
+                                     @Nullable final Preference predecessor) {
         if (hasDefaultLayoutResource(preference)) {
-            setLayoutResource(preference);
+            setLayoutResource(preference, predecessor);
         }
     }
 
