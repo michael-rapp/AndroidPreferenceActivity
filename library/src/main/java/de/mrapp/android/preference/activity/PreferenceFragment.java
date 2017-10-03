@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -136,22 +137,29 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      * Initializes the list view, which is used to show the fragment's preferences.
      */
     private void initializeListView() {
-        listView = parentView.findViewById(android.R.id.list);
+        View originalListView = parentView.findViewById(android.R.id.list);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             FrameLayout listContainer = parentView.findViewById(android.R.id.list_container);
-            listContainer.removeView(listView);
+            listContainer.removeView(originalListView);
         } else {
-            parentView.removeView(listView);
+            parentView.removeView(originalListView);
         }
 
         frameLayout = new FrameLayout(getActivity());
         frameLayout.setId(R.id.preference_fragment_frame_layout);
-        parentView.addView(frameLayout, listView.getLayoutParams());
-        frameLayout.addView(listView, FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT);
-        int paddingTop = getResources().getDimensionPixelSize(R.dimen.list_view_padding_top);
-        listView.setPadding(0, paddingTop, 0, 0);
+        parentView.addView(frameLayout, originalListView.getLayoutParams());
+        inflateListView();
+    }
+
+    /**
+     * Inflates the list view, which is used to show the fragment's preferences.
+     */
+    private void inflateListView() {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        listView = (ListView) layoutInflater
+                .inflate(R.layout.preference_list_view, frameLayout, false);
+        frameLayout.addView(listView);
     }
 
     /**
@@ -186,7 +194,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     /**
      * Obtains the resource id of the activity's current theme.
      *
-     * @return The resource id of the acitivty's current theme as an {@link Integer} value or 0, if
+     * @return The resource id of the activity's current theme as an {@link Integer} value or 0, if
      * an error occurred while obtaining the theme
      */
     private int obtainTheme() {
@@ -328,7 +336,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
 
         if (getPreferenceScreen() != null) {
-            applyMaterialStyle(getPreferenceScreen(), null, decorator);
+            applyMaterialStyle(getPreferenceScreen(), decorator);
         }
     }
 
@@ -340,35 +348,21 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *         The preference group, at whose preferences the Material style should be applied on,
      *         as an instance of the class {@link PreferenceGroup}. The preference group may not be
      *         null
-     * @param predecessor
-     *         The previous preference, Material style has been applied to, as an instance of the
-     *         class {@link Preference} or null, if Material style has not been applied to any
-     *         preference yet
      * @param decorator
      *         The decorator, which should be used to apply the Material style, as an instance of
      *         the class {@link PreferenceDecorator}. The decorator may not be null
-     * @return The last preference, which is contained by the given preference group, as an instance
-     * of the class {@link Preference}
      */
-    private Preference applyMaterialStyle(@NonNull final PreferenceGroup preferenceGroup,
-                                          @Nullable final Preference predecessor,
-                                          @NonNull final PreferenceDecorator decorator) {
-        Preference previousPreference = predecessor;
-
+    private void applyMaterialStyle(@NonNull final PreferenceGroup preferenceGroup,
+                                    @NonNull final PreferenceDecorator decorator) {
         for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
             Preference preference = preferenceGroup.getPreference(i);
-            decorator.applyDecorator(preference, previousPreference);
+            decorator.applyDecorator(preference);
 
             if (preference instanceof PreferenceGroup) {
-                previousPreference =
-                        applyMaterialStyle((PreferenceGroup) preference, previousPreference,
-                                decorator);
-            } else {
-                previousPreference = preference;
+                PreferenceGroup group = (PreferenceGroup) preference;
+                applyMaterialStyle(group, decorator);
             }
         }
-
-        return previousPreference;
     }
 
     /**
@@ -725,6 +719,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         return setRestoreDefaultsButtonText(getText(resourceId));
     }
 
+    @CallSuper
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -736,6 +731,7 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
         }
     }
 
+    @CallSuper
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
