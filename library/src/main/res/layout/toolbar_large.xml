@@ -37,8 +37,9 @@ License.
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/navigation_toolbar_padding_left"
+        android:layout_marginStart="@dimen/navigation_toolbar_padding_left"
         android:layout_marginTop="@dimen/toolbar_height"
-        android:paddingLeft="@dimen/navigation_toolbar_padding_left"
         app:popupTheme="?attr/toolbarPopupTheme"
         app:theme="?attr/toolbarTheme"/>
 

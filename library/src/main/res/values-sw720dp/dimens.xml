@@ -23,7 +23,7 @@ License.
     <dimen name="preference_screen_vertical_offset">2dp</dimen>
 
     <!-- Toolbars -->
-    <dimen name="navigation_toolbar_padding_left">100dp</dimen>
+    <dimen name="navigation_toolbar_padding_left">56dp</dimen>
     <dimen name="bread_crumb_toolbar_horizontal_padding">28dp</dimen>
 
     <!-- Default values -->
