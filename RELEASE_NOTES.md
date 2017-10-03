@@ -6,6 +6,7 @@ A feature release, which introduces the following changes.
 
 - Changed the title text color of preferences and preference headers.
 - Paddings and icon sizes are now equal for phones and tablet devices.
+- Fixed a possible crash when using Android 7's multi-window mode on tablets.
 - Updated `targetSdkVersion` to API level 26 (Android 8.0).
 - Updated dependency "AndroidUtil" to version 1.18.0.
 - Updated AppCompat v7 support library to version 26.1.0.
