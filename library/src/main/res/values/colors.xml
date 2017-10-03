@@ -21,7 +21,5 @@ License.
     <color name="preference_screen_background_dark">#ff303030</color>
     <color name="button_bar_background_light">#ffe7e7e7</color>
     <color name="button_bar_background_dark">#ff272727</color>
-    <color name="selection_light">#16000000</color>
-    <color name="selection_dark">#32ffffff</color>
 
 </resources>
