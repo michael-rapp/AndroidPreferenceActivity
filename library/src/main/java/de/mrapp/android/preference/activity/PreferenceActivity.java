@@ -984,6 +984,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private void replaceFragment(@NonNull final Fragment fragment, final int parentViewId,
                                  final int transition) {
+        if (fragment.isAdded()) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.remove(fragment);
+            transaction.commit();
+            getFragmentManager().executePendingTransactions();
+        }
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.setTransition(transition);
         transaction.replace(parentViewId, fragment);
@@ -997,6 +1004,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The fragment, which should be removed, as an instance of the class {@link Fragment}.
      *         The fragment may not be null
      */
+
     private void removeFragment(@NonNull final Fragment fragment) {
         notifyOnPreferenceFragmentHidden();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
