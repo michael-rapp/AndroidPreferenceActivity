@@ -1,9 +1,10 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
-## Version 4.3.0 (Oct. 1st 2017)
+## Version 5.0.0 (Oct. 3rd 2017)
 
-A feature release, which introduces the following changes.
+A major release, which aims at adapting the library according to the use of preferences in Android 8.0. It introduces the following changes:
 
+- Changed the activity's background color on phones.
 - Changed the title text color of preferences and preference headers.
 - Paddings and icon sizes are now equal for phones and tablet devices.
 - Fixed a possible crash when using Android 7's multi-window mode on tablets.
