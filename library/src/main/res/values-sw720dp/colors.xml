@@ -17,6 +17,5 @@ License.
 
     <color name="navigation_background_dark">#ff1a1a1a</color>
     <color name="preference_screen_background_light">#fffafafa</color>
-    <color name="button_bar_background_light">#fff3f3f3</color>
 
 </resources>
