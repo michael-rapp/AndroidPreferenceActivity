@@ -4,6 +4,7 @@
 
 A feature release, which introduces the following changes.
 
+- Changed the title text color of preferences and preference headers.
 - Updated `targetSdkVersion` to API level 26 (Android 8.0).
 - Updated dependency "AndroidUtil" to version 1.18.0.
 - Updated AppCompat v7 support library to version 26.1.0.
