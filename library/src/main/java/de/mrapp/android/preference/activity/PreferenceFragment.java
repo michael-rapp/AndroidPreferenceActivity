@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.preference.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -321,6 +322,17 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     }
 
     /**
+     * Applies Material style on all preferences, which are contained by the fragment.
+     */
+    private void applyMaterialStyle() {
+        PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
+
+        if (getPreferenceScreen() != null) {
+            applyMaterialStyle(getPreferenceScreen(), decorator);
+        }
+    }
+
+    /**
      * Applies Material style on all preferences, which are contained by a specific preference
      * group, and on the group itself.
      *
@@ -336,12 +348,10 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
                                     @NonNull final PreferenceDecorator decorator) {
         for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
             Preference preference = preferenceGroup.getPreference(i);
+            decorator.applyDecorator(preference);
 
             if (preference instanceof PreferenceGroup) {
-                decorator.applyDecorator(preference);
                 applyMaterialStyle((PreferenceGroup) preference, decorator);
-            } else {
-                decorator.applyDecorator(preference);
             }
         }
     }
@@ -727,11 +737,13 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     @Override
     public final void addPreferencesFromResource(@XmlRes final int resourceId) {
         super.addPreferencesFromResource(resourceId);
-        PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
+        applyMaterialStyle();
+    }
 
-        if (getPreferenceScreen() != null) {
-            applyMaterialStyle(getPreferenceScreen(), decorator);
-        }
+    @Override
+    public final void addPreferencesFromIntent(final Intent intent) {
+        super.addPreferencesFromIntent(intent);
+        applyMaterialStyle();
     }
 
 }
