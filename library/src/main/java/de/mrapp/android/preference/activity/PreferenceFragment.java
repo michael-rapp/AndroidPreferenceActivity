@@ -13,15 +13,10 @@
  */
 package de.mrapp.android.preference.activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
@@ -31,29 +26,28 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.annotation.XmlRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
-import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
-import de.mrapp.android.preference.activity.view.PreferenceListView;
+import de.mrapp.android.preference.activity.fragment.AbstractPreferenceFragment;
 import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
+import static de.mrapp.android.util.Condition.ensureNotEmpty;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
@@ -64,7 +58,7 @@ import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
  * @author Michael Rapp
  * @since 1.1.0
  */
-public abstract class PreferenceFragment extends android.preference.PreferenceFragment {
+public abstract class PreferenceFragment extends AbstractPreferenceFragment {
 
     /**
      * When attaching this fragment to an activity, the passed bundle can contain this extra boolean
@@ -82,19 +76,10 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
             "extra_prefs_restore_defaults_button_text";
 
     /**
-     * The default elevation of the button bar in dp.
+     * A set, which contains the listeners, which should be notified, when the preferences' default
+     * values should be restored.
      */
-    private static final int DEFAULT_BUTTON_BAR_ELEVATION = 2;
-
-    /**
-     * The fragment's parent parentView.
-     */
-    private LinearLayout parentView;
-
-    /**
-     * The list view, which contains the fragment's preferences.
-     */
-    private PreferenceListView listView;
+    private final Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<>();
 
     /**
      * The frame layout, which contains the fragment's views. It is the root view of the fragment.
@@ -102,14 +87,12 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     private FrameLayout frameLayout;
 
     /**
-     * The parent view of the view group, which contains the button, which allows to restore the
-     * preferences' default values.
+     * The parent view of the button bar.
      */
     private ViewGroup buttonBarParent;
 
     /**
-     * The view group, which contains the button, which allows to restore the preferences' default
-     * values.
+     * The button bar.
      */
     private ViewGroup buttonBar;
 
@@ -124,117 +107,79 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     private Button restoreDefaultsButton;
 
     /**
+     * True, if the button, which allows to restore the preferences' default values, is shown, false
+     * otherwise.
+     */
+    private boolean showRestoreDefaultsButton;
+
+    /**
+     * The text of the button, which allows to restore the preferences' default values.
+     */
+    private CharSequence restoreDefaultsButtonText;
+
+    /**
+     * The background of the button bar.
+     */
+    private Drawable buttonBarBackground;
+
+    /**
      * The elevation of the button bar in dp.
      */
     private int buttonBarElevation;
 
     /**
-     * The color of the divider's which are shown above preference categories.
-     */
-    private int dividerColor = -1;
-
-    /**
-     * A set, which contains the listeners, which should be notified, when the preferences' default
-     * values should be restored.
-     */
-    private Set<RestoreDefaultsListener> restoreDefaultsListeners = new LinkedHashSet<>();
-
-    /**
-     * Initializes the list view, which is used to show the fragment's preferences.
-     */
-    private void initializeListView() {
-        View originalListView = parentView.findViewById(android.R.id.list);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            FrameLayout listContainer = parentView.findViewById(android.R.id.list_container);
-            listContainer.removeView(originalListView);
-        } else {
-            parentView.removeView(originalListView);
-        }
-
-        frameLayout = new FrameLayout(getActivity());
-        frameLayout.setId(R.id.preference_fragment_frame_layout);
-        parentView.addView(frameLayout, originalListView.getLayoutParams());
-        inflateListView();
-    }
-
-    /**
-     * Inflates the list view, which is used to show the fragment's preferences.
-     */
-    private void inflateListView() {
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        listView = (PreferenceListView) layoutInflater
-                .inflate(R.layout.preference_list_view, frameLayout, false);
-        listView.setDividerColor(getDividerColor());
-        frameLayout.addView(listView);
-    }
-
-    /**
-     * Inflates the view group, which contains the button, which allows to restore the preferences'
-     * default values.
-     */
-    private void inflateRestoreDefaultsButtonBar() {
-        if (buttonBarParent == null) {
-            LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-            buttonBarParent = (ViewGroup) layoutInflater
-                    .inflate(R.layout.restore_defaults_button_bar, frameLayout, false);
-            buttonBar = buttonBarParent.findViewById(R.id.restore_defaults_button_bar);
-            restoreDefaultsButton = buttonBarParent.findViewById(R.id.restore_defaults_button);
-            restoreDefaultsButton.setOnClickListener(createRestoreDefaultsListener());
-            shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
-            obtainStyledAttributes();
-        }
-    }
-
-    /**
-     * Obtains all relevant attributes from the activity's current theme.
-     */
-    private void obtainStyledAttributes() {
-        int theme = obtainTheme();
-
-        if (theme != 0) {
-            obtainButtonBarBackground(theme);
-            obtainButtonBarElevation(theme);
-            obtainDividerColor(theme);
-        }
-    }
-
-    /**
-     * Obtains the resource id of the activity's current theme.
+     * Obtains, whether the button, which allows to restore the preferences' default values, should
+     * be shown, or not, from a specific theme.
      *
-     * @return The resource id of the activity's current theme as an {@link Integer} value or 0, if
-     * an error occurred while obtaining the theme
+     * @param themeResourceId
+     *         The resource id of the theme, the boolean value should be obtained from, as an {@link
+     *         Integer} value
      */
-    private int obtainTheme() {
-        try {
-            String packageName = getActivity().getClass().getPackage().getName();
-            PackageInfo packageInfo = getActivity().getPackageManager()
-                    .getPackageInfo(packageName, PackageManager.GET_META_DATA);
-            return packageInfo.applicationInfo.theme;
-        } catch (NameNotFoundException e) {
-            return 0;
-        }
+    private void obtainShowRestoreDefaultsButton(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.showRestoreDefaultsButton});
+        boolean show = typedArray.getBoolean(0, false);
+        showRestoreDefaultsButton(show);
+    }
+
+    /**
+     * Obtains the text of the button, which allows to restore the preferences' default values, from
+     * a specific theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the text should be obtained from, as an {@link Integer}
+     *         value
+     */
+    private void obtainRestoreDefaultsButtonText(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.restoreDefaultsButtonText});
+        CharSequence text = typedArray.getText(0);
+        setRestoreDefaultsButtonText(
+                !TextUtils.isEmpty(text) ? text : getText(R.string.restore_defaults_button_label));
     }
 
     /**
      * Obtains the background of the button bar from a specific theme.
      *
-     * @param theme
+     * @param themeResourceId
      *         The resource id of the theme, the background should be obtained from, as an {@link
      *         Integer} value
      */
-    private void obtainButtonBarBackground(final int theme) {
-        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(theme,
+    private void obtainButtonBarBackground(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.restoreDefaultsButtonBarBackground});
-        int color = typedArray.getColor(0, 0);
+        int color = typedArray.getColor(0, -1);
 
-        if (color != 0) {
+        if (color != -1) {
             setButtonBarBackgroundColor(color);
         } else {
-            int resourceId = typedArray.getResourceId(0, 0);
+            int resourceId = typedArray.getResourceId(0, -1);
 
-            if (resourceId != 0) {
+            if (resourceId != -1) {
                 setButtonBarBackground(resourceId);
+            } else {
+                setButtonBarBackgroundColor(
+                        ContextCompat.getColor(getActivity(), R.color.button_bar_background_light));
             }
         }
     }
@@ -242,32 +187,75 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     /**
      * Obtains the elevation of the button bar from a specific theme.
      *
-     * @param theme
+     * @param themeResourceId
      *         The resource id of the theme, the elevation should be obtained from, as an {@link
      *         Integer} value
      */
-    private void obtainButtonBarElevation(final int theme) {
-        TypedArray typedArray = getActivity().getTheme()
-                .obtainStyledAttributes(theme, new int[]{R.attr.restoreDefaultsButtonBarElevation});
-        int elevation = pixelsToDp(getActivity(), typedArray.getDimensionPixelSize(0, 0));
+    private void obtainButtonBarElevation(@StyleRes final int themeResourceId) {
+        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
+                new int[]{R.attr.restoreDefaultsButtonBarElevation});
+        int defaultValue =
+                getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
+        int elevation = typedArray.getDimensionPixelSize(0, defaultValue);
+        setButtonBarElevation(pixelsToDp(getActivity(), elevation));
+    }
 
-        if (elevation != 0) {
-            this.buttonBarElevation = elevation;
+    /**
+     * Handles the arguments, which have been passed to the fragment.
+     */
+    private void handleArguments() {
+        if (getArguments() != null) {
+            handleShowRestoreDefaultsButtonArgument();
+            handleRestoreDefaultsButtonTextArgument();
         }
     }
 
     /**
-     * Obtains the color of the dividers, which are shown above preference categories, from a
-     * specific theme.
-     *
-     * @param theme
-     *         The resource id of the theme, the color  should be obtained from, as an {@link
-     *         Integer} value
+     * Handles the extra of the arguments, which have been passed to the fragment, that allows to
+     * show the button, which allows to restore the preferences' default values.
      */
-    private void obtainDividerColor(final int theme) {
-        TypedArray typedArray = getActivity().getTheme()
-                .obtainStyledAttributes(theme, new int[]{R.attr.dividerColor});
-        setDividerColor(typedArray.getColor(0, 0));
+    private void handleShowRestoreDefaultsButtonArgument() {
+        boolean showButton = getArguments().getBoolean(EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false);
+        showRestoreDefaultsButton(showButton);
+    }
+
+    /**
+     * Handles the extra of the arguments, which have been passed to the fragment, that allows to
+     * specify a custom text for the button, which allows to restore the preferences' default
+     * values.
+     */
+    private void handleRestoreDefaultsButtonTextArgument() {
+        CharSequence buttonText = getCharSequenceFromArguments(EXTRA_RESTORE_DEFAULTS_BUTTON_TEXT);
+
+        if (!TextUtils.isEmpty(buttonText)) {
+            setRestoreDefaultsButtonText(buttonText);
+        }
+    }
+
+    /**
+     * Returns the char sequence, which is specified by a specific extra of the arguments, which
+     * have been passed to the fragment. The char sequence can either be specified as a string or as
+     * a resource id.
+     *
+     * @param name
+     *         The name of the extra, which specifies the char sequence, as a {@link String}. The
+     *         name may not be null
+     * @return The char sequence, which is specified by the arguments, as an instance of the class
+     * {@link CharSequence} or null, if the arguments do not specify a char sequence with the given
+     * name
+     */
+    private CharSequence getCharSequenceFromArguments(@NonNull final String name) {
+        CharSequence charSequence = getArguments().getCharSequence(name);
+
+        if (charSequence == null) {
+            int resourceId = getArguments().getInt(name, -1);
+
+            if (resourceId != -1) {
+                charSequence = getText(resourceId);
+            }
+        }
+
+        return charSequence;
     }
 
     /**
@@ -287,32 +275,6 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
             }
 
         };
-    }
-
-    /**
-     * Adds the view group, which contains the button, which allows to restore the preferences'
-     * default values, to the fragment.
-     */
-    private void addRestoreDefaultsButtonBar() {
-        if (frameLayout != null && buttonBarParent != null) {
-            FrameLayout.LayoutParams layoutParams =
-                    new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-            frameLayout.addView(buttonBarParent, layoutParams);
-            listView.setOnScrollListener(
-                    new HideViewOnScrollAnimation(buttonBarParent, Direction.DOWN));
-            setButtonBarElevation(buttonBarElevation);
-        }
-    }
-
-    /**
-     * Removes the view group, which contains the button, which allows to restore the preferences'
-     * default values, from the fragment.
-     */
-    private void removeRestoreDefaultsButtonBar() {
-        if (frameLayout != null && buttonBarParent != null) {
-            frameLayout.removeView(buttonBarParent);
-        }
     }
 
     /**
@@ -347,42 +309,6 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
                     preferenceGroup.addPreference(preference);
                 }
 
-            }
-        }
-    }
-
-    /**
-     * Applies Material style on all preferences, which are contained by the fragment.
-     */
-    private void applyMaterialStyle() {
-        PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
-
-        if (getPreferenceScreen() != null) {
-            applyMaterialStyle(getPreferenceScreen(), decorator);
-        }
-    }
-
-    /**
-     * Applies Material style on all preferences, which are contained by a specific preference
-     * group, and on the group itself.
-     *
-     * @param preferenceGroup
-     *         The preference group, at whose preferences the Material style should be applied on,
-     *         as an instance of the class {@link PreferenceGroup}. The preference group may not be
-     *         null
-     * @param decorator
-     *         The decorator, which should be used to apply the Material style, as an instance of
-     *         the class {@link PreferenceDecorator}. The decorator may not be null
-     */
-    private void applyMaterialStyle(@NonNull final PreferenceGroup preferenceGroup,
-                                    @NonNull final PreferenceDecorator decorator) {
-        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
-            Preference preference = preferenceGroup.getPreference(i);
-            decorator.applyDecorator(preference);
-
-            if (preference instanceof PreferenceGroup) {
-                PreferenceGroup group = (PreferenceGroup) preference;
-                applyMaterialStyle(group, decorator);
             }
         }
     }
@@ -450,65 +376,72 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     }
 
     /**
-     * Handles the extra of the arguments, which have been passed to the fragment, that allows to
-     * show the button, which allows to restore the preferences' default values.
+     * Adapts the visibility of the button bar.
      */
-    private void handleShowRestoreDefaultsButtonArgument() {
-        boolean showButton = getArguments().getBoolean(EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false);
-
-        if (showButton) {
-            showRestoreDefaultsButton(true);
+    private void adaptButtonBarVisibility() {
+        if (buttonBarParent != null) {
+            buttonBarParent.setVisibility(showRestoreDefaultsButton ? View.VISIBLE : View.GONE);
         }
     }
 
     /**
-     * Handles the extra of the arguments, which have been passed to the fragment, that allows to
-     * specify a custom text for the button, which allows to restore the preferences' default
-     * values.
+     * Adapts the text of the button, which allows to restore the preferences' default values.
      */
-    private void handleRestoreDefaultsButtonTextArgument() {
-        CharSequence buttonText = getCharSequenceFromArguments(EXTRA_RESTORE_DEFAULTS_BUTTON_TEXT);
-
-        if (!TextUtils.isEmpty(buttonText)) {
-            setRestoreDefaultsButtonText(buttonText);
+    private void adaptRestoreDefaultsButtonText() {
+        if (restoreDefaultsButton != null) {
+            restoreDefaultsButton.setText(restoreDefaultsButtonText);
         }
     }
 
     /**
-     * Returns the char sequence, which is specified by a specific extra of the arguments, which
-     * have been passed to the fragment. The char sequence can either be specified as a string or as
-     * a resource id.
+     * Adapts the background of the button bar.
+     */
+    private void adaptButtonBarBackground() {
+        if (buttonBar != null) {
+            ViewUtil.setBackground(buttonBar, buttonBarBackground);
+        }
+    }
+
+    /**
+     * Adapts the elevation of the button bar.
+     */
+    private void adaptButtonBarElevation() {
+        if (shadowView != null) {
+            shadowView.setShadowElevation(buttonBarElevation);
+        }
+    }
+
+    /**
+     * Returns the frame layout, which contains the fragment's views. It is the root view of the
+     * fragment.
      *
-     * @param name
-     *         The name of the extra, which specifies the char sequence, as a {@link String}. The
-     *         name may not be null
-     * @return The char sequence, which is specified by the arguments, as an instance of the class
-     * {@link CharSequence} or null, if the arguments do not specify a char sequence with the given
-     * name
+     * @return The frame layout, which contains the fragment's views, as an instance of the class
+     * {@link FrameLayout} or null, if the fragment has not been created yet
      */
-    private CharSequence getCharSequenceFromArguments(@NonNull final String name) {
-        CharSequence charSequence = getArguments().getCharSequence(name);
-
-        if (charSequence == null) {
-            int resourceId = getArguments().getInt(name, 0);
-
-            if (resourceId != 0) {
-                charSequence = getText(resourceId);
-            }
-        }
-
-        return charSequence;
+    public final FrameLayout getFrameLayout() {
+        return frameLayout;
     }
 
     /**
-     * Restores the default values of all preferences, which are contained by the fragment.
+     * Returns the view group, which contains the button, which allows to restore the preferences'
+     * default values.
+     *
+     * @return The view group, which contains the button, which allows to restore the preferences'
+     * default values, as an instance of the class {@link ViewGroup} or null, if the button is not
+     * shown or if the fragment has not been created yet
      */
-    public final void restoreDefaults() {
-        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+    public final ViewGroup getButtonBar() {
+        return buttonBar;
+    }
 
-        if (getPreferenceScreen() != null) {
-            restoreDefaults(getPreferenceScreen(), sharedPreferences);
-        }
+    /**
+     * Returns the button, which allows to restore the preferences' default values.
+     *
+     * @return The button, which allows to restore the preferences' default values, as an instance
+     * of the class {@link Button} or null, if the button is not shown
+     */
+    public final Button getRestoreDefaultsButton() {
+        return restoreDefaultsButton;
     }
 
     /**
@@ -539,6 +472,17 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
     }
 
     /**
+     * Restores the default values of all preferences, which are contained by the fragment.
+     */
+    public final void restoreDefaults() {
+        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+
+        if (getPreferenceScreen() != null) {
+            restoreDefaults(getPreferenceScreen(), sharedPreferences);
+        }
+    }
+
+    /**
      * Returns, whether the button, which allows to restore the preferences' default values, is
      * currently shown, or not.
      *
@@ -557,186 +501,19 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      *         be shown, false otherwise
      */
     public final void showRestoreDefaultsButton(final boolean show) {
-        if (show) {
-            inflateRestoreDefaultsButtonBar();
-            addRestoreDefaultsButtonBar();
-        } else {
-            removeRestoreDefaultsButtonBar();
-            listView.setOnScrollListener(null);
-            buttonBarParent = null;
-            buttonBar = null;
-            restoreDefaultsButton = null;
-        }
-    }
-
-    /**
-     * Returns the frame layout, which contains the fragment's views. It is the root view of the
-     * fragment.
-     *
-     * @return The frame layout, which contains the fragment's views, as an instance of the class
-     * {@link FrameLayout} or null, if the fragment has not been created yet
-     */
-    public final FrameLayout getFrameLayout() {
-        return frameLayout;
-    }
-
-    /**
-     * Returns the list view, which is used to show the fragment's preferences.
-     *
-     * @return The list view, which is used to show the fragment's preferences, as an instance of
-     * the class {@link ListView} or null, if the fragment has not been created yet
-     */
-    public final ListView getListView() {
-        return listView;
-    }
-
-    /**
-     * Returns the view group, which contains the button, which allows to restore the preferences'
-     * default values.
-     *
-     * @return The view group, which contains the button, which allows to restore the preferences'
-     * default values, as an instance of the class {@link ViewGroup} or null, if the button is not
-     * shown or if the fragment has not been created yet
-     */
-    public final ViewGroup getButtonBar() {
-        return buttonBar;
-    }
-
-    /**
-     * Returns the background of the view group, which contains the button, which allows to restore
-     * the preferences' default values.
-     *
-     * @return The background of the view group, which contains the button, which allows to restore
-     * the preferences' default values, as an instance of the class {@link Drawable} or null, if the
-     * button is not shown or no background is set
-     */
-    public final Drawable getButtonBarBackground() {
-        if (getButtonBar() != null) {
-            return buttonBar.getBackground();
-        }
-
-        return null;
-    }
-
-    /**
-     * Sets the background of the view group, which contains the button, which allows to restore the
-     * preferences' default values. The background is only set, if the button is shown.
-     *
-     * @param resourceId
-     *         The resource id of the background, which should be set, as an {@link Integer} value.
-     *         The resource id must correspond to a valid drawable resource
-     * @return True, if the background has been set, false otherwise
-     */
-    public final boolean setButtonBarBackground(@DrawableRes final int resourceId) {
-        return setButtonBarBackground(ContextCompat.getDrawable(getActivity(), resourceId));
-    }
-
-    /**
-     * Sets the background color of the view group, which contains the button, which allows to
-     * restore the preferences' default values. The background color is only set, if the button is
-     * shown.
-     *
-     * @param color
-     *         The background color, which should be set, as an {@link Integer} value
-     * @return True, if the background color has been set, false otherwise
-     */
-    public final boolean setButtonBarBackgroundColor(@ColorInt final int color) {
-        return setButtonBarBackground(new ColorDrawable(color));
-    }
-
-    /**
-     * Sets the background of the view group, which contains the button, which allows to restore the
-     * preferences' default values. The background is only set, if the button is shown.
-     *
-     * @param drawable
-     *         The background, which should be set, as an instance of the class {@link Drawable} or
-     *         null, if no background should be set
-     * @return True, if the background has been set, false otherwise
-     */
-    public final boolean setButtonBarBackground(@Nullable final Drawable drawable) {
-        if (getButtonBar() != null) {
-            ViewUtil.setBackground(getButtonBar(), drawable);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns the elevation of the view group, which contains the button, which allows to restore
-     * the preferences' default values.
-     *
-     * @return The elevation in dp as an {@link Integer} value or -1, if the button is not shown
-     */
-    public final int getButtonBarElevation() {
-        if (isRestoreDefaultsButtonShown()) {
-            return buttonBarElevation;
-        }
-
-        return -1;
-    }
-
-    /**
-     * Sets the elevation of the view group, which contains the button, which allows to restore the
-     * preferences' default values. The elevation is only set when the button is shown.
-     *
-     * @param elevation
-     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 1 and at maximum 16
-     * @return True, if the elevation has been set, false otherwise
-     */
-    public final boolean setButtonBarElevation(final int elevation) {
-        if (isRestoreDefaultsButtonShown()) {
-            buttonBarElevation = elevation;
-            shadowView.setShadowElevation(elevation);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns the button, which allows to restore the preferences' default values.
-     *
-     * @return The button, which allows to restore the preferences' default values, as an instance
-     * of the class {@link Button} or null, if the button is not shown
-     */
-    public final Button getRestoreDefaultsButton() {
-        return restoreDefaultsButton;
+        this.showRestoreDefaultsButton = show;
+        adaptButtonBarVisibility();
     }
 
     /**
      * Returns the text of the button, which allows to restore the preferences' default values.
      *
      * @return The text of the button, which allows to restore the preferences' default values, as
-     * an instance of the class {@link CharSequence} or null, if the button is not shown
+     * an instance of the class {@link CharSequence}
      */
+    @NonNull
     public final CharSequence getRestoreDefaultsButtonText() {
-        if (restoreDefaultsButton != null) {
-            return restoreDefaultsButton.getText();
-        }
-
-        return null;
-    }
-
-    /**
-     * Sets the text of the button, which allows to restore the preferences' default values. The
-     * text is only set, if the button is shown.
-     *
-     * @param text
-     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
-     *         text may not be null
-     * @return True, if the text has been set, false otherwise
-     */
-    public final boolean setRestoreDefaultsButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-
-        if (restoreDefaultsButton != null) {
-            restoreDefaultsButton.setText(text);
-            return true;
-        }
-
-        return false;
+        return restoreDefaultsButtonText;
     }
 
     /**
@@ -746,74 +523,140 @@ public abstract class PreferenceFragment extends android.preference.PreferenceFr
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
      *         resource id must correspond to a valid string resource
-     * @return True, if the text has been set, false otherwise
      */
-    public final boolean setRestoreDefaultsButtonText(@StringRes final int resourceId) {
-        return setRestoreDefaultsButtonText(getText(resourceId));
+    public final void setRestoreDefaultsButtonText(@StringRes final int resourceId) {
+        setRestoreDefaultsButtonText(getText(resourceId));
     }
 
     /**
-     * Returns the color of the dividers, which are shown above preference categories.
+     * Sets the text of the button, which allows to restore the preferences' default values. The
+     * text is only set, if the button is shown.
      *
-     * @return The color of the dividers, which are shown above preference categories, as an {@link
-     * Integer} value or -1, if the default color is used
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither be null, nor empty
      */
-    @ColorInt
-    public final int getDividerColor() {
-        return dividerColor;
+    public final void setRestoreDefaultsButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.restoreDefaultsButtonText = text;
+        adaptRestoreDefaultsButtonText();
     }
 
     /**
-     * Sets the color of the dividers, which are shown above preference categories.
+     * Returns the background of the view group, which contains the button, which allows to restore
+     * the preferences' default values.
+     *
+     * @return The background of the view group, which contains the button, which allows to restore
+     * the preferences' default values, as an instance of the class {@link Drawable}
+     */
+    public final Drawable getButtonBarBackground() {
+        return buttonBarBackground;
+    }
+
+    /**
+     * Sets the background of the view group, which contains the button, which allows to restore the
+     * preferences' default values.
+     *
+     * @param resourceId
+     *         The resource id of the background, which should be set, as an {@link Integer} value.
+     *         The resource id must correspond to a valid drawable resource
+     */
+    public final void setButtonBarBackground(@DrawableRes final int resourceId) {
+        setButtonBarBackground(ContextCompat.getDrawable(getActivity(), resourceId));
+    }
+
+    /**
+     * Sets the background color of the view group, which contains the button, which allows to
+     * restore the preferences' default values.
+     * shown.
      *
      * @param color
-     *         The color, which should be set, as an {@link Integer} value or -1, if the default
-     *         color should be used
+     *         The background color, which should be set, as an {@link Integer} value
      */
-    public final void setDividerColor(@ColorInt final int color) {
-        this.dividerColor = color;
+    public final void setButtonBarBackgroundColor(@ColorInt final int color) {
+        setButtonBarBackground(new ColorDrawable(color));
+    }
 
-        if (listView != null) {
-            listView.setDividerColor(color);
-        }
+    /**
+     * Sets the background of the view group, which contains the button, which allows to restore the
+     * preferences' default values.
+     *
+     * @param background
+     *         The background, which should be set, as an instance of the class {@link Drawable} or
+     *         null, if no background should be set
+     */
+    public final void setButtonBarBackground(@Nullable final Drawable background) {
+        this.buttonBarBackground = background;
+        adaptButtonBarBackground();
+    }
+
+    /**
+     * Returns the elevation of the view group, which contains the button, which allows to restore
+     * the preferences' default values.
+     *
+     * @return The elevation in dp as an {@link Integer} value
+     */
+    public final int getButtonBarElevation() {
+        return buttonBarElevation;
+    }
+
+    /**
+     * Sets the elevation of the view group, which contains the button, which allows to restore the
+     * preferences' default values.
+     *
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 1 and at maximum 16
+     */
+    public final void setButtonBarElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        ensureAtMaximum(elevation, 16, "The elevation must be at maximum 16");
+        this.buttonBarElevation = elevation;
+        adaptButtonBarElevation();
     }
 
     @CallSuper
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.buttonBarElevation = DEFAULT_BUTTON_BAR_ELEVATION;
-
-        if (getArguments() != null) {
-            handleShowRestoreDefaultsButtonArgument();
-            handleRestoreDefaultsButtonTextArgument();
-        }
+        handleArguments();
     }
 
     @CallSuper
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState) {
-        parentView = (LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnScrollListener(
+                new HideViewOnScrollAnimation(buttonBarParent, Direction.DOWN));
+    }
 
-        if (savedInstanceState == null) {
-            initializeListView();
-            addRestoreDefaultsButtonBar();
-        }
-
-        return parentView;
+    @NonNull
+    @Override
+    protected final View onInflateView(@NonNull final LayoutInflater inflater,
+                                       @Nullable final ViewGroup container,
+                                       @Nullable final Bundle savedInstanceState) {
+        frameLayout =
+                (FrameLayout) inflater.inflate(R.layout.preference_fragment, container, false);
+        buttonBarParent = frameLayout.findViewById(R.id.restore_defaults_button_bar_parent);
+        buttonBarParent.setVisibility(showRestoreDefaultsButton ? View.VISIBLE : View.GONE);
+        buttonBar = buttonBarParent.findViewById(R.id.restore_defaults_button_bar);
+        ViewUtil.setBackground(buttonBar, buttonBarBackground);
+        restoreDefaultsButton = buttonBarParent.findViewById(R.id.restore_defaults_button);
+        restoreDefaultsButton.setOnClickListener(createRestoreDefaultsListener());
+        restoreDefaultsButton.setText(restoreDefaultsButtonText);
+        shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
+        shadowView.setShadowElevation(buttonBarElevation);
+        return frameLayout;
     }
 
     @Override
-    public final void addPreferencesFromResource(@XmlRes final int resourceId) {
-        super.addPreferencesFromResource(resourceId);
-        applyMaterialStyle();
-    }
-
-    @Override
-    public final void addPreferencesFromIntent(final Intent intent) {
-        super.addPreferencesFromIntent(intent);
-        applyMaterialStyle();
+    protected final void onObtainStyledAttributes(@StyleRes final int themeResourceId) {
+        super.onObtainStyledAttributes(themeResourceId);
+        obtainShowRestoreDefaultsButton(themeResourceId);
+        obtainRestoreDefaultsButtonText(themeResourceId);
+        obtainButtonBarBackground(themeResourceId);
+        obtainButtonBarElevation(themeResourceId);
     }
 
 }
