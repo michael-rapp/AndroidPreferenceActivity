@@ -1,0 +1,401 @@
+/*
+ * Copyright 2014 - 2017 Michael Rapp
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package de.mrapp.android.preference.activity;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.os.Build;
+import android.preference.Preference;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+
+/**
+ * A preference, which allows to show a fragment within a {@link PreferenceActivity} when
+ * clicked.
+ *
+ * @author Michael Rapp
+ * @since 5.0.0
+ */
+public class NavigationPreference extends Preference {
+
+    /**
+     * Defines the callback, a class, which should be notified, when the fragment, which is
+     * associated with a navigation preference, should be shown, must implement.
+     */
+    public interface Callback {
+
+        /**
+         * The method, which is invoked, when the fragment, which is associated with a specific
+         * navigation preference, should be shown.
+         *
+         * @param navigationPreference
+         *         The navigation preference, whose fragment should be shown, as an instance of the
+         *         class {@link NavigationPreference}. The navigation preference may not be null
+         */
+        void onShowFragment(@NonNull final NavigationPreference navigationPreference);
+
+    }
+
+    /**
+     * The breadcrumb title, which is shown, when showing the fragment, which is
+     * associated with the preference.
+     */
+    private CharSequence breadCrumbTitle;
+
+    /**
+     * The short version of the breadcrumb title, which is shown, when showing the fragment, which
+     * is associated with the preference.
+     */
+    private CharSequence breadCrumbShortTitle;
+
+    /**
+     * The fully classified class name of the fragment, which is associated with the preference.
+     */
+    private String fragment;
+
+    /**
+     * The callback, which is notified, when the fragment, which is associated with the preference,
+     * should be shown.F
+     */
+    private Callback callback;
+
+    /**
+     * Initializes the preference.
+     *
+     * @param attributeSet
+     *         The attribute set, the attributes should be obtained from, as an instance of the type
+     *         {@link AttributeSet}
+     * @param defaultStyle
+     *         The default style to apply to this preference. If 0, no style will be applied (beyond
+     *         what is included in the theme). This may either be an attribute resource, whose value
+     *         will be retrieved from the current theme, or an explicit style resource
+     * @param defaultStyleResource
+     *         A resource identifier of a style resource that supplies default values for the
+     *         preference, used only if the default style is 0 or can not be found in the theme. Can
+     *         be 0 to not look for defaults
+     */
+    private void initialize(final AttributeSet attributeSet, @AttrRes final int defaultStyle,
+                            @StyleRes final int defaultStyleResource) {
+        setOnPreferenceClickListener(null);
+        obtainStyledAttributes(attributeSet, defaultStyle, defaultStyleResource);
+    }
+
+    /**
+     * Obtains all attributes from a specific attribute set.
+     *
+     * @param attributeSet
+     *         The attribute set, the attributes should be obtained from, as an instance of the type
+     *         {@link AttributeSet} or null, if no attributes should be obtained
+     * @param defaultStyle
+     *         The default style to apply to this preference. If 0, no style will be applied (beyond
+     *         what is included in the theme). This may either be an attribute resource, whose value
+     *         will be retrieved from the current theme, or an explicit style resource
+     * @param defaultStyleResource
+     *         A resource identifier of a style resource that supplies default values for the
+     *         preference, used only if the default style is 0 or can not be found in the theme. Can
+     *         be 0 to not look for defaults
+     */
+    private void obtainStyledAttributes(@Nullable final AttributeSet attributeSet,
+                                        @AttrRes final int defaultStyle,
+                                        @StyleRes final int defaultStyleResource) {
+        TypedArray typedArray = getContext()
+                .obtainStyledAttributes(attributeSet, R.styleable.NavigationPreference,
+                        defaultStyle, defaultStyleResource);
+
+        try {
+            obtainBreadCrumbTitle(typedArray);
+            obtainBreadCrumbShortTitle(typedArray);
+            obtainFragment(typedArray);
+        } finally {
+            typedArray.recycle();
+        }
+    }
+
+    /**
+     * Obtains the breadcrumb title from a specific typed array.
+     *
+     * @param typedArray
+     *         The typed array, the breadcrumb title should be obtained from, as an instance of the
+     *         class {@link TypedArray}. The typed array may not be null
+     */
+    private void obtainBreadCrumbTitle(@NonNull final TypedArray typedArray) {
+        setBreadCrumbTitle(
+                typedArray.getText(R.styleable.NavigationPreference_android_breadCrumbTitle));
+    }
+
+    /**
+     * Obtains the short breadcrumb title from a specific typed array.
+     *
+     * @param typedArray
+     *         The typed array, the short breadcrumb title should be obtained from, as an instance
+     *         of the class {@link TypedArray}. The typed array may not be null
+     */
+    private void obtainBreadCrumbShortTitle(@NonNull final TypedArray typedArray) {
+        setBreadCrumbShortTitle(
+                typedArray.getText(R.styleable.NavigationPreference_android_breadCrumbShortTitle));
+    }
+
+    /**
+     * Obtains the fragment from a specific typed array.
+     *
+     * @param typedArray
+     *         The typed array, the fragment should be obtained from, as an instance of the class
+     *         {@link TypedArray}. The typed array may not be null
+     */
+    private void obtainFragment(@NonNull final TypedArray typedArray) {
+        setFragment(typedArray.getString(R.styleable.NavigationPreference_android_fragment));
+    }
+
+    /**
+     * Creates a click listener, which notifies the callback, when the preference's fragment should
+     * be shown and forwards the click event to an encapsulated listener.
+     *
+     * @param listener
+     *         The listener, which should be encapsulated, as an instance of the type {@link
+     *         OnPreferenceClickListener} or null, if no listener should be encapsulated
+     * @return The listener, which has been created, as an instance of the type {@link
+     * OnPreferenceClickListener}. The listener may not be null
+     */
+    @NonNull
+    private OnPreferenceClickListener createOnPreferenceClickListenerWrapper(
+            @Nullable final OnPreferenceClickListener listener) {
+        return new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                boolean handled = false;
+
+                if (!TextUtils.isEmpty(getFragment())) {
+                    handled = true;
+                    notifyOnShowFragment();
+                }
+
+                return (listener != null && listener.onPreferenceClick(preference)) || handled;
+            }
+
+        };
+    }
+
+    /**
+     * Notifies the callback, that the fragment, which is associated with the preference, should be
+     * shown.
+     */
+    private void notifyOnShowFragment() {
+        if (callback != null) {
+            callback.onShowFragment(this);
+        }
+    }
+
+    /**
+     * Creates a new preference, which allows to show a preference screen within a {@link
+     * PreferenceActivity} when clicked.
+     *
+     * @param context
+     *         The context, which should be used by the preference, as an instance of the class
+     *         {@link Context}. The context may not be null
+     */
+    public NavigationPreference(@NonNull final Context context) {
+        this(context, null);
+    }
+
+    /**
+     * Creates a new preference, which allows to show a preference screen within a {@link
+     * PreferenceActivity} when clicked.
+     *
+     * @param context
+     *         The context, which should be used by the preference, as an instance of the class
+     *         {@link Context}. The context may not be null
+     * @param attributeSet
+     *         The attributes of the XML tag that is inflating the preference, as an instance of the
+     *         type {@link AttributeSet} or null, if no attributes are available
+     */
+    public NavigationPreference(@NonNull final Context context,
+                                @Nullable final AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initialize(attributeSet, 0, 0);
+    }
+
+    /**
+     * Creates a new preference, which allows to show a preference screen within a {@link
+     * PreferenceActivity} when clicked.
+     *
+     * @param context
+     *         The context, which should be used by the preference, as an instance of the class
+     *         {@link Context}. The context may not be null
+     * @param attributeSet
+     *         The attributes of the XML tag that is inflating the preference, as an instance of the
+     *         type {@link AttributeSet} or null, if no attributes are available
+     * @param defaultStyle
+     *         The default style to apply to this preference. If 0, no style will be applied (beyond
+     *         what is included in the theme). This may either be an attribute resource, whose value
+     *         will be retrieved from the current theme, or an explicit style resource
+     */
+    public NavigationPreference(@NonNull final Context context,
+                                @Nullable final AttributeSet attributeSet,
+                                @AttrRes final int defaultStyle) {
+        super(context, attributeSet, defaultStyle);
+        initialize(attributeSet, defaultStyle, 0);
+    }
+
+    /**
+     * Creates a new preference, which allows to show a preference screen within a {@link
+     * PreferenceActivity} when clicked.
+     *
+     * @param context
+     *         The context, which should be used by the preference, as an instance of the class
+     *         {@link Context}. The context may not be null
+     * @param attributeSet
+     *         The attributes of the XML tag that is inflating the preference, as an instance of the
+     *         type {@link AttributeSet} or null, if no attributes are available
+     * @param defaultStyle
+     *         The default style to apply to this preference. If 0, no style will be applied (beyond
+     *         what is included in the theme). This may either be an attribute resource, whose value
+     *         will be retrieved from the current theme, or an explicit style resource
+     * @param defaultStyleResource
+     *         A resource identifier of a style resource that supplies default values for the
+     *         preference, used only if the default style is 0 or can not be found in the theme. Can
+     *         be 0 to not look for defaults
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public NavigationPreference(@NonNull final Context context,
+                                @Nullable final AttributeSet attributeSet,
+                                @AttrRes final int defaultStyle,
+                                @StyleRes final int defaultStyleResource) {
+        super(context, attributeSet, defaultStyle, defaultStyleResource);
+        initialize(attributeSet, defaultStyle, defaultStyleResource);
+    }
+
+    /**
+     * Sets the callback, which should be notified, when the fragment, which is associated with the
+     * preference, should be shown.
+     *
+     * @param callback
+     *         The callback, which should be set, as an instance of the type {@link Callback} or
+     *         null, if no callback should be notified
+     */
+    public final void setCallback(@Nullable final Callback callback) {
+        this.callback = callback;
+    }
+
+    /**
+     * Returns the breadcrumb title, which is shown, when showing the fragment, which is
+     * associated with the preference.
+     *
+     * @return The breadcrumb title, which is shown, when showing the fragment, which is associated
+     * with the preference, as an instance of the type {@link CharSequence} or null, if no
+     * breadcrumb title is available
+     */
+    @Nullable
+    public final CharSequence getBreadCrumbTitle() {
+        return breadCrumbTitle;
+    }
+
+    /**
+     * Sets the breadcrumb title, which should be shown, when showing the fragment, which is
+     * associated with the preference.
+     *
+     * @param resourceId
+     *         The resource id of the breadcrumb title, which should be set, as an {@link Integer}
+     *         value. The resource id must correspond to a valid string resource
+     */
+    public final void setBreadCrumbTitle(@StringRes final int resourceId) {
+        setBreadCrumbTitle(getContext().getText(resourceId));
+    }
+
+    /**
+     * Sets the breadcrumb title, which should be shown, when showing the fragment, which is
+     * associated with the preference.
+     *
+     * @param breadCrumbTitle
+     *         The breadcrumb title, which should be set, as an instance of the type {@link
+     *         CharSequence} or null, if no breadcrumb title should be set
+     */
+    public final void setBreadCrumbTitle(@Nullable final CharSequence breadCrumbTitle) {
+        this.breadCrumbTitle = breadCrumbTitle;
+    }
+
+    /**
+     * Returns the short version of the breadcrumb title, which is shown, when showing the fragment,
+     * which is associated with the preference.
+     *
+     * @return The short version of the breadcrumb title, which is shown, when showing the fragment,
+     * which is associated with the preference, as an instance of the type {@link CharSequence} or
+     * null, if no short breadcrumb title is available
+     */
+    @Nullable
+    public final CharSequence getBreadCrumbShortTitle() {
+        return breadCrumbShortTitle;
+    }
+
+    /**
+     * Sets the short version of the breadcrumb title, which should be shown, when showing the
+     * fragment, which is associated with the preference.
+     *
+     * @param resourceId
+     *         The resource id of the short breadcrumb title, which should be set, as an {@link
+     *         Integer} value. The resource id must correspond to a valid string resource
+     */
+    public final void setBreadCrumbShortTitle(@StringRes final int resourceId) {
+        setBreadCrumbShortTitle(getContext().getText(resourceId));
+    }
+
+    /**
+     * Sets the short version of the breadcrumb title, which should be shown, when showing the
+     * fragment, which is associated with the preference.
+     *
+     * @param shortBreadCrumbTitle
+     *         The short breadcrumb title, which should be set, as an instance of the type {@link
+     *         CharSequence} or null, if no short breadcrumb title should be set
+     */
+    public final void setBreadCrumbShortTitle(@Nullable final CharSequence shortBreadCrumbTitle) {
+        this.breadCrumbShortTitle = shortBreadCrumbTitle;
+    }
+
+    /**
+     * Returns the fully classified class name of the fragment, which is associated with the
+     * preference.
+     *
+     * @return The fully classified class name of the fragment, which is associated with the
+     * preference, as a {@link String} or null, if no fragment is associated with the preference
+     */
+    @Nullable
+    public final String getFragment() {
+        return fragment;
+    }
+
+    /**
+     * Sets the fully classified class name of the fragment, which should be associated with the
+     * preference.
+     *
+     * @param fragment
+     *         The fully classified class name of the fragment, which should be set, as a {@link
+     *         String} or null, if no fragment should be set
+     */
+    public final void setFragment(@Nullable final String fragment) {
+        this.fragment = fragment;
+    }
+
+    @Override
+    public final void setOnPreferenceClickListener(
+            @Nullable final OnPreferenceClickListener listener) {
+        super.setOnPreferenceClickListener(createOnPreferenceClickListenerWrapper(listener));
+    }
+
+}

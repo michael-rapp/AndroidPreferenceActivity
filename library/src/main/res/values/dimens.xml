@@ -15,6 +15,10 @@ License.
 -->
 <resources>
 
+    <!-- New -->
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="button_bar_elevation">2dp</dimen>
+
     <!-- Preferences -->
     <dimen name="preference_min_height">64dp</dimen>
     <dimen name="preference_horizontal_padding">16dp</dimen>

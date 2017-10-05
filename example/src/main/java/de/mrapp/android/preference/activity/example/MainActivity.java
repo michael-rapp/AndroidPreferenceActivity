@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
-                        BehaviorPreferenceFragment.class.getName());
+                // TODO intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, BehaviorPreferenceFragment.class.getName());
 
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                             getString(R.string.alternative_title_preference_default_value);
                     String titleKey = getString(R.string.alternative_title_preference_key);
                     String title = sharedPreferences.getString(titleKey, titleDefaultValue);
-                    intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE, title);
+                    // TODO intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE, title);
                 }
 
                 startActivity(intent);
@@ -157,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(final View v) {
+                // TODO
+                /*
                 Intent intent = new Intent(MainActivity.this, WizardActivity.class);
                 intent.putExtra(PreferenceActivity.EXTRA_SHOW_BUTTON_BAR, true);
                 intent.putExtra(PreferenceActivity.EXTRA_BACK_BUTTON_TEXT, R.string.back);
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(PreferenceActivity.EXTRA_SHOW_PROGRESS, true);
                 intent.putExtra(PreferenceActivity.EXTRA_PROGRESS_FORMAT, R.string.progress);
                 startActivity(intent);
+                */
             }
 
         };

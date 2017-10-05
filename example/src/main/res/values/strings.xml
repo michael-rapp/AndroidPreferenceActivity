@@ -27,6 +27,7 @@ License.
     <string name="dynamic_preference_button">Show dynamic PreferenceActivity</string>
     <string name="wizard_hint">Furthermore, the library\'s PreferenceActivity can also be used as a wizard, which provides buttons to step from one preference header to an other, instead of the default navigation. Click the button below to see the appearance of the PreferenceActivity when used as a wizard.</string>
     <string name="wizard_button">Show Wizard</string>
+    <string name="settings_category">Settings</string>
     <string name="introduction_preference_header_title">Introduction</string>
     <string name="appearance_preference_header_title">Appearance</string>
     <string name="appearance_preference_theme_category">Theme</string>

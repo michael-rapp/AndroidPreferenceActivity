@@ -13,27 +13,22 @@
  */
 package de.mrapp.android.preference.activity.fragment;
 
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceGroup;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.support.annotation.XmlRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import de.mrapp.android.preference.activity.R;
-import de.mrapp.android.preference.activity.decorator.PreferenceDecorator;
 import de.mrapp.android.preference.activity.view.PreferenceListView;
 
 /**
@@ -102,42 +97,6 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
     private void adaptDividerColor() {
         if (listView != null) {
             listView.setDividerColor(dividerColor);
-        }
-    }
-
-    /**
-     * Applies Material style to all preferences, which are contained by the fragment.
-     */
-    private void applyMaterialStyle() {
-        PreferenceDecorator decorator = new PreferenceDecorator(getActivity());
-
-        if (getPreferenceScreen() != null) {
-            applyMaterialStyle(getPreferenceScreen(), decorator);
-        }
-    }
-
-    /**
-     * Applies Material style to all preferences, which are contained by a specific preference
-     * group, and on the group itself.
-     *
-     * @param preferenceGroup
-     *         The preference group, at whose preferences the Material style should be applied to,
-     *         as an instance of the class {@link PreferenceGroup}. The preference group may not be
-     *         null
-     * @param decorator
-     *         The decorator, which should be used to apply the Material style, as an instance of
-     *         the class {@link PreferenceDecorator}. The decorator may not be null
-     */
-    private void applyMaterialStyle(@NonNull final PreferenceGroup preferenceGroup,
-                                    @NonNull final PreferenceDecorator decorator) {
-        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
-            Preference preference = preferenceGroup.getPreference(i);
-            decorator.applyDecorator(preference);
-
-            if (preference instanceof PreferenceGroup) {
-                PreferenceGroup group = (PreferenceGroup) preference;
-                applyMaterialStyle(group, decorator);
-            }
         }
     }
 
@@ -230,20 +189,6 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
 
         adaptDividerColor();
         return view;
-    }
-
-    @CallSuper
-    @Override
-    public void addPreferencesFromResource(@XmlRes final int resourceId) {
-        super.addPreferencesFromResource(resourceId);
-        applyMaterialStyle();
-    }
-
-    @CallSuper
-    @Override
-    public void addPreferencesFromIntent(final Intent intent) {
-        super.addPreferencesFromIntent(intent);
-        applyMaterialStyle();
     }
 
 }

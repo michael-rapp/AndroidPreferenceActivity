@@ -13,12 +13,10 @@ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e
 implied. See the License for the specific language governing permissions and limitations under the
 License.
 -->
-<TextView
-    android:id="@android:id/title"
-    style="@style/PreferenceActivity.PreferenceCategory"
+<de.mrapp.android.preference.activity.view.PreferenceListView
+    android:id="@android:id/list"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical|start"
-    android:paddingBottom="@dimen/preference_category_bottom_margin"
-    android:paddingTop="@dimen/preference_category_top_margin"/>
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/list_view_padding_top"/>

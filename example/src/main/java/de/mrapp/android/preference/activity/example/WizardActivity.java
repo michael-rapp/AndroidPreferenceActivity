@@ -66,15 +66,18 @@ public class WizardActivity extends AbstractPreferenceActivity implements Wizard
         };
     }
 
+    // TODO
+    /*
     @Override
     protected final void onCreatePreferenceHeaders() {
         addPreferenceHeadersFromResource(R.xml.wizard_preference_headers);
     }
+    */
 
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addWizardListener(this);
+        // TODO addWizardListener(this);
     }
 
     @Override

@@ -16,6 +16,7 @@ package de.mrapp.android.preference.activity.example;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.CallSuper;
 import android.support.v7.app.ActionBar;
 
 import de.mrapp.android.preference.activity.PreferenceActivity;
@@ -40,7 +41,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.toolbar_elevation_preference_key);
         String defaultValue = getString(R.string.toolbar_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setToolbarElevation(elevation);
+        // TODO setToolbarElevation(elevation);
     }
 
     /**
@@ -54,7 +55,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.navigation_width_preference_key);
         String defaultValue = getString(R.string.navigation_width_preference_default_value);
         int width = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setNavigationWidth(width);
+        // TODO setNavigationWidth(width);
     }
 
     /**
@@ -69,7 +70,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String defaultValue =
                 getString(R.string.preference_screen_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setPreferenceScreenElevation(elevation);
+        // TODO setPreferenceScreenElevation(elevation);
     }
 
     /**
@@ -83,7 +84,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.bread_crumb_elevation_preference_key);
         String defaultValue = getString(R.string.bread_crumb_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setBreadCrumbElevation(elevation);
+        // TODO setBreadCrumbElevation(elevation);
     }
 
     /**
@@ -98,7 +99,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String defaultValue =
                 getString(R.string.wizard_button_bar_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        setButtonBarElevation(elevation);
+        // TODO setButtonBarElevation(elevation);
     }
 
     /**
@@ -113,7 +114,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         boolean defaultValue = Boolean.valueOf(
                 getString(R.string.override_navigation_icon_preference_default_value));
         boolean overrideNavigationIcon = sharedPreferences.getBoolean(key, defaultValue);
-        overrideNavigationIcon(overrideNavigationIcon);
+        // TODO overrideNavigationIcon(overrideNavigationIcon);
     }
 
     /**
@@ -128,7 +129,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         boolean defaultValue =
                 Boolean.valueOf(getString(R.string.hide_navigation_preference_default_value));
         boolean hideNavigation = sharedPreferences.getBoolean(key, defaultValue);
-        hideNavigation(hideNavigation);
+        // TODO hideNavigation(hideNavigation);
     }
 
     @Override
@@ -162,8 +163,9 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         }
     }
 
+    @CallSuper
     @Override
-    public final void onStart() {
+    public void onStart() {
         super.onStart();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         initializeWizardButtonBarElevation(sharedPreferences);

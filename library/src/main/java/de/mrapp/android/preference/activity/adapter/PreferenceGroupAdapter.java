@@ -15,11 +15,14 @@ package de.mrapp.android.preference.activity.adapter;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,45 +90,6 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     }
 
     /**
-     * Returns a pair, which contains the item, which corresponds to the given position, as well
-     * as the item's position in the encapsulated adapter, if the item is not a divider.
-     *
-     * @param position
-     *         The position of the item, which should be returned, as an {@link Integer} value
-     * @return A pair, which contains the item, which corresponds to the given position, as well as
-     * the item's position in the encapsulated adapter, if the item is not a divider, as an instance
-     * of the class {@link Pair}. The pair may not be null
-     */
-    @NonNull
-    private Pair<Object, Integer> getItemInternal(final int position) {
-        if (position == 0) {
-            System.out.println("gotcha");
-        }
-        ensureAtLeast(position, 0, null, IndexOutOfBoundsException.class);
-        Object item = null;
-        int offset = 0;
-        int i = 0;
-
-        while (i <= position) {
-            item = encapsulatedAdapter.getItem(i - offset);
-
-            if (i > 0 && item instanceof PreferenceCategory) {
-                if (i == position) {
-                    return Pair.create(DIVIDER, -1);
-                } else {
-                    offset++;
-                    i++;
-                }
-            }
-
-            i++;
-        }
-
-        ensureNotNull(item, null, IndexOutOfBoundsException.class);
-        return Pair.create(item, i - 1 - offset);
-    }
-
-    /**
      * Adapts the background color of a divider.
      *
      * @param divider
@@ -163,6 +127,45 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     }
 
     /**
+     * Returns a pair, which contains the item, which corresponds to the given position, as well
+     * as the item's position in the encapsulated adapter, if the item is not a divider.
+     *
+     * @param position
+     *         The position of the item, which should be returned, as an {@link Integer} value
+     * @return A pair, which contains the item, which corresponds to the given position, as well as
+     * the item's position in the encapsulated adapter, if the item is not a divider, as an instance
+     * of the class {@link Pair}. The pair may not be null
+     */
+    @NonNull
+    public final Pair<Object, Integer> getItemInternal(final int position) {
+        if (position == 0) {
+            System.out.println("gotcha");
+        }
+        ensureAtLeast(position, 0, null, IndexOutOfBoundsException.class);
+        Object item = null;
+        int offset = 0;
+        int i = 0;
+
+        while (i <= position) {
+            item = encapsulatedAdapter.getItem(i - offset);
+
+            if (i > 0 && item instanceof PreferenceCategory) {
+                if (i == position) {
+                    return Pair.create(DIVIDER, -1);
+                } else {
+                    offset++;
+                    i++;
+                }
+            }
+
+            i++;
+        }
+
+        ensureNotNull(item, null, IndexOutOfBoundsException.class);
+        return Pair.create(item, i - 1 - offset);
+    }
+
+    /**
      * Sets the color of the dividers, which are shown above preference categories.
      *
      * @param color
@@ -172,6 +175,29 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     public final void setDividerColor(@ColorInt final int color) {
         this.dividerColor = color;
         notifyDataSetChanged();
+    }
+
+    /**
+     * The method, which is invoked, when a specific item is visualized. This method may be
+     * overridden by subclasses in order to modify the item beforehand.
+     *
+     * @param item
+     *         The item, which is visualized, as an instance of the class {@link Object}. The item
+     *         may not be null
+     */
+    @CallSuper
+    protected void onVisualizeItem(@NonNull final Object item) {
+        if (item instanceof Preference) {
+            Preference preference = (Preference) item;
+            int currentLayout = preference.getLayoutResource();
+            String resourceName = context.getResources().getResourceName(currentLayout);
+
+            if (resourceName.startsWith("android:layout")) {
+                int layout = item instanceof PreferenceCategory ? R.layout.preference_category :
+                        R.layout.preference;
+                preference.setLayoutResource(layout);
+            }
+        }
     }
 
     @Override
@@ -208,6 +234,7 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     @Override
     public final View getView(final int position, final View convertView, final ViewGroup parent) {
         Pair<Object, Integer> pair = getItemInternal(position);
+        onVisualizeItem(pair.first);
 
         if (pair.first == DIVIDER) {
             View view = convertView;
@@ -219,9 +246,15 @@ public class PreferenceGroupAdapter extends BaseAdapter {
 
             adaptDividerColor(view);
             return view;
-        } else {
-            return encapsulatedAdapter.getView(pair.second, convertView, parent);
+        } else if (pair.first instanceof PreferenceCategory) {
+            PreferenceCategory preferenceCategory = (PreferenceCategory) pair.first;
+
+            if (TextUtils.isEmpty(preferenceCategory.getTitle())) {
+                return new View(context);
+            }
         }
+
+        return encapsulatedAdapter.getView(pair.second, convertView, parent);
     }
 
     @Override

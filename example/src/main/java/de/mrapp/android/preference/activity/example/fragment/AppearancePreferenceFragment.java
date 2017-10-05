@@ -65,7 +65,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                ((PreferenceActivity) getActivity()).setToolbarElevation(elevation);
+                // TODO ((PreferenceActivity) getActivity()).setToolbarElevation(elevation);
                 return true;
             }
 
@@ -85,7 +85,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int width = Integer.valueOf((String) newValue);
-                ((PreferenceActivity) getActivity()).setNavigationWidth(width);
+                // TODO ((PreferenceActivity) getActivity()).setNavigationWidth(width);
                 return true;
             }
 
@@ -105,7 +105,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                ((PreferenceActivity) getActivity()).setPreferenceScreenElevation(elevation);
+                // TODO ((PreferenceActivity) getActivity()).setPreferenceScreenElevation(elevation);
                 return true;
             }
 
@@ -125,7 +125,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                ((PreferenceActivity) getActivity()).setBreadCrumbElevation(elevation);
+                // TODO ((PreferenceActivity) getActivity()).setBreadCrumbElevation(elevation);
                 return true;
             }
 
@@ -145,7 +145,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                ((PreferenceActivity) getActivity()).setButtonBarElevation(elevation);
+                // TODO ((PreferenceActivity) getActivity()).setButtonBarElevation(elevation);
                 return true;
             }
 

@@ -13,6 +13,9 @@
  */
 package de.mrapp.android.preference.activity.example;
 
+import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
+
 import de.mrapp.android.preference.activity.PreferenceActivity;
 
 /**
@@ -24,8 +27,8 @@ import de.mrapp.android.preference.activity.PreferenceActivity;
 public class SettingsActivity extends AbstractPreferenceActivity {
 
     @Override
-    protected final void onCreatePreferenceHeaders() {
-        addPreferenceHeadersFromResource(R.xml.preference_headers);
+    public final void onNavigationCreated(@NonNull final PreferenceFragment fragment) {
+        fragment.addPreferencesFromResource(R.xml.navigation);
     }
 
 }

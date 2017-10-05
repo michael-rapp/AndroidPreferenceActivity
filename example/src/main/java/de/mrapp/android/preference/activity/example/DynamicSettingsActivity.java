@@ -38,7 +38,7 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
      */
     @SuppressLint("InflateParams")
     private void showRemovePreferenceHeaderDialog() {
-        new RemovePreferenceHeaderDialogBuilder(this, getAllPreferenceHeaders(), this).show();
+        // TODO new RemovePreferenceHeaderDialogBuilder(this, getAllPreferenceHeaders(), this).show();
     }
 
     /**
@@ -47,7 +47,7 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
     private void addPreferenceHeader() {
         PreferenceHeader preferenceHeader = new PreferenceHeader(getPreferenceHeaderTitle());
         preferenceHeader.setFragment(NewPreferenceHeaderFragment.class.getName());
-        addPreferenceHeader(preferenceHeader);
+        // TODO addPreferenceHeader(preferenceHeader);
         invalidateOptionsMenu();
     }
 
@@ -80,18 +80,21 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
      * the activity, false otherwise
      */
     private boolean isTitleAlreadyUsed(final CharSequence title) {
+        // TODO
+        /*
         for (int i = 0; i < getAllPreferenceHeaders().size(); i++) {
             if (getPreferenceHeader(i).getTitle().equals(title)) {
                 return true;
             }
         }
+        */
 
         return false;
     }
 
     @Override
     public final void onRemovePreferenceHeader(final int position) {
-        removePreferenceHeader(getPreferenceHeader(position));
+        // TODO removePreferenceHeader(getPreferenceHeader(position));
         invalidateOptionsMenu();
     }
 
@@ -102,9 +105,9 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
         inflater.inflate(R.menu.menu, menu);
 
         MenuItem removePreferenceHeaderMenuItem = menu.findItem(R.id.remove_preference_header);
-        removePreferenceHeaderMenuItem.setEnabled(getNumberOfPreferenceHeaders() != 0);
+        // TODO removePreferenceHeaderMenuItem.setEnabled(getNumberOfPreferenceHeaders() != 0);
         MenuItem clearPreferenceHeadersMenuItem = menu.findItem(R.id.clear_preference_headers);
-        clearPreferenceHeadersMenuItem.setEnabled(getNumberOfPreferenceHeaders() != 0);
+        // TODO clearPreferenceHeadersMenuItem.setEnabled(getNumberOfPreferenceHeaders() != 0);
 
         return true;
     }
@@ -119,7 +122,7 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
                 showRemovePreferenceHeaderDialog();
                 return true;
             case R.id.clear_preference_headers:
-                clearPreferenceHeaders();
+                // TODO clearPreferenceHeaders();
                 invalidateOptionsMenu();
                 return true;
             default:
@@ -127,9 +130,12 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
         }
     }
 
+    // TODO
+    /*
     @Override
     protected final void onCreatePreferenceHeaders() {
         addPreferenceHeader();
     }
+    */
 
 }

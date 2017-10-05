@@ -15,6 +15,11 @@ License.
 -->
 <resources>
 
+    <!-- new -->
+    <attr name="useSplitScreen" format="boolean"/>
+    <attr name="navigationWidth" format="dimension"/>
+    <attr name="hideNavigation" format="boolean"/>
+
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
     <attr name="invertedToolbarTheme" format="reference"/>
@@ -26,7 +31,6 @@ License.
     <attr name="showRestoreDefaultsButton" format="boolean"/>
     <attr name="restoreDefaultsButtonText" format="string"/>
     <attr name="restoreDefaultsButtonBarBackground" format="reference|color"/>
-    <attr name="navigationWidth" format="dimension"/>
     <attr name="overrideNavigationIcon" format="boolean"/>
     <attr name="toolbarElevation" format="dimension"/>
     <attr name="breadCrumbElevation" format="dimension"/>
@@ -42,6 +46,12 @@ License.
         <attr name="android:breadCrumbTitle"/>
         <attr name="android:breadCrumbShortTitle"/>
         <attr name="android:icon"/>
+        <attr name="android:fragment"/>
+    </declare-styleable>
+
+    <declare-styleable name="NavigationPreference">
+        <attr name="android:breadCrumbTitle"/>
+        <attr name="android:breadCrumbShortTitle"/>
         <attr name="android:fragment"/>
     </declare-styleable>
 

@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -28,8 +29,6 @@ import android.widget.RelativeLayout;
 import de.mrapp.android.preference.activity.R;
 
 import static de.mrapp.android.util.Condition.ensureGreater;
-import static de.mrapp.android.util.DisplayUtil.dpToPixels;
-import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 /**
  * A custom view, which may be used to visualize a large toolbar on devices with a large screen.
@@ -50,7 +49,7 @@ public class ToolbarLarge extends FrameLayout {
     private Toolbar toolbar;
 
     /**
-     * The width of the navigation in dp.
+     * The width of the navigation in pixels.
      */
     private int navigationWidth;
 
@@ -63,7 +62,7 @@ public class ToolbarLarge extends FrameLayout {
         this.toolbar = findViewById(R.id.navigation_toolbar);
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-        this.navigationWidth = pixelsToDp(getContext(), layoutParams.width);
+        this.navigationWidth = layoutParams.width;
     }
 
     /**
@@ -213,8 +212,9 @@ public class ToolbarLarge extends FrameLayout {
     /**
      * Returns the width of the navigation.
      *
-     * @return The width of the navigation in dp as an {@link Integer} value
+     * @return The width of the navigation in pixels as an {@link Integer} value
      */
+    @Px
     public final int getNavigationWidth() {
         return navigationWidth;
     }
@@ -223,17 +223,17 @@ public class ToolbarLarge extends FrameLayout {
      * Sets the width of the navigation.
      *
      * @param width
-     *         The width, which should be set, in dp as an {@link Integer} value. The width must be
-     *         greater than 0
+     *         The width, which should be set, in pixels as an {@link Integer} value. The width must
+     *         be greater than 0
      */
-    public final void setNavigationWidth(final int width) {
+    public final void setNavigationWidth(@Px final int width) {
         ensureGreater(width, 0, "The width must be greater than 0");
         this.navigationWidth = width;
 
         if (!isNavigationHidden()) {
             RelativeLayout.LayoutParams layoutParams =
                     (RelativeLayout.LayoutParams) toolbar.getLayoutParams();
-            layoutParams.width = dpToPixels(getContext(), width);
+            layoutParams.width = width;
             toolbar.requestLayout();
         }
     }
