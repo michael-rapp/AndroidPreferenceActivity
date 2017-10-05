@@ -54,16 +54,10 @@ public class NavigationPreference extends Preference {
     }
 
     /**
-     * The breadcrumb title, which is shown, when showing the fragment, which is
-     * associated with the preference.
+     * The breadcrumb title, which is shown, when showing the fragment, which is associated with the
+     * preference.
      */
     private CharSequence breadCrumbTitle;
-
-    /**
-     * The short version of the breadcrumb title, which is shown, when showing the fragment, which
-     * is associated with the preference.
-     */
-    private CharSequence breadCrumbShortTitle;
 
     /**
      * The fully classified class name of the fragment, which is associated with the preference.
@@ -121,7 +115,6 @@ public class NavigationPreference extends Preference {
 
         try {
             obtainBreadCrumbTitle(typedArray);
-            obtainBreadCrumbShortTitle(typedArray);
             obtainFragment(typedArray);
         } finally {
             typedArray.recycle();
@@ -138,18 +131,6 @@ public class NavigationPreference extends Preference {
     private void obtainBreadCrumbTitle(@NonNull final TypedArray typedArray) {
         setBreadCrumbTitle(
                 typedArray.getText(R.styleable.NavigationPreference_android_breadCrumbTitle));
-    }
-
-    /**
-     * Obtains the short breadcrumb title from a specific typed array.
-     *
-     * @param typedArray
-     *         The typed array, the short breadcrumb title should be obtained from, as an instance
-     *         of the class {@link TypedArray}. The typed array may not be null
-     */
-    private void obtainBreadCrumbShortTitle(@NonNull final TypedArray typedArray) {
-        setBreadCrumbShortTitle(
-                typedArray.getText(R.styleable.NavigationPreference_android_breadCrumbShortTitle));
     }
 
     /**
@@ -329,43 +310,6 @@ public class NavigationPreference extends Preference {
      */
     public final void setBreadCrumbTitle(@Nullable final CharSequence breadCrumbTitle) {
         this.breadCrumbTitle = breadCrumbTitle;
-    }
-
-    /**
-     * Returns the short version of the breadcrumb title, which is shown, when showing the fragment,
-     * which is associated with the preference.
-     *
-     * @return The short version of the breadcrumb title, which is shown, when showing the fragment,
-     * which is associated with the preference, as an instance of the type {@link CharSequence} or
-     * null, if no short breadcrumb title is available
-     */
-    @Nullable
-    public final CharSequence getBreadCrumbShortTitle() {
-        return breadCrumbShortTitle;
-    }
-
-    /**
-     * Sets the short version of the breadcrumb title, which should be shown, when showing the
-     * fragment, which is associated with the preference.
-     *
-     * @param resourceId
-     *         The resource id of the short breadcrumb title, which should be set, as an {@link
-     *         Integer} value. The resource id must correspond to a valid string resource
-     */
-    public final void setBreadCrumbShortTitle(@StringRes final int resourceId) {
-        setBreadCrumbShortTitle(getContext().getText(resourceId));
-    }
-
-    /**
-     * Sets the short version of the breadcrumb title, which should be shown, when showing the
-     * fragment, which is associated with the preference.
-     *
-     * @param shortBreadCrumbTitle
-     *         The short breadcrumb title, which should be set, as an instance of the type {@link
-     *         CharSequence} or null, if no short breadcrumb title should be set
-     */
-    public final void setBreadCrumbShortTitle(@Nullable final CharSequence shortBreadCrumbTitle) {
-        this.breadCrumbShortTitle = shortBreadCrumbTitle;
     }
 
     /**
