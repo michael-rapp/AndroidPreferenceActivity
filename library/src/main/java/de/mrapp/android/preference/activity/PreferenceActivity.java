@@ -28,6 +28,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -223,12 +224,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @param navigationPreference
      *         The navigation preference, whose fragment should be shown, as an instance of the
      *         class {@link NavigationPreference}. The navigation preference may not be null
+     * @return True, if the fragment has been shown, false otherwise
      */
-    private void showPreferenceFragment(@NonNull final NavigationPreference navigationPreference) {
+    private boolean showPreferenceFragment(
+            @NonNull final NavigationPreference navigationPreference) {
         String fragment = navigationPreference.getFragment();
 
-        if (preferenceFragment == null ||
-                !preferenceFragment.getClass().getName().equals(fragment)) {
+        if (!TextUtils.isEmpty(fragment)) {
             preferenceFragment = Fragment.instantiate(this, fragment);
             preferenceFragment.setRetainInstance(true);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -244,7 +246,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -254,6 +259,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private boolean removePreferenceFragment() {
         if (!isSplitScreen() && preferenceFragment != null) {
+            navigationFragment.selectNavigationPreference(-1);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(preferenceFragment);
             transaction.show(navigationFragment);
@@ -364,14 +370,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
         super.setTitle(title);
         ActionBar actionBar = getSupportActionBar();
 
-        if (isSplitScreen()) {
-            toolbarLarge.setTitle(title);
-
-            if (actionBar != null) {
+        if (toolbarLarge != null && actionBar != null) {
+            if (isSplitScreen()) {
+                toolbarLarge.setTitle(title);
                 actionBar.setTitle(null);
-            }
-        } else {
-            if (actionBar != null) {
+            } else {
                 actionBar.setTitle(title);
             }
         }
@@ -383,8 +386,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     @Override
-    public final void onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        showPreferenceFragment(navigationPreference);
+    public final void onNavigationAdapterCreated() {
+        if (isSplitScreen() && navigationFragment.getNavigationPreferenceCount() > 0) {
+            navigationFragment.selectNavigationPreference(0);
+        }
+    }
+
+    @Override
+    public final boolean onShowFragment(@NonNull final NavigationPreference navigationPreference) {
+        return showPreferenceFragment(navigationPreference);
     }
 
     @CallSuper

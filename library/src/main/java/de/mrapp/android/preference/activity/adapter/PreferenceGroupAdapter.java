@@ -54,7 +54,7 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     private final Context context;
 
     /**
-     * The adapter, which is encapsulated by the adapter.
+     * The encapsulated adapter.
      */
     private final ListAdapter encapsulatedAdapter;
 
@@ -104,6 +104,66 @@ public class PreferenceGroupAdapter extends BaseAdapter {
         }
 
         divider.setBackgroundColor(color);
+    }
+
+    /**
+     * Returns the context, which is used by the adapter.
+     *
+     * @return The context, which is used by the adapter, as an instance of the class {@link
+     * Context}
+     */
+    @NonNull
+    protected Context getContext() {
+        return context;
+    }
+
+    /**
+     * Returns the encapsulated adapter.
+     *
+     * @return The encapsulated adapter as an instance of the type {@link ListAdapter}. The adapter
+     * may not be nul
+     */
+    @NonNull
+    protected ListAdapter getEncapsulatedAdapter() {
+        return encapsulatedAdapter;
+    }
+
+    /**
+     * The method, which is invoked, when a specific item is visualized. This method may be
+     * overridden by subclasses in order to modify the item beforehand.
+     *
+     * @param item
+     *         The item, which is visualized, as an instance of the class {@link Object}. The item
+     *         may not be null
+     */
+    @CallSuper
+    protected void onVisualizeItem(@NonNull final Object item) {
+        if (item instanceof Preference) {
+            Preference preference = (Preference) item;
+            int currentLayout = preference.getLayoutResource();
+            String resourceName = context.getResources().getResourceName(currentLayout);
+
+            if (resourceName.startsWith("android:layout")) {
+                int layout = item instanceof PreferenceCategory ? R.layout.preference_category :
+                        R.layout.preference;
+                preference.setLayoutResource(layout);
+            }
+        }
+    }
+
+    /**
+     * The method, which is invoked, when a specific item has been visualized. This method may be
+     * overridden by subclasses in order to adapt the appearance of the inflated view.
+     *
+     * @param item
+     *         The item, which has been visualized, as an instance of the class {@link Object}. The
+     *         item may not be null
+     * @param view
+     *         The view, which has been inflated, as an instance of the class {@link View}. The view
+     *         may not be null
+     */
+    protected void onVisualizedItem(@NonNull final Object item, @NonNull final View view) {
+
     }
 
     /**
@@ -177,29 +237,6 @@ public class PreferenceGroupAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * The method, which is invoked, when a specific item is visualized. This method may be
-     * overridden by subclasses in order to modify the item beforehand.
-     *
-     * @param item
-     *         The item, which is visualized, as an instance of the class {@link Object}. The item
-     *         may not be null
-     */
-    @CallSuper
-    protected void onVisualizeItem(@NonNull final Object item) {
-        if (item instanceof Preference) {
-            Preference preference = (Preference) item;
-            int currentLayout = preference.getLayoutResource();
-            String resourceName = context.getResources().getResourceName(currentLayout);
-
-            if (resourceName.startsWith("android:layout")) {
-                int layout = item instanceof PreferenceCategory ? R.layout.preference_category :
-                        R.layout.preference;
-                preference.setLayoutResource(layout);
-            }
-        }
-    }
-
     @Override
     public final int getCount() {
         int encapsulatedAdapterCount = encapsulatedAdapter.getCount();
@@ -235,9 +272,10 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     public final View getView(final int position, final View convertView, final ViewGroup parent) {
         Pair<Object, Integer> pair = getItemInternal(position);
         onVisualizeItem(pair.first);
+        View view;
 
         if (pair.first == DIVIDER) {
-            View view = convertView;
+            view = convertView;
 
             if (view == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -245,16 +283,15 @@ public class PreferenceGroupAdapter extends BaseAdapter {
             }
 
             adaptDividerColor(view);
-            return view;
-        } else if (pair.first instanceof PreferenceCategory) {
-            PreferenceCategory preferenceCategory = (PreferenceCategory) pair.first;
-
-            if (TextUtils.isEmpty(preferenceCategory.getTitle())) {
-                return new View(context);
-            }
+        } else if (pair.first instanceof PreferenceCategory &&
+                TextUtils.isEmpty(((PreferenceCategory) pair.first).getTitle())) {
+            view = new View(context);
+        } else {
+            view = encapsulatedAdapter.getView(pair.second, convertView, parent);
         }
 
-        return encapsulatedAdapter.getView(pair.second, convertView, parent);
+        onVisualizedItem(pair.first, view);
+        return view;
     }
 
     @Override

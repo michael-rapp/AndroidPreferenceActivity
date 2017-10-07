@@ -37,7 +37,7 @@ import de.mrapp.android.preference.activity.view.PreferenceListView;
  * @since 5.0.0
  */
 public class NavigationFragment extends AbstractPreferenceFragment
-        implements NavigationPreference.Callback {
+        implements NavigationPreference.Callback, PreferenceListView.AdapterFactory {
 
     /**
      * Defines the interface, a class, which should be notified about the fragment's events, must
@@ -55,6 +55,12 @@ public class NavigationFragment extends AbstractPreferenceFragment
          */
         void onNavigationCreated(@NonNull PreferenceFragment fragment);
 
+        /**
+         * The method, which is invoked, when the adapter, which contains the navigation items, has
+         * been created.
+         */
+        void onNavigationAdapterCreated();
+
     }
 
     /**
@@ -69,26 +75,9 @@ public class NavigationFragment extends AbstractPreferenceFragment
     private NavigationPreference.Callback navigationPreferenceCallback;
 
     /**
-     * Creates and returns a factory, which allows to create the adapter, which should be used by
-     * the list view, which shows the fragment's preferences.
-     *
-     * @return The factory, which has been created, as an instance of the type {@link
-     * PreferenceListView.AdapterFactory}. The factory may not be null
+     * The adapter, which contains the navigation items.
      */
-    @NonNull
-    private PreferenceListView.AdapterFactory createAdapterFactory() {
-        return new PreferenceListView.AdapterFactory() {
-
-            @NonNull
-            @Override
-            public PreferenceGroupAdapter createAdapter(@NonNull final Context context,
-                                                        @NonNull final ListAdapter adapter) {
-                return new NavigationPreferenceGroupAdapter(context, adapter,
-                        NavigationFragment.this);
-            }
-
-        };
-    }
+    private NavigationPreferenceGroupAdapter adapter;
 
     /**
      * Notifies the callback, that the navigation fragment has been attached to its activity.
@@ -100,17 +89,27 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Notifies the callback, that the adapter, which contains the navigation items, has been
+     * created.
+     */
+    private void notifyOnNavigationAdapterCreated() {
+        if (callback != null) {
+            callback.onNavigationAdapterCreated();
+        }
+    }
+
+    /**
      * Notifies the callback, that the fragment of a {@link NavigationPreference}, which is
      * contained by the fragment, should be shown.
      *
      * @param navigationPreference
      *         The navigation preference, whose fragment should be shown, as an instance of the
      *         class {@link NavigationPreference}. The navigation preference may not be null
+     * @return True, if the fragment has been shown, false otherwise
      */
-    private void notifyOnShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        if (navigationPreferenceCallback != null) {
-            navigationPreferenceCallback.onShowFragment(navigationPreference);
-        }
+    private boolean notifyOnShowFragment(@NonNull final NavigationPreference navigationPreference) {
+        return navigationPreferenceCallback != null &&
+                navigationPreferenceCallback.onShowFragment(navigationPreference);
     }
 
     /**
@@ -137,16 +136,55 @@ public class NavigationFragment extends AbstractPreferenceFragment
         this.navigationPreferenceCallback = callback;
     }
 
-    @Override
-    public final void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        notifyOnNavigationCreated();
-        setCallback(null);
+    /**
+     * Returns the number of navigation preferences, which are contained by the navigation.
+     *
+     * @return The number of navigation preferences, which are contained by the navigation, as an
+     * {@link Integer} value
+     */
+    public final int getNavigationPreferenceCount() {
+        return adapter != null ? adapter.getNavigationPreferenceCount() : 0;
+    }
+
+    /**
+     * Selects a specific navigation preference.
+     *
+     * @param index
+     *         The index of the navigation preference, which should be selected, among all
+     *         navigation preferences, as an {@link Integer} value or -1, if no navigation
+     *         preference should be selected
+     */
+    public final void selectNavigationPreference(final int index) {
+        if (adapter != null) {
+            adapter.selectNavigationPreference(index);
+        }
     }
 
     @Override
-    public final void onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        notifyOnShowFragment(navigationPreference);
+    public final boolean onShowFragment(@NonNull final NavigationPreference navigationPreference) {
+        return notifyOnShowFragment(navigationPreference);
+    }
+
+    @NonNull
+    @Override
+    public final PreferenceGroupAdapter createAdapter(@NonNull final Context context,
+                                                      @NonNull final ListAdapter encapsulatedAdapter) {
+        if (adapter == null) {
+            adapter = new NavigationPreferenceGroupAdapter(context, encapsulatedAdapter,
+                    NavigationFragment.this);
+            notifyOnNavigationAdapterCreated();
+        }
+
+        return adapter;
+    }
+
+    @Override
+    public final void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            notifyOnNavigationCreated();
+        }
     }
 
     @NonNull
@@ -156,7 +194,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
                                        @Nullable final Bundle savedInstanceState) {
         PreferenceListView listView =
                 (PreferenceListView) inflater.inflate(R.layout.navigation_fragment, parent, false);
-        listView.setAdapterFactory(createAdapterFactory());
+        listView.setAdapterFactory(this);
         return listView;
     }
 

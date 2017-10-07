@@ -23,7 +23,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 
 /**
@@ -48,8 +47,9 @@ public class NavigationPreference extends Preference {
          * @param navigationPreference
          *         The navigation preference, whose fragment should be shown, as an instance of the
          *         class {@link NavigationPreference}. The navigation preference may not be null
+         * @return True, if the fragment has been shown, false otherwise
          */
-        void onShowFragment(@NonNull final NavigationPreference navigationPreference);
+        boolean onShowFragment(@NonNull final NavigationPreference navigationPreference);
 
     }
 
@@ -161,13 +161,7 @@ public class NavigationPreference extends Preference {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                boolean handled = false;
-
-                if (!TextUtils.isEmpty(getFragment())) {
-                    handled = true;
-                    notifyOnShowFragment();
-                }
-
+                boolean handled = notifyOnShowFragment();
                 return (listener != null && listener.onPreferenceClick(preference)) || handled;
             }
 
@@ -177,11 +171,15 @@ public class NavigationPreference extends Preference {
     /**
      * Notifies the callback, that the fragment, which is associated with the preference, should be
      * shown.
+     *
+     * @return True, if the fragment has been shown, false otherwise
      */
-    private void notifyOnShowFragment() {
+    private boolean notifyOnShowFragment() {
         if (callback != null) {
-            callback.onShowFragment(this);
+            return callback.onShowFragment(this);
         }
+
+        return false;
     }
 
     /**
