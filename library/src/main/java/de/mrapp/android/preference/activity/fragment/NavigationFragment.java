@@ -147,6 +147,17 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Returns the currently selected navigation preference.
+     *
+     * @return The currently selected navigation preference as an instance of the class {@link
+     * NavigationPreference} or null, if no navigation preference is currently selected
+     */
+    @Nullable
+    public final NavigationPreference getSelectedNavigationPreference() {
+        return adapter != null ? adapter.getSelectedNavigationPreference() : null;
+    }
+
+    /**
      * Selects a specific navigation preference.
      *
      * @param index

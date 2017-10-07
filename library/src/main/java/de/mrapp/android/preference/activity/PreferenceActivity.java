@@ -80,6 +80,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private ToolbarLarge toolbarLarge;
 
     /**
+     * The toolbar, which is used to show the bread crumb of the currently selected navigation
+     * preference, when using the split screen layout.
+     */
+    private Toolbar breadCrumbToolbar;
+
+    /**
      * The container, the navigation fragment is attached to.
      */
     private ViewGroup navigationFragmentContainer;
@@ -173,6 +179,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         cardView = findViewById(R.id.card_view);
         toolbar = findViewById(R.id.toolbar);
         toolbarLarge = findViewById(R.id.toolbar_large);
+        breadCrumbToolbar = findViewById(R.id.bread_crumb_toolbar);
         adaptNavigationWidth();
         adaptNavigationVisibility();
     }
@@ -193,7 +200,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
 
         setSupportActionBar(toolbar);
-        setTitle(getTitle());
+        resetTitle();
     }
 
     /**
@@ -246,6 +253,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
+            showBreadCrumb(navigationPreference);
             return true;
         }
 
@@ -260,6 +268,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private boolean removePreferenceFragment() {
         if (!isSplitScreen() && preferenceFragment != null) {
             navigationFragment.selectNavigationPreference(-1);
+            resetTitle();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(preferenceFragment);
             transaction.show(navigationFragment);
@@ -270,6 +279,79 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
 
         return false;
+    }
+
+    /**
+     * Shows the bread crumb of a specific navigation preference. When using the split screen
+     * layout, the bread crumb is shown above the currently shown preference fragment, otherwise the
+     * bread crumb is shown as the toolbar title.
+     *
+     * @param navigationPreference
+     *         The navigation preference, whose bread crumb should be shown, as an instance of the
+     *         class {@link NavigationPreference}. The navigation preference may not be null
+     */
+    private void showBreadCrumb(@NonNull final NavigationPreference navigationPreference) {
+        CharSequence breadCrumbTitle = navigationPreference.getBreadCrumbTitle();
+
+        if (TextUtils.isEmpty(breadCrumbTitle)) {
+            breadCrumbTitle = navigationPreference.getTitle();
+
+            if (TextUtils.isEmpty(breadCrumbTitle)) {
+                breadCrumbTitle = getTitle();
+            }
+        }
+
+        showBreadCrumb(breadCrumbTitle);
+    }
+
+    /**
+     * Shows a specific bread crumb. When using the split screen layout, the bread crumb is shown
+     * above the currently shown preference fragment, otherwise the bread crumb is shown as the
+     * toolbar title.
+     *
+     * @param breadCrumbTitle
+     *         The bread crumb title, which should be shown, as an instance of the type {@link
+     *         CharSequence} or null, if no bread crumb should be shown
+     */
+    private void showBreadCrumb(@Nullable final CharSequence breadCrumbTitle) {
+        // TODO: Format bread crumb title
+        if (!TextUtils.isEmpty(breadCrumbTitle)) {
+            if (isSplitScreen()) {
+                breadCrumbToolbar.setTitle(breadCrumbTitle);
+            } else {
+                showTitle(breadCrumbTitle);
+            }
+        }
+    }
+
+    /**
+     * Shows a specific title.
+     *
+     * @param title
+     *         The title, which should be shown, as an instance of the type {@link CharSequence} or
+     *         null, if no title should be shown
+     */
+    private void showTitle(@Nullable final CharSequence title) {
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            if (isSplitScreen()) {
+                if (toolbarLarge != null) {
+                    toolbarLarge.setTitle(title);
+                }
+
+                actionBar.setTitle(null);
+            } else {
+                actionBar.setTitle(title);
+            }
+        }
+    }
+
+    /**
+     * Resets the title of the activity.
+     */
+    private void resetTitle() {
+        setTitle(getTitle());
     }
 
     /**
@@ -360,6 +442,18 @@ public abstract class PreferenceActivity extends AppCompatActivity
         adaptNavigationVisibility();
     }
 
+    /**
+     * Returns the currently selected navigation preference.
+     *
+     * @return The currently selected navigation preference as an instance of the class {@link
+     * NavigationPreference} or null, if no navigation preference is currently selected
+     */
+    @Nullable
+    public final NavigationPreference getSelectedNavigationPreference() {
+        return navigationFragment != null ? navigationFragment.getSelectedNavigationPreference() :
+                null;
+    }
+
     @Override
     public final void setTitle(@StringRes final int resourceId) {
         setTitle(getText(resourceId));
@@ -368,16 +462,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @Override
     public final void setTitle(@Nullable final CharSequence title) {
         super.setTitle(title);
-        ActionBar actionBar = getSupportActionBar();
-
-        if (toolbarLarge != null && actionBar != null) {
-            if (isSplitScreen()) {
-                toolbarLarge.setTitle(title);
-                actionBar.setTitle(null);
-            } else {
-                actionBar.setTitle(title);
-            }
-        }
+        showTitle(title);
     }
 
     @Override
@@ -413,6 +498,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
         inflateLayout();
         initializeToolbar();
         initializeFragments();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        NavigationPreference selectedNavigationPreference = getSelectedNavigationPreference();
+
+        if (selectedNavigationPreference != null) {
+            showBreadCrumb(selectedNavigationPreference);
+        }
     }
 
 }
