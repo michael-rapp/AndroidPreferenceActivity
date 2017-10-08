@@ -29,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -68,6 +69,33 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private static final String PREFERENCE_FRAGMENT_TAG =
             PreferenceActivity.class.getName() + "::PreferenceFragment";
+
+    /**
+     * The name of the extra, which is used to store whether the split screen layout should be used,
+     * or not, within a bundle.
+     */
+    private static final String USE_SPLIT_SCREEN_EXTRA =
+            PreferenceActivity.class.getName() + "::UseSplitScreen";
+
+    /**
+     * The name of the extra, which is used to store the navigation width within a bundle.
+     */
+    private static final String NAVIGATION_WIDTH_EXTRA =
+            PreferenceActivity.class.getName() + "::NavigationWidth";
+
+    /**
+     * The name of the extra, which is used to store whether the navigation should be hidden, or
+     * not, within a bundle.
+     */
+    private static final String HIDE_NAVIGATION_EXTRA =
+            PreferenceActivity.class.getName() + "::HideNavigation";
+
+    /**
+     * The name of the extra, which is used to store, whether the behavior of the navigation icon
+     * should be overridden, or not, within a bundle.
+     */
+    private static final String OVERRIDE_NAVIGATION_ICON_EXTRA =
+            PreferenceActivity.class.getName() + "::OverrideNavigationIcon";
 
     /**
      * The activity's toolbar.
@@ -124,7 +152,19 @@ public abstract class PreferenceActivity extends AppCompatActivity
     /**
      * True, if the navigation is currently hidden, false otherwise.
      */
-    private boolean navigationHidden;
+    private boolean hideNavigation;
+
+    /**
+     * True, if the behavior of the navigation icon of the activity's toolbar is overridden in order
+     * to return to the navigation when a preference fragment is currently shown and the split
+     * screen layout is used.
+     */
+    private boolean overrideNavigationIcon;
+
+    /**
+     * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
+     */
+    private boolean displayHomeAsUp;
 
     /**
      * Obtains all relevant attributes from the activity's theme.
@@ -133,6 +173,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainUseSplitScreen();
         obtainNavigationWidth();
         obtainNavigationVisibility();
+        obtainOverrideNavigationIcon();
     }
 
     /**
@@ -164,8 +205,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Obtains, whether the navigation should be shown, from the activity's theme.
      */
     private void obtainNavigationVisibility() {
-        boolean hideNavigation = ThemeUtil.getBoolean(this, R.attr.hideNavigation, true);
+        boolean hideNavigation = ThemeUtil.getBoolean(this, R.attr.hideNavigation, false);
         hideNavigation(hideNavigation);
+    }
+
+    /**
+     * Obtains, whether the behavior of the navigation icon should be overridden, or not.
+     */
+    private void obtainOverrideNavigationIcon() {
+        boolean overrideNavigationIcon =
+                ThemeUtil.getBoolean(this, R.attr.overrideNavigationIcon, true);
+        overrideNavigationIcon(overrideNavigationIcon);
     }
 
     /**
@@ -254,6 +304,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.commit();
             showBreadCrumb(navigationPreference);
+            showToolbarNavigationIcon();
             return true;
         }
 
@@ -266,9 +317,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if a preference fragment has been removed, false otherwise
      */
     private boolean removePreferenceFragment() {
-        if (!isSplitScreen() && preferenceFragment != null) {
+        if (!isSplitScreen() && isPreferenceFragmentShown()) {
             navigationFragment.selectNavigationPreference(-1);
             resetTitle();
+            hideToolbarNavigationIcon();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(preferenceFragment);
             transaction.show(navigationFragment);
@@ -355,6 +407,48 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns, whether the navigation icon of the activity's toolbar is currently shown, or not.
+     *
+     * @return True, if the navigation icon of the activity's toolbar is currently shown, false
+     * otherwise
+     */
+    private boolean isDisplayHomeAsUpEnabled() {
+        return getSupportActionBar() != null &&
+                (getSupportActionBar().getDisplayOptions() & ActionBar.DISPLAY_HOME_AS_UP) ==
+                        ActionBar.DISPLAY_HOME_AS_UP;
+    }
+
+    /**
+     * Shows the navigation icon of the activity's toolbar.
+     */
+    private void showToolbarNavigationIcon() {
+        if (isPreferenceFragmentShown() && isNavigationIconOverridden() && !isNavigationHidden() &&
+                !(!isSplitScreen() && isButtonBarShown())) {
+            displayHomeAsUp = isDisplayHomeAsUpEnabled();
+            ActionBar actionBar = getSupportActionBar();
+
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+    }
+
+    /**
+     * Hides the navigation icon of the activity's toolbar, respectively sets it to the previous
+     * icon.
+     */
+    private void hideToolbarNavigationIcon() {
+        if (!displayHomeAsUp) {
+            ActionBar actionBar = getSupportActionBar();
+
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(false);
+                actionBar.setHomeButtonEnabled(false);
+            }
+        }
+    }
+
+    /**
      * Adapts the width of the navigation.
      */
     private void adaptNavigationWidth() {
@@ -427,7 +521,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the navigation is currently hidden, false otherwise
      */
     public final boolean isNavigationHidden() {
-        return navigationHidden;
+        return hideNavigation;
     }
 
     /**
@@ -438,8 +532,57 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         True, if the navigation should be hidden, false otherwise
      */
     public final void hideNavigation(final boolean hideNavigation) {
-        this.navigationHidden = hideNavigation;
+        this.hideNavigation = hideNavigation;
         adaptNavigationVisibility();
+    }
+
+    /**
+     * Returns, whether the behavior of the navigation icon of the activity's toolbar is overridden
+     * in order to return to the navigation when a preference fragment is currently shown and the
+     * split screen layout is used.
+     *
+     * @return True, if the behavior of the navigation icon is overridden, false otherwise
+     */
+    public final boolean isNavigationIconOverridden() {
+        return overrideNavigationIcon;
+    }
+
+    /**
+     * Sets, whether the behavior of the navigation icon of the activity's toolbar should be
+     * overridden in order to return to the navigation when a preference screen is currently
+     * shown and the split screen layout is used, or not.
+     *
+     * @param overrideNavigationIcon
+     *         True, if the behavior of the navigation icon should be overridden, false otherwise
+     */
+    public final void overrideNavigationIcon(final boolean overrideNavigationIcon) {
+        this.overrideNavigationIcon = overrideNavigationIcon;
+
+        if (isPreferenceFragmentShown()) {
+            if (overrideNavigationIcon) {
+                showToolbarNavigationIcon();
+            } else {
+                hideToolbarNavigationIcon();
+            }
+        }
+    }
+
+    /**
+     * Returns, whether the activity is used as a wizard, or not.
+     *
+     * @return True, if the activity is used as a wizard, false otherwise
+     */
+    public final boolean isButtonBarShown() {
+        return false; // TODO
+    }
+
+    /**
+     * Returns, whether a preference fragment is currently shown, or not.
+     *
+     * @return True, if a preference fragment is currently shown, false otherwise
+     */
+    public final boolean isPreferenceFragmentShown() {
+        return preferenceFragment != null;
     }
 
     /**
@@ -492,12 +635,43 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     @CallSuper
     @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (isNavigationIconOverridden() && !isNavigationHidden() && !isButtonBarShown() &&
+                    removePreferenceFragment()) {
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @CallSuper
+    @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        obtainStyledAttributes();
+
+        if (savedInstanceState == null) {
+            obtainStyledAttributes();
+        } else {
+            useSplitScreen(savedInstanceState.getBoolean(USE_SPLIT_SCREEN_EXTRA));
+            setNavigationWidth(savedInstanceState.getInt(NAVIGATION_WIDTH_EXTRA));
+            hideNavigation(savedInstanceState.getBoolean(HIDE_NAVIGATION_EXTRA));
+            overrideNavigationIcon(savedInstanceState.getBoolean(OVERRIDE_NAVIGATION_ICON_EXTRA));
+        }
+
         inflateLayout();
         initializeToolbar();
         initializeFragments();
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(USE_SPLIT_SCREEN_EXTRA, useSplitScreen);
+        outState.putInt(NAVIGATION_WIDTH_EXTRA, navigationWidth);
+        outState.putBoolean(HIDE_NAVIGATION_EXTRA, hideNavigation);
+        outState.putBoolean(OVERRIDE_NAVIGATION_ICON_EXTRA, overrideNavigationIcon);
     }
 
     @Override
@@ -507,6 +681,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (selectedNavigationPreference != null) {
             showBreadCrumb(selectedNavigationPreference);
+            showToolbarNavigationIcon();
         }
     }
 
