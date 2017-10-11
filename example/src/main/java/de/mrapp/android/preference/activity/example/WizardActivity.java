@@ -18,6 +18,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 
 import de.mrapp.android.preference.activity.NavigationPreference;
@@ -66,14 +67,6 @@ public class WizardActivity extends AbstractPreferenceActivity implements Wizard
         };
     }
 
-    // TODO
-    /*
-    @Override
-    protected final void onCreatePreferenceHeaders() {
-        addPreferenceHeadersFromResource(R.xml.wizard_preference_headers);
-    }
-    */
-
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +108,11 @@ public class WizardActivity extends AbstractPreferenceActivity implements Wizard
         dialogBuilder.setNegativeButton(android.R.string.cancel, null);
         dialogBuilder.show();
         return false;
+    }
+
+    @Override
+    public final void onNavigationCreated(@NonNull final PreferenceFragment preferenceFragment) {
+        preferenceFragment.addPreferencesFromResource(R.xml.wizard_navigation);
     }
 
 }
