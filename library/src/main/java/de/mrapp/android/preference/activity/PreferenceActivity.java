@@ -92,6 +92,21 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public static final String EXTRA_FINISH_BUTTON_TEXT = "extra_prefs_set_finish_text";
 
     /**
+     * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code>, this boolean extra can
+     * also used to specify, whether the number of the currently shown wizard step and the number of
+     * total steps should be shown as the bread crumb title.
+     */
+    public static final String EXTRA_SHOW_PROGRESS = "extra_prefs_show_progress";
+
+    /**
+     * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code> and
+     * <code>EXTRA_SHOW_PROGRESS</code>, this string extra can also be specified to supply a custom
+     * format for showing the progress. The string must be formatted according to the following
+     * syntax: "*%d*%d*%s*"
+     */
+    public static final String EXTRA_PROGRESS_FORMAT = "extra_prefs_progress_format";
+
+    /**
      * The tag of the fragment, which contains the activity's navigation.
      */
     private static final String NAVIGATION_FRAGMENT_TAG =
@@ -147,6 +162,20 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private static final String FINISH_BUTTON_TEXT_EXTRA =
             PreferenceActivity.class.getName() + "::FinishButtonText";
+
+    /**
+     * The name of the extra, which is used to store, whether the progress is shown, when the
+     * activity is used as a wizard, or not, within a bundle.
+     */
+    private static final String SHOW_PROGRESS_EXTRA =
+            PreferenceActivity.class.getName() + "::ShowProgress";
+
+    /**
+     * The name of the extra, which is used to store the format of the progress, which is shown,
+     * when the activity is used as a wizard, within a bundle.
+     */
+    private static final String PROGRESS_FORMAT_EXTRA =
+            PreferenceActivity.class.getName() + "::ProgressFormat";
 
     /**
      * The name of the extra, which is used to store, whether the behavior of the navigation icon
@@ -277,6 +306,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private CharSequence finishButtonText;
 
     /**
+     * True, if the progress is shown, when the activity is used as a wizard, false otherwise.
+     */
+    private boolean showProgress;
+
+    /**
+     * The string, which is used to format the progress, which is shown when the activity is used as
+     * a wizard.
+     */
+    private String progressFormat;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
@@ -305,6 +345,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainNextButtonText();
         obtainBackButtonText();
         obtainFinishButtonText();
+        obtainShowProgress();
+        obtainProgressFormat();
     }
 
     /**
@@ -404,6 +446,31 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Obtains, whether the progress should be shown, when the activity is used as a wizard, or not,
+     * from the activity's theme.
+     */
+    private void obtainShowProgress() {
+        boolean showProgress = ThemeUtil.getBoolean(this, R.attr.showProgress, true);
+        showProgress(showProgress);
+    }
+
+    /**
+     * Obtains the string, which is used to format the progress, which is shown, when the activity
+     * is used as a wizard, from the activity's theme.
+     */
+    private void obtainProgressFormat() {
+        String progressFormat;
+
+        try {
+            progressFormat = ThemeUtil.getString(this, R.attr.progressFormat);
+        } catch (NotFoundException e) {
+            progressFormat = getString(R.string.progress_format);
+        }
+
+        setProgressFormat(progressFormat);
+    }
+
+    /**
      * Handles extras the intent, which has been used to start the activity.
      */
     private void handleIntent() {
@@ -414,6 +481,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             handleNextButtonTextIntent(extras);
             handleBackButtonTextIntent(extras);
             handleFinishButtonTextIntent(extras);
+            handleShowProgressIntent(extras);
+            handleProgressFormatIntent(extras);
         }
     }
 
@@ -476,6 +545,36 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (!TextUtils.isEmpty(text)) {
             setFinishButtonText(text);
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies, whether the progress should be shown, when the activity
+     * is used as a wizard, or not, of the intent, which has been used to start the activity.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleShowProgressIntent(@NonNull final Bundle extras) {
+        if (extras.containsKey(EXTRA_SHOW_PROGRESS)) {
+            showProgress(extras.getBoolean(EXTRA_SHOW_PROGRESS));
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies the format of the progress, which is shown, when the
+     * activity is used as a wizard, of the intent, which has been used to start the activity.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleProgressFormatIntent(@NonNull final Bundle extras) {
+        String progressFormat = extras.getString(EXTRA_PROGRESS_FORMAT);
+
+        if (!TextUtils.isEmpty(progressFormat)) {
+            setProgressFormat(progressFormat);
         }
     }
 
@@ -823,6 +922,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void adaptFinishButtonText() {
         if (finishButton != null) {
             finishButton.setText(finishButtonText);
+        }
+    }
+
+    /**
+     * Adapts the progress which is shown, when the activity is used as a wizard.
+     */
+    private void adaptProgress() {
+        NavigationPreference selectedNavigationPreference = getSelectedNavigationPreference();
+
+        if (selectedNavigationPreference != null) {
+            showBreadCrumb(selectedNavigationPreference);
         }
     }
 
@@ -1251,6 +1361,68 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns, whether the progress is shown, if the activity is used as a wizard.
+     *
+     * @return True, if the progress is shown, false otherwise or if the activity is not used as a
+     * wizard
+     */
+    public final boolean isProgressShown() {
+        return showProgress;
+    }
+
+    /**
+     * Sets, whether the progress should be shown, when the activity is used as a wizard.
+     *
+     * @param showProgress
+     *         True, if the progress should be shown, when the activity is used as a wizard, false
+     *         otherwise
+     */
+    public final void showProgress(final boolean showProgress) {
+        this.showProgress = showProgress;
+        adaptProgress();
+    }
+
+    /**
+     * Returns the string, which is used to format the progress, which is shown, when the activity
+     * is used as a wizard.
+     *
+     * @return The string, which is used to format the progress, as a {@link String}. The string may
+     * neither be null, nor empty
+     */
+    @NonNull
+    public final String getProgressFormat() {
+        return progressFormat;
+    }
+
+    /**
+     * Sets the string, which should be used to format the progress, which is shown, when the
+     * activity is used as a wizard.
+     *
+     * @param resourceId
+     *         The resource id of the string, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource. It must be formatted
+     *         according to the following syntax: "*%d*%d*%s*"
+     */
+    public final void setProgressFormat(@StringRes final int resourceId) {
+        setProgressFormat(getString(resourceId));
+    }
+
+    /**
+     * Sets the string, which should be used to format the progress, which is shown, when the
+     * activity is used as a wizard.
+     *
+     * @param progressFormat
+     *         The string, which should be set, as a {@link String}. The string may neither be null,
+     *         nor empty. It must be formatted according to the following syntax: "*%d*%d*%s*"
+     */
+    public final void setProgressFormat(@NonNull final String progressFormat) {
+        ensureNotNull(progressFormat, "The progress format may not be null");
+        ensureNotEmpty(progressFormat, "The progress format may not be empty");
+        this.progressFormat = progressFormat;
+        adaptProgress();
+    }
+
+    /**
      * Returns, whether a preference fragment is currently shown, or not.
      *
      * @return True, if a preference fragment is currently shown, false otherwise
@@ -1342,6 +1514,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
                     .getCharSequence(BACK_BUTTON_TEXT_EXTRA, getText(R.string.back_button_label)));
             setFinishButtonText(savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA,
                     getText(R.string.finish_button_label)));
+            showProgress(savedInstanceState.getBoolean(SHOW_PROGRESS_EXTRA));
+            setProgressFormat(savedInstanceState
+                    .getString(PROGRESS_FORMAT_EXTRA, getString(R.string.progress_format)));
             preferenceFragmentArguments =
                     savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
@@ -1362,6 +1537,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, nextButtonText);
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, backButtonText);
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, finishButtonText);
+        outState.putBoolean(SHOW_PROGRESS_EXTRA, showProgress);
+        outState.putString(PROGRESS_FORMAT_EXTRA, progressFormat);
         outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
 

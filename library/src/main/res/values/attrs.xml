@@ -24,6 +24,8 @@ License.
     <attr name="nextButtonText" format="string"/>
     <attr name="backButtonText" format="string"/>
     <attr name="finishButtonText" format="string"/>
+    <attr name="showProgress" format="boolean"/>
+    <attr name="progressFormat" format="string"/>
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
