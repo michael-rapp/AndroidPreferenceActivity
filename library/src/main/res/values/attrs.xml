@@ -19,6 +19,8 @@ License.
     <attr name="useSplitScreen" format="boolean"/>
     <attr name="navigationWidth" format="dimension"/>
     <attr name="hideNavigation" format="boolean"/>
+    <attr name="overrideNavigationIcon" format="boolean"/>
+    <attr name="showButtonBar" format="boolean"/>
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
@@ -31,7 +33,6 @@ License.
     <attr name="showRestoreDefaultsButton" format="boolean"/>
     <attr name="restoreDefaultsButtonText" format="string"/>
     <attr name="restoreDefaultsButtonBarBackground" format="reference|color"/>
-    <attr name="overrideNavigationIcon" format="boolean"/>
     <attr name="toolbarElevation" format="dimension"/>
     <attr name="breadCrumbElevation" format="dimension"/>
     <attr name="preferenceScreenElevation" format="dimension"/>

@@ -32,15 +32,22 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapter;
 import de.mrapp.android.preference.activity.fragment.NavigationFragment;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.Condition;
 import de.mrapp.android.util.DisplayUtil.DeviceType;
 import de.mrapp.android.util.ThemeUtil;
+import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureGreater;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 
@@ -56,7 +63,7 @@ import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
  * @since 1.0.0
  */
 public abstract class PreferenceActivity extends AppCompatActivity
-        implements NavigationFragment.Callback, NavigationPreference.Callback {
+        implements NavigationFragment.Callback, NavigationPreferenceGroupAdapter.Callback {
 
     /**
      * The tag of the fragment, which contains the activity's navigation.
@@ -98,6 +105,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::OverrideNavigationIcon";
 
     /**
+     * The name of the extra, which is used to store the arguments, which have been passed to the
+     * currently shown preference fragment, within a bundle.
+     */
+    private static final String PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA =
+            PreferenceActivity.class.getName() + "::PreferenceFragmentArguments";
+
+    /**
      * The activity's toolbar.
      */
     private Toolbar toolbar;
@@ -124,15 +138,45 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private ViewGroup preferenceFragmentContainer;
 
     /**
-     * The fragment, which contains the activity's navigation.
-     */
-    private NavigationFragment navigationFragment;
-
-    /**
      * The card view, which contains the currently shown preference fragment, as well as its
      * breadcrumb, when using the split screen layout.
      */
     private CardView cardView;
+
+    /**
+     * The view group, which contains the buttons, which are shown when the activity is used as a
+     * wizard.
+     */
+    private ViewGroup buttonBar;
+
+    /**
+     * The back button, which is shown, when the activity is used as a wizard and the first
+     * navigation preference is currently not selected.
+     */
+    private Button backButton;
+
+    /**
+     * The next button, which is shown, when the activity is used as a wizard and the last
+     * navigation preference is currently not selected.
+     */
+    private Button nextButton;
+
+    /**
+     * The finish button, which is shown, when the activity is used as a wizard and the last
+     * navigation preference is currently selected.
+     */
+    private Button finishButton;
+
+    /**
+     * The view, which is used to display a shadow above the button bar, which is shown when the
+     * activity is used as a wizard.
+     */
+    private ElevationShadowView buttonBarShadowView;
+
+    /**
+     * The fragment, which contains the activity's navigation.
+     */
+    private NavigationFragment navigationFragment;
 
     /**
      * The currently shown preference fragment.
@@ -162,9 +206,26 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private boolean overrideNavigationIcon;
 
     /**
+     * True, if the activity is used as a wizard, false otherwise.
+     */
+    private boolean showButtonBar;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
+
+    /**
+     * The arguments which have been passed to the currently shown preference fragment or null, if
+     * no arguments have been passed to the fragment or no preference fragment is shown.
+     */
+    private Bundle preferenceFragmentArguments;
+
+    /**
+     * A set, which contains the listeners, which have been registered to be notified, when the user
+     * navigates within the activity, when it used as a wizard.
+     */
+    private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
 
     /**
      * Obtains all relevant attributes from the activity's theme.
@@ -174,6 +235,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainNavigationWidth();
         obtainNavigationVisibility();
         obtainOverrideNavigationIcon();
+        obtainShowButtonBar();
     }
 
     /**
@@ -210,12 +272,21 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Obtains, whether the behavior of the navigation icon should be overridden, or not.
+     * Obtains, whether the behavior of the navigation icon should be overridden, or not, from the
+     * activity's theme.
      */
     private void obtainOverrideNavigationIcon() {
         boolean overrideNavigationIcon =
                 ThemeUtil.getBoolean(this, R.attr.overrideNavigationIcon, true);
         overrideNavigationIcon(overrideNavigationIcon);
+    }
+
+    /**
+     * Obtains, whether the activity should be used as a wizard, or not, from the activity's theme.
+     */
+    private void obtainShowButtonBar() {
+        boolean showButtonBar = ThemeUtil.getBoolean(this, R.attr.showButtonBar, false);
+        showButtonBar(showButtonBar);
     }
 
     /**
@@ -230,8 +301,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         toolbarLarge = findViewById(R.id.toolbar_large);
         breadCrumbToolbar = findViewById(R.id.bread_crumb_toolbar);
+        buttonBar = findViewById(R.id.wizard_button_bar);
+        nextButton = findViewById(R.id.next_button);
+        nextButton.setOnClickListener(createNextButtonListener());
+        backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(createBackButtonListener());
+        finishButton = findViewById(R.id.finish_button);
+        finishButton.setOnClickListener(createFinishButtonListener());
+        buttonBarShadowView = findViewById(R.id.wizard_button_bar_shadow_view);
         adaptNavigationWidth();
         adaptNavigationVisibility();
+        adaptButtonBarVisibility();
     }
 
     /**
@@ -271,8 +351,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
             transaction.commit();
         }
 
-        navigationFragment.setNavigationPreferenceCallback(this);
+        navigationFragment.setAdapterCallback(this);
         preferenceFragment = getFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
+        adaptNavigationEnabledState();
     }
 
     /**
@@ -281,14 +362,24 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @param navigationPreference
      *         The navigation preference, whose fragment should be shown, as an instance of the
      *         class {@link NavigationPreference}. The navigation preference may not be null
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, as an instance of the class
+     *         {@link Bundle} or null, if the navigation preferences's extras should be used
+     *         instead
      * @return True, if the fragment has been shown, false otherwise
      */
-    private boolean showPreferenceFragment(
-            @NonNull final NavigationPreference navigationPreference) {
+    private boolean showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
+                                           @Nullable final Bundle arguments) {
+        if (arguments != null && navigationPreference.getExtras() != null) {
+            arguments.putAll(navigationPreference.getExtras());
+        }
+
         String fragment = navigationPreference.getFragment();
 
         if (!TextUtils.isEmpty(fragment)) {
-            preferenceFragment = Fragment.instantiate(this, fragment);
+            preferenceFragmentArguments =
+                    arguments != null ? arguments : navigationPreference.getExtras();
+            preferenceFragment = Fragment.instantiate(this, fragment, preferenceFragmentArguments);
             preferenceFragment.setRetainInstance(true);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -318,7 +409,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private boolean removePreferenceFragment() {
         if (!isSplitScreen() && isPreferenceFragmentShown()) {
-            navigationFragment.selectNavigationPreference(-1);
+            navigationFragment.selectNavigationPreference(-1, null);
             resetTitle();
             hideToolbarNavigationIcon();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -327,6 +418,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
             transaction.commit();
             preferenceFragment = null;
+            preferenceFragmentArguments = null;
             return true;
         }
 
@@ -472,6 +564,248 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Adapts the visibility of the button bar, which is shown, when the activity is used as a
+     * wizard.
+     */
+    private void adaptButtonBarVisibility() {
+        if (buttonBar != null && buttonBarShadowView != null) {
+            buttonBar.setVisibility(isButtonBarShown() ? View.VISIBLE : View.GONE);
+            buttonBarShadowView.setVisibility(isButtonBarShown() ? View.VISIBLE : View.GONE);
+
+            if (isButtonBarShown() && !isSplitScreen()) {
+                adaptNavigationVisibility();
+            }
+
+            adaptNavigationEnabledState();
+            adaptWizardButtons();
+        }
+    }
+
+    /**
+     * Adapts the buttons of the button bar which is shown, when the activity is used as a wizard,
+     * depending on the currently selected navigation preference.
+     */
+    private void adaptWizardButtons() {
+        if (buttonBar != null && backButton != null && nextButton != null && finishButton != null &&
+                navigationFragment != null) {
+            int selectedNavigationPreferenceIndex =
+                    navigationFragment.getSelectedNavigationPreferenceIndex();
+
+            if (selectedNavigationPreferenceIndex != -1 && isButtonBarShown()) {
+                int navigationPreferenceCount = navigationFragment.getNavigationPreferenceCount();
+                backButton.setVisibility(
+                        (selectedNavigationPreferenceIndex != 0) ? View.VISIBLE : View.GONE);
+                nextButton.setVisibility(
+                        (selectedNavigationPreferenceIndex != navigationPreferenceCount - 1) ?
+                                View.VISIBLE : View.GONE);
+                finishButton.setVisibility(
+                        (selectedNavigationPreferenceIndex == navigationPreferenceCount - 1) ?
+                                View.VISIBLE : View.GONE);
+            } else if (isButtonBarShown()) {
+                backButton.setVisibility(View.GONE);
+                nextButton.setVisibility(View.GONE);
+                finishButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    /**
+     * Adapts, whether the navigation is enabled, i.e. clickable, or not.
+     */
+    private void adaptNavigationEnabledState() {
+        if (navigationFragment != null) {
+            navigationFragment.setEnabled(!isButtonBarShown());
+        }
+    }
+
+    /**
+     * Returns a listener, which allows to proceed to the next step, when the activity is used as a
+     * wizard.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * View.OnClickListener}. The listener may not be null
+     */
+    @NonNull
+    private View.OnClickListener createNextButtonListener() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                if (navigationFragment != null) {
+                    int currentIndex = navigationFragment.getSelectedNavigationPreferenceIndex();
+
+                    if (currentIndex < navigationFragment.getNavigationPreferenceCount() - 1) {
+                        Bundle params = notifyOnNextStep();
+
+                        if (params != null) {
+                            navigationFragment.selectNavigationPreference(currentIndex + 1, params);
+                        }
+                    }
+                }
+            }
+
+        };
+    }
+
+    /**
+     * Returns a listener, which allows to resume to the previous step, when the activity is used as
+     * a wizard.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * View.OnClickListener}. The listener may not be null
+     */
+    @NonNull
+    private View.OnClickListener createBackButtonListener() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                if (navigationFragment != null) {
+                    int currentIndex = navigationFragment.getSelectedNavigationPreferenceIndex();
+
+                    if (currentIndex > 0) {
+                        Bundle params = notifyOnPreviousStep();
+
+                        if (params != null) {
+                            navigationFragment.selectNavigationPreference(currentIndex - 1, params);
+                        }
+                    }
+                }
+            }
+
+        };
+    }
+
+    /**
+     * Returns a listener, which allows to finish the last step, when the activity is used as a
+     * wizard.
+     *
+     * @return The listener, which has been created, as an instance of the type {@link
+     * View.OnClickListener}. The listener may not be null
+     */
+    @NonNull
+    private View.OnClickListener createFinishButtonListener() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                notifyOnFinish();
+            }
+
+        };
+    }
+
+    /**
+     * Notifies all registered listeners, that the user wants to navigate to the next step of the
+     * wizard.
+     *
+     * @return A bundle, which may contain key-value pairs, which have been acquired in the wizard,
+     * if navigating to the next step of the wizard should be allowed, as an instance of the class
+     * {@link Bundle}, null otherwise
+     */
+    private Bundle notifyOnNextStep() {
+        Bundle result = null;
+        NavigationPreference selectedNavigationPreference =
+                navigationFragment.getSelectedNavigationPreference();
+
+        if (selectedNavigationPreference != null && preferenceFragment != null) {
+            for (WizardListener listener : wizardListeners) {
+                Bundle bundle =
+                        listener.onNextStep(selectedNavigationPreference, preferenceFragment,
+                                preferenceFragmentArguments);
+
+                if (bundle != null) {
+                    if (result == null) {
+                        result = new Bundle();
+                    }
+
+                    result.putAll(bundle);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Notifies all registered listeners that the user wants to navigate to the previous step of the
+     * wizard.
+     *
+     * @return A bundle, which may contain key-value pairs, which have been acquired in the wizard,
+     * if navigating to the previous step of the wizard should be allowed, as an instance of the
+     * class {@link Bundle}, null otherwise
+     */
+    private Bundle notifyOnPreviousStep() {
+        Bundle result = null;
+        NavigationPreference selectedNavigationPreference =
+                navigationFragment.getSelectedNavigationPreference();
+
+        if (selectedNavigationPreference != null && preferenceFragment != null) {
+            for (WizardListener listener : wizardListeners) {
+                Bundle bundle =
+                        listener.onPreviousStep(selectedNavigationPreference, preferenceFragment,
+                                preferenceFragmentArguments);
+
+                if (bundle != null) {
+                    if (result == null) {
+                        result = new Bundle();
+                    }
+
+                    result.putAll(bundle);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Notifies all registered listeners that the user wants to finish the last step of the wizard.
+     *
+     * @return True, if finishing the wizard should be allowed, false otherwise
+     */
+    private boolean notifyOnFinish() {
+        boolean result = true;
+        NavigationPreference selectedNavigationPreference =
+                navigationFragment.getSelectedNavigationPreference();
+
+        if (selectedNavigationPreference != null && preferenceFragment != null) {
+            for (WizardListener listener : wizardListeners) {
+                result &= listener.onFinish(selectedNavigationPreference, preferenceFragment,
+                        preferenceFragmentArguments);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Adds a new listener, which should be notified, when the user navigates within the activity,
+     * if it is used as a wizard.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link
+     *         WizardListener}. The listener may not be null
+     */
+    public final void addWizardListener(@NonNull final WizardListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        wizardListeners.add(listener);
+    }
+
+    /**
+     * Removes a specific listener, which should not be notified, when the user navigates within the
+     * activity, if it is used as a wizard.
+     *
+     * @param listener
+     *         The listener, which should be removed, as an instance of the type {@link
+     *         WizardListener}. The listener may not be null
+     */
+    public final void removeWizardListener(@NonNull final WizardListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        wizardListeners.remove(listener);
+    }
+
+    /**
      * Returns, whether the split screen layout is used, or not.
      *
      * @return True, if the split screen layout is used, false otherwise
@@ -573,7 +907,19 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the activity is used as a wizard, false otherwise
      */
     public final boolean isButtonBarShown() {
-        return false; // TODO
+        return showButtonBar;
+    }
+
+    /**
+     * Shows or hides the view group, which contains the buttons, which are shown when the activity
+     * is used as a wizard.
+     *
+     * @param show
+     *         True, if the button bar should be shown, false otherwise
+     */
+    public final void showButtonBar(final boolean show) {
+        this.showButtonBar = show;
+        adaptButtonBarVisibility();
     }
 
     /**
@@ -616,13 +962,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @Override
     public final void onNavigationAdapterCreated() {
         if (isSplitScreen() && navigationFragment.getNavigationPreferenceCount() > 0) {
-            navigationFragment.selectNavigationPreference(0);
+            navigationFragment.selectNavigationPreference(0, null);
         }
     }
 
     @Override
-    public final boolean onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        return showPreferenceFragment(navigationPreference);
+    public final boolean onNavigationPreferenceSelected(
+            @NonNull final NavigationPreference navigationPreference,
+            @Nullable final Bundle arguments) {
+        return showPreferenceFragment(navigationPreference, arguments);
     }
 
     @CallSuper
@@ -658,6 +1006,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             setNavigationWidth(savedInstanceState.getInt(NAVIGATION_WIDTH_EXTRA));
             hideNavigation(savedInstanceState.getBoolean(HIDE_NAVIGATION_EXTRA));
             overrideNavigationIcon(savedInstanceState.getBoolean(OVERRIDE_NAVIGATION_ICON_EXTRA));
+            preferenceFragmentArguments =
+                    savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
 
         inflateLayout();
@@ -672,6 +1022,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putInt(NAVIGATION_WIDTH_EXTRA, navigationWidth);
         outState.putBoolean(HIDE_NAVIGATION_EXTRA, hideNavigation);
         outState.putBoolean(OVERRIDE_NAVIGATION_ICON_EXTRA, overrideNavigationIcon);
+        outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
 
     @Override

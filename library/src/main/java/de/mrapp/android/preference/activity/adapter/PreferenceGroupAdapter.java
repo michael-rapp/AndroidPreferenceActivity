@@ -294,8 +294,9 @@ public class PreferenceGroupAdapter extends BaseAdapter {
         return view;
     }
 
+    @CallSuper
     @Override
-    public final boolean isEnabled(final int position) {
+    public boolean isEnabled(final int position) {
         Pair<Object, Integer> pair = getItemInternal(position);
         return pair.first != DIVIDER && encapsulatedAdapter.isEnabled(pair.second);
     }

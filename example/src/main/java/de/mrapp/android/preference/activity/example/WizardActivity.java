@@ -20,8 +20,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
-import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.WizardListener;
 
 /**
@@ -77,26 +77,23 @@ public class WizardActivity extends AbstractPreferenceActivity implements Wizard
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO addWizardListener(this);
+        addWizardListener(this);
     }
 
     @Override
-    public final Bundle onNextStep(final int position,
-                                   @NonNull final PreferenceHeader preferenceHeader,
+    public final Bundle onNextStep(@NonNull final NavigationPreference navigationPreference,
                                    @NonNull final Fragment fragment, final Bundle bundle) {
         return new Bundle();
     }
 
     @Override
-    public final Bundle onPreviousStep(final int position,
-                                       @NonNull final PreferenceHeader preferenceHeader,
+    public final Bundle onPreviousStep(@NonNull final NavigationPreference navigationPreference,
                                        @NonNull final Fragment fragment, final Bundle bundle) {
         return new Bundle();
     }
 
     @Override
-    public final boolean onFinish(final int position,
-                                  @NonNull final PreferenceHeader preferenceHeader,
+    public final boolean onFinish(@NonNull final NavigationPreference navigationPreference,
                                   @NonNull final Fragment fragment, final Bundle bundle) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(R.string.finish_wizard_dialog_title);
@@ -108,8 +105,7 @@ public class WizardActivity extends AbstractPreferenceActivity implements Wizard
     }
 
     @Override
-    public final boolean onSkip(final int position,
-                                @NonNull final PreferenceHeader preferenceHeader,
+    public final boolean onSkip(@NonNull final NavigationPreference navigationPreference,
                                 @NonNull final Fragment fragment, final Bundle bundle) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(R.string.skip_wizard_dialog_title);

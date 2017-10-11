@@ -15,6 +15,7 @@ package de.mrapp.android.preference.activity.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -40,9 +41,34 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
         implements NavigationPreference.Callback {
 
     /**
-     * The callback, which is registered at the adapter's {@link NavigationPreference}s.
+     * Defines the callback, a class, which should be notified about the adapter's events, must
+     * implement.
      */
-    private final NavigationPreference.Callback callback;
+    public interface Callback {
+
+        /**
+         * The method, which is invoked, when the fragment, which is associated with a specific
+         * navigation preference, should be shown.
+         *
+         * @param navigationPreference
+         *         The navigation preference, which has been selected, as an instance of the class
+         *         {@link NavigationPreference}. The navigation preference may not be null
+         * @param arguments
+         *         The arguments, which should be passed to the fragment, which is associated with
+         *         the navigation preference, as an instance of the class {@link Bundle} or null, if
+         *         no arguments should be passed to the fragment
+         * @return True, if the navigation fragment has been selected, false otherwise
+         */
+        boolean onNavigationPreferenceSelected(
+                @NonNull final NavigationPreference navigationPreference,
+                @Nullable final Bundle arguments);
+
+    }
+
+    /**
+     * The callback, which is notified about the adapter's events.
+     */
+    private final Callback callback;
 
     /**
      * A list, which contains all navigation preferences, which are contained by the adapter.
@@ -58,6 +84,11 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      * The index of the currently selected navigation preference.
      */
     private int selectedNavigationPreferenceIndex;
+
+    /**
+     * True, if the items of the adapter are enabled, false otherwise.
+     */
+    private boolean enabled;
 
     /**
      * Updates the navigation preferences, which are contained by the adapter.
@@ -86,18 +117,18 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      *         The adapter, which should be encapsulated, as an instance of the type {@link
      *         ListAdapter}. The adapter may not be null
      * @param callback
-     *         The callback, which should be registered at the adapter's {@link
-     *         NavigationPreference}s, as an instance of the type {@link
-     *         NavigationPreference.Callback} or null, if no callback should be registered
+     *         The callback, which should be notified about the adapter's events, as an instance of
+     *         the type {@link Callback} or null, if no callback should be notified
      */
     public NavigationPreferenceGroupAdapter(@NonNull final Context context,
                                             @NonNull final ListAdapter encapsulatedAdapter,
-                                            @Nullable final NavigationPreference.Callback callback) {
+                                            @Nullable final Callback callback) {
         super(context, encapsulatedAdapter);
         this.callback = callback;
         this.navigationPreferences = new ArrayList<>();
         this.selectedNavigationPreference = null;
         this.selectedNavigationPreferenceIndex = -1;
+        this.enabled = true;
         updateNavigationPreferences();
     }
 
@@ -155,13 +186,18 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      * @param navigationPreference
      *         The navigation preference, which should be selected, as an instance of the class
      *         {@link NavigationPreference} or null, if no navigation preference should be selected
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments should be passed to the fragment
      * @return True, if the selection has been changed, false otherwise
      */
     public final boolean selectNavigationPreference(
-            @Nullable final NavigationPreference navigationPreference) {
+            @Nullable final NavigationPreference navigationPreference,
+            @Nullable final Bundle arguments) {
         if (selectedNavigationPreference != navigationPreference &&
                 (callback == null || navigationPreference == null ||
-                        callback.onShowFragment(navigationPreference))) {
+                        callback.onNavigationPreferenceSelected(navigationPreference, arguments))) {
             int index = navigationPreference == null ? -1 :
                     indexOfNavigationPreference(navigationPreference);
             selectedNavigationPreference = navigationPreference;
@@ -180,16 +216,21 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      *         The index of the navigation preference, which should be selected, among all
      *         navigation preferences, as an {@link Integer} value or -1, if no navigation
      *         preference should be selected
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments should be passed to the fragment
      * @return True, if the selection has been changed, false otherwise
      */
-    public final boolean selectNavigationPreference(final int index) {
+    public final boolean selectNavigationPreference(final int index,
+                                                    @Nullable final Bundle arguments) {
         if (index == -1) {
-            return selectNavigationPreference(null);
+            return selectNavigationPreference(null, arguments);
         } else {
             NavigationPreference navigationPreference = navigationPreferences.get(index);
 
-            if (selectedNavigationPreference != navigationPreference &&
-                    (callback == null || callback.onShowFragment(navigationPreference))) {
+            if (selectedNavigationPreference != navigationPreference && (callback == null ||
+                    callback.onNavigationPreferenceSelected(navigationPreference, arguments))) {
                 selectedNavigationPreference = navigationPreference;
                 selectedNavigationPreferenceIndex = index;
                 super.notifyDataSetInvalidated();
@@ -200,6 +241,16 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
         }
     }
 
+    /**
+     * Sets, whether the items of the adapter are enabled, i.e. clickable, or not.
+     *
+     * @param enabled
+     *         True, if the items of the adapter should be enabled, false otherwise
+     */
+    public final void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public final void notifyDataSetInvalidated() {
         super.notifyDataSetInvalidated();
@@ -207,8 +258,13 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     }
 
     @Override
+    public final boolean isEnabled(final int position) {
+        return enabled && super.isEnabled(position);
+    }
+
+    @Override
     public final boolean onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        return selectNavigationPreference(navigationPreference);
+        return selectNavigationPreference(navigationPreference, null);
     }
 
     @Override

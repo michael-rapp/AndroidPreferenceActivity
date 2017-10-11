@@ -37,7 +37,7 @@ import de.mrapp.android.preference.activity.view.PreferenceListView;
  * @since 5.0.0
  */
 public class NavigationFragment extends AbstractPreferenceFragment
-        implements NavigationPreference.Callback, PreferenceListView.AdapterFactory {
+        implements NavigationPreferenceGroupAdapter.Callback, PreferenceListView.AdapterFactory {
 
     /**
      * Defines the interface, a class, which should be notified about the fragment's events, must
@@ -69,15 +69,20 @@ public class NavigationFragment extends AbstractPreferenceFragment
     private Callback callback;
 
     /**
-     * The callback, which is notified, when the fragment of a {@link NavigationPreference}, which
-     * is contained by the fragment, should be shown.
+     * The callback, which is notified, about the events of the adapter, which contains the
+     * navigation items.
      */
-    private NavigationPreference.Callback navigationPreferenceCallback;
+    private NavigationPreferenceGroupAdapter.Callback adapterCallback;
 
     /**
      * The adapter, which contains the navigation items.
      */
     private NavigationPreferenceGroupAdapter adapter;
+
+    /**
+     * True, if the navigation is enabled, false otherwise.
+     */
+    private boolean enabled = true;
 
     /**
      * Notifies the callback, that the navigation fragment has been attached to its activity.
@@ -105,11 +110,17 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * @param navigationPreference
      *         The navigation preference, whose fragment should be shown, as an instance of the
      *         class {@link NavigationPreference}. The navigation preference may not be null
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments should be passed to the fragment
      * @return True, if the fragment has been shown, false otherwise
      */
-    private boolean notifyOnShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        return navigationPreferenceCallback != null &&
-                navigationPreferenceCallback.onShowFragment(navigationPreference);
+    private boolean notifyOnNavigationPreferenceSelected(
+            @NonNull final NavigationPreference navigationPreference,
+            @Nullable final Bundle arguments) {
+        return adapterCallback != null &&
+                adapterCallback.onNavigationPreferenceSelected(navigationPreference, arguments);
     }
 
     /**
@@ -124,16 +135,17 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
-     * Sets the callback, which should be notified, when the fragment of a {@link
-     * NavigationPreference}, which is contained by the fragment, should be shown.
+     * Sets the callback, which should be notified about the events of the adapter, which contains
+     * the navigation preferences.
      *
      * @param callback
      *         The callback, which should be set, as an instance of the type {@link
-     *         NavigationPreference.Callback} or null, if no callback should be notified
+     *         NavigationPreferenceGroupAdapter.Callback} or null, if no callback should be
+     *         notified
      */
-    public final void setNavigationPreferenceCallback(
-            @Nullable final NavigationPreference.Callback callback) {
-        this.navigationPreferenceCallback = callback;
+    public final void setAdapterCallback(
+            @Nullable final NavigationPreferenceGroupAdapter.Callback callback) {
+        this.adapterCallback = callback;
     }
 
     /**
@@ -158,22 +170,56 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Returns the index of the navigation preference, which is currently selected, among all
+     * navigation preferences.
+     *
+     * @return The index of the navigation preference, which is currently selected, as an {@link
+     * Integer} value or -1, if no navigation preference is selected
+     */
+    public final int getSelectedNavigationPreferenceIndex() {
+        return adapter != null ? adapter.getSelectedNavigationPreferenceIndex() : -1;
+    }
+
+    /**
      * Selects a specific navigation preference.
      *
      * @param index
      *         The index of the navigation preference, which should be selected, among all
      *         navigation preferences, as an {@link Integer} value or -1, if no navigation
      *         preference should be selected
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments should be passed to the fragment
      */
-    public final void selectNavigationPreference(final int index) {
+    public final void selectNavigationPreference(final int index,
+                                                 @Nullable final Bundle arguments) {
         if (adapter != null) {
-            adapter.selectNavigationPreference(index);
+            // TODO: handle params
+            adapter.selectNavigationPreference(index, arguments);
+        }
+    }
+
+    /**
+     * Sets, whether the navigation should be enabled, i.e. whether the navigation preferences
+     * should be clickable, or not.
+     *
+     * @param enabled
+     *         True, if the navigation should be enabled, false otherwise
+     */
+    public final void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+
+        if (adapter != null) {
+            adapter.setEnabled(enabled);
         }
     }
 
     @Override
-    public final boolean onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        return notifyOnShowFragment(navigationPreference);
+    public final boolean onNavigationPreferenceSelected(
+            @NonNull final NavigationPreference navigationPreference,
+            @Nullable final Bundle arguments) {
+        return notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
     }
 
     @NonNull
@@ -183,6 +229,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
         if (adapter == null) {
             adapter = new NavigationPreferenceGroupAdapter(context, encapsulatedAdapter,
                     NavigationFragment.this);
+            adapter.setEnabled(enabled);
             notifyOnNavigationAdapterCreated();
         }
 

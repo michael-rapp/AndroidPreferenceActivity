@@ -31,8 +31,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MarginLayoutParamsCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -413,7 +411,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      * A set, which contains the listeners, which have registered to be notified when the user
      * navigates within the activity, if it used as a wizard.
      */
-    private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
+    private Set<WizardListenerOld> wizardListeners = new LinkedHashSet<>();
 
     /**
      * Initializes the action bar's toolbar.
@@ -650,7 +648,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
     private Bundle notifyOnNextStep() {
         Bundle result = null;
 
-        for (WizardListener listener : wizardListeners) {
+        for (WizardListenerOld listener : wizardListeners) {
             Bundle bundle =
                     listener.onNextStep(getListAdapter().indexOf(currentHeader), currentHeader,
                             preferenceScreenFragment, currentBundle);
@@ -678,7 +676,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
     private Bundle notifyOnPreviousStep() {
         Bundle result = null;
 
-        for (WizardListener listener : wizardListeners) {
+        for (WizardListenerOld listener : wizardListeners) {
             Bundle bundle =
                     listener.onPreviousStep(getListAdapter().indexOf(currentHeader), currentHeader,
                             preferenceScreenFragment, currentBundle);
@@ -703,7 +701,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
     private boolean notifyOnFinish() {
         boolean result = true;
 
-        for (WizardListener listener : wizardListeners) {
+        for (WizardListenerOld listener : wizardListeners) {
             result &= listener.onFinish(getListAdapter().indexOf(currentHeader), currentHeader,
                     preferenceScreenFragment, currentBundle);
         }
@@ -719,7 +717,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
     private boolean notifyOnSkip() {
         boolean result = true;
 
-        for (WizardListener listener : wizardListeners) {
+        for (WizardListenerOld listener : wizardListeners) {
             result &= listener.onSkip(getListAdapter().indexOf(currentHeader), currentHeader,
                     preferenceScreenFragment, currentBundle);
         }
@@ -1278,9 +1276,9 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      *
      * @param listener
      *         The listener, which should be added, as an instance of the type {@link
-     *         WizardListener}. The listener may not be null
+     *         WizardListenerOld}. The listener may not be null
      */
-    public final void addWizardListener(@NonNull final WizardListener listener) {
+    public final void addWizardListener(@NonNull final WizardListenerOld listener) {
         ensureNotNull(listener, "The listener may not be null");
         wizardListeners.add(listener);
     }
@@ -1291,9 +1289,9 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      *
      * @param listener
      *         The listener, which should be removed, as an instance of the type {@link
-     *         WizardListener}. The listener may not be null
+     *         WizardListenerOld}. The listener may not be null
      */
-    public final void removeWizardListener(@NonNull final WizardListener listener) {
+    public final void removeWizardListener(@NonNull final WizardListenerOld listener) {
         ensureNotNull(listener, "The listener may not be null");
         wizardListeners.remove(listener);
     }

@@ -27,83 +27,83 @@ import android.support.annotation.Nullable;
  * @author Michael Rapp
  * @since 1.0.0
  */
-public interface WizardListener {
+public interface WizardListenerOld {
 
     /**
      * The method, which is invoked, when the user wants to navigate to the next step of the
      * wizard.
      *
-     * @param navigationPreference
-     *         The currently selected navigation preference as an instance of the class {@link
-     *         NavigationPreference}. The navigation preference may not be null
+     * @param position
+     *         The position of the currently selected preference header as an {@link Integer} value
+     * @param preferenceHeader
+     *         The currently selected preference header as an instance of the class {@link
+     *         PreferenceHeader}
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown fragment as an instance of the class {@link Fragment}
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
-     *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
-     *         parameters have been passed to the fragment
+     *         shown fragment or null, if no parameters have been passed to the fragment
      * @return The bundle, which should be passed to the next fragment, as an instance of the class
      * {@link Bundle} or null, if navigating to the next step of the wizard should not be allowed
      */
-    Bundle onNextStep(@NonNull NavigationPreference navigationPreference,
-                      @NonNull Fragment fragment, @Nullable Bundle bundle);
+    Bundle onNextStep(int position, @NonNull PreferenceHeader preferenceHeader,
+                      @NonNull Fragment fragment, @Nullable final Bundle bundle);
 
     /**
      * The method, which is invoked, when the user wants to navigate to the previous step of the
      * wizard.
      *
-     * @param navigationPreference
-     *         The currently selected navigation preference as an instance of the class {@link
-     *         NavigationPreference}. The navigation preference may not be null
+     * @param position
+     *         The position of the currently selected preference header as an {@link Integer} value
+     * @param preferenceHeader
+     *         The currently selected preference header as an instance of the class {@link
+     *         PreferenceHeader}
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown fragment as an instance of the class {@link Fragment}
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
-     *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
-     *         parameters have been passed to the fragment
+     *         shown fragment or null, if no parameters have been passed to the fragment
      * @return The bundle, which should be passed to the next fragment, as an instance of the class
      * {@link Bundle} or null, if navigating to the previous step of the wizard should not be
      * allowed
      */
-    Bundle onPreviousStep(@NonNull NavigationPreference navigationPreference,
-                          @NonNull Fragment fragment, @Nullable Bundle bundle);
+    Bundle onPreviousStep(int position, @NonNull PreferenceHeader preferenceHeader,
+                          @NonNull Fragment fragment, @Nullable final Bundle bundle);
 
     /**
      * The method, which is invoked, when the user wants to finish the last step of the wizard.
      *
-     * @param navigationPreference
-     *         The currently selected navigation preference as an instance of the class {@link
-     *         NavigationPreference}. The navigation preference may not be null
+     * @param position
+     *         The position of the currently selected preference header as an {@link Integer} value
+     * @param preferenceHeader
+     *         The currently selected preference header as an instance of the class {@link
+     *         PreferenceHeader}
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown fragment as an instance of the class {@link Fragment}
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
-     *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
-     *         parameters have been passed to the fragment
+     *         shown fragment or null, if no parameters have been passed to the fragment
      * @return True, if finishing the wizard should be allowed, false otherwise
      */
-    boolean onFinish(@NonNull NavigationPreference navigationPreference, @NonNull Fragment fragment,
-                     @Nullable Bundle bundle);
+    boolean onFinish(int position, @NonNull PreferenceHeader preferenceHeader,
+                     @NonNull Fragment fragment, @Nullable final Bundle bundle);
 
     /**
      * The method, which is invoked, when the user wants to skip the wizard.
      *
-     * @param navigationPreference
-     *         The currently selected navigation preference as an instance of the class {@link
-     *         NavigationPreference}. The navigation preference may not be null
+     * @param position
+     *         The position of the currently selected preference header as an {@link Integer} value
+     * @param preferenceHeader
+     *         The currently selected preference header as an instance of the class {@link
+     *         PreferenceHeader}
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown fragment as an instance of the class {@link Fragment}
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
-     *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
-     *         parameters have been passed to the fragment
+     *         shown fragment or null, if no parameters have been passed to the fragment
      * @return True, if skipping the wizard should be allowed, false otherwise
      */
-    boolean onSkip(@NonNull NavigationPreference navigationPreference, @NonNull Fragment fragment,
-                   @Nullable Bundle bundle);
+    boolean onSkip(int position, @NonNull PreferenceHeader preferenceHeader,
+                   @NonNull Fragment fragment, @Nullable final Bundle bundle);
 
 }
