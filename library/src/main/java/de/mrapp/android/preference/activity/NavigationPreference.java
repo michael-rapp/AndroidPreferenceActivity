@@ -17,13 +17,19 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.preference.Preference;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+
+import de.mrapp.android.util.view.AbstractSavedState;
 
 /**
  * A preference, which allows to show a fragment within a {@link PreferenceActivity} when
@@ -54,6 +60,85 @@ public class NavigationPreference extends Preference {
     }
 
     /**
+     * A data structure, which allows to save the internal state of a {@link NavigationPreference}.
+     */
+    public static class SavedState extends AbstractSavedState {
+
+        /**
+         * A creator, which allows to create instances of the class {@link SavedState} from
+         * parcels.
+         */
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+
+                    @Override
+                    public SavedState createFromParcel(final Parcel in) {
+                        return new SavedState(in);
+                    }
+
+                    @Override
+                    public SavedState[] newArray(final int size) {
+                        return new SavedState[size];
+                    }
+
+                };
+
+        /**
+         * The saved value of the attribute "breadCrumbTitle".
+         */
+        public CharSequence breadCrumbTitle;
+
+        /**
+         * The saved value of the attribute "fragment".
+         */
+        public String fragment;
+
+        /**
+         * The saved value of the attribute "extras".
+         */
+        public Bundle extras;
+
+        /**
+         * Creates a new data structure, which allows to store the internal state of a {@link
+         * NavigationPreference}. This constructor is called by derived classes when saving their
+         * states.
+         *
+         * @param superState
+         *         The state of the superclass of this view, as an instance of the type {@link
+         *         Parcelable}. The state may not be null
+         */
+        public SavedState(@NonNull final Parcelable superState) {
+            super(superState);
+        }
+
+        /**
+         * Creates a new data structure, which allows to store the internal state of a {@link
+         * NavigationPreference}. This constructor is used when reading from a parcel. It reads the
+         * state of the superclass.
+         *
+         * @param source
+         *         The parcel to read read from as a instance of the class {@link Parcel}. The
+         *         parcel may not be null
+         */
+        public SavedState(@NonNull final Parcel source) {
+            super(source);
+            breadCrumbTitle = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
+            fragment = source.readString();
+            extras = source.readBundle(NavigationPreference.class.getClassLoader());
+
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel destination, final int flags) {
+            super.writeToParcel(destination, flags);
+            TextUtils.writeToParcel(breadCrumbTitle, destination, flags);
+            destination.writeString(fragment);
+            destination.writeBundle(extras);
+        }
+
+    }
+
+    /**
      * The breadcrumb title, which is shown, when showing the fragment, which is associated with the
      * preference.
      */
@@ -65,8 +150,13 @@ public class NavigationPreference extends Preference {
     private String fragment;
 
     /**
+     * The arguments, which are passed to the fragment, which is associated with the preference.
+     */
+    private Bundle extras;
+
+    /**
      * The callback, which is notified, when the fragment, which is associated with the preference,
-     * should be shown.F
+     * should be shown.
      */
     private Callback callback;
 
@@ -334,10 +424,63 @@ public class NavigationPreference extends Preference {
         this.fragment = fragment;
     }
 
+    /**
+     * Returns the arguments, which are passed to the fragment, which is associated with the
+     * preference.
+     *
+     * @return The arguments, which are passed to the fragment, which is associated with the
+     * preference, as an instance of the class {@link Bundle} or null, if no arguments are passed to
+     * the fragment
+     */
+    @Nullable
+    public final Bundle getExtras() {
+        return extras;
+    }
+
+    /**
+     * Sets the argument, which should be passed to the fragment, which is associated with the
+     * preference.
+     *
+     * @param extras
+     *         The arguments, which should be set, as an instance of the class {@link Bundle} or
+     *         null, if no arguments should be passed to the fragment
+     */
+    public final void setExtras(@Nullable final Bundle extras) {
+        this.extras = extras;
+    }
+
     @Override
     public final void setOnPreferenceClickListener(
             @Nullable final OnPreferenceClickListener listener) {
         super.setOnPreferenceClickListener(createOnPreferenceClickListenerWrapper(listener));
+    }
+
+    @Override
+    protected final Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+
+        if (!isPersistent()) {
+            SavedState savedState = new SavedState(superState);
+            savedState.breadCrumbTitle = getBreadCrumbTitle();
+            savedState.fragment = getFragment();
+            savedState.extras = getExtras();
+            return savedState;
+        }
+
+        return superState;
+    }
+
+    @Override
+    protected final void onRestoreInstanceState(final Parcelable state) {
+        if (state != null && state instanceof SavedState) {
+            SavedState savedState = (SavedState) state;
+            setBreadCrumbTitle(savedState.breadCrumbTitle);
+            setFragment(savedState.fragment);
+            setExtras(savedState.extras);
+            super.onRestoreInstanceState(savedState.getSuperState());
+        } else {
+            super.onRestoreInstanceState(state);
+        }
     }
 
 }
