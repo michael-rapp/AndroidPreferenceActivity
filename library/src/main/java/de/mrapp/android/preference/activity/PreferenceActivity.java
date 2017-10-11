@@ -47,6 +47,7 @@ import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureGreater;
+import static de.mrapp.android.util.Condition.ensureNotEmpty;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
@@ -66,6 +67,31 @@ public abstract class PreferenceActivity extends AppCompatActivity
         implements NavigationFragment.Callback, NavigationPreferenceGroupAdapter.Callback {
 
     /**
+     * When starting this activity, the invoking intent can contain this extra boolean to display
+     * back and next buttons in order to use the activity as a wizard.
+     */
+    public static final String EXTRA_SHOW_BUTTON_BAR = "extra_prefs_show_button_bar";
+
+    /**
+     * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>, this extra can also
+     * be specified to supply a custom text for the next button.
+     */
+    public static final String EXTRA_NEXT_BUTTON_TEXT = "extra_prefs_set_next_text";
+
+    /**
+     * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>, this extra can also
+     * be specified to supply a custom text for the back button.
+     */
+    public static final String EXTRA_BACK_BUTTON_TEXT = "extra_prefs_set_back_text";
+
+    /**
+     * When starting this activity and using <code>EXTRA_SHOW_BUTTON_BAR</code>, this extra can also
+     * be specified to supply a custom text for the back button when the last navigation preference
+     * is selected.
+     */
+    public static final String EXTRA_FINISH_BUTTON_TEXT = "extra_prefs_set_finish_text";
+
+    /**
      * The tag of the fragment, which contains the activity's navigation.
      */
     private static final String NAVIGATION_FRAGMENT_TAG =
@@ -78,8 +104,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::PreferenceFragment";
 
     /**
-     * The name of the extra, which is used to store whether the split screen layout should be used,
-     * or not, within a bundle.
+     * The name of the extra, which is used to store whether the split screen layout is used, or
+     * not, within a bundle.
      */
     private static final String USE_SPLIT_SCREEN_EXTRA =
             PreferenceActivity.class.getName() + "::UseSplitScreen";
@@ -91,11 +117,36 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::NavigationWidth";
 
     /**
-     * The name of the extra, which is used to store whether the navigation should be hidden, or
-     * not, within a bundle.
+     * The name of the extra, which is used to store whether the navigation is hidden, or not,
+     * within a bundle.
      */
     private static final String HIDE_NAVIGATION_EXTRA =
             PreferenceActivity.class.getName() + "::HideNavigation";
+
+    /**
+     * The name of the extra, which is used to store, whether the button bar is shown, or not,
+     * within a bundle.
+     */
+    private static final String SHOW_BUTTON_BAR_EXTRA =
+            PreferenceActivity.class.getName() + "::ShowButtonBar";
+
+    /**
+     * The name of the extra, which is used to store the text of the next button within a bundle.
+     */
+    private static final String NEXT_BUTTON_TEXT_EXTRA =
+            PreferenceActivity.class.getName() + "::NextButtonText";
+
+    /**
+     * The name of the extra, which is used to store the text of the back button within a bundle.
+     */
+    private static final String BACK_BUTTON_TEXT_EXTRA =
+            PreferenceActivity.class.getName() + "::BackButtonText";
+
+    /**
+     * The name of the extra, which is used to store the text of the finish button within a bundle.
+     */
+    private static final String FINISH_BUTTON_TEXT_EXTRA =
+            PreferenceActivity.class.getName() + "::FinishButtonText";
 
     /**
      * The name of the extra, which is used to store, whether the behavior of the navigation icon
@@ -211,6 +262,21 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private boolean showButtonBar;
 
     /**
+     * The text of the next button.
+     */
+    private CharSequence nextButtonText;
+
+    /**
+     * The text of the back button.
+     */
+    private CharSequence backButtonText;
+
+    /**
+     * The text of the finish button.
+     */
+    private CharSequence finishButtonText;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
@@ -236,6 +302,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainNavigationVisibility();
         obtainOverrideNavigationIcon();
         obtainShowButtonBar();
+        obtainNextButtonText();
+        obtainBackButtonText();
+        obtainFinishButtonText();
     }
 
     /**
@@ -287,6 +356,127 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void obtainShowButtonBar() {
         boolean showButtonBar = ThemeUtil.getBoolean(this, R.attr.showButtonBar, false);
         showButtonBar(showButtonBar);
+    }
+
+    /**
+     * Obtains the text of the next button from the activity's theme.
+     */
+    private void obtainNextButtonText() {
+        CharSequence text;
+
+        try {
+            text = ThemeUtil.getText(this, R.attr.nextButtonText);
+        } catch (NotFoundException e) {
+            text = getText(R.string.next_button_label);
+        }
+
+        setNextButtonText(text);
+    }
+
+    /**
+     * Obtains the text of the back button from the activity's theme.
+     */
+    private void obtainBackButtonText() {
+        CharSequence text;
+
+        try {
+            text = ThemeUtil.getText(this, R.attr.backButtonText);
+        } catch (NotFoundException e) {
+            text = getText(R.string.back_button_label);
+        }
+
+        setBackButtonText(text);
+    }
+
+    /**
+     * Obtains the text of the finish button from the activity's theme.
+     */
+    private void obtainFinishButtonText() {
+        CharSequence text;
+
+        try {
+            text = ThemeUtil.getText(this, R.attr.finishButtonText);
+        } catch (NotFoundException e) {
+            text = getText(R.string.finish_button_label);
+        }
+
+        setFinishButtonText(text);
+    }
+
+    /**
+     * Handles extras the intent, which has been used to start the activity.
+     */
+    private void handleIntent() {
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            handleShowButtonBarIntent(extras);
+            handleNextButtonTextIntent(extras);
+            handleBackButtonTextIntent(extras);
+            handleFinishButtonTextIntent(extras);
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies, whether the button bar should be shown, or not, of the
+     * intent, which has been used to start the activity.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleShowButtonBarIntent(@NonNull final Bundle extras) {
+        if (extras.containsKey(EXTRA_SHOW_BUTTON_BAR)) {
+            showButtonBar(extras.getBoolean(EXTRA_SHOW_BUTTON_BAR));
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies the text of the next button, of the intent, which has been
+     * used to start the activity.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleNextButtonTextIntent(@NonNull final Bundle extras) {
+        CharSequence text = extras.getString(EXTRA_NEXT_BUTTON_TEXT);
+
+        if (!TextUtils.isEmpty(text)) {
+            setNextButtonText(text);
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies the text of the back button, of the intent, which has been
+     * used to start the activity.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleBackButtonTextIntent(@NonNull final Bundle extras) {
+        CharSequence text = extras.getString(EXTRA_BACK_BUTTON_TEXT);
+
+        if (!TextUtils.isEmpty(text)) {
+            setBackButtonText(text);
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies the text of the finish button, of the intent, which has
+     * been used to start the activity.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleFinishButtonTextIntent(@NonNull final Bundle extras) {
+        CharSequence text = extras.getString(EXTRA_FINISH_BUTTON_TEXT);
+
+        if (!TextUtils.isEmpty(text)) {
+            setFinishButtonText(text);
+        }
     }
 
     /**
@@ -577,15 +767,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
             }
 
             adaptNavigationEnabledState();
-            adaptWizardButtons();
+            adaptWizardButtonVisibilities();
         }
     }
 
     /**
-     * Adapts the buttons of the button bar which is shown, when the activity is used as a wizard,
-     * depending on the currently selected navigation preference.
+     * Adapts the visibilities of the buttons of the button bar which is shown, when the activity is
+     * used as a wizard, depending on the currently selected navigation preference.
      */
-    private void adaptWizardButtons() {
+    private void adaptWizardButtonVisibilities() {
         if (buttonBar != null && backButton != null && nextButton != null && finishButton != null &&
                 navigationFragment != null) {
             int selectedNavigationPreferenceIndex =
@@ -606,6 +796,33 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 nextButton.setVisibility(View.GONE);
                 finishButton.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    /**
+     * Adapts the text of the next button.
+     */
+    private void adaptNextButtonText() {
+        if (nextButton != null) {
+            nextButton.setText(nextButtonText);
+        }
+    }
+
+    /**
+     * Adapts the text of the back button.
+     */
+    private void adaptBackButtonText() {
+        if (backButton != null) {
+            backButton.setText(backButtonText);
+        }
+    }
+
+    /**
+     * Adapts the text of the finish button.
+     */
+    private void adaptFinishButtonText() {
+        if (finishButton != null) {
+            finishButton.setText(finishButtonText);
         }
     }
 
@@ -923,6 +1140,117 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the text of the next button, which is shown, when the activity is used as a wizard.
+     *
+     * @return The text of the next button as an instance of the class {@link CharSequence}. The
+     * text may neither be null, nor empty
+     */
+    @NonNull
+    public final CharSequence getNextButtonText() {
+        return nextButtonText;
+    }
+
+    /**
+     * Sets the text of the next button, which is shown, when the activity is used as a wizard.
+     *
+     * @param resourceId
+     *         The resource id of the text, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    public final void setNextButtonText(@StringRes final int resourceId) {
+        setNextButtonText(getText(resourceId));
+    }
+
+    /**
+     * Sets the text of the next button, which is shown, when the activity is used as a wizard.
+     *
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither be null, nor empty
+     */
+    public final void setNextButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.nextButtonText = text;
+        adaptNextButtonText();
+    }
+
+    /**
+     * Returns the text of the back button, which is shown, when the activity is used as a wizard.
+     *
+     * @return The text of the back button as an instance of the class {@link CharSequence}. The
+     * text may neither null, nor empty
+     */
+    @NonNull
+    public final CharSequence getBackButtonText() {
+        return backButtonText;
+    }
+
+    /**
+     * Sets the text of the back button, which is shown, when the activity is used as a wizard.
+     *
+     * @param resourceId
+     *         The resource id of the text, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    public final void setBackButtonText(@StringRes final int resourceId) {
+        setBackButtonText(getText(resourceId));
+    }
+
+    /**
+     * Sets the text of the back button, which is shown, when the activity is used as a wizard.
+     *
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither null, nor empty
+     */
+    public final void setBackButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.backButtonText = text;
+        adaptBackButtonText();
+    }
+
+    /**
+     * Returns the text of the finish button, which is shown, when the activity is used as a wizard
+     * and the last preference header is currently selected.
+     *
+     * @return The text of the finish button as an instance of the class {@link CharSequence}. The
+     * text may neither be null, nor empty
+     */
+    @NonNull
+    public final CharSequence getFinishButtonText() {
+        return finishButtonText;
+    }
+
+    /**
+     * Sets the text of the next button, which is shown, when the activity is used as a wizard and
+     * the last preference header is currently selected.
+     *
+     * @param resourceId
+     *         The resource id of the text, which should be set, as an {@link Integer} value. The
+     *         resource id must correspond to a valid string resource
+     */
+    public final void setFinishButtonText(@StringRes final int resourceId) {
+        setFinishButtonText(getText(resourceId));
+    }
+
+    /**
+     * Sets the text of the next button, which is shown, when the activity is used as a wizard and
+     * the last preference header is currently selected.
+     *
+     * @param text
+     *         The text, which should be set, as an instance of the class {@link CharSequence}. The
+     *         text may neither be null, nor empty
+     */
+    public final void setFinishButtonText(@NonNull final CharSequence text) {
+        ensureNotNull(text, "The text may not be null");
+        ensureNotEmpty(text, "The text may not be empty");
+        this.finishButtonText = text;
+        adaptFinishButtonText();
+    }
+
+    /**
      * Returns, whether a preference fragment is currently shown, or not.
      *
      * @return True, if a preference fragment is currently shown, false otherwise
@@ -1001,11 +1329,19 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             obtainStyledAttributes();
+            handleIntent();
         } else {
             useSplitScreen(savedInstanceState.getBoolean(USE_SPLIT_SCREEN_EXTRA));
             setNavigationWidth(savedInstanceState.getInt(NAVIGATION_WIDTH_EXTRA));
             hideNavigation(savedInstanceState.getBoolean(HIDE_NAVIGATION_EXTRA));
             overrideNavigationIcon(savedInstanceState.getBoolean(OVERRIDE_NAVIGATION_ICON_EXTRA));
+            showButtonBar(savedInstanceState.getBoolean(SHOW_BUTTON_BAR_EXTRA));
+            setNextButtonText(savedInstanceState
+                    .getCharSequence(NEXT_BUTTON_TEXT_EXTRA, getText(R.string.next_button_label)));
+            setBackButtonText(savedInstanceState
+                    .getCharSequence(BACK_BUTTON_TEXT_EXTRA, getText(R.string.back_button_label)));
+            setFinishButtonText(savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA,
+                    getText(R.string.finish_button_label)));
             preferenceFragmentArguments =
                     savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
@@ -1022,6 +1358,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putInt(NAVIGATION_WIDTH_EXTRA, navigationWidth);
         outState.putBoolean(HIDE_NAVIGATION_EXTRA, hideNavigation);
         outState.putBoolean(OVERRIDE_NAVIGATION_ICON_EXTRA, overrideNavigationIcon);
+        outState.putBoolean(SHOW_BUTTON_BAR_EXTRA, showButtonBar);
+        outState.putCharSequence(NEXT_BUTTON_TEXT_EXTRA, nextButtonText);
+        outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, backButtonText);
+        outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, finishButtonText);
         outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
 
