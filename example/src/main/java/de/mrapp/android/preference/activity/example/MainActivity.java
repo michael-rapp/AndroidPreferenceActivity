@@ -23,7 +23,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import de.mrapp.android.preference.activity.PreferenceActivity;
-import de.mrapp.android.preference.activity.example.fragment.BehaviorPreferenceFragment;
 
 /**
  * The example app's main activity.
@@ -156,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(final View v) {
-                // TODO
-                /*
                 Intent intent = new Intent(MainActivity.this, WizardActivity.class);
                 intent.putExtra(PreferenceActivity.EXTRA_SHOW_BUTTON_BAR, true);
                 intent.putExtra(PreferenceActivity.EXTRA_BACK_BUTTON_TEXT, R.string.back);
@@ -166,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(PreferenceActivity.EXTRA_SHOW_PROGRESS, true);
                 intent.putExtra(PreferenceActivity.EXTRA_PROGRESS_FORMAT, R.string.progress);
                 startActivity(intent);
-                */
             }
 
         };
