@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
      * Initializes the button, which allows to show a default {@link PreferenceActivity}.
      */
     private void initializePreferenceButton() {
-        Button preferenceButton = (Button) findViewById(R.id.preference_button);
+        Button preferenceButton = findViewById(R.id.preference_button);
         preferenceButton.setOnClickListener(createPreferenceButtonListener());
     }
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
      * be added or removed dynamically at runtime.
      */
     private void initializeDynamicPreferenceButton() {
-        Button dynamicPreferenceButton = (Button) findViewById(R.id.dynamic_preference_button);
+        Button dynamicPreferenceButton = findViewById(R.id.dynamic_preference_button);
         dynamicPreferenceButton.setOnClickListener(createDynamicPreferenceButtonListener());
     }
 
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
      * a wizard.
      */
     private void initializeWizardButton() {
-        Button wizardButton = (Button) findViewById(R.id.wizard_button);
+        Button wizardButton = findViewById(R.id.wizard_button);
         wizardButton.setOnClickListener(createWizardButtonListener());
     }
 
