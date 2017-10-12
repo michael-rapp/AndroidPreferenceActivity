@@ -186,6 +186,14 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::ProgressFormat";
 
     /**
+     * The name of the extra, which is used to store, whether the toolbar, which is used to show the
+     * breadcrumb of the currently selected navigation preference, is shown, or not, within a
+     * bundle.
+     */
+    private static final String BREADCRUMB_VISIBILITY_EXTRA =
+            PreferenceActivity.class.getName() + "::BreadcrumbVisibility";
+
+    /**
      * The name of the extra, which is used to store, whether the behavior of the navigation icon
      * should be overridden, or not, within a bundle.
      */
@@ -1694,6 +1702,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             showProgress(savedInstanceState.getBoolean(SHOW_PROGRESS_EXTRA));
             setProgressFormat(savedInstanceState
                     .getString(PROGRESS_FORMAT_EXTRA, getString(R.string.progress_format)));
+            setBreadCrumbVisibility(savedInstanceState.getInt(PROGRESS_FORMAT_EXTRA, 0));
             preferenceFragmentArguments =
                     savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
@@ -1715,6 +1724,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, backButtonText);
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, finishButtonText);
         outState.putBoolean(SHOW_PROGRESS_EXTRA, showProgress);
+        outState.putInt(BREADCRUMB_VISIBILITY_EXTRA, breadCrumbVisibility);
         outState.putString(PROGRESS_FORMAT_EXTRA, progressFormat);
         outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
