@@ -696,7 +696,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if a preference fragment has been removed, false otherwise
      */
     private boolean removePreferenceFragment() {
-        if (!isSplitScreen() && isPreferenceFragmentShown()) {
+        if (!isSplitScreen() && isPreferenceFragmentShown() && !isNavigationHidden() &&
+                !isButtonBarShown()) {
             navigationFragment.selectNavigationPreference(-1, null);
             resetTitle();
             hideToolbarNavigationIcon();
@@ -1148,6 +1149,26 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Notifies all registered listeners that the user wants to skip the wizard.
+     *
+     * @return True, if skipping the wizard should be allowed, false otherwise
+     */
+    private boolean notifyOnSkip() {
+        boolean result = true;
+        NavigationPreference selectedNavigationPreference =
+                navigationFragment.getSelectedNavigationPreference();
+
+        if (selectedNavigationPreference != null && preferenceFragment != null) {
+            for (WizardListener listener : wizardListeners) {
+                result &= listener.onSkip(selectedNavigationPreference, preferenceFragment,
+                        preferenceFragmentArguments);
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Adds a new listener, which should be notified, when the user navigates within the activity,
      * if it is used as a wizard.
      *
@@ -1517,7 +1538,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @CallSuper
     @Override
     public void onBackPressed() {
-        if (!removePreferenceFragment()) {
+        boolean handled = removePreferenceFragment();
+
+        if (!handled) {
+            handled = isButtonBarShown() && !notifyOnSkip();
+        }
+
+        if (!handled) {
             super.onBackPressed();
         }
     }
@@ -1526,9 +1553,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (isNavigationIconOverridden() && !isNavigationHidden() && !isButtonBarShown() &&
-                    removePreferenceFragment()) {
+            if (isNavigationIconOverridden() && removePreferenceFragment()) {
                 return true;
+            } else if (isButtonBarShown()) {
+                return !notifyOnSkip() || super.onOptionsItemSelected(item);
             }
         }
 
