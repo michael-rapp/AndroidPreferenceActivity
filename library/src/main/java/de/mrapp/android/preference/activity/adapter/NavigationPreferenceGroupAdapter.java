@@ -47,8 +47,18 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     public interface Callback {
 
         /**
-         * The method, which is invoked, when the fragment, which is associated with a specific
-         * navigation preference, should be shown.
+         * The method, which is invoked, when a navigation preference is about to be selected.
+         *
+         * @param navigationPreference
+         *         The navigation preference, which is about to be selected, as an instance of the
+         *         class {@link NavigationPreference}. The navigation preference may not be null
+         * @return True, if the navigation preference should be selected, false otherwise
+         */
+        boolean onSelectNavigationPreference(
+                @NonNull final NavigationPreference navigationPreference);
+
+        /**
+         * The method, which is invoked, when a navigation preference has been selected.
          *
          * @param navigationPreference
          *         The navigation preference, which has been selected, as an instance of the class
@@ -103,6 +113,19 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
                 navigationPreferences.add((NavigationPreference) item);
             }
         }
+    }
+
+    /**
+     * Notifies the callback, that a navigation preference is about to be selected.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which is about to be selected, as an instance of the class
+     *         {@link NavigationPreference}. The navigation preference may not be null
+     * @return True, if the navigation preference should be selected, false otherise
+     */
+    private boolean notifyOnSelectNavigationPreference(
+            @NonNull final NavigationPreference navigationPreference) {
+        return callback == null || callback.onSelectNavigationPreference(navigationPreference);
     }
 
     /**
@@ -212,18 +235,8 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     public final void selectNavigationPreference(
             @Nullable final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
-        if (selectedNavigationPreference != navigationPreference) {
-            int index = navigationPreference == null ? -1 :
-                    indexOfNavigationPreference(navigationPreference);
-            selectedNavigationPreference = navigationPreference;
-            selectedNavigationPreferenceIndex = index;
-
-            if (navigationPreference != null) {
-                notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
-            }
-
-            super.notifyDataSetInvalidated();
-        }
+        selectNavigationPreference(navigationPreference == null ? -1 :
+                indexOfNavigationPreference(navigationPreference), arguments);
     }
 
     /**
@@ -240,20 +253,24 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      */
     public final void selectNavigationPreference(final int index,
                                                  @Nullable final Bundle arguments) {
-        if (index == -1) {
-            selectNavigationPreference(null, arguments);
-        } else {
-            NavigationPreference navigationPreference = navigationPreferences.get(index);
+        NavigationPreference navigationPreference =
+                index == -1 ? null : navigationPreferences.get(index);
 
-            if (selectedNavigationPreference != navigationPreference) {
+        if (selectedNavigationPreference != navigationPreference) {
+            if (navigationPreference != null &&
+                    notifyOnSelectNavigationPreference(navigationPreference)) {
                 selectedNavigationPreference = navigationPreference;
                 selectedNavigationPreferenceIndex = index;
-                super.notifyDataSetInvalidated();
-
-                if (navigationPreference != null) {
-                    notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
-                }
+            } else {
+                selectedNavigationPreference = null;
+                selectedNavigationPreferenceIndex = -1;
             }
+
+            if (navigationPreference != null) {
+                notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
+            }
+
+            super.notifyDataSetInvalidated();
         }
     }
 

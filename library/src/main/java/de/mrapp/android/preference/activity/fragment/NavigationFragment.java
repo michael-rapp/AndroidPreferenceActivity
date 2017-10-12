@@ -104,12 +104,27 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
-     * Notifies the callback, that the fragment of a {@link NavigationPreference}, which is
-     * contained by the fragment, should be shown.
+     * Notifies the callback, that a {@link NavigationPreference}, which is contained by the
+     * fragment, is about to be selected.
      *
      * @param navigationPreference
-     *         The navigation preference, whose fragment should be shown, as an instance of the
-     *         class {@link NavigationPreference}. The navigation preference may not be null
+     *         The navigation preference, which is about to be selected, as an instance of the class
+     *         {@link NavigationPreference}. The navigation preference may not be null
+     * @return True, if the navigation preference should be selected, false otherwise
+     */
+    private boolean notifyOnSelectNavigationPreference(
+            @NonNull final NavigationPreference navigationPreference) {
+        return adapterCallback == null ||
+                adapterCallback.onSelectNavigationPreference(navigationPreference);
+    }
+
+    /**
+     * Notifies the callback, that a {@link NavigationPreference}, which is
+     * contained by the fragment, has been selected.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been selected, as an instance of the class
+     *         {@link NavigationPreference}. The navigation preference may not be null
      * @param arguments
      *         The arguments, which should be passed to the fragment, which is associated with the
      *         navigation preference, as an instance of the class {@link Bundle} or null, if no
@@ -212,6 +227,12 @@ public class NavigationFragment extends AbstractPreferenceFragment
         if (adapter != null) {
             adapter.setEnabled(enabled);
         }
+    }
+
+    @Override
+    public final boolean onSelectNavigationPreference(
+            @NonNull final NavigationPreference navigationPreference) {
+        return notifyOnSelectNavigationPreference(navigationPreference);
     }
 
     @Override

@@ -703,7 +703,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The arguments, which should be passed to the fragment, as an instance of the class
      *         {@link Bundle} or null, if the navigation preferences's extras should be used
      *         instead
-     * @return True, if the fragment has been shown, false otherwise
      */
     private void showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
                                         @Nullable final Bundle arguments) {
@@ -711,30 +710,49 @@ public abstract class PreferenceActivity extends AppCompatActivity
             arguments.putAll(navigationPreference.getExtras());
         }
 
-        String fragment = navigationPreference.getFragment();
+        preferenceFragmentArguments =
+                arguments != null ? arguments : navigationPreference.getExtras();
 
-        if (!TextUtils.isEmpty(fragment)) {
-            preferenceFragmentArguments =
-                    arguments != null ? arguments : navigationPreference.getExtras();
-            preferenceFragment = Fragment.instantiate(this, fragment, preferenceFragmentArguments);
-            preferenceFragment.setRetainInstance(true);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-            if (!isSplitScreen()) {
-                transaction.hide(navigationFragment);
-                transaction.add(R.id.navigation_fragment_container, preferenceFragment,
-                        PREFERENCE_FRAGMENT_TAG);
-            } else {
-                transaction.replace(R.id.preference_fragment_container, preferenceFragment,
-                        PREFERENCE_FRAGMENT_TAG);
-            }
-
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.commit();
+        if (!TextUtils.isEmpty(navigationPreference.getFragment())) {
+            Fragment fragment = Fragment.instantiate(this, navigationPreference.getFragment(),
+                    preferenceFragmentArguments);
+            showPreferenceFragment(fragment);
             showBreadCrumb(navigationPreference);
-            showToolbarNavigationIcon();
-            adaptWizardButtonVisibilities();
+        } else {
+            removePreferenceFragmentUnconditionally();
+
+            if (isSplitScreen()) {
+                showBreadCrumb(navigationPreference);
+            }
         }
+
+        adaptWizardButtonVisibilities();
+    }
+
+    /**
+     * Shows a specific preference fragment.
+     *
+     * @param fragment
+     *         The fragment, which should be shown, as an instance of the class {@link Fragment}.
+     *         The fragment may not be null
+     */
+    private void showPreferenceFragment(@NonNull final Fragment fragment) {
+        this.preferenceFragment = fragment;
+        fragment.setRetainInstance(true);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        if (!isSplitScreen()) {
+            transaction.hide(navigationFragment);
+            transaction.add(R.id.navigation_fragment_container, fragment, PREFERENCE_FRAGMENT_TAG);
+        } else {
+            transaction
+                    .replace(R.id.preference_fragment_container, fragment, PREFERENCE_FRAGMENT_TAG);
+        }
+
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+        showToolbarNavigationIcon();
+        adaptBreadCrumbVisibility(preferenceFragmentArguments);
     }
 
     /**
@@ -746,20 +764,34 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (!isSplitScreen() && isPreferenceFragmentShown() && !isNavigationHidden() &&
                 !isButtonBarShown()) {
             navigationFragment.selectNavigationPreference(-1, null);
-            resetTitle();
-            hideToolbarNavigationIcon();
-            adaptBreadCrumbVisibility(breadCrumbVisibility);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.remove(preferenceFragment);
-            transaction.show(navigationFragment);
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-            transaction.commit();
-            preferenceFragment = null;
+            removePreferenceFragmentUnconditionally();
             preferenceFragmentArguments = null;
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Removes the currently preference fragment, regardless of whether the split screen layout is
+     * used, or not.
+     */
+    private void removePreferenceFragmentUnconditionally() {
+        if (isPreferenceFragmentShown()) {
+            resetTitle();
+            hideToolbarNavigationIcon();
+            adaptBreadCrumbVisibility(breadCrumbVisibility);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.remove(preferenceFragment);
+
+            if (!isSplitScreen()) {
+                transaction.show(navigationFragment);
+            }
+
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            transaction.commit();
+            preferenceFragment = null;
+        }
     }
 
     /**
@@ -874,6 +906,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 actionBar.setDisplayHomeAsUpEnabled(false);
                 actionBar.setHomeButtonEnabled(false);
             }
+        }
+    }
+
+    /**
+     * Adapts, whether the split screen layout is used, or not.
+     */
+    private void adaptSplitScreen() {
+        if (navigationFragmentContainer != null) {
+            recreate();
         }
     }
 
@@ -1300,7 +1341,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final void useSplitScreen(final boolean useSplitScreen) {
         this.useSplitScreen = useSplitScreen;
-        // TODO Recreate activity if necessary
+        adaptSplitScreen();
     }
 
     /**
@@ -1642,6 +1683,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (isSplitScreen() && navigationFragment.getNavigationPreferenceCount() > 0) {
             navigationFragment.selectNavigationPreference(0, null);
         }
+    }
+
+    @Override
+    public final boolean onSelectNavigationPreference(
+            @NonNull final NavigationPreference navigationPreference) {
+        return !TextUtils.isEmpty(navigationPreference.getFragment()) || isSplitScreen();
     }
 
     @Override
