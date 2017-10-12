@@ -737,12 +737,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         The fragment may not be null
      */
     private void showPreferenceFragment(@NonNull final Fragment fragment) {
-        this.preferenceFragment = fragment;
         fragment.setRetainInstance(true);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         if (!isSplitScreen()) {
             transaction.hide(navigationFragment);
+
+            if (preferenceFragment != null) {
+                transaction.remove(preferenceFragment);
+            }
+
             transaction.add(R.id.navigation_fragment_container, fragment, PREFERENCE_FRAGMENT_TAG);
         } else {
             transaction
@@ -753,6 +757,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         transaction.commit();
         showToolbarNavigationIcon();
         adaptBreadCrumbVisibility(preferenceFragmentArguments);
+        this.preferenceFragment = fragment;
     }
 
     /**
