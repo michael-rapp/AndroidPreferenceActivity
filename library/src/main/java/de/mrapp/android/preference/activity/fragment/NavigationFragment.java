@@ -114,13 +114,13 @@ public class NavigationFragment extends AbstractPreferenceFragment
      *         The arguments, which should be passed to the fragment, which is associated with the
      *         navigation preference, as an instance of the class {@link Bundle} or null, if no
      *         arguments should be passed to the fragment
-     * @return True, if the fragment has been shown, false otherwise
      */
-    private boolean notifyOnNavigationPreferenceSelected(
+    private void notifyOnNavigationPreferenceSelected(
             @NonNull final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
-        return adapterCallback != null &&
-                adapterCallback.onNavigationPreferenceSelected(navigationPreference, arguments);
+        if (adapterCallback != null) {
+            adapterCallback.onNavigationPreferenceSelected(navigationPreference, arguments);
+        }
     }
 
     /**
@@ -195,7 +195,6 @@ public class NavigationFragment extends AbstractPreferenceFragment
     public final void selectNavigationPreference(final int index,
                                                  @Nullable final Bundle arguments) {
         if (adapter != null) {
-            // TODO: handle params
             adapter.selectNavigationPreference(index, arguments);
         }
     }
@@ -216,10 +215,10 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     @Override
-    public final boolean onNavigationPreferenceSelected(
+    public final void onNavigationPreferenceSelected(
             @NonNull final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
-        return notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
+        notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
     }
 
     @NonNull

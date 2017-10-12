@@ -53,9 +53,8 @@ public class NavigationPreference extends Preference {
          * @param navigationPreference
          *         The navigation preference, whose fragment should be shown, as an instance of the
          *         class {@link NavigationPreference}. The navigation preference may not be null
-         * @return True, if the fragment has been shown, false otherwise
          */
-        boolean onShowFragment(@NonNull final NavigationPreference navigationPreference);
+        void onShowFragment(@NonNull final NavigationPreference navigationPreference);
 
     }
 
@@ -251,8 +250,13 @@ public class NavigationPreference extends Preference {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                boolean handled = notifyOnShowFragment();
-                return (listener != null && listener.onPreferenceClick(preference)) || handled;
+                notifyOnShowFragment();
+
+                if (listener != null) {
+                    listener.onPreferenceClick(preference);
+                }
+
+                return true;
             }
 
         };
@@ -261,15 +265,11 @@ public class NavigationPreference extends Preference {
     /**
      * Notifies the callback, that the fragment, which is associated with the preference, should be
      * shown.
-     *
-     * @return True, if the fragment has been shown, false otherwise
      */
-    private boolean notifyOnShowFragment() {
+    private void notifyOnShowFragment() {
         if (callback != null) {
-            return callback.onShowFragment(this);
+            callback.onShowFragment(this);
         }
-
-        return false;
     }
 
     /**

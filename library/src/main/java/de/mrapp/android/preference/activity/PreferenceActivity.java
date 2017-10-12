@@ -657,8 +657,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         instead
      * @return True, if the fragment has been shown, false otherwise
      */
-    private boolean showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
-                                           @Nullable final Bundle arguments) {
+    private void showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
+                                        @Nullable final Bundle arguments) {
         if (arguments != null && navigationPreference.getExtras() != null) {
             arguments.putAll(navigationPreference.getExtras());
         }
@@ -685,10 +685,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             transaction.commit();
             showBreadCrumb(navigationPreference);
             showToolbarNavigationIcon();
-            return true;
+            adaptWizardButtonVisibilities();
         }
-
-        return false;
     }
 
     /**
@@ -1467,10 +1465,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     @Override
-    public final boolean onNavigationPreferenceSelected(
+    public final void onNavigationPreferenceSelected(
             @NonNull final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
-        return showPreferenceFragment(navigationPreference, arguments);
+        showPreferenceFragment(navigationPreference, arguments);
     }
 
     @CallSuper

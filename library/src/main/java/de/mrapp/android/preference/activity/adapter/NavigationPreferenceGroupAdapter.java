@@ -57,9 +57,8 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
          *         The arguments, which should be passed to the fragment, which is associated with
          *         the navigation preference, as an instance of the class {@link Bundle} or null, if
          *         no arguments should be passed to the fragment
-         * @return True, if the navigation fragment has been selected, false otherwise
          */
-        boolean onNavigationPreferenceSelected(
+        void onNavigationPreferenceSelected(
                 @NonNull final NavigationPreference navigationPreference,
                 @Nullable final Bundle arguments);
 
@@ -103,6 +102,25 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
             if (item instanceof NavigationPreference) {
                 navigationPreferences.add((NavigationPreference) item);
             }
+        }
+    }
+
+    /**
+     * Notifies te callback, that a navigation preference has been selected.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been selected, as an instance of the class
+     *         {@link NavigationPreference}. The navigation preference may not be null
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments should be passed to the fragment
+     */
+    private void notifyOnNavigationPreferenceSelected(
+            @NonNull final NavigationPreference navigationPreference,
+            @Nullable final Bundle arguments) {
+        if (callback != null) {
+            callback.onNavigationPreferenceSelected(navigationPreference, arguments);
         }
     }
 
@@ -190,23 +208,22 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      *         The arguments, which should be passed to the fragment, which is associated with the
      *         navigation preference, as an instance of the class {@link Bundle} or null, if no
      *         arguments should be passed to the fragment
-     * @return True, if the selection has been changed, false otherwise
      */
-    public final boolean selectNavigationPreference(
+    public final void selectNavigationPreference(
             @Nullable final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
-        if (selectedNavigationPreference != navigationPreference &&
-                (callback == null || navigationPreference == null ||
-                        callback.onNavigationPreferenceSelected(navigationPreference, arguments))) {
+        if (selectedNavigationPreference != navigationPreference) {
             int index = navigationPreference == null ? -1 :
                     indexOfNavigationPreference(navigationPreference);
             selectedNavigationPreference = navigationPreference;
             selectedNavigationPreferenceIndex = index;
-            super.notifyDataSetInvalidated();
-            return true;
-        }
 
-        return false;
+            if (navigationPreference != null) {
+                notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
+            }
+
+            super.notifyDataSetInvalidated();
+        }
     }
 
     /**
@@ -220,24 +237,23 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      *         The arguments, which should be passed to the fragment, which is associated with the
      *         navigation preference, as an instance of the class {@link Bundle} or null, if no
      *         arguments should be passed to the fragment
-     * @return True, if the selection has been changed, false otherwise
      */
-    public final boolean selectNavigationPreference(final int index,
-                                                    @Nullable final Bundle arguments) {
+    public final void selectNavigationPreference(final int index,
+                                                 @Nullable final Bundle arguments) {
         if (index == -1) {
-            return selectNavigationPreference(null, arguments);
+            selectNavigationPreference(null, arguments);
         } else {
             NavigationPreference navigationPreference = navigationPreferences.get(index);
 
-            if (selectedNavigationPreference != navigationPreference && (callback == null ||
-                    callback.onNavigationPreferenceSelected(navigationPreference, arguments))) {
+            if (selectedNavigationPreference != navigationPreference) {
                 selectedNavigationPreference = navigationPreference;
                 selectedNavigationPreferenceIndex = index;
                 super.notifyDataSetInvalidated();
-                return true;
-            }
 
-            return false;
+                if (navigationPreference != null) {
+                    notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
+                }
+            }
         }
     }
 
@@ -263,8 +279,8 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     }
 
     @Override
-    public final boolean onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        return selectNavigationPreference(navigationPreference, null);
+    public final void onShowFragment(@NonNull final NavigationPreference navigationPreference) {
+        selectNavigationPreference(navigationPreference, null);
     }
 
     @Override
