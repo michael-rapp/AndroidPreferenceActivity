@@ -38,6 +38,10 @@ License.
             android:id="@id/navigation_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/preference_activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/preference_activity_horizontal_margin"
+            android:layout_marginRight="@dimen/preference_activity_horizontal_margin"
+            android:layout_marginStart="@dimen/preference_activity_horizontal_margin"
             android:background="@color/navigation_background_light"/>
 
         <de.mrapp.android.util.view.ElevationShadowView
