@@ -1680,7 +1680,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     @Override
     public final void onNavigationAdapterCreated() {
-        if (isSplitScreen() && navigationFragment.getNavigationPreferenceCount() > 0) {
+        if (navigationFragment.getNavigationPreferenceCount() > 0 &&
+                (isSplitScreen() || isButtonBarShown())) {
             navigationFragment.selectNavigationPreference(0, null);
         }
     }
