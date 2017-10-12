@@ -29,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -834,12 +835,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (navigationFragmentContainer != null && cardView != null && toolbarLarge != null) {
             ViewCompat.setPaddingRelative(navigationFragmentContainer, 0, 0,
                     getDisplayWidth(this) - navigationWidth, 0);
-            FrameLayout.LayoutParams preferenceScreenLayoutParams =
-                    (FrameLayout.LayoutParams) cardView.getLayoutParams();
-            MarginLayoutParamsCompat.setMarginStart(preferenceScreenLayoutParams, navigationWidth -
-                    getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin));
-            cardView.requestLayout();
-            toolbarLarge.setNavigationWidth(navigationWidth);
+
+            if (!isNavigationHidden()) {
+                FrameLayout.LayoutParams preferenceScreenLayoutParams =
+                        (FrameLayout.LayoutParams) cardView.getLayoutParams();
+                MarginLayoutParamsCompat.setMarginStart(preferenceScreenLayoutParams,
+                        navigationWidth - getResources()
+                                .getDimensionPixelSize(R.dimen.card_view_intrinsic_margin));
+                cardView.requestLayout();
+                toolbarLarge.setNavigationWidth(navigationWidth);
+            }
         }
     }
 
@@ -847,7 +852,45 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Adapts the visibility of the navigation.
      */
     private void adaptNavigationVisibility() {
-        // TODO
+        if (isSplitScreen()) {
+            if (navigationFragmentContainer != null && cardView != null && toolbarLarge != null) {
+                navigationFragmentContainer
+                        .setVisibility(isNavigationHidden() ? View.GONE : View.VISIBLE);
+                toolbarLarge.hideNavigation(isNavigationHidden());
+                int preferenceScreenHorizontalMargin = getResources()
+                        .getDimensionPixelSize(R.dimen.preference_screen_horizontal_margin);
+                int preferenceScreenMarginRight = getResources()
+                        .getDimensionPixelSize(R.dimen.preference_screen_margin_right);
+                int cardViewIntrinsicMargin =
+                        getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
+                FrameLayout.LayoutParams cardViewLayoutParams =
+                        (FrameLayout.LayoutParams) cardView.getLayoutParams();
+                MarginLayoutParamsCompat.setMarginStart(cardViewLayoutParams,
+                        (isNavigationHidden() ? preferenceScreenHorizontalMargin :
+                                navigationWidth) - cardViewIntrinsicMargin);
+                MarginLayoutParamsCompat.setMarginEnd(cardViewLayoutParams,
+                        (isNavigationHidden() ? preferenceScreenHorizontalMargin :
+                                preferenceScreenMarginRight) - cardViewIntrinsicMargin);
+                cardViewLayoutParams.gravity =
+                        isNavigationHidden() ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY;
+                cardView.requestLayout();
+            }
+        } else {
+            if (getSelectedNavigationPreference() != null) {
+                if (isNavigationHidden()) {
+                    hideToolbarNavigationIcon();
+                } else {
+                    showToolbarNavigationIcon();
+                }
+            } else if (isNavigationHidden()) {
+                if (navigationFragment != null &&
+                        navigationFragment.getNavigationPreferenceCount() > 0) {
+                    navigationFragment.selectNavigationPreference(0, null);
+                } else if (navigationFragment != null) {
+                    finish();
+                }
+            }
+        }
     }
 
     /**
