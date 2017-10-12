@@ -100,6 +100,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public static final String EXTRA_SHOW_PROGRESS = "extra_prefs_show_progress";
 
     /**
+     * When starting this activity, the invoking intent can contain this extra boolean that the
+     * toolbar, which is used to show the title of the currently selected preference header, should
+     * not be displayed.
+     */
+    public static final String EXTRA_NO_BREAD_CRUMBS = ":extra_prefs_no_bread_crumbs";
+
+    /**
      * When starting this activity using <code>EXTRA_SHOW_BUTTON_BAR</code> and
      * <code>EXTRA_SHOW_PROGRESS</code>, this string extra can also be specified to supply a custom
      * format for showing the progress. The string must be formatted according to the following
@@ -318,6 +325,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private String progressFormat;
 
     /**
+     * The visibility of the toolbar, which is used to show the breadcrumb of the currently selected
+     * preference header.
+     */
+    private int breadCrumbVisibility;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
@@ -348,6 +361,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainFinishButtonText();
         obtainShowProgress();
         obtainProgressFormat();
+        obtainBreadcrumbVisibility();
     }
 
     /**
@@ -472,6 +486,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Obtains the visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference, from the activity's theme.
+     */
+    private void obtainBreadcrumbVisibility() {
+        int visibility = ThemeUtil.getInt(this, R.attr.breadCrumbVisibility, 0);
+        setBreadCrumbVisibility(
+                visibility == 0 ? View.VISIBLE : (visibility == 1 ? View.INVISIBLE : View.GONE));
+    }
+
+    /**
      * Handles extras the intent, which has been used to start the activity.
      */
     private void handleIntent() {
@@ -484,6 +508,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             handleFinishButtonTextIntent(extras);
             handleShowProgressIntent(extras);
             handleProgressFormatIntent(extras);
+            handleNoBreadcrumbsIntent(extras);
         }
     }
 
@@ -576,6 +601,20 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (!TextUtils.isEmpty(progressFormat)) {
             setProgressFormat(progressFormat);
+        }
+    }
+
+    /**
+     * Handles the extra, which specifies that no bread crumbs should be shown.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleNoBreadcrumbsIntent(@NonNull final Bundle extras) {
+        if (extras.containsKey(EXTRA_NO_BREAD_CRUMBS)) {
+            setBreadCrumbVisibility(
+                    extras.getBoolean(EXTRA_NO_BREAD_CRUMBS) ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -701,6 +740,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             navigationFragment.selectNavigationPreference(-1, null);
             resetTitle();
             hideToolbarNavigationIcon();
+            adaptBreadCrumbVisibility(breadCrumbVisibility);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(preferenceFragment);
             transaction.show(navigationFragment);
@@ -975,6 +1015,47 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (selectedNavigationPreference != null) {
             showBreadCrumb(selectedNavigationPreference);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference, depending on the arguments of the currently selected
+     * navigation preference.
+     *
+     * @param arguments
+     *         The arguments of the currently selected navigation preference as an instance of the
+     *         class {@link Bundle} or null, if the navigation preference has no arguments
+     */
+    private void adaptBreadCrumbVisibility(@Nullable final Bundle arguments) {
+        if (arguments != null && arguments.containsKey(EXTRA_NO_BREAD_CRUMBS)) {
+            boolean hideBreadCrumb = arguments.getBoolean(EXTRA_NO_BREAD_CRUMBS, false);
+            adaptBreadCrumbVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
+        } else {
+            adaptBreadCrumbVisibility(breadCrumbVisibility);
+        }
+    }
+
+    /**
+     * Adapts the visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference.
+     *
+     * @param visibility
+     *         The visibility, which should be set, as an {@link Integer} value. The visibility may
+     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
+     *         <code>View.GONE</code>
+     */
+    private void adaptBreadCrumbVisibility(final int visibility) {
+        if (isSplitScreen()) {
+            if (breadCrumbToolbar != null) {
+                breadCrumbToolbar.setVisibility(visibility);
+                // TODO breadCrumbShadowView.setVisibility(visibility);
+            }
+        } else {
+            if (toolbar != null) {
+                toolbar.setVisibility(visibility);
+                // TODO toolbarShadowView.setVisibility(visibility);
+            }
         }
     }
 
@@ -1482,6 +1563,33 @@ public abstract class PreferenceActivity extends AppCompatActivity
         ensureNotEmpty(progressFormat, "The progress format may not be empty");
         this.progressFormat = progressFormat;
         adaptProgress();
+    }
+
+    /**
+     * Returns the visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference.
+     *
+     * @return The visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference, as an {@link Integer} value. The visibility must either be
+     * <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or <code>View.GONE</code>
+     */
+    public final int getBreadCrumbVisibility() {
+        return breadCrumbVisibility;
+    }
+
+    /**
+     * Sets the visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference. This takes effect regardless of whether the split screen
+     * layout is used, or not.
+     *
+     * @param visibility
+     *         The visibility, which should be set, as an {@link Integer} value. The visibility must
+     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
+     *         <code>View.GONE</code>
+     */
+    public final void setBreadCrumbVisibility(final int visibility) {
+        this.breadCrumbVisibility = visibility;
+        adaptBreadCrumbVisibility(visibility);
     }
 
     /**

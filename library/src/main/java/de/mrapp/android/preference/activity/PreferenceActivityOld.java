@@ -477,68 +477,6 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
     }
 
     /**
-     * Handles extras of the intent, which has been used to start the activity, that allow to show
-     * the button bar in order to use the activity as a wizard.
-     */
-    private void handleShowButtonBarIntent() {
-        boolean showButtonBar = getIntent().getBooleanExtra(EXTRA_SHOW_BUTTON_BAR, false);
-        CharSequence nextButtonText =
-                getCharSequenceFromIntent(getIntent(), EXTRA_NEXT_BUTTON_TEXT);
-        CharSequence backButtonText =
-                getCharSequenceFromIntent(getIntent(), EXTRA_BACK_BUTTON_TEXT);
-        CharSequence finishButtonText =
-                getCharSequenceFromIntent(getIntent(), EXTRA_FINISH_BUTTON_TEXT);
-        CharSequence progressFormatString =
-                getCharSequenceFromIntent(getIntent(), EXTRA_PROGRESS_FORMAT);
-
-        if (showButtonBar) {
-            showButtonBar(true);
-
-            if (nextButtonText != null) {
-                setNextButtonText(nextButtonText);
-            }
-
-            if (backButtonText != null) {
-                setBackButtonText(backButtonText);
-            }
-
-            if (finishButtonText != null) {
-                setFinishButtonText(finishButtonText);
-            }
-
-            showProgress(getIntent().getBooleanExtra(EXTRA_SHOW_PROGRESS, false));
-
-            if (progressFormatString != null) {
-                setProgressFormat(progressFormatString.toString());
-            }
-        }
-    }
-
-    /**
-     * Handles the extra of the intent, which has been used to start the activity, that allows to
-     * hide the navigation.
-     */
-    private void handleHideNavigationIntent() {
-        if (getIntent().getExtras() != null &&
-                getIntent().getExtras().containsKey(EXTRA_NO_HEADERS)) {
-            // TODO hideNavigation(getIntent().getExtras().getBoolean(EXTRA_NO_HEADERS));
-        } else {
-            // TODO hideNavigation(isNavigationHidden());
-        }
-    }
-
-    /**
-     * Handles the extra of the intent, which has been used to start the activity, that allows to
-     * hide the bread crumbs.
-     */
-    private void handleHideBreadCrumbsIntent() {
-        if (getIntent().getExtras() != null &&
-                getIntent().getExtras().containsKey(EXTRA_NO_BREAD_CRUMBS)) {
-            setBreadCrumbVisibility(View.GONE);
-        }
-    }
-
-    /**
      * Returns the char sequence, which is specified by a specific intent extra. The char sequence
      * can either be specified as a string or as a resource id.
      *
@@ -2240,32 +2178,6 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
         return false;
     }
 
-    /**
-     * Returns the visibility of the toolbar, which is used to show the title of the currently
-     * selected preference header.
-     *
-     * @return The visibility of the toolbar, which is used to show the title of the currently
-     * selected preference header, as an {@link Integer} value. The visibility must either be
-     * <code>View.VISIBLE</code>, <code>View.INVISIBLE</code>, <code>View.GONE</code>
-     */
-    public final int getBreadCrumbVisibility() {
-        return breadCrumbVisibility;
-    }
-
-    /**
-     * Sets the visibility of the toolbar, which is used to show the title of the currently selected
-     * preference header. This takes effect regardless of the device's screen size.
-     *
-     * @param visibility
-     *         The visibility, which should be set, as an {@link Integer} value. The visibility must
-     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
-     *         <code>View.GONE</code>
-     */
-    public final void setBreadCrumbVisibility(final int visibility) {
-        breadCrumbVisibility = visibility;
-        adaptBreadCrumbVisibility(visibility);
-    }
-
     @Override
     public final void onItemClick(final AdapterView<?> parent, final View view, final int position,
                                   final long id) {
@@ -2349,43 +2261,8 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
 
             initializeSelectedPreferenceHeader();
         }
-
-        handleShowButtonBarIntent();
-        handleHideNavigationIntent();
-        handleHideBreadCrumbsIntent();
     }
 
-    @CallSuper
-    @Override
-    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (unselectPreferenceHeader()) {
-                return true;
-            } else if (isButtonBarShown()) {
-                return !notifyOnSkip() || super.onKeyDown(keyCode, event);
-            }
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @CallSuper
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (!isSplitScreen() && isPreferenceHeaderSelected() && overrideNavigationIcon &&
-                    !navigationHidden && !isButtonBarShown()) {
-                showPreferenceHeaders();
-                // TODO hideToolbarNavigationIcon();
-                resetTitle();
-                return true;
-            } else if (isButtonBarShown()) {
-                return !notifyOnSkip() || super.onOptionsItemSelected(item);
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @CallSuper
     @Override
