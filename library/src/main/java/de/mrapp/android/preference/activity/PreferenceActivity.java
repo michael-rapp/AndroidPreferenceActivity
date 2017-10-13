@@ -832,14 +832,42 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         CharSequence} or null, if no bread crumb should be shown
      */
     private void showBreadCrumb(@Nullable final CharSequence breadCrumbTitle) {
-        // TODO: Format bread crumb title
-        if (!TextUtils.isEmpty(breadCrumbTitle)) {
+        CharSequence formattedBreadCrumbTitle = formatBreadCrumbTitle(breadCrumbTitle);
+
+        if (!TextUtils.isEmpty(formattedBreadCrumbTitle)) {
             if (isSplitScreen()) {
-                breadCrumbToolbar.setTitle(breadCrumbTitle);
+                breadCrumbToolbar.setTitle(formattedBreadCrumbTitle);
             } else {
-                showTitle(breadCrumbTitle);
+                showTitle(formattedBreadCrumbTitle);
             }
         }
+    }
+
+    /**
+     * Formats a specific bread crumb title, depending on whether the activity is used as a wizard
+     * and whether the progress should be shown, or not.
+     *
+     * @param breadCrumbTitle
+     *         The bread crumb title, which should be formatted, as an instance of the class {@link
+     *         CharSequence} or null, if no bread crumb title should be shown
+     * @return The formatted bread crumb title as an instance of the class {@link CharSequence} or
+     * null, if no bread crumb title should be shown
+     */
+    @Nullable
+    private CharSequence formatBreadCrumbTitle(@Nullable final CharSequence breadCrumbTitle) {
+        if (!TextUtils.isEmpty(breadCrumbTitle) && navigationFragment != null) {
+            String format = getProgressFormat();
+            int selectedNavigationPreferenceIndex =
+                    navigationFragment.getSelectedNavigationPreferenceIndex();
+
+            if (!TextUtils.isEmpty(format) && selectedNavigationPreferenceIndex != -1) {
+                int currentStep = selectedNavigationPreferenceIndex + 1;
+                int totalSteps = navigationFragment.getNavigationPreferenceCount();
+                return String.format(format, currentStep, totalSteps, breadCrumbTitle);
+            }
+        }
+
+        return breadCrumbTitle;
     }
 
     /**
