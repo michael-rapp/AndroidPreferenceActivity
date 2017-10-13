@@ -655,6 +655,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         adaptNavigationWidth();
         adaptNavigationVisibility();
         adaptButtonBarVisibility();
+        // TODO: Adapt all views
     }
 
     /**
