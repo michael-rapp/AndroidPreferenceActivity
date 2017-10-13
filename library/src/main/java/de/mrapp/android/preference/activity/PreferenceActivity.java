@@ -762,9 +762,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
+        this.preferenceFragment = fragment;
         showToolbarNavigationIcon();
         adaptBreadCrumbVisibility(preferenceFragmentArguments);
-        this.preferenceFragment = fragment;
     }
 
     /**
