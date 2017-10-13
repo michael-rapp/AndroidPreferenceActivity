@@ -855,7 +855,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     @Nullable
     private CharSequence formatBreadCrumbTitle(@Nullable final CharSequence breadCrumbTitle) {
-        if (!TextUtils.isEmpty(breadCrumbTitle) && navigationFragment != null) {
+        if (!TextUtils.isEmpty(breadCrumbTitle) && isButtonBarShown() &&
+                navigationFragment != null) {
             String format = getProgressFormat();
             int selectedNavigationPreferenceIndex =
                     navigationFragment.getSelectedNavigationPreferenceIndex();
