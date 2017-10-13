@@ -1235,16 +1235,6 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
     }
 
     /**
-     * Returns the frame layout, which contains the activity's views. It is the activity's root
-     * view.
-     *
-     * @return The frame layout, which contains the activity's views
-     */
-    public final FrameLayout getFrameLayout() {
-        return frameLayout;
-    }
-
-    /**
      * Returns the parent view of the fragment, which provides the navigation to each preference
      * header's fragment. On devices with a small screen this parent view is also used to show a
      * preference header's fragment, when a header is currently selected.

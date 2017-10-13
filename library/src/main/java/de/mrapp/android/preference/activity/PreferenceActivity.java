@@ -234,6 +234,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private ViewGroup preferenceFragmentContainer;
 
     /**
+     * The activity's root view.
+     */
+    private FrameLayout frameLayout;
+
+    /**
      * The card view, which contains the currently shown preference fragment, as well as its
      * breadcrumb, when using the split screen layout.
      */
@@ -632,6 +637,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void inflateLayout() {
         setContentView(isSplitScreen() ? R.layout.preference_activity_tablet :
                 R.layout.preference_activity_phone);
+        frameLayout = findViewById(R.id.frame_layout);
         navigationFragmentContainer = findViewById(R.id.navigation_fragment_container);
         preferenceFragmentContainer = findViewById(R.id.preference_fragment_container);
         cardView = findViewById(R.id.card_view);
@@ -1365,6 +1371,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final boolean isSplitScreen() {
         return useSplitScreen && getDeviceType(this) == DeviceType.TABLET;
+    }
+
+    /**
+     * Returns the frame layout, which contains the activity's views. It is the activity's root
+     * view.
+     *
+     * @return The frame layout, which contains the activity's views, as an instance of the class
+     * {@link FrameLayout} or null, if the activity has not been created yet
+     */
+    public final FrameLayout getFrameLayout() {
+        return frameLayout;
     }
 
     /**
