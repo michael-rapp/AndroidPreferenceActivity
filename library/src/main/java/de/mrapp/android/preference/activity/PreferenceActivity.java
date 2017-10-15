@@ -16,13 +16,13 @@ package de.mrapp.android.preference.activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Resources.NotFoundException;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.annotation.StringRes;
-import android.support.v4.view.MarginLayoutParamsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -951,6 +951,52 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Sets the start margin of specific layout params.
+     *
+     * @param layoutParams
+     *         The layout params whose margin should be set, as an instance of the class {@link
+     *         FrameLayout.LayoutParams}. The layout params may not be null
+     * @param margin
+     *         The start margin, which should be set, in pixels as an {@link Integer} valueF
+     */
+    private void setMarginStart(@NonNull final FrameLayout.LayoutParams layoutParams,
+                                final int margin) {
+        if (isRtlLayoutUsed()) {
+            layoutParams.rightMargin = margin;
+        } else {
+            layoutParams.leftMargin = margin;
+        }
+    }
+
+    /**
+     * Sets the end margin of specific layout params.
+     *
+     * @param layoutParams
+     *         The layout params whose margin should be set, as an instance of the class {@link
+     *         FrameLayout.LayoutParams}. The layout params may not be null
+     * @param margin
+     *         The end margin, which should be set, in pixels as an {@link Integer} valueF
+     */
+    private void setMarginEnd(@NonNull final FrameLayout.LayoutParams layoutParams,
+                              final int margin) {
+        if (isRtlLayoutUsed()) {
+            layoutParams.leftMargin = margin;
+        } else {
+            layoutParams.rightMargin = margin;
+        }
+    }
+
+    /**
+     * Returns, whether the activity uses a right-to-left (RTL) layout, or not.
+     *
+     * @return True, if the activity uses a RTL layout, false otherwise
+     */
+    private boolean isRtlLayoutUsed() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 &&
+                getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
+
+    /**
      * Adapts, whether the split screen layout is used, or not.
      */
     private void adaptSplitScreen() {
@@ -963,18 +1009,18 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Adapts the width of the navigation.
      */
     private void adaptNavigationWidth() {
-        if (navigationFragmentContainer != null && cardView != null && toolbarLarge != null) {
+        if (frameLayout != null && navigationFragmentContainer != null && cardView != null &&
+                toolbarLarge != null) {
             ViewCompat.setPaddingRelative(navigationFragmentContainer, 0, 0,
                     getDisplayWidth(this) - navigationWidth, 0);
 
             if (!isNavigationHidden()) {
-                FrameLayout.LayoutParams preferenceScreenLayoutParams =
-                        (FrameLayout.LayoutParams) cardView.getLayoutParams();
-                MarginLayoutParamsCompat.setMarginStart(preferenceScreenLayoutParams,
-                        navigationWidth - getResources()
-                                .getDimensionPixelSize(R.dimen.card_view_intrinsic_margin));
-                cardView.requestLayout();
                 toolbarLarge.setNavigationWidth(navigationWidth);
+                FrameLayout.LayoutParams cardViewLayoutParams =
+                        (FrameLayout.LayoutParams) cardView.getLayoutParams();
+                int margin = navigationWidth -
+                        getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
+                setMarginStart(cardViewLayoutParams, margin);
             }
         }
     }
@@ -996,15 +1042,14 @@ public abstract class PreferenceActivity extends AppCompatActivity
                         getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
                 FrameLayout.LayoutParams cardViewLayoutParams =
                         (FrameLayout.LayoutParams) cardView.getLayoutParams();
-                MarginLayoutParamsCompat.setMarginStart(cardViewLayoutParams,
-                        (isNavigationHidden() ? preferenceScreenHorizontalMargin :
-                                navigationWidth) - cardViewIntrinsicMargin);
-                MarginLayoutParamsCompat.setMarginEnd(cardViewLayoutParams,
-                        (isNavigationHidden() ? preferenceScreenHorizontalMargin :
-                                preferenceScreenMarginRight) - cardViewIntrinsicMargin);
                 cardViewLayoutParams.gravity =
                         isNavigationHidden() ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY;
-                cardView.requestLayout();
+                int marginStart = (isNavigationHidden() ? preferenceScreenHorizontalMargin :
+                        navigationWidth) - cardViewIntrinsicMargin;
+                int marginEnd = (isNavigationHidden() ? preferenceScreenHorizontalMargin :
+                        preferenceScreenMarginRight) - cardViewIntrinsicMargin;
+                setMarginStart(cardViewLayoutParams, marginStart);
+                setMarginEnd(cardViewLayoutParams, marginEnd);
             }
         } else {
             if (getSelectedNavigationPreference() != null) {
