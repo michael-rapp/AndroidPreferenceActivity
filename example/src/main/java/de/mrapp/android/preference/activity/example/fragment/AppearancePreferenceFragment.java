@@ -23,6 +23,8 @@ import de.mrapp.android.preference.activity.PreferenceFragment;
 import de.mrapp.android.preference.activity.RestoreDefaultsListener;
 import de.mrapp.android.preference.activity.example.R;
 
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
+
 /**
  * A preference fragment, which allows to edit the settings concerning the appearance of the
  * activities which are used by the app to demonstrate the use of the class {@link
@@ -85,7 +87,8 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int width = Integer.valueOf((String) newValue);
-                ((PreferenceActivity) getActivity()).setNavigationWidth(width);
+                ((PreferenceActivity) getActivity())
+                        .setNavigationWidth(dpToPixels(getActivity(), width));
                 return true;
             }
 
