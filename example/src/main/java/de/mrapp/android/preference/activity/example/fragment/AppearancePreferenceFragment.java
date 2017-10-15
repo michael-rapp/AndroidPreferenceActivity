@@ -85,7 +85,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int width = Integer.valueOf((String) newValue);
-                // TODO ((PreferenceActivity) getActivity()).setNavigationWidth(width);
+                ((PreferenceActivity) getActivity()).setNavigationWidth(width);
                 return true;
             }
 
