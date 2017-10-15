@@ -21,6 +21,8 @@ import android.support.v7.app.ActionBar;
 
 import de.mrapp.android.preference.activity.PreferenceActivity;
 
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
+
 /**
  * An abstract base class for all activities, which are used by the app to demonstrate the use of
  * the class {@link PreferenceActivity}. This base class implements adapting of the settings, which
@@ -55,7 +57,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.navigation_width_preference_key);
         String defaultValue = getString(R.string.navigation_width_preference_default_value);
         int width = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        // TODO setNavigationWidth(width);
+        setNavigationWidth(dpToPixels(this, width));
     }
 
     /**
@@ -114,7 +116,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         boolean defaultValue = Boolean.valueOf(
                 getString(R.string.override_navigation_icon_preference_default_value));
         boolean overrideNavigationIcon = sharedPreferences.getBoolean(key, defaultValue);
-        // TODO overrideNavigationIcon(overrideNavigationIcon);
+        overrideNavigationIcon(overrideNavigationIcon);
     }
 
     /**
@@ -129,7 +131,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         boolean defaultValue =
                 Boolean.valueOf(getString(R.string.hide_navigation_preference_default_value));
         boolean hideNavigation = sharedPreferences.getBoolean(key, defaultValue);
-        // TODO hideNavigation(hideNavigation);
+        hideNavigation(hideNavigation);
     }
 
     @Override

@@ -150,6 +150,17 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Returns the callback, which is notified about the fragment's events.
+     *
+     * @return The callback, which is notified about the fragment's events, as an instance of the
+     * type {@link Callback} or null, if no callback is notified
+     */
+    @Nullable
+    public final Callback getCallback() {
+        return callback;
+    }
+
+    /**
      * Sets the callback, which should be notified about the events of the adapter, which contains
      * the navigation preferences.
      *

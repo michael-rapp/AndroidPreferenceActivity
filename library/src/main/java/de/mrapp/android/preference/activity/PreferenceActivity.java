@@ -652,10 +652,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
         finishButton = findViewById(R.id.finish_button);
         finishButton.setOnClickListener(createFinishButtonListener());
         buttonBarShadowView = findViewById(R.id.wizard_button_bar_shadow_view);
-        adaptNavigationWidth();
-        adaptNavigationVisibility();
-        adaptButtonBarVisibility();
-        // TODO: Adapt all views
     }
 
     /**
@@ -1058,11 +1054,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 } else {
                     showToolbarNavigationIcon();
                 }
-            } else if (isNavigationHidden()) {
-                if (navigationFragment != null &&
-                        navigationFragment.getNavigationPreferenceCount() > 0) {
+            } else if (isNavigationHidden() && navigationFragment != null &&
+                    navigationFragment.getCallback() == null) {
+                if (navigationFragment.getNavigationPreferenceCount() > 0) {
                     navigationFragment.selectNavigationPreference(0, null);
-                } else if (navigationFragment != null) {
+                } else {
                     finish();
                 }
             }
@@ -1777,6 +1773,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     @Override
     public final void onNavigationAdapterCreated() {
+        navigationFragment.setCallback(null);
+        adaptNavigationWidth();
+        adaptNavigationVisibility();
+        adaptButtonBarVisibility();
+        // TODO: Adapt all views
+
         if (navigationFragment.getNavigationPreferenceCount() > 0 &&
                 (isSplitScreen() || isButtonBarShown())) {
             navigationFragment.selectNavigationPreference(0, null);
