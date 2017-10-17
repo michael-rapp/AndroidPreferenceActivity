@@ -35,8 +35,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -405,7 +403,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      * A set, which contains the listeners, which have been registered to be notified when the
      * currently shown preference fragment has been changed.
      */
-    private Set<PreferenceFragmentListener> preferenceFragmentListeners = new LinkedHashSet<>();
+    private Set<PreferenceFragmentListenerOld> preferenceFragmentListeners = new LinkedHashSet<>();
 
     /**
      * A set, which contains the listeners, which have registered to be notified when the user
@@ -667,7 +665,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      * Notifies all registered listeners that a preference fragment has been shown.
      */
     private void notifyOnPreferenceFragmentShown() {
-        for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+        for (PreferenceFragmentListenerOld listener : preferenceFragmentListeners) {
             listener.onPreferenceFragmentShown(getListAdapter().indexOf(currentHeader),
                     currentHeader, preferenceScreenFragment);
         }
@@ -677,7 +675,7 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      * Nptifies all registered listeners that a preference fragment has been hidden.
      */
     private void notifyOnPreferenceFragmentHidden() {
-        for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+        for (PreferenceFragmentListenerOld listener : preferenceFragmentListeners) {
             listener.onPreferenceFragmentHidden();
         }
     }
@@ -1186,10 +1184,10 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      *
      * @param listener
      *         The listener, which should be added, as an instance of the type {@link
-     *         PreferenceFragmentListener}. The listener may not be null
+     *         PreferenceFragmentListenerOld}. The listener may not be null
      */
     public final void addPreferenceFragmentListener(
-            @NonNull final PreferenceFragmentListener listener) {
+            @NonNull final PreferenceFragmentListenerOld listener) {
         ensureNotNull(listener, "The listener may not be null");
         preferenceFragmentListeners.add(listener);
     }
@@ -1200,10 +1198,10 @@ public abstract class PreferenceActivityOld extends AppCompatActivity
      *
      * @param listener
      *         The listener, which should be removed, as an instance of the type {@link
-     *         PreferenceFragmentListener}. The listener may not be null
+     *         PreferenceFragmentListenerOld}. The listener may not be null
      */
     public final void removePreferenceFragmentListener(
-            @NonNull final PreferenceFragmentListener listener) {
+            @NonNull final PreferenceFragmentListenerOld listener) {
         ensureNotNull(listener, "The listener may not be null");
         preferenceFragmentListeners.remove(listener);
     }

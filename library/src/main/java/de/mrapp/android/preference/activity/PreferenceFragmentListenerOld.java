@@ -23,29 +23,28 @@ import android.support.annotation.NonNull;
  * @author Michael Rapp
  * @since 2.1.1
  */
-public interface PreferenceFragmentListener {
+public interface PreferenceFragmentListenerOld {
 
     /**
      * The method, which is invoked, when a preference fragment has been shown.
      *
-     * @param navigationPreference
-     *         The navigation preference, the fragment, which has been shown, is associated with, as
-     *         an instance of the class {@link NavigationPreference}. The navigation preference may
-     *         not be null
+     * @param position
+     *         The position of the preference header, the fragment, which has been shown, belongs
+     *         to, as an {@link Integer} value
+     * @param preferenceHeader
+     *         The preference header, the fragment, which has been shown, belongs to, as an instance
+     *         of the class {@link PreferenceHeader}
      * @param fragment
-     *         The fragment, which has been shown, as an instance of the class {@link Fragment}. The
-     *         fragment may not be null
+     *         The fragment, which has been shown, as an instance of the class {@link Fragment}
      */
-    void onPreferenceFragmentShown(@NonNull NavigationPreference navigationPreference,
+    void onPreferenceFragmentShown(int position, @NonNull PreferenceHeader preferenceHeader,
                                    @NonNull Fragment fragment);
 
     /**
-     * The method, which is invoked, when a previously shown preference fragment has been hidden.
-     *
-     * @param fragment
-     *         The fragment, which has been hidden, as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     * The method, which is invoked, when a previously preference fragment has been hidden. This
+     * method is only invoked, when the preference headers are shown on a device with a small screen
+     * or when all preference headers have been removed.
      */
-    void onPreferenceFragmentHidden(@NonNull Fragment fragment);
+    void onPreferenceFragmentHidden();
 
 }

@@ -383,6 +383,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Bundle preferenceFragmentArguments;
 
     /**
+     * A set, which contains the listeners, which have been registered to be notified, when the
+     * currently shown preference fragment has changed.
+     */
+    private Set<PreferenceFragmentListener> preferenceFragmentListeners = new LinkedHashSet<>();
+
+    /**
      * A set, which contains the listeners, which have been registered to be notified, when the user
      * navigates within the activity, when it used as a wizard.
      */
@@ -813,7 +819,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (!TextUtils.isEmpty(navigationPreference.getFragment())) {
             Fragment fragment = Fragment.instantiate(this, navigationPreference.getFragment(),
                     preferenceFragmentArguments);
-            showPreferenceFragment(fragment);
+            showPreferenceFragment(navigationPreference, fragment);
             showBreadCrumb(navigationPreference, preferenceFragmentArguments);
         } else {
             removePreferenceFragmentUnconditionally();
@@ -829,11 +835,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
     /**
      * Shows a specific preference fragment.
      *
+     * @param navigationPreference
+     *         The navigation preference, the fragment, which should be shown, is associated with,
+     *         as an instance of the class {@link NavigationPreference}. The navigation preference
+     *         may not be null
      * @param fragment
      *         The fragment, which should be shown, as an instance of the class {@link Fragment}.
      *         The fragment may not be null
      */
-    private void showPreferenceFragment(@NonNull final Fragment fragment) {
+    private void showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
+                                        @NonNull final Fragment fragment) {
         fragment.setRetainInstance(true);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -842,10 +853,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
             if (preferenceFragment != null) {
                 transaction.remove(preferenceFragment);
+                notifyOnPreferenceFragmentHidden(preferenceFragment);
             }
 
             transaction.add(R.id.navigation_fragment_container, fragment, PREFERENCE_FRAGMENT_TAG);
         } else {
+            if (preferenceFragment != null) {
+                notifyOnPreferenceFragmentHidden(preferenceFragment);
+            }
+
             transaction
                     .replace(R.id.preference_fragment_container, fragment, PREFERENCE_FRAGMENT_TAG);
         }
@@ -855,6 +871,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         this.preferenceFragment = fragment;
         showToolbarNavigationIcon();
         adaptBreadCrumbVisibility(preferenceFragmentArguments);
+        notifyOnPreferenceFragmentShown(navigationPreference, fragment);
     }
 
     /**
@@ -892,6 +909,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
             transaction.commit();
+            notifyOnPreferenceFragmentHidden(preferenceFragment);
             preferenceFragment = null;
         }
     }
@@ -1392,6 +1410,38 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Notifies all registered listeners that a preference fragment has been shown.
+     *
+     * @param navigationPreference
+     *         The navigation preference, the fragment, which has been shown, is associated with, as
+     *         an instance of the class {@link NavigationPreference}. The navigation preference may
+     *         not be null
+     * @param fragment
+     *         The fragment, which has been shown, as an instance of the class {@link Fragment}. The
+     *         fragment may not be null
+     */
+    private void notifyOnPreferenceFragmentShown(
+            @NonNull final NavigationPreference navigationPreference,
+            @NonNull final Fragment fragment) {
+        for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+            listener.onPreferenceFragmentShown(navigationPreference, fragment);
+        }
+    }
+
+    /**
+     * Notifies all registered listeners that a preference fragment has been hidden.
+     *
+     * @param fragment
+     *         The fragment, which has been hidden, as an instance of the class {@link Fragment}.
+     *         The fragment may not be null
+     */
+    private void notifyOnPreferenceFragmentHidden(@NonNull final Fragment fragment) {
+        for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
+            listener.onPreferenceFragmentHidden(fragment);
+        }
+    }
+
+    /**
      * Notifies all registered listeners, that the user wants to navigate to the next step of the
      * wizard.
      *
@@ -1493,6 +1543,34 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
 
         return result;
+    }
+
+    /**
+     * Adds a new listener, which should be notified, when the currently shown preference fragment
+     * has been changed, to the activity.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link
+     *         PreferenceFragmentListener}. The listener may not be null
+     */
+    public final void addPreferenceFragmentListener(
+            @NonNull final PreferenceFragmentListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        preferenceFragmentListeners.add(listener);
+    }
+
+    /**
+     * Removes a specific listener, which should not be notified, when the currently shown
+     * preference fragment has been changed, anymore.
+     *
+     * @param listener
+     *         The listener, which should be removed, as an instance of the type {@link
+     *         PreferenceFragmentListener}. The listener may not be null
+     */
+    public final void removePreferenceFragmentListener(
+            @NonNull final PreferenceFragmentListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        preferenceFragmentListeners.remove(listener);
     }
 
     /**
