@@ -29,6 +29,7 @@ License.
     <string name="wizard_button">Show Wizard</string>
     <string name="settings_category">Settings</string>
     <string name="introduction_preference_header_title">Introduction</string>
+    <string name="appearance_navigation_preference_key">appearance_navigation_preference</string>
     <string name="appearance_preference_header_title">Appearance</string>
     <string name="appearance_preference_theme_category">Theme</string>
     <string name="theme_preference_title">Theme</string>
@@ -62,6 +63,7 @@ License.
     <string name="preference_fragment_button_bar_elevation_preference_summary">The elevation of a preference fragment\'s button bar in dp</string>
     <string name="preference_fragment_button_bar_elevation_preference_key">preference_fragment_button_bar_elevation_preference_key</string>
     <string name="preference_fragment_button_bar_elevation_preference_default_value">2</string>
+    <string name="behavior_navigation_preference_key">behavior_navigation_preference</string>
     <string name="behavior_preference_header_title">Behavior</string>
     <string name="behavior_preference_navigation_icon_category">Navigation icon</string>
     <string name="override_navigation_icon_preference_title">Override navigation icon</string>

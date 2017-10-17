@@ -13,10 +13,12 @@
  */
 package de.mrapp.android.preference.activity.example;
 
-import android.preference.PreferenceFragment;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
+import de.mrapp.android.preference.activity.PreferenceFragment;
 
 /**
  * An activity, which is used to demonstrate the default appearance of a {@link
@@ -26,9 +28,47 @@ import de.mrapp.android.preference.activity.PreferenceActivity;
  */
 public class SettingsActivity extends AbstractPreferenceActivity {
 
+    /**
+     * Initializes the navigation preference, which allows to navigate to the appearance settings.
+     *
+     * @param fragment
+     *         The fragment, which contains the preference, as an instance of the class {@link
+     *         android.preference.PreferenceFragment}. The fragment may not be null
+     */
+    private void initializeAppearanceNavigationPreference(
+            @NonNull final android.preference.PreferenceFragment fragment) {
+        String key = getString(R.string.appearance_navigation_preference_key);
+        NavigationPreference navigationPreference =
+                (NavigationPreference) fragment.findPreference(key);
+        Bundle extras = new Bundle();
+        extras.putBoolean(PreferenceFragment.EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, true);
+        navigationPreference.setExtras(extras);
+
+    }
+
+    /**
+     * Initializes the navigation preference, which allows to navigate to the behavior settings.
+     *
+     * @param fragment
+     *         The fragment, which contains the preference, as an instance of the class {@link
+     *         android.preference.PreferenceFragment}. The fragment may not be null
+     */
+    private void initializeBehaviorNavigationPreference(
+            @NonNull final android.preference.PreferenceFragment fragment) {
+        String key = getString(R.string.behavior_navigation_preference_key);
+        NavigationPreference navigationPreference =
+                (NavigationPreference) fragment.findPreference(key);
+        Bundle extras = new Bundle();
+        extras.putBoolean(PreferenceFragment.EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, true);
+        navigationPreference.setExtras(extras);
+    }
+
     @Override
-    public final void onNavigationCreated(@NonNull final PreferenceFragment fragment) {
+    public final void onCreateNavigation(
+            @NonNull final android.preference.PreferenceFragment fragment) {
         fragment.addPreferencesFromResource(R.xml.navigation);
+        initializeAppearanceNavigationPreference(fragment);
+        initializeBehaviorNavigationPreference(fragment);
     }
 
 }

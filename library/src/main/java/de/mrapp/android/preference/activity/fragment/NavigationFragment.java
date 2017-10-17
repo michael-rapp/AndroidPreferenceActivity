@@ -53,7 +53,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
          *         The navigation fragment as an instance of the class {@link PreferenceFragment}.
          *         The fragment may not be null
          */
-        void onNavigationCreated(@NonNull PreferenceFragment fragment);
+        void onNavigationFragmentCreated(@NonNull PreferenceFragment fragment);
 
         /**
          * The method, which is invoked, when the adapter, which contains the navigation items, has
@@ -87,9 +87,9 @@ public class NavigationFragment extends AbstractPreferenceFragment
     /**
      * Notifies the callback, that the navigation fragment has been attached to its activity.
      */
-    private void notifyOnNavigationCreated() {
+    private void notifyOnNavigationFragmentCreated() {
         if (callback != null) {
-            callback.onNavigationCreated(this);
+            callback.onNavigationFragmentCreated(this);
         }
     }
 
@@ -286,7 +286,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState == null) {
-            notifyOnNavigationCreated();
+            notifyOnNavigationFragmentCreated();
         }
     }
 

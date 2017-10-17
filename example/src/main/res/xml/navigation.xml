@@ -25,11 +25,13 @@ License.
         <de.mrapp.android.preference.activity.NavigationPreference
             android:fragment="de.mrapp.android.preference.activity.example.fragment.AppearancePreferenceFragment"
             android:icon="@drawable/appearance_icon"
+            android:key="@string/appearance_navigation_preference_key"
             android:title="@string/appearance_preference_header_title"/>
 
         <de.mrapp.android.preference.activity.NavigationPreference
             android:fragment="de.mrapp.android.preference.activity.example.fragment.BehaviorPreferenceFragment"
             android:icon="@drawable/behavior_icon"
+            android:key="@string/behavior_navigation_preference_key"
             android:title="@string/behavior_preference_header_title"/>
 
     </PreferenceCategory>

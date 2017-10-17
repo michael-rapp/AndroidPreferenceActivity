@@ -1948,6 +1948,21 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 null;
     }
 
+    /**
+     * The method, which is invoked on implementing subclasses, when the navigation is created. It
+     * may be overridden in order to add preferences to the preference fragment, which contains the
+     * navigation's preferences.
+     *
+     * @param fragment
+     *         The preference fragment, which contains the navigation's preferences, as an instance
+     *         of the class {@link android.preference.PreferenceFragment}. The preference fragment
+     *         may not be null
+     */
+    protected void onCreateNavigation(
+            @NonNull final android.preference.PreferenceFragment fragment) {
+
+    }
+
     @Override
     public final void setTitle(@StringRes final int resourceId) {
         setTitle(getText(resourceId));
@@ -1960,8 +1975,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNavigationCreated(@NonNull final android.preference.PreferenceFragment fragment) {
-
+    public final void onNavigationFragmentCreated(
+            @NonNull final android.preference.PreferenceFragment fragment) {
+        onCreateNavigation(fragment);
     }
 
     @Override

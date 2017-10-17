@@ -111,7 +111,8 @@ public class WizardActivity extends AbstractPreferenceActivity implements Wizard
     }
 
     @Override
-    public final void onNavigationCreated(@NonNull final PreferenceFragment preferenceFragment) {
+    public final void onCreateNavigation(
+            @NonNull final PreferenceFragment preferenceFragment) {
         preferenceFragment.addPreferencesFromResource(R.xml.wizard_navigation);
     }
 
