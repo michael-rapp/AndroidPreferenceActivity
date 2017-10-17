@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import de.mrapp.android.preference.activity.PreferenceActivity;
+import de.mrapp.android.preference.activity.example.fragment.BehaviorPreferenceFragment;
 
 /**
  * The example app's main activity.
@@ -81,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                // TODO intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, BehaviorPreferenceFragment.class.getName());
+                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+                        BehaviorPreferenceFragment.class.getName());
 
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                             getString(R.string.alternative_title_preference_default_value);
                     String titleKey = getString(R.string.alternative_title_preference_key);
                     String title = sharedPreferences.getString(titleKey, titleDefaultValue);
-                    // TODO intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE, title);
+                    intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE, title);
                 }
 
                 startActivity(intent);

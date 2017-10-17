@@ -200,6 +200,20 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     }
 
     /**
+     * Returns the navigation preference, which corresponds to a specific index.
+     *
+     * @param index
+     *         The index of the navigation preference, which should be returned, among all
+     *         navigation preferences as an {@link Integer} value
+     * @return The navigation preference, which corresponds to the given index, as an instance of
+     * the class {@link NavigationPreference}. The navigation preference may not be null
+     */
+    @NonNull
+    public final NavigationPreference getNavigationPreference(final int index) {
+        return navigationPreferences.get(index);
+    }
+
+    /**
      * Returns the currently selected navigation preference.
      *
      * @return The currently selected navigation preference as an instance of the class {@link

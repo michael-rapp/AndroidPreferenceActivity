@@ -75,7 +75,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
     private NavigationPreferenceGroupAdapter.Callback adapterCallback;
 
     /**
-     * The adapter, which contains the navigation items.
+     * The adapter, which contains the navigation preferences.
      */
     private NavigationPreferenceGroupAdapter adapter;
 
@@ -182,6 +182,20 @@ public class NavigationFragment extends AbstractPreferenceFragment
      */
     public final int getNavigationPreferenceCount() {
         return adapter != null ? adapter.getNavigationPreferenceCount() : 0;
+    }
+
+    /**
+     * Returns the navigation preference, which corresponds to a specific index.
+     *
+     * @param index
+     *         The index of the navigation preference, which should be returned, among all
+     *         navigation preferences as an {@link Integer} value
+     * @return The navigation preference, which corresponds to the given index, as an instance of
+     * the class {@link NavigationPreference} or null, if the adapter, which contains the navigation
+     * preferences, has not been initialized yet
+     */
+    public final NavigationPreference getNavigationPreference(final int index) {
+        return adapter != null ? adapter.getNavigationPreference(index) : null;
     }
 
     /**

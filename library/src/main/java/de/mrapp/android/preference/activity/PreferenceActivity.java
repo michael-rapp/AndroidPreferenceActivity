@@ -15,6 +15,7 @@ package de.mrapp.android.preference.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,6 +67,33 @@ import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
  */
 public abstract class PreferenceActivity extends AppCompatActivity
         implements NavigationFragment.Callback, NavigationPreferenceGroupAdapter.Callback {
+
+    /**
+     * When starting this activity, the invoking intent can contain this extra string to specify
+     * which fragment should be initially displayed.
+     */
+    public static final String EXTRA_SHOW_FRAGMENT = ":android:show_fragment";
+
+    /**
+     * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>, this extra can also
+     * be specified to supply a bundle of arguments to pass to that fragment when it is instantiated
+     * during the initial creation of the activity.
+     */
+    public static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":android:show_fragment_args";
+
+    /**
+     * When starting this activity and using <code>EXTRA_SHOW_FRAGMENT</code>, this extra can also
+     * be specified to supply the title to be shown for that fragment.
+     */
+    public static final String EXTRA_SHOW_FRAGMENT_TITLE = ":android:show_fragment_title";
+
+    /**
+     * When starting this activity, the invoking intent can contain this extra boolean that the
+     * header list should not be displayed. This is most often used in conjunction with
+     * <code>EXTRA_SHOW_FRAGMENT</code> to launch the activity to display a specific fragment that
+     * the user has navigated to.
+     */
+    public static final String EXTRA_NO_HEADERS = ":android:no_headers";
 
     /**
      * When starting this activity, the invoking intent can contain this extra boolean to display
@@ -509,6 +537,72 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Handles extras of the intent, which has been used to start the activity, that allow to
+     * initially display a specific fragment.
+     *
+     * @return True, if a fragment is initially shown, false otherwise
+     */
+    private boolean handleShowFragmentIntent() {
+        String initialFragment = getIntent().getStringExtra(EXTRA_SHOW_FRAGMENT);
+
+        if (!TextUtils.isEmpty(initialFragment)) {
+            for (int i = 0; i < navigationFragment.getNavigationPreferenceCount(); i++) {
+                NavigationPreference navigationPreference =
+                        navigationFragment.getNavigationPreference(i);
+
+                if (navigationPreference != null && navigationPreference.getFragment() != null &&
+                        navigationPreference.getFragment().equals(initialFragment)) {
+                    Bundle arguments = getIntent().getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
+                    CharSequence title =
+                            getCharSequenceFromIntent(getIntent(), EXTRA_SHOW_FRAGMENT_TITLE);
+
+                    if (title != null) {
+                        if (arguments == null) {
+                            arguments = new Bundle();
+                        }
+
+                        arguments.putCharSequence(EXTRA_SHOW_FRAGMENT_TITLE, title);
+                    }
+
+                    navigationFragment.selectNavigationPreference(i, arguments);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the char sequence, which is specified by a specific intent extra. The char sequence
+     * can either be specified as a string or as a resource id.
+     *
+     * @param intent
+     *         The intent, which specifies the char sequence, as an instance of the class {@link
+     *         Intent}. The intent may not be null
+     * @param name
+     *         The name of the intent extra, which specifies the char sequence, as a {@link String}.
+     *         The name may not be null
+     * @return The char sequence, which is specified by the given intent, as an instance of the
+     * class {@link CharSequence} or null, if the intent does not specify a char sequence with the
+     * given name
+     */
+    private CharSequence getCharSequenceFromIntent(@NonNull final Intent intent,
+                                                   @NonNull final String name) {
+        CharSequence charSequence = intent.getCharSequenceExtra(name);
+
+        if (charSequence == null) {
+            int resourceId = intent.getIntExtra(name, 0);
+
+            if (resourceId != 0) {
+                charSequence = getText(resourceId);
+            }
+        }
+
+        return charSequence;
+    }
+
+    /**
      * Handles extras the intent, which has been used to start the activity.
      */
     private void handleIntent() {
@@ -720,12 +814,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
             Fragment fragment = Fragment.instantiate(this, navigationPreference.getFragment(),
                     preferenceFragmentArguments);
             showPreferenceFragment(fragment);
-            showBreadCrumb(navigationPreference);
+            showBreadCrumb(navigationPreference, preferenceFragmentArguments);
         } else {
             removePreferenceFragmentUnconditionally();
 
             if (isSplitScreen()) {
-                showBreadCrumb(navigationPreference);
+                showBreadCrumb(navigationPreference, preferenceFragmentArguments);
             }
         }
 
@@ -788,7 +882,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (isPreferenceFragmentShown()) {
             resetTitle();
             hideToolbarNavigationIcon();
-            adaptBreadCrumbVisibility(breadCrumbVisibility);
+            adaptBreadCrumbVisibility();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(preferenceFragment);
 
@@ -810,15 +904,28 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @param navigationPreference
      *         The navigation preference, whose bread crumb should be shown, as an instance of the
      *         class {@link NavigationPreference}. The navigation preference may not be null
+     * @param arguments
+     *         The arguments, which are passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments are passed to the fragment
      */
-    private void showBreadCrumb(@NonNull final NavigationPreference navigationPreference) {
-        CharSequence breadCrumbTitle = navigationPreference.getBreadCrumbTitle();
+    private void showBreadCrumb(@NonNull final NavigationPreference navigationPreference,
+                                @Nullable final Bundle arguments) {
+        CharSequence breadCrumbTitle = null;
+
+        if (arguments != null && arguments.containsKey(EXTRA_SHOW_FRAGMENT_TITLE)) {
+            breadCrumbTitle = arguments.getCharSequence(EXTRA_SHOW_FRAGMENT_TITLE);
+        }
 
         if (TextUtils.isEmpty(breadCrumbTitle)) {
-            breadCrumbTitle = navigationPreference.getTitle();
+            breadCrumbTitle = navigationPreference.getBreadCrumbTitle();
 
             if (TextUtils.isEmpty(breadCrumbTitle)) {
-                breadCrumbTitle = getTitle();
+                breadCrumbTitle = navigationPreference.getTitle();
+
+                if (TextUtils.isEmpty(breadCrumbTitle)) {
+                    breadCrumbTitle = getTitle();
+                }
             }
         }
 
@@ -1145,7 +1252,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         NavigationPreference selectedNavigationPreference = getSelectedNavigationPreference();
 
         if (selectedNavigationPreference != null) {
-            showBreadCrumb(selectedNavigationPreference);
+            showBreadCrumb(selectedNavigationPreference, null);
         }
     }
 
@@ -1163,8 +1270,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
             boolean hideBreadCrumb = arguments.getBoolean(EXTRA_NO_BREAD_CRUMBS, false);
             adaptBreadCrumbVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
         } else {
-            adaptBreadCrumbVisibility(breadCrumbVisibility);
+            adaptBreadCrumbVisibility();
         }
+    }
+
+    /**
+     * Adapts the visibility of the toolbar, which is used to show the breadcrumb of the currently
+     * selected navigation preference.
+     */
+    private void adaptBreadCrumbVisibility() {
+        adaptBreadCrumbVisibility(breadCrumbVisibility);
     }
 
     /**
@@ -1731,7 +1846,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final void setBreadCrumbVisibility(final int visibility) {
         this.breadCrumbVisibility = visibility;
-        adaptBreadCrumbVisibility(visibility);
+        adaptBreadCrumbVisibility();
     }
 
     /**
@@ -1776,10 +1891,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
         navigationFragment.setCallback(null);
         adaptNavigationWidth();
         adaptNavigationVisibility();
+        adaptBreadCrumbVisibility();
         adaptButtonBarVisibility();
-        // TODO: Adapt all views
+        adaptNextButtonText();
+        adaptBackButtonText();
+        adaptFinishButtonText();
 
-        if (navigationFragment.getNavigationPreferenceCount() > 0 &&
+        if (!handleShowFragmentIntent() && navigationFragment.getNavigationPreferenceCount() > 0 &&
                 (isSplitScreen() || isButtonBarShown())) {
             navigationFragment.selectNavigationPreference(0, null);
         }
@@ -1882,7 +2000,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         NavigationPreference selectedNavigationPreference = getSelectedNavigationPreference();
 
         if (selectedNavigationPreference != null) {
-            showBreadCrumb(selectedNavigationPreference);
+            showBreadCrumb(selectedNavigationPreference, preferenceFragmentArguments);
             showToolbarNavigationIcon();
         }
     }
