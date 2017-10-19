@@ -1796,6 +1796,74 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the toolbar, which is used to show the activity's title, when using the split screen
+     * layout.
+     *
+     * @return The toolbar, which is used to show the activity's title, when using the split screen
+     * layout, as an instance of the class Toolbar or null, if the activity has not been created yet
+     * or if the split screen layout is not used
+     */
+    public final Toolbar getNavigationToolbar() {
+        return toolbarLarge != null ? toolbarLarge.getToolbar() : null;
+    }
+
+    /**
+     * Returns the toolbar, which is used to show the bread crumb of the currently selected
+     * navigation preference, when using the split screen layout.
+     *
+     * @return The toolbar, which is used to show the bread crumb of the currently selected
+     * navigation preference, when using the split screen layout, as an instance of the class
+     * Toolbar or null, if the activity has not been created yet or if the split screen layout is
+     * not used
+     */
+    public final Toolbar getBreadCrumbToolbar() {
+        return breadCrumbToolbar;
+    }
+
+    /**
+     * Returns the button bar, which is shown when the activity is used as a wizard.
+     *
+     * @return The button bar as an instance of the class {@link ViewGroup} or null, if the activity
+     * has not been created yet
+     */
+    public final ViewGroup getButtonBar() {
+        return buttonBar;
+    }
+
+    /**
+     * Returns the next button, which is shown when the activity is used as a wizard and the last
+     * navigation preference is not selected.
+     *
+     * @return The next button as an instance of the class {@link Button} or null, if the activity
+     * has not been created yet
+     */
+    public final Button getNextButton() {
+        return nextButton;
+    }
+
+    /**
+     * Returns the back button, which is shown when the activity is used as a wizard and the first
+     * navigation preference is not selected.
+     *
+     * @return The back button as an instance of the class {@link Button} or null, if the activity
+     * has not been created yet
+     */
+    public final Button getBackButton() {
+        return backButton;
+    }
+
+    /**
+     * Returns the finish button, which is shown when the activity is used as a wizard and the last
+     * navigation preference is selected.
+     *
+     * @return The finish button as an instance of the class {@link Button} or null, if the activity
+     * has not been created yet
+     */
+    public final Button getFinishButton() {
+        return finishButton;
+    }
+
+    /**
      * Sets, whether the split screen layout should be used on tablets, or not.
      *
      * @param useSplitScreen
