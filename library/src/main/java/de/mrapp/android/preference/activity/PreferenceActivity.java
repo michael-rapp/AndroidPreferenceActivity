@@ -45,14 +45,19 @@ import de.mrapp.android.preference.activity.fragment.NavigationFragment;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.Condition;
 import de.mrapp.android.util.DisplayUtil.DeviceType;
+import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.Condition.ensureNotEmpty;
 import static de.mrapp.android.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
+import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 /**
  * An activity, which provides a navigation for multiple groups of preferences, in which each group
@@ -222,6 +227,36 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::BreadcrumbVisibility";
 
     /**
+     * The name of the extra, which is used to store the elevation of the activity's toolbar within
+     * a bundle.
+     */
+    private static final String TOOLBAR_ELEVATION_EXTRA =
+            PreferenceActivity.class.getName() + "::ToolbarElevation";
+
+    /**
+     * The name of the extra, which is used to store the elevation of the toolbar, which is used to
+     * show the bread crumb of the currently selected preference fragment, when using the split
+     * screen layout, within a bundle.
+     */
+    private static final String BREADCRUMB_ELEVATION_EXTRA =
+            PreferenceActivity.class.getName() + "::BreadcrumbElevation";
+
+    /**
+     * The name of the extra, which is used to store the elevation of the card view, which contains
+     * the currently shown preference fragment, when using the split screen layout, within a
+     * bundle.
+     */
+    private static final String CARD_VIEW_ELEVATION_EXTRA =
+            PreferenceActivity.class.getName() + "::CardViewElevation";
+
+    /**
+     * The name of the extra, which is used to store the elevation of the button bar, which is shown
+     * when the activity is used as a wizard, within a bundle.
+     */
+    private static final String BUTTON_BAR_ELEVATION_EXTRA =
+            PreferenceActivity.class.getName() + "::ButtonBarElevation";
+
+    /**
      * The name of the extra, which is used to store, whether the behavior of the navigation icon
      * should be overridden, or not, within a bundle.
      */
@@ -303,6 +338,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private ElevationShadowView buttonBarShadowView;
 
     /**
+     * The view, which is used to draw a shadow below the activity's toolbar.
+     */
+    private ElevationShadowView toolbarShadowView;
+
+    /**
+     * The view, which is used to draw a shadow below the toolbar, which is used to show the bread
+     * crumb of the currently selected preference header when using the split screen layout.
+     */
+    private ElevationShadowView breadCrumbShadowView;
+
+    /**
      * The fragment, which contains the activity's navigation.
      */
     private NavigationFragment navigationFragment;
@@ -366,6 +412,28 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private String progressFormat;
 
     /**
+     * The elevation of the activity's toolbar in dp.
+     */
+    private int toolbarElevation;
+
+    /**
+     * The elevation of the toolbar, which is used to show the bread crumb of the currently selected
+     * preference fragment, when using the split screen layout, in dp.
+     */
+    private int breadCrumbElevation;
+
+    /**
+     * The elevation of the card view, which contains the currently shown preference fragment, when
+     * using the split screen layout, in dp.
+     */
+    private int cardViewElevation;
+
+    /**
+     * Sets the elevation of the button bar, which is shown when using the activity as a wizard.
+     */
+    private int buttonBarElevation;
+
+    /**
      * The visibility of the toolbar, which is used to show the breadcrumb of the currently selected
      * preference header.
      */
@@ -409,6 +477,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainShowProgress();
         obtainProgressFormat();
         obtainBreadcrumbVisibility();
+        obtainToolbarElevation();
+        obtainBreadcrumbElevation();
+        obtainCardViewElevation();
+        obtainButtonBarElevation();
     }
 
     /**
@@ -540,6 +612,70 @@ public abstract class PreferenceActivity extends AppCompatActivity
         int visibility = ThemeUtil.getInt(this, R.attr.breadCrumbVisibility, 0);
         setBreadCrumbVisibility(
                 visibility == 0 ? View.VISIBLE : (visibility == 1 ? View.INVISIBLE : View.GONE));
+    }
+
+    /**
+     * Obtains the elevation of the activity's toolbar from the activity's theme.
+     */
+    private void obtainToolbarElevation() {
+        int elevation;
+
+        try {
+            elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.toolbarElevation);
+        } catch (NotFoundException e) {
+            elevation = getResources().getDimensionPixelSize(R.dimen.default_toolbar_elevation);
+        }
+
+        setToolbarElevation(pixelsToDp(this, elevation));
+    }
+
+    /**
+     * Obtains the elevation of the toolbar, which is used to show the bread crumb of the currently
+     * selected preference fragment, when using the split screen layout.
+     */
+    private void obtainBreadcrumbElevation() {
+        int elevation;
+
+        try {
+            elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.breadCrumbElevation);
+        } catch (NotFoundException e) {
+            elevation = getResources().getDimensionPixelSize(R.dimen.default_bread_crumb_elevation);
+        }
+
+        setBreadCrumbElevation(pixelsToDp(this, elevation));
+    }
+
+    /**
+     * Obtains the elevation of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout, from the activity's theme.
+     */
+    private void obtainCardViewElevation() {
+        int elevation;
+
+        try {
+            elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.cardViewElevation);
+        } catch (NotFoundException e) {
+            elevation = getResources()
+                    .getDimensionPixelSize(R.dimen.default_preference_screen_elevation);
+        }
+
+        setCardViewElevation(pixelsToDp(this, elevation));
+    }
+
+    /**
+     * Obtains the elevation of the button bar, which is shown when using the activity as a wizard,
+     * from the activity's theme.
+     */
+    private void obtainButtonBarElevation() {
+        int elevation;
+
+        try {
+            elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.wizardButtonBarElevation);
+        } catch (NotFoundException e) {
+            elevation = getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
+        }
+
+        setButtonBarElevation(pixelsToDp(this, elevation));
     }
 
     /**
@@ -752,6 +888,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         finishButton = findViewById(R.id.finish_button);
         finishButton.setOnClickListener(createFinishButtonListener());
         buttonBarShadowView = findViewById(R.id.wizard_button_bar_shadow_view);
+        toolbarShadowView = findViewById(R.id.toolbar_shadow_view);
+        breadCrumbShadowView = findViewById(R.id.bread_crumb_shadow_view);
     }
 
     /**
@@ -1311,15 +1449,53 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private void adaptBreadCrumbVisibility(final int visibility) {
         if (isSplitScreen()) {
-            if (breadCrumbToolbar != null) {
+            if (breadCrumbToolbar != null && breadCrumbShadowView != null) {
                 breadCrumbToolbar.setVisibility(visibility);
-                // TODO breadCrumbShadowView.setVisibility(visibility);
+                breadCrumbShadowView.setVisibility(visibility);
             }
         } else {
-            if (toolbar != null) {
+            if (toolbar != null && toolbarShadowView != null) {
                 toolbar.setVisibility(visibility);
-                // TODO toolbarShadowView.setVisibility(visibility);
+                toolbarShadowView.setVisibility(visibility);
             }
+        }
+    }
+
+    /**
+     * Adapts the elevation of the activity's toolbar.
+     */
+    private void adaptToolbarElevation() {
+        if (toolbarShadowView != null) {
+            toolbarShadowView.setShadowElevation(toolbarElevation);
+        }
+    }
+
+    /**
+     * Adapts the elevation of the toolbar, which is used to show the bread crumb of the currently
+     * selected preference fragment, when using the split screen layout.
+     */
+    private void adaptBreadCrumbElevation() {
+        if (breadCrumbShadowView != null) {
+            breadCrumbShadowView.setShadowElevation(breadCrumbElevation);
+        }
+    }
+
+    /**
+     * Adapts the elevation of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout.
+     */
+    private void adaptCardViewElevation() {
+        if (cardView != null) {
+            cardView.setCardElevation(dpToPixels(this, cardViewElevation));
+        }
+    }
+
+    /**
+     * Adapts the elevation of the button bar, which is shown when using the activity as a wizard.
+     */
+    private void adaptButtonBarElevation() {
+        if (buttonBarShadowView != null) {
+            buttonBarShadowView.setShadowElevation(buttonBarElevation);
         }
     }
 
@@ -1928,6 +2104,110 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the elevation of the activity's toolbar.
+     *
+     * @return The elevation of the activity's toolbar in dp as an {@link Integer} value
+     */
+    public final int getToolbarElevation() {
+        return toolbarElevation;
+    }
+
+    /**
+     * Sets the elevation of the activity's toolbar.
+     *
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     */
+    public final void setToolbarElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+                "The elevation must at maximum " + ElevationUtil.MAX_ELEVATION);
+        this.toolbarElevation = elevation;
+        adaptToolbarElevation();
+    }
+
+    /**
+     * Returns the elevation of the toolbar, which is used to show the bread crumb of the currently
+     * selected preference header, when using the split screen layout.
+     *
+     * @return The elevation of the toolbar, which is used to show the bread crumb of the currently
+     * selected preference header, when using the split screen layout, in dp as an {@link Integer}
+     * value
+     */
+    public final int getBreadCrumbElevation() {
+        return breadCrumbElevation;
+    }
+
+    /**
+     * Sets the elevation of the toolbar, which is used to show the bread crumb of the currently
+     * selected preference header, when using the split screen layout.
+     *
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     */
+    public final void setBreadCrumbElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+                "The elevation must at maximum " + ElevationUtil.MAX_ELEVATION);
+        this.breadCrumbElevation = elevation;
+        adaptBreadCrumbElevation();
+    }
+
+    /**
+     * Returns the elevation of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout.
+     *
+     * @return The elevation of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout, in dp as an {@link Integer} value
+     */
+    public final int getCardViewElevation() {
+        return cardViewElevation;
+    }
+
+    /**
+     * Sets the elevation of the card view, which contains the currently shown prefernce fragment,
+     * when using the split screen layout.
+     *
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     */
+    public final void setCardViewElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+                "The elevation must be at maximum " + ElevationUtil.MAX_ELEVATION);
+        this.cardViewElevation = elevation;
+        adaptCardViewElevation();
+    }
+
+    /**
+     * Returns the elevation of the button bar, which is shown when using the activity as a wizard.
+     *
+     * @return The elevation of the button bar, which is shown when using the activity as a wizard,
+     * in dp as an {@link Integer} value
+     */
+    public final int getButtonBarElevation() {
+        return buttonBarElevation;
+    }
+
+    /**
+     * Sets the elevation of the button bar, which is shown when using the activity as a wizard.
+     *
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     */
+    public final void setButtonBarElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+                "The elevation must be at maximum " + ElevationUtil.MAX_ELEVATION);
+        this.buttonBarElevation = elevation;
+        adaptButtonBarElevation();
+    }
+
+    /**
      * Returns, whether a preference fragment is currently shown, or not.
      *
      * @return True, if a preference fragment is currently shown, false otherwise
@@ -2059,9 +2339,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
             setFinishButtonText(savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA,
                     getText(R.string.finish_button_label)));
             showProgress(savedInstanceState.getBoolean(SHOW_PROGRESS_EXTRA));
+            setBreadCrumbVisibility(savedInstanceState.getInt(BREADCRUMB_VISIBILITY_EXTRA));
             setProgressFormat(savedInstanceState
                     .getString(PROGRESS_FORMAT_EXTRA, getString(R.string.progress_format)));
-            setBreadCrumbVisibility(savedInstanceState.getInt(PROGRESS_FORMAT_EXTRA, 0));
+            setToolbarElevation(savedInstanceState.getInt(TOOLBAR_ELEVATION_EXTRA));
+            setBreadCrumbElevation(savedInstanceState.getInt(BREADCRUMB_ELEVATION_EXTRA));
+            setCardViewElevation(savedInstanceState.getInt(CARD_VIEW_ELEVATION_EXTRA));
+            setButtonBarElevation(savedInstanceState.getInt(BUTTON_BAR_ELEVATION_EXTRA));
             preferenceFragmentArguments =
                     savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
@@ -2085,6 +2369,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putBoolean(SHOW_PROGRESS_EXTRA, showProgress);
         outState.putInt(BREADCRUMB_VISIBILITY_EXTRA, breadCrumbVisibility);
         outState.putString(PROGRESS_FORMAT_EXTRA, progressFormat);
+        outState.putInt(TOOLBAR_ELEVATION_EXTRA, toolbarElevation);
+        outState.putInt(BREADCRUMB_ELEVATION_EXTRA, breadCrumbElevation);
+        outState.putInt(CARD_VIEW_ELEVATION_EXTRA, cardViewElevation);
+        outState.putInt(BUTTON_BAR_ELEVATION_EXTRA, buttonBarElevation);
         outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
 

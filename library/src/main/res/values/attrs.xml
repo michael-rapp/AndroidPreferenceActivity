@@ -31,6 +31,8 @@ License.
         <enum name="invisible" value="1"/>
         <enum name="gone" value="2"/>
     </attr>
+    <attr name="toolbarElevation" format="dimension"/>
+    <attr name="cardViewElevation" format="dimension"/>
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
@@ -43,7 +45,6 @@ License.
     <attr name="showRestoreDefaultsButton" format="boolean"/>
     <attr name="restoreDefaultsButtonText" format="string"/>
     <attr name="restoreDefaultsButtonBarBackground" format="reference|color"/>
-    <attr name="toolbarElevation" format="dimension"/>
     <attr name="breadCrumbElevation" format="dimension"/>
     <attr name="preferenceScreenElevation" format="dimension"/>
     <attr name="wizardButtonBarElevation" format="dimension"/>

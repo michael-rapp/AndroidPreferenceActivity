@@ -43,7 +43,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.toolbar_elevation_preference_key);
         String defaultValue = getString(R.string.toolbar_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        // TODO setToolbarElevation(elevation);
+        setToolbarElevation(elevation);
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String defaultValue =
                 getString(R.string.preference_screen_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        // TODO setPreferenceScreenElevation(elevation);
+        setCardViewElevation(elevation);
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String key = getString(R.string.bread_crumb_elevation_preference_key);
         String defaultValue = getString(R.string.bread_crumb_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        // TODO setBreadCrumbElevation(elevation);
+        setBreadCrumbElevation(elevation);
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class AbstractPreferenceActivity extends PreferenceActivity {
         String defaultValue =
                 getString(R.string.wizard_button_bar_elevation_preference_default_value);
         int elevation = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        // TODO setButtonBarElevation(elevation);
+        setButtonBarElevation(elevation);
     }
 
     /**

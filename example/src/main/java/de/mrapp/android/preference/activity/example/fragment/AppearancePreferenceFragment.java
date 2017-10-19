@@ -67,7 +67,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                // TODO ((PreferenceActivity) getActivity()).setToolbarElevation(elevation);
+                ((PreferenceActivity) getActivity()).setToolbarElevation(elevation);
                 return true;
             }
 
@@ -108,7 +108,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                // TODO ((PreferenceActivity) getActivity()).setPreferenceScreenElevation(elevation);
+                ((PreferenceActivity) getActivity()).setCardViewElevation(elevation);
                 return true;
             }
 
@@ -128,7 +128,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                // TODO ((PreferenceActivity) getActivity()).setBreadCrumbElevation(elevation);
+                ((PreferenceActivity) getActivity()).setBreadCrumbElevation(elevation);
                 return true;
             }
 
@@ -148,7 +148,7 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 int elevation = Integer.valueOf((String) newValue);
-                // TODO ((PreferenceActivity) getActivity()).setButtonBarElevation(elevation);
+                ((PreferenceActivity) getActivity()).setButtonBarElevation(elevation);
                 return true;
             }
 
