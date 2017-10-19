@@ -292,11 +292,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private ViewGroup navigationFragmentContainer;
 
     /**
-     * The container, the currently shown preference fragment is attached to.
-     */
-    private ViewGroup preferenceFragmentContainer;
-
-    /**
      * The activity's root view.
      */
     private FrameLayout frameLayout;
@@ -875,7 +870,6 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 R.layout.preference_activity_phone);
         frameLayout = findViewById(R.id.frame_layout);
         navigationFragmentContainer = findViewById(R.id.navigation_fragment_container);
-        preferenceFragmentContainer = findViewById(R.id.preference_fragment_container);
         cardView = findViewById(R.id.card_view);
         toolbar = findViewById(R.id.toolbar);
         toolbarLarge = findViewById(R.id.toolbar_large);
