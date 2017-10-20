@@ -16,6 +16,7 @@ package de.mrapp.android.preference.activity.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -93,6 +94,11 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      * The index of the currently selected navigation preference.
      */
     private int selectedNavigationPreferenceIndex;
+
+    /**
+     * The background color of the currently selected navigation preference.
+     */
+    private int selectionColor;
 
     /**
      * True, if the items of the adapter are enabled, false otherwise.
@@ -284,8 +290,19 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
                 notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
             }
 
-            super.notifyDataSetInvalidated();
+            super.notifyDataSetChanged();
         }
+    }
+
+    /**
+     * Sets the background color of the currently selected navigation preference.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setSelectionColor(@ColorInt final int color) {
+        this.selectionColor = color;
+        super.notifyDataSetChanged();
     }
 
     /**
@@ -296,6 +313,12 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      */
     public final void setEnabled(final boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public final void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        updateNavigationPreferences();
     }
 
     @Override
@@ -326,9 +349,8 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     @Override
     protected final void onVisualizedItem(@NonNull final Object item, @NonNull final View view) {
         if (item instanceof NavigationPreference) {
-            // TODO Make color customizable
-            view.setBackgroundColor(selectedNavigationPreference == item ? Color.argb(32, 0, 0, 0) :
-                    Color.TRANSPARENT);
+            view.setBackgroundColor(
+                    selectedNavigationPreference == item ? selectionColor : Color.TRANSPARENT);
         }
     }
 

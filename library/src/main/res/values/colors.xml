@@ -25,5 +25,7 @@ License.
     <color name="button_bar_background_dark">#ff272727</color>
     <color name="preference_divider_color_light">#ffcecece</color>
     <color name="preference_divider_color_dark">#ff757575</color>
+    <color name="navigation_selection_color_light">#32000000</color>
+    <color name="navigation_selection_color_dark">#32ffffff</color>
 
 </resources>

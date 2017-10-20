@@ -37,6 +37,7 @@ License.
     <attr name="breadCrumbBackgroundColor" format="color"/>
     <attr name="buttonBarBackground" format="reference|color"/>
     <attr name="navigationBackground" format="reference|color"/>
+    <attr name="navigationSelectionColor" format="color"/>
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>

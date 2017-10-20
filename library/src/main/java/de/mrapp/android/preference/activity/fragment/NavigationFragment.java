@@ -14,8 +14,10 @@
 package de.mrapp.android.preference.activity.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -78,6 +80,11 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * The adapter, which contains the navigation preferences.
      */
     private NavigationPreferenceGroupAdapter adapter;
+
+    /**
+     * The background color of the currently selected navigation preference.
+     */
+    private int selectionColor = Color.TRANSPARENT;
 
     /**
      * True, if the navigation is enabled, false otherwise.
@@ -240,6 +247,20 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Sets the background color of the currently selected navigation preference.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setSelectionColor(@ColorInt final int color) {
+        this.selectionColor = color;
+
+        if (adapter != null) {
+            adapter.setSelectionColor(color);
+        }
+    }
+
+    /**
      * Sets, whether the navigation should be enabled, i.e. whether the navigation preferences
      * should be clickable, or not.
      *
@@ -274,6 +295,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
         if (adapter == null) {
             adapter = new NavigationPreferenceGroupAdapter(context, encapsulatedAdapter,
                     NavigationFragment.this);
+            adapter.setSelectionColor(selectionColor);
             adapter.setEnabled(enabled);
             notifyOnNavigationAdapterCreated();
         }

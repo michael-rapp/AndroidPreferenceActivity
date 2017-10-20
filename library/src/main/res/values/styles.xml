@@ -21,6 +21,7 @@ License.
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="dividerColor">@color/preference_divider_color_light</item>
+        <item name="navigationSelectionColor">@color/navigation_selection_color_light</item>
         <item name="android:listDivider">@null</item>
     </style>
 
@@ -35,6 +36,7 @@ License.
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="dividerColor">@color/preference_divider_color_dark</item>
+        <item name="navigationSelectionColor">@color/navigation_selection_color_dark</item>
         <item name="android:listDivider">@null</item>
     </style>
 

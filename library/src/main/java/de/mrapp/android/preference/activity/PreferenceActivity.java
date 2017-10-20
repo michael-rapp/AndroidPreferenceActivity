@@ -546,6 +546,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Bitmap navigationBackgroundBitmap;
 
     /**
+     * The background color of the currently selected navigation preference.
+     */
+    private int navigationSelectionColor;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
@@ -591,6 +596,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainBreadCrumbBackgroundColor();
         obtainButtonBarBackground();
         obtainNavigationBackground();
+        obtainNavigationSelectionColor();
     }
 
     /**
@@ -856,6 +862,22 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Obtains the background color of the currently selected navigation preference from the
+     * activity's theme.
+     */
+    private void obtainNavigationSelectionColor() {
+        int color;
+
+        try {
+            color = ThemeUtil.getColor(this, R.attr.navigationSelectionColor);
+        } catch (NotFoundException e) {
+            color = ContextCompat.getColor(this, R.color.navigation_selection_color_light);
+        }
+
+        setNavigationSelectionColor(color);
+    }
+
+    /**
      * Handles extras of the intent, which has been used to start the activity, that allow to
      * initially display a specific fragment.
      *
@@ -1107,6 +1129,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         navigationFragment.setAdapterCallback(this);
         preferenceFragment = getFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
+        adaptNavigationSelectionColor();
         adaptNavigationEnabledState();
     }
 
@@ -1713,6 +1736,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void adaptNavigationBackground() {
         if (navigationFragmentContainer != null) {
             ViewUtil.setBackground(navigationFragmentContainer, getNavigationBackground());
+        }
+    }
+
+    /**
+     * Adapts the background color of the currently selected navigation preference.
+     */
+    private void adaptNavigationSelectionColor() {
+        if (navigationFragment != null) {
+            navigationFragment.setSelectionColor(navigationSelectionColor);
         }
     }
 
@@ -2660,6 +2692,28 @@ public abstract class PreferenceActivity extends AppCompatActivity
         this.navigationBackgroundId = -1;
         this.navigationBackgroundBitmap = background;
         adaptNavigationBackground();
+    }
+
+    /**
+     * Returns the background color of the currently selected navigation preference.
+     *
+     * @return The background color of the currently selected navigation preference as an {@link
+     * Integer}
+     */
+    @ColorInt
+    public final int getNavigationSelectionColor() {
+        return navigationSelectionColor;
+    }
+
+    /**
+     * Sets the background color of the currently selected navigation preference.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setNavigationSelectionColor(@ColorInt final int color) {
+        this.navigationSelectionColor = color;
+        adaptNavigationSelectionColor();
     }
 
     /**
