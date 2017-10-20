@@ -17,13 +17,16 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +50,7 @@ import de.mrapp.android.util.Condition;
 import de.mrapp.android.util.DisplayUtil.DeviceType;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ThemeUtil;
+import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -220,11 +224,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * The name of the extra, which is used to store, whether the toolbar, which is used to show the
-     * breadcrumb of the currently selected navigation preference, is shown, or not, within a
+     * bread crumb of the currently selected navigation preference, is shown, or not, within a
      * bundle.
      */
-    private static final String BREADCRUMB_VISIBILITY_EXTRA =
-            PreferenceActivity.class.getName() + "::BreadcrumbVisibility";
+    private static final String BREAD_CRUMB_VISIBILITY_EXTRA =
+            PreferenceActivity.class.getName() + "::BreadCrumbVisibility";
 
     /**
      * The name of the extra, which is used to store the elevation of the activity's toolbar within
@@ -238,8 +242,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * show the bread crumb of the currently selected preference fragment, when using the split
      * screen layout, within a bundle.
      */
-    private static final String BREADCRUMB_ELEVATION_EXTRA =
-            PreferenceActivity.class.getName() + "::BreadcrumbElevation";
+    private static final String BREAD_CRUMB_ELEVATION_EXTRA =
+            PreferenceActivity.class.getName() + "::BreadCrumbElevation";
 
     /**
      * The name of the extra, which is used to store the elevation of the card view, which contains
@@ -250,11 +254,26 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::CardViewElevation";
 
     /**
+     * The name of the extra, which is used to store the background color of the card view, which
+     * contains the currently shown preference fragment, when using the split screen layout.
+     */
+    private static final String CARD_VIEW_BACKGROUND_COLOR_EXTRA =
+            PreferenceActivity.class.getName() + "::CardViewBackgroundColor";
+
+    /**
      * The name of the extra, which is used to store the elevation of the button bar, which is shown
      * when the activity is used as a wizard, within a bundle.
      */
     private static final String BUTTON_BAR_ELEVATION_EXTRA =
             PreferenceActivity.class.getName() + "::ButtonBarElevation";
+
+    /**
+     * The name of the extra, which is used to store the background color of the toolbar, which is
+     * used to show the bread crumb of the currently selected navigation preference, when using the
+     * split screen layout, within a bundle.
+     */
+    private static final String BREAD_CRUMB_BACKGROUND_COLOR_EXTRA =
+            PreferenceActivity.class.getName() + "::BreadCrumbBackgroundColor";
 
     /**
      * The name of the extra, which is used to store, whether the behavior of the navigation icon
@@ -429,10 +448,22 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private int buttonBarElevation;
 
     /**
-     * The visibility of the toolbar, which is used to show the breadcrumb of the currently selected
-     * preference header.
+     * The visibility of the toolbar, which is used to show the bread crumb of the currently
+     * selected navigation preference.
      */
     private int breadCrumbVisibility;
+
+    /**
+     * The background color fo the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout.
+     */
+    private int cardViewBackgroundColor;
+
+    /**
+     * The background color of the toolbar, which is used to show the bread crumb of the currently
+     * selected navigation preference.
+     */
+    private int breadCrumbBackgroundColor;
 
     /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
@@ -471,11 +502,13 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainFinishButtonText();
         obtainShowProgress();
         obtainProgressFormat();
-        obtainBreadcrumbVisibility();
+        obtainBreadCrumbVisibility();
         obtainToolbarElevation();
         obtainBreadcrumbElevation();
         obtainCardViewElevation();
         obtainButtonBarElevation();
+        obtainCardViewBackgroundColor();
+        obtainBreadCrumbBackgroundColor();
     }
 
     /**
@@ -603,7 +636,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Obtains the visibility of the toolbar, which is used to show the breadcrumb of the currently
      * selected navigation preference, from the activity's theme.
      */
-    private void obtainBreadcrumbVisibility() {
+    private void obtainBreadCrumbVisibility() {
         int visibility = ThemeUtil.getInt(this, R.attr.breadCrumbVisibility, 0);
         setBreadCrumbVisibility(
                 visibility == 0 ? View.VISIBLE : (visibility == 1 ? View.INVISIBLE : View.GONE));
@@ -671,6 +704,39 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
 
         setButtonBarElevation(pixelsToDp(this, elevation));
+    }
+
+    /**
+     * Obtains the background color of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout, from the activity's theme.
+     */
+    private void obtainCardViewBackgroundColor() {
+        int color;
+
+        try {
+            color = ThemeUtil.getColor(this, R.attr.cardViewBackgroundColor);
+        } catch (NotFoundException e) {
+            color = ContextCompat.getColor(this, R.color.preference_screen_background_light);
+        }
+
+        setCardViewBackgroundColor(color);
+    }
+
+    /**
+     * Obtains the background color of the toolbar, which is used to show the bread crumb of the
+     * currently selected navigation preference, when using the split screen layout, from the
+     * activity's theme.
+     */
+    private void obtainBreadCrumbBackgroundColor() {
+        int color;
+
+        try {
+            color = ThemeUtil.getColor(this, R.attr.breadCrumbBackgroundColor);
+        } catch (NotFoundException e) {
+            color = ContextCompat.getColor(this, R.color.bread_crumb_background_light);
+        }
+
+        setBreadCrumbBackgroundColor(color);
     }
 
     /**
@@ -1494,6 +1560,29 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Adapts the background color of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout.
+     */
+    private void adaptCardViewBackgroundColor() {
+        if (cardView != null) {
+            cardView.setCardBackgroundColor(cardViewBackgroundColor);
+        }
+    }
+
+    /**
+     * Adapts the background color of the toolbar, which is used to show the bread crumb of the
+     * currently selected navigation preferences, when using the split screen layout.
+     */
+    private void adaptBreadCrumbBackgroundColor() {
+        if (breadCrumbToolbar != null) {
+            GradientDrawable background = (GradientDrawable) ContextCompat
+                    .getDrawable(this, R.drawable.breadcrumb_background);
+            background.setColor(breadCrumbBackgroundColor);
+            ViewUtil.setBackground(getBreadCrumbToolbar(), background);
+        }
+    }
+
+    /**
      * Adapts, whether the navigation is enabled, i.e. clickable, or not.
      */
     private void adaptNavigationEnabledState() {
@@ -2270,6 +2359,55 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the background color of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout.
+     *
+     * @return The background color of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout, as an {@link Integer} value
+     */
+    @ColorInt
+    public final int getCardViewBackgroundColor() {
+        return cardViewBackgroundColor;
+    }
+
+    /**
+     * Sets the background color of the card view, which contains the currently shown preference
+     * fragment, when using the split screen layout.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     */
+    public final void setCardViewBackgroundColor(@ColorInt final int color) {
+        this.cardViewBackgroundColor = color;
+        adaptCardViewBackgroundColor();
+    }
+
+    /**
+     * Returns the background color of the toolbar, which is used to show the bread crumb of the
+     * currently selected navigation preference, when using the split screen layout.
+     *
+     * @return The background color of the toolbar, which is used to show the bread crumb of the
+     * currently selected navigation preference, when using the split screen klayout, as an {@link
+     * Integer} value
+     */
+    @ColorInt
+    public final int getBreadCrumbBackgroundColor() {
+        return breadCrumbBackgroundColor;
+    }
+
+    /**
+     * Sets the background color of the toolbar, which is used to show the bread crumb of the
+     * currently selected navigation preference, when using the split screen layout.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     */
+    public final void setBreadCrumbBackgroundColor(@ColorInt final int color) {
+        this.breadCrumbBackgroundColor = color;
+        adaptBreadCrumbBackgroundColor();
+    }
+
+    /**
      * Returns, whether a preference fragment is currently shown, or not.
      *
      * @return True, if a preference fragment is currently shown, false otherwise
@@ -2401,13 +2539,16 @@ public abstract class PreferenceActivity extends AppCompatActivity
             setFinishButtonText(savedInstanceState.getCharSequence(FINISH_BUTTON_TEXT_EXTRA,
                     getText(R.string.finish_button_label)));
             showProgress(savedInstanceState.getBoolean(SHOW_PROGRESS_EXTRA));
-            setBreadCrumbVisibility(savedInstanceState.getInt(BREADCRUMB_VISIBILITY_EXTRA));
+            setBreadCrumbVisibility(savedInstanceState.getInt(BREAD_CRUMB_VISIBILITY_EXTRA));
             setProgressFormat(savedInstanceState
                     .getString(PROGRESS_FORMAT_EXTRA, getString(R.string.progress_format)));
             setToolbarElevation(savedInstanceState.getInt(TOOLBAR_ELEVATION_EXTRA));
-            setBreadCrumbElevation(savedInstanceState.getInt(BREADCRUMB_ELEVATION_EXTRA));
+            setBreadCrumbElevation(savedInstanceState.getInt(BREAD_CRUMB_ELEVATION_EXTRA));
             setCardViewElevation(savedInstanceState.getInt(CARD_VIEW_ELEVATION_EXTRA));
             setButtonBarElevation(savedInstanceState.getInt(BUTTON_BAR_ELEVATION_EXTRA));
+            setCardViewBackgroundColor(savedInstanceState.getInt(CARD_VIEW_BACKGROUND_COLOR_EXTRA));
+            setBreadCrumbBackgroundColor(
+                    savedInstanceState.getInt(BREAD_CRUMB_BACKGROUND_COLOR_EXTRA));
             preferenceFragmentArguments =
                     savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
@@ -2429,12 +2570,14 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putCharSequence(BACK_BUTTON_TEXT_EXTRA, backButtonText);
         outState.putCharSequence(FINISH_BUTTON_TEXT_EXTRA, finishButtonText);
         outState.putBoolean(SHOW_PROGRESS_EXTRA, showProgress);
-        outState.putInt(BREADCRUMB_VISIBILITY_EXTRA, breadCrumbVisibility);
+        outState.putInt(BREAD_CRUMB_VISIBILITY_EXTRA, breadCrumbVisibility);
         outState.putString(PROGRESS_FORMAT_EXTRA, progressFormat);
         outState.putInt(TOOLBAR_ELEVATION_EXTRA, toolbarElevation);
-        outState.putInt(BREADCRUMB_ELEVATION_EXTRA, breadCrumbElevation);
+        outState.putInt(BREAD_CRUMB_ELEVATION_EXTRA, breadCrumbElevation);
         outState.putInt(CARD_VIEW_ELEVATION_EXTRA, cardViewElevation);
         outState.putInt(BUTTON_BAR_ELEVATION_EXTRA, buttonBarElevation);
+        outState.putInt(CARD_VIEW_BACKGROUND_COLOR_EXTRA, cardViewBackgroundColor);
+        outState.putInt(BREAD_CRUMB_BACKGROUND_COLOR_EXTRA, breadCrumbBackgroundColor);
         outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
 

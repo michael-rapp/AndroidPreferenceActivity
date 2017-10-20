@@ -33,6 +33,8 @@ License.
     </attr>
     <attr name="toolbarElevation" format="dimension"/>
     <attr name="cardViewElevation" format="dimension"/>
+    <attr name="cardViewBackgroundColor" format="color"/>
+    <attr name="breadCrumbBackgroundColor" format="color"/>
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
