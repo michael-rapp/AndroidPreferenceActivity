@@ -35,12 +35,13 @@ License.
     <attr name="cardViewElevation" format="dimension"/>
     <attr name="cardViewBackgroundColor" format="color"/>
     <attr name="breadCrumbBackgroundColor" format="color"/>
+    <attr name="buttonBarBackground" format="reference|color"/>
+    <attr name="navigationBackground" format="reference|color"/>
 
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
     <attr name="invertedToolbarTheme" format="reference"/>
     <attr name="invertedToolbarPopupTheme" format="reference"/>
-    <attr name="navigationBackground" format="reference|color"/>
     <attr name="preferenceScreenBackground" format="color"/>
     <attr name="breadCrumbBackground" format="color"/>
     <attr name="wizardButtonBarBackground" format="reference|color"/>

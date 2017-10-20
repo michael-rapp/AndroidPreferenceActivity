@@ -17,11 +17,16 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Px;
@@ -276,6 +281,48 @@ public abstract class PreferenceActivity extends AppCompatActivity
             PreferenceActivity.class.getName() + "::BreadCrumbBackgroundColor";
 
     /**
+     * The name of the extra, which is used to store the background color of the button bar within a
+     * bundle.
+     */
+    private static final String BUTTON_BAR_BACKGROUND_COLOR_EXTRA =
+            PreferenceActivity.class.getName() + "::ButtonBarBackgroundColor";
+
+    /**
+     * The name of the extra, which is used to store the resource id of the background of the button
+     * bar within a bundle.
+     */
+    private static final String BUTTON_BAR_BACKGROUND_ID_EXTRA =
+            PreferenceActivity.class.getName() + "::ButtonBarBackgroundId";
+
+    /**
+     * The name of the extra, which is used to store the bitmap of the background of the button bar
+     * within a bundle.
+     */
+    private static final String BUTTON_BAR_BACKGROUND_BITMAP_EXTRA =
+            PreferenceActivity.class.getName() + "::ButtonBarBackgroundBitmap";
+
+    /**
+     * The name of the extra, which is used to store the background color of the navigation
+     * within a bundle.
+     */
+    private static final String NAVIGATION_BACKGROUND_COLOR_EXTRA =
+            PreferenceActivity.class.getName() + "::NavigationBackgroundColor";
+
+    /**
+     * The name of the extra, which is used to store the resource id of the background of the
+     * navigation within a bundle.
+     */
+    private static final String NAVIGATION_BACKGROUND_ID_EXTRA =
+            PreferenceActivity.class.getName() + "::NavigationBackgroundId";
+
+    /**
+     * The name of the extra, which is used to store the bitmap of the background of the navigation
+     * within a bundle.
+     */
+    private static final String NAVIGATION_BACKGROUND_BITMAP_EXTRA =
+            PreferenceActivity.class.getName() + "::NavigationBackgroundBitmap";
+
+    /**
      * The name of the extra, which is used to store, whether the behavior of the navigation icon
      * should be overridden, or not, within a bundle.
      */
@@ -466,6 +513,39 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private int breadCrumbBackgroundColor;
 
     /**
+     * The background color of the button bar, which is shown, when the activity is used as a
+     * wizard.
+     */
+    private int buttonBarBackgroundColor;
+
+    /**
+     * The resource id of the background of the button bar, which is shown, when the activity is
+     * used as a wizard.
+     */
+    private int buttonBarBackgroundId;
+
+    /**
+     * The bitmap of the background of the button bar, which is shown, when the activity is used as
+     * a wizard.
+     */
+    private Bitmap buttonBarBackgroundBitmap;
+
+    /**
+     * The background color of the navigation.
+     */
+    private int navigationBackgroundColor;
+
+    /**
+     * The resource id of the background of the navigation.
+     */
+    private int navigationBackgroundId;
+
+    /**
+     * The bitmap of the background of the navigation.
+     */
+    private Bitmap navigationBackgroundBitmap;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
@@ -509,6 +589,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainButtonBarElevation();
         obtainCardViewBackgroundColor();
         obtainBreadCrumbBackgroundColor();
+        obtainButtonBarBackground();
+        obtainNavigationBackground();
     }
 
     /**
@@ -737,6 +819,40 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
 
         setBreadCrumbBackgroundColor(color);
+    }
+
+    /**
+     * Obtains the background of the button bar from the activity's theme.
+     */
+    private void obtainButtonBarBackground() {
+        try {
+            setButtonBarBackgroundColor(ThemeUtil.getColor(this, R.attr.buttonBarBackground));
+        } catch (NotFoundException e) {
+            int resourceId = ThemeUtil.getResId(this, R.attr.buttonBarBackground, -1);
+
+            if (resourceId != -1) {
+                setButtonBarBackground(resourceId);
+            } else {
+                setButtonBarBackground(null);
+            }
+        }
+    }
+
+    /**
+     * Obtains the background of the navigation from the activity's theme.
+     */
+    private void obtainNavigationBackground() {
+        try {
+            setNavigationBackgroundColor(ThemeUtil.getColor(this, R.attr.navigationBackground));
+        } catch (NotFoundException e) {
+            int resourceId = ThemeUtil.getResId(this, R.attr.navigationBackground, -1);
+
+            if (resourceId != -1) {
+                setNavigationBackground(resourceId);
+            } else {
+                setNavigationBackground(null);
+            }
+        }
     }
 
     /**
@@ -1583,6 +1699,24 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Adapts the background of the button bar.
+     */
+    private void adaptButtonBarBackground() {
+        if (buttonBar != null) {
+            ViewUtil.setBackground(buttonBar, getButtonBarBackground());
+        }
+    }
+
+    /**
+     * Adapts the background of the navigation.
+     */
+    private void adaptNavigationBackground() {
+        if (navigationFragmentContainer != null) {
+            ViewUtil.setBackground(navigationFragmentContainer, getNavigationBackground());
+        }
+    }
+
+    /**
      * Adapts, whether the navigation is enabled, i.e. clickable, or not.
      */
     private void adaptNavigationEnabledState() {
@@ -2408,6 +2542,127 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the background of the button bar, which is shown, when the activity is used as a
+     * wizard.
+     *
+     * @return The background of the button bar, which is shown, when the activity is used as a
+     * wizard, as an instance of the class {@link Drawable} or null, if no background is set
+     */
+    @Nullable
+    public final Drawable getButtonBarBackground() {
+        if (buttonBarBackgroundColor != -1) {
+            return new ColorDrawable(buttonBarBackgroundColor);
+        } else if (buttonBarBackgroundId != -1) {
+            return ContextCompat.getDrawable(this, buttonBarBackgroundId);
+        } else if (buttonBarBackgroundBitmap != null) {
+            return new BitmapDrawable(getResources(), buttonBarBackgroundBitmap);
+        }
+
+        return null;
+    }
+
+    /**
+     * Sets the background of the button bar, which is shown, when the activity is used as a wizard.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     */
+    public final void setButtonBarBackgroundColor(@ColorInt final int color) {
+        this.buttonBarBackgroundColor = color;
+        this.buttonBarBackgroundId = -1;
+        this.buttonBarBackgroundBitmap = null;
+        adaptButtonBarBackground();
+    }
+
+    /**
+     * Sets the background of the button bar, which is shown, when the activity is used as a wizard.
+     *
+     * @param resourceId
+     *         The resource id of the background, which should be set, as an {@link Integer} value.
+     *         The resource id must correspond to a valid drawable resource
+     */
+    public final void setButtonBarBackground(@DrawableRes final int resourceId) {
+        this.buttonBarBackgroundColor = -1;
+        this.buttonBarBackgroundId = resourceId;
+        this.buttonBarBackgroundBitmap = null;
+        adaptButtonBarBackground();
+    }
+
+    /**
+     * Sets the background of the button bar, which is shown, when the activity is used as a wizard.
+     *
+     * @param background
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
+     *         null, if no background should be set
+     */
+    public final void setButtonBarBackground(@Nullable final Bitmap background) {
+        this.buttonBarBackgroundColor = -1;
+        this.buttonBarBackgroundId = -1;
+        this.buttonBarBackgroundBitmap = background;
+        adaptButtonBarBackground();
+    }
+
+    /**
+     * Returns the background of the navigation.
+     *
+     * @return The background of the navigation as an instance of the class {@link Drawable} or
+     * null, if no background is set
+     */
+    @Nullable
+    public final Drawable getNavigationBackground() {
+        if (navigationBackgroundColor != -1) {
+            return new ColorDrawable(navigationBackgroundColor);
+        } else if (navigationBackgroundId != -1) {
+            return ContextCompat.getDrawable(this, navigationBackgroundId);
+        } else if (navigationBackgroundBitmap != null) {
+            return new BitmapDrawable(getResources(), navigationBackgroundBitmap);
+        }
+
+        return null;
+    }
+
+    /**
+     * Sets the background color of the navigation.
+     *
+     * @param color
+     *         The background color, which should be set, as an {@link Integer} value
+     */
+    public final void setNavigationBackgroundColor(@ColorInt final int color) {
+        this.navigationBackgroundColor = color;
+        this.navigationBackgroundId = -1;
+        this.navigationBackgroundBitmap = null;
+        adaptNavigationBackground();
+    }
+
+    /**
+     * Sets the background of the navigation.
+     *
+     * @param resourceId
+     *         The resource id of the background, which should be set, as an {@link Integer} value.
+     *         The resource id must correspond to a valid drawable resource
+     */
+    public final void setNavigationBackground(@DrawableRes final int resourceId) {
+        this.navigationBackgroundColor = -1;
+        this.navigationBackgroundId = resourceId;
+        this.navigationBackgroundBitmap = null;
+        adaptNavigationBackground();
+    }
+
+    /**
+     * Sets the background of the navigation.
+     *
+     * @param background
+     *         The background, which should be set, as an instance of the class {@link Bitmap} or
+     *         null, if no background should be set
+     */
+    public final void setNavigationBackground(@Nullable final Bitmap background) {
+        this.navigationBackgroundColor = -1;
+        this.navigationBackgroundId = -1;
+        this.navigationBackgroundBitmap = background;
+        adaptNavigationBackground();
+    }
+
+    /**
      * Returns, whether a preference fragment is currently shown, or not.
      *
      * @return True, if a preference fragment is currently shown, false otherwise
@@ -2549,6 +2804,17 @@ public abstract class PreferenceActivity extends AppCompatActivity
             setCardViewBackgroundColor(savedInstanceState.getInt(CARD_VIEW_BACKGROUND_COLOR_EXTRA));
             setBreadCrumbBackgroundColor(
                     savedInstanceState.getInt(BREAD_CRUMB_BACKGROUND_COLOR_EXTRA));
+            buttonBarBackgroundColor = savedInstanceState.getInt(BUTTON_BAR_BACKGROUND_COLOR_EXTRA);
+            buttonBarBackgroundId = savedInstanceState.getInt(BUTTON_BAR_BACKGROUND_ID_EXTRA);
+            buttonBarBackgroundBitmap =
+                    savedInstanceState.getParcelable(BUTTON_BAR_BACKGROUND_BITMAP_EXTRA);
+            adaptButtonBarBackground();
+            navigationBackgroundColor =
+                    savedInstanceState.getInt(NAVIGATION_BACKGROUND_COLOR_EXTRA);
+            navigationBackgroundId = savedInstanceState.getInt(NAVIGATION_BACKGROUND_ID_EXTRA);
+            navigationBackgroundBitmap =
+                    savedInstanceState.getParcelable(NAVIGATION_BACKGROUND_BITMAP_EXTRA);
+            adaptNavigationBackground();
             preferenceFragmentArguments =
                     savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
@@ -2578,6 +2844,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
         outState.putInt(BUTTON_BAR_ELEVATION_EXTRA, buttonBarElevation);
         outState.putInt(CARD_VIEW_BACKGROUND_COLOR_EXTRA, cardViewBackgroundColor);
         outState.putInt(BREAD_CRUMB_BACKGROUND_COLOR_EXTRA, breadCrumbBackgroundColor);
+        outState.putInt(BUTTON_BAR_BACKGROUND_COLOR_EXTRA, buttonBarBackgroundColor);
+        outState.putInt(BUTTON_BAR_BACKGROUND_ID_EXTRA, buttonBarBackgroundId);
+        outState.putParcelable(BUTTON_BAR_BACKGROUND_BITMAP_EXTRA, buttonBarBackgroundBitmap);
+        outState.putInt(NAVIGATION_BACKGROUND_COLOR_EXTRA, navigationBackgroundColor);
+        outState.putInt(NAVIGATION_BACKGROUND_ID_EXTRA, navigationBackgroundId);
+        outState.putParcelable(NAVIGATION_BACKGROUND_BITMAP_EXTRA, navigationBackgroundBitmap);
         outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
     }
 

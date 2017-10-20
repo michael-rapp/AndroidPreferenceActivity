@@ -30,7 +30,7 @@ License.
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="navigationBackground">@color/navigation_background_dark</item>
-        <item name="cardViewBackground">@color/preference_screen_background_dark</item>
+        <item name="cardViewBackgroundColor">@color/preference_screen_background_dark</item>
         <item name="breadCrumbBackground">@color/bread_crumb_background_dark</item>
         <item name="wizardButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
