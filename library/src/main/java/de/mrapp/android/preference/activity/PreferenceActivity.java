@@ -1952,6 +1952,18 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the card view, which contains the currently shown preference fragment, when using the
+     * split screen layout.
+     *
+     * @return The card view, which contains the currently shown preference fragment, when using the
+     * split screen layout, as an instance of the class {@link CardView} or null, if the activity
+     * has not been created yet or if the split screen layout is not used
+     */
+    public final CardView getCardView() {
+        return cardView;
+    }
+
+    /**
      * Returns the toolbar, which is used to show the activity's title, when using the split screen
      * layout.
      *
