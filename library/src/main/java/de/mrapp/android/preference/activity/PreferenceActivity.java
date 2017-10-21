@@ -576,6 +576,12 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
 
     /**
+     * A set, which contains the listeners, which have been registered to be notified, when
+     * navigation preferences have been added or removed to/from the activity.
+     */
+    private Set<NavigationListener> navigationListeners = new LinkedHashSet<>();
+
+    /**
      * Obtains all relevant attributes from the activity's theme.
      */
     private void obtainStyledAttributes() {
@@ -1971,6 +1977,36 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Notifies all registered listeners, that a navigation preference has been added to the
+     * activity.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been added, as an instance of the class {@link
+     *         NavigationPreference}. The navigation preference may not be null
+     */
+    private void notifyOnNavigationPreferenceAdded(
+            @NonNull final NavigationPreference navigationPreference) {
+        for (NavigationListener listener : navigationListeners) {
+            listener.onNavigationPreferenceAdded(navigationPreference);
+        }
+    }
+
+    /**
+     * Notifies all registered listeners, that a navigation preference has been removed from the
+     * activity.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been removed, as an instance of the class {@link
+     *         NavigationPreference}. The navigation preference may not be null
+     */
+    private void notifyOnNavigationPreferenceRemoved(
+            @NonNull final NavigationPreference navigationPreference) {
+        for (NavigationListener listener : navigationListeners) {
+            listener.onNavigationPreferenceRemoved(navigationPreference);
+        }
+    }
+
+    /**
      * Adds a new listener, which should be notified, when the currently shown preference fragment
      * has been changed, to the activity.
      *
@@ -2022,6 +2058,32 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public final void removeWizardListener(@NonNull final WizardListener listener) {
         ensureNotNull(listener, "The listener may not be null");
         wizardListeners.remove(listener);
+    }
+
+    /**
+     * Adds a new listener, which should be notified, when a navigation preference has been added or
+     * removed to/from the activity.
+     *
+     * @param listener
+     *         The listener, which should be added, as an instance of the type {@link
+     *         NavigationListener}. The listener may not be null
+     */
+    public final void addNavigationListener(@NonNull final NavigationListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        navigationListeners.add(listener);
+    }
+
+    /**
+     * Removes a specific listener, which should not be notified, when a navigation preference has
+     * been added or removed to/from the activity, anymore.
+     *
+     * @param listener
+     *         The listener, which should be removed, as an instance of the type {@link
+     *         NavigationListener}. The listener may not be null
+     */
+    public final void removeNavigationListener(@NonNull final NavigationListener listener) {
+        ensureNotNull(listener, "The listener may not be null");
+        navigationListeners.remove(listener);
     }
 
     /**
@@ -2856,6 +2918,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (isSplitScreen() && navigationFragment.getNavigationPreferenceCount() == 1) {
             navigationFragment.selectNavigationPreference(0, null);
         }
+
+        notifyOnNavigationPreferenceAdded(navigationPreference);
     }
 
     @Override
@@ -2865,6 +2929,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 navigationFragment.getNavigationPreferenceCount() == 0) {
             finish();
         }
+
+        notifyOnNavigationPreferenceRemoved(navigationPreference);
     }
 
     @CallSuper
