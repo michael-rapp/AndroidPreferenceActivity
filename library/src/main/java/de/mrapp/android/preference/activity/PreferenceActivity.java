@@ -2030,7 +2030,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the split screen layout is used, false otherwise
      */
     public final boolean isSplitScreen() {
-        return false && useSplitScreen && getDeviceType(this) == DeviceType.TABLET;
+        return useSplitScreen && getDeviceType(this) == DeviceType.TABLET;
     }
 
     /**
