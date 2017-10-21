@@ -15,7 +15,6 @@ License.
 -->
 <resources>
 
-    <!-- new -->
     <attr name="useSplitScreen" format="boolean"/>
     <attr name="navigationWidth" format="dimension"/>
     <attr name="hideNavigation" format="boolean"/>
@@ -32,42 +31,35 @@ License.
         <enum name="gone" value="2"/>
     </attr>
     <attr name="toolbarElevation" format="dimension"/>
+    <attr name="breadCrumbElevation" format="dimension"/>
     <attr name="cardViewElevation" format="dimension"/>
+    <attr name="buttonBarElevation" format="dimension"/>
     <attr name="cardViewBackgroundColor" format="color"/>
     <attr name="breadCrumbBackgroundColor" format="color"/>
     <attr name="buttonBarBackground" format="reference|color"/>
     <attr name="navigationBackground" format="reference|color"/>
     <attr name="navigationSelectionColor" format="color"/>
-
+    <attr name="dividerColor" format="color"/>
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
     <attr name="invertedToolbarTheme" format="reference"/>
     <attr name="invertedToolbarPopupTheme" format="reference"/>
+
+    <declare-styleable name="NavigationPreference">
+        <attr name="android:breadCrumbTitle"/>
+        <attr name="android:fragment"/>
+    </declare-styleable>
+
+    <!-- Old -->
     <attr name="preferenceScreenBackground" format="color"/>
     <attr name="breadCrumbBackground" format="color"/>
     <attr name="wizardButtonBarBackground" format="reference|color"/>
     <attr name="showRestoreDefaultsButton" format="boolean"/>
     <attr name="restoreDefaultsButtonText" format="string"/>
     <attr name="restoreDefaultsButtonBarBackground" format="reference|color"/>
-    <attr name="breadCrumbElevation" format="dimension"/>
     <attr name="preferenceScreenElevation" format="dimension"/>
     <attr name="wizardButtonBarElevation" format="dimension"/>
     <attr name="restoreDefaultsButtonBarElevation" format="dimension"/>
     <attr name="preferenceHeaderSelector" format="reference"/>
-    <attr name="dividerColor" format="color"/>
-
-    <declare-styleable name="PreferenceHeader">
-        <attr name="android:title"/>
-        <attr name="android:summary"/>
-        <attr name="android:breadCrumbTitle"/>
-        <attr name="android:breadCrumbShortTitle"/>
-        <attr name="android:icon"/>
-        <attr name="android:fragment"/>
-    </declare-styleable>
-
-    <declare-styleable name="NavigationPreference">
-        <attr name="android:breadCrumbTitle"/>
-        <attr name="android:fragment"/>
-    </declare-styleable>
 
 </resources>
