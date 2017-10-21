@@ -17,7 +17,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -70,12 +69,13 @@ import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 /**
- * An activity, which provides a navigation for multiple groups of preferences, in which each group
- * is represented by an instance of the class {@link PreferenceHeader}. On devices with small
- * screens, e.g. on smartphones, the navigation is designed to use the whole available space and
- * selecting an item causes the corresponding preferences to be shown full screen as well. On
- * devices with large screens, e.g. on tablets, the navigation and the preferences of the currently
- * selected item are shown split screen.
+ * An activity, which provides a navigation for accessing preferences, which are grouped as
+ * different sections. Each group of preferences is accessible by clicking a {@link
+ * NavigationPreference}. On devices with small screens, e.g. on smartphones, the navigation is
+ * designed to use the whole available space and selecting an item causes the corresponding
+ * preferences to be shown full screen as well. On devices with large screens, e.g. on tablets, the
+ * navigation and the preferences of the currently selected item are shown using a split screen
+ * layout. However, the full screen layout can optionally be used on tablets as well.
  *
  * @author Michael Rapp
  * @since 1.0.0
