@@ -27,8 +27,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
-import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.example.R;
 
 /**
@@ -71,14 +71,14 @@ public class RemovePreferenceHeaderDialogBuilder extends AlertDialog.Builder {
      *
      * @param parentView
      *         The parent view of the spinner as an instance of the class {@link View}
-     * @param preferenceHeaders
+     * @param navigationPreferences
      *         A collection, which contains the preference headers, the spinner should allow to
      *         choose from, as an instance of the type {@link Collection}
      */
     private void initializeSpinner(final View parentView,
-                                   final Collection<PreferenceHeader> preferenceHeaders) {
-        spinner = (Spinner) parentView.findViewById(R.id.remove_preference_header_spinner);
-        List<CharSequence> items = getPreferenceHeaderTitles(preferenceHeaders);
+                                   final Collection<NavigationPreference> navigationPreferences) {
+        spinner = parentView.findViewById(R.id.remove_preference_header_spinner);
+        List<CharSequence> items = getNavigationPreferenceTitles(navigationPreferences);
         ArrayAdapter<CharSequence> adapter =
                 new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -86,21 +86,21 @@ public class RemovePreferenceHeaderDialogBuilder extends AlertDialog.Builder {
     }
 
     /**
-     * Returns a list, which contains the titles of all preference headers, which are contained by a
-     * specific collection.
+     * Returns a list, which contains the titles of all navigation preferences, which are contained
+     * by a specific collection.
      *
-     * @param preferenceHeaders
-     *         A collection, which contains the preference headers, whose title should be returned,
-     *         as an instance of the type {@link Collection}
-     * @return A list, which contains the title of the given preference headers, as an instance of
-     * the type {@link List}
+     * @param navigationPreferences
+     *         A collection, which contains the navigation preferences, whose title should be
+     *         returned, as an instance of the type {@link Collection}
+     * @return A list, which contains the title of the given navigation preferences, as an instance
+     * of the type {@link List}
      */
-    private List<CharSequence> getPreferenceHeaderTitles(
-            final Collection<PreferenceHeader> preferenceHeaders) {
+    private List<CharSequence> getNavigationPreferenceTitles(
+            final Collection<NavigationPreference> navigationPreferences) {
         List<CharSequence> titles = new LinkedList<>();
 
-        for (PreferenceHeader preferenceHeader : preferenceHeaders) {
-            titles.add(preferenceHeader.getTitle());
+        for (NavigationPreference navigationPreference : navigationPreferences) {
+            titles.add(navigationPreference.getTitle());
         }
 
         return titles;
@@ -148,20 +148,20 @@ public class RemovePreferenceHeaderDialogBuilder extends AlertDialog.Builder {
      * @param activity
      *         The activity, the dialog should belong to, as an instance of the class {@link
      *         Activity}
-     * @param preferenceHeaders
-     *         A collection, which contains the preference headers, the dialog should allow to
+     * @param navigationPreferences
+     *         A collection, which contains the navigation preferences, the dialog should allow to
      *         choose from, as an instance of the type {@link Collection}
      * @param listener
      *         The listener, which should be notified when the user closes the dialog
      *         confirmatively, as an instance of the type {@link RemovePreferenceHeaderDialogListener}
      */
     public RemovePreferenceHeaderDialogBuilder(final Activity activity,
-                                               final Collection<PreferenceHeader> preferenceHeaders,
+                                               final Collection<NavigationPreference> navigationPreferences,
                                                final RemovePreferenceHeaderDialogListener listener) {
         super(activity);
         this.listener = listener;
         View view = inflateLayout(activity);
-        initializeSpinner(view, preferenceHeaders);
+        initializeSpinner(view, navigationPreferences);
         initializeTitleAndMessage();
         initializeButtons();
     }

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import de.mrapp.android.preference.activity.NavigationPreference;
@@ -73,6 +74,30 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
                 @NonNull final NavigationPreference navigationPreference,
                 @Nullable final Bundle arguments);
 
+        /**
+         * The method, which is invoked, when a navigation preference has been unselected.
+         */
+        void onNavigationPreferenceUnselected();
+
+        /**
+         * The method, which is invoked, when a navigation preference has been added.
+         *
+         * @param navigationPreference
+         *         The navigation preference, which has been added, as an instance of the class
+         *         {@link NavigationPreference}. The navigation preference may not be null
+         */
+        void onNavigationPreferenceAdded(@NonNull final NavigationPreference navigationPreference);
+
+        /**
+         * The method, which is invoked, when a navigation preference has been removed.
+         *
+         * @param navigationPreference
+         *         The navigation preference, which has been removed, as an instance of the class
+         *         {@link NavigationPreference}. The navigation preference may not be null
+         */
+        void onNavigationPreferenceRemoved(
+                @NonNull final NavigationPreference navigationPreference);
+
     }
 
     /**
@@ -109,14 +134,39 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      * Updates the navigation preferences, which are contained by the adapter.
      */
     private void updateNavigationPreferences() {
+        List<NavigationPreference> oldNavigationPreferences =
+                new ArrayList<>(navigationPreferences);
         navigationPreferences.clear();
+        boolean selectedNavigationPreferenceFound = selectedNavigationPreference == null;
 
-        // TODO: Check if selected navigation preference is still present, if not select a new one
         for (int i = 0; i < getEncapsulatedAdapter().getCount(); i++) {
             Object item = getEncapsulatedAdapter().getItem(i);
 
             if (item instanceof NavigationPreference) {
-                navigationPreferences.add((NavigationPreference) item);
+                NavigationPreference navigationPreference = (NavigationPreference) item;
+                navigationPreferences.add(navigationPreference);
+
+                if (selectedNavigationPreference == navigationPreference) {
+                    selectedNavigationPreferenceFound = true;
+                }
+
+                if (!oldNavigationPreferences.contains(navigationPreference)) {
+                    notifyOnNavigationPreferenceAdded(navigationPreference);
+                    oldNavigationPreferences.remove(navigationPreference);
+                }
+            }
+        }
+
+        for (NavigationPreference removedNavigationPreference : oldNavigationPreferences) {
+            notifyOnNavigationPreferenceRemoved(removedNavigationPreference);
+        }
+
+        if (!selectedNavigationPreferenceFound) {
+            if (getNavigationPreferenceCount() > 0) {
+                selectNavigationPreference(Math.min(selectedNavigationPreferenceIndex,
+                        getNavigationPreferenceCount() - 1), null);
+            } else {
+                selectNavigationPreference(null, null);
             }
         }
     }
@@ -154,6 +204,43 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     }
 
     /**
+     * Notifies the callback, that a navigation preference has been unselected.
+     */
+    private void notifyOnNavigationPreferenceUnselected() {
+        if (callback != null) {
+            callback.onNavigationPreferenceUnselected();
+        }
+    }
+
+    /**
+     * Notifies the callback, that a navigation preference has been added.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been added, as an instance of the class {@link
+     *         NavigationPreference}. The navigation preference may not be null
+     */
+    private void notifyOnNavigationPreferenceAdded(
+            @NonNull final NavigationPreference navigationPreference) {
+        if (callback != null) {
+            callback.onNavigationPreferenceAdded(navigationPreference);
+        }
+    }
+
+    /**
+     * Notifies the callback, that a navigation preference has been removed.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been removed, as an instance of the class {@link
+     *         NavigationPreference}. The navigation preference may not be null
+     */
+    private void notifyOnNavigationPreferenceRemoved(
+            @NonNull final NavigationPreference navigationPreference) {
+        if (callback != null) {
+            callback.onNavigationPreferenceRemoved(navigationPreference);
+        }
+    }
+
+    /**
      * Creates a new {@link PreferenceGroupAdapter}, which is used to visualize the navigation
      * preferences of a {@link PreferenceActivity}.
      *
@@ -187,6 +274,19 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      */
     public final int getNavigationPreferenceCount() {
         return navigationPreferences.size();
+    }
+
+    /**
+     * Returns a collection, which contains all navigation preferences, which are contained by the
+     * adapter.
+     *
+     * @return A collection, which contains all navigation preferences, which are contained by the
+     * adapter, as an instance of the type {@link Collection} or an empty collection, if no
+     * navigation preferences are contained by the adapter
+     */
+    @NonNull
+    public final Collection<NavigationPreference> getAllNavigationPreferences() {
+        return navigationPreferences;
     }
 
     /**
@@ -288,6 +388,8 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
 
             if (navigationPreference != null) {
                 notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
+            } else {
+                notifyOnNavigationPreferenceUnselected();
             }
 
             super.notifyDataSetChanged();

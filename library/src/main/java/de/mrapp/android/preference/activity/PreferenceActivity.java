@@ -45,6 +45,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -1299,12 +1301,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void showBreadCrumb(@Nullable final CharSequence breadCrumbTitle) {
         CharSequence formattedBreadCrumbTitle = formatBreadCrumbTitle(breadCrumbTitle);
 
-        if (!TextUtils.isEmpty(formattedBreadCrumbTitle)) {
-            if (isSplitScreen()) {
-                breadCrumbToolbar.setTitle(formattedBreadCrumbTitle);
-            } else {
-                showTitle(formattedBreadCrumbTitle);
-            }
+        if (isSplitScreen()) {
+            breadCrumbToolbar.setTitle(formattedBreadCrumbTitle);
+        } else if (!TextUtils.isEmpty(formattedBreadCrumbTitle)) {
+            showTitle(formattedBreadCrumbTitle);
         }
     }
 
@@ -2030,7 +2030,28 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * @return True, if the split screen layout is used, false otherwise
      */
     public final boolean isSplitScreen() {
-        return useSplitScreen && getDeviceType(this) == DeviceType.TABLET;
+        return false && useSplitScreen && getDeviceType(this) == DeviceType.TABLET;
+    }
+
+    /**
+     * Returns the preference fragment, which contains the activity's navigation.
+     *
+     * @return The preference fragment, which contains the activity's navigation, as an instance of
+     * the class {@link android.preference.PreferenceFragment} or null, if the navigation has not
+     * been created yet
+     */
+    public final android.preference.PreferenceFragment getNavigationFragment() {
+        return navigationFragment;
+    }
+
+    /**
+     * Returns the currently shown preference fragment.
+     *
+     * @return The currently shown preference fragment as an instance of the class {@link Fragment}
+     * or null, if no preference fragment is currently shown
+     */
+    public final Fragment getPreferenceFragment() {
+        return preferenceFragment;
     }
 
     /**
@@ -2726,6 +2747,30 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Returns the number of navigation preferences, which are contained by the activity.
+     *
+     * @return The number of navigation preferences, which are contained by the activity, as an
+     * {@link Integer} value
+     */
+    public final int getNavigationPreferenceCount() {
+        return navigationFragment != null ? navigationFragment.getNavigationPreferenceCount() : 0;
+    }
+
+    /**
+     * Returns a collection, which contains all navigation preferences, which are contained by the
+     * activity.
+     *
+     * @return A collection, which contains all navigation preferences, which are contained by the
+     * activity, as an instance of the type {@link Collection} or an empty collection, if no
+     * navigation preferences are contained by the activity
+     */
+    @NonNull
+    public final Collection<NavigationPreference> getAllNavigationPreferences() {
+        return navigationFragment != null ? navigationFragment.getAllNavigationPreferences() :
+                Collections.<NavigationPreference>emptyList();
+    }
+
+    /**
      * Returns the currently selected navigation preference.
      *
      * @return The currently selected navigation preference as an instance of the class {@link
@@ -2797,6 +2842,29 @@ public abstract class PreferenceActivity extends AppCompatActivity
             @NonNull final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
         showPreferenceFragment(navigationPreference, arguments);
+    }
+
+    @Override
+    public final void onNavigationPreferenceUnselected() {
+        removePreferenceFragmentUnconditionally();
+        showBreadCrumb(null);
+    }
+
+    @Override
+    public final void onNavigationPreferenceAdded(
+            @NonNull final NavigationPreference navigationPreference) {
+        if (isSplitScreen() && navigationFragment.getNavigationPreferenceCount() == 1) {
+            navigationFragment.selectNavigationPreference(0, null);
+        }
+    }
+
+    @Override
+    public final void onNavigationPreferenceRemoved(
+            @NonNull final NavigationPreference navigationPreference) {
+        if (isSplitScreen() && isNavigationHidden() &&
+                navigationFragment.getNavigationPreferenceCount() == 0) {
+            finish();
+        }
     }
 
     @CallSuper

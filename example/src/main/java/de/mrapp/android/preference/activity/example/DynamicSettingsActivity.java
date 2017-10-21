@@ -13,13 +13,15 @@
  */
 package de.mrapp.android.preference.activity.example;
 
-import android.annotation.SuppressLint;
+import android.preference.Preference;
+import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
-import de.mrapp.android.preference.activity.PreferenceHeader;
 import de.mrapp.android.preference.activity.example.dialog.RemovePreferenceHeaderDialogBuilder;
 import de.mrapp.android.preference.activity.example.dialog.RemovePreferenceHeaderDialogListener;
 import de.mrapp.android.preference.activity.example.fragment.NewPreferenceHeaderFragment;
@@ -36,19 +38,27 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
     /**
      * Shows a dialog, which allows to remove a specific preference header.
      */
-    @SuppressLint("InflateParams")
     private void showRemovePreferenceHeaderDialog() {
-        // TODO new RemovePreferenceHeaderDialogBuilder(this, getAllPreferenceHeaders(), this).show();
+        new RemovePreferenceHeaderDialogBuilder(this, getAllNavigationPreferences(), this).show();
     }
 
     /**
-     * Dynamically adds a new preference header to the activity.
+     * Dynamically adds a new navigation preference to the activity.
      */
-    private void addPreferenceHeader() {
-        PreferenceHeader preferenceHeader = new PreferenceHeader(getPreferenceHeaderTitle());
-        preferenceHeader.setFragment(NewPreferenceHeaderFragment.class.getName());
-        // TODO addPreferenceHeader(preferenceHeader);
+    private void addNavigationPreference() {
+        NavigationPreference navigationPreference = new NavigationPreference(this);
+        navigationPreference.setTitle(getPreferenceHeaderTitle());
+        navigationPreference.setFragment(NewPreferenceHeaderFragment.class.getName());
+        getNavigationFragment().getPreferenceScreen().addPreference(navigationPreference);
         invalidateOptionsMenu();
+    }
+
+    /**
+     * Removes all navigation preferences from the activity.
+     */
+    private void clearNavigationPreference() {
+        PreferenceScreen preferenceScreen = getNavigationFragment().getPreferenceScreen();
+        preferenceScreen.removeAll();
     }
 
     /**
@@ -75,26 +85,25 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
      *
      * @param title
      *         The title, whose presence should be checked, as an instance of the class {@link
-     *         CharSequence}
+     *         CharSequence}. The tile may not be null
      * @return True, if a preference header, which has the given title, has already been added to
      * the activity, false otherwise
      */
-    private boolean isTitleAlreadyUsed(final CharSequence title) {
-        // TODO
-        /*
-        for (int i = 0; i < getAllPreferenceHeaders().size(); i++) {
-            if (getPreferenceHeader(i).getTitle().equals(title)) {
+    private boolean isTitleAlreadyUsed(@NonNull final CharSequence title) {
+        for (NavigationPreference navigationPreference : getAllNavigationPreferences()) {
+            if (title.equals(navigationPreference.getTitle())) {
                 return true;
             }
         }
-        */
 
         return false;
     }
 
     @Override
     public final void onRemovePreferenceHeader(final int position) {
-        // TODO removePreferenceHeader(getPreferenceHeader(position));
+        PreferenceScreen preferenceScreen = getNavigationFragment().getPreferenceScreen();
+        Preference preference = preferenceScreen.getPreference(position);
+        preferenceScreen.removePreference(preference);
         invalidateOptionsMenu();
     }
 
@@ -105,9 +114,9 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
         inflater.inflate(R.menu.menu, menu);
 
         MenuItem removePreferenceHeaderMenuItem = menu.findItem(R.id.remove_preference_header);
-        // TODO removePreferenceHeaderMenuItem.setEnabled(getNumberOfPreferenceHeaders() != 0);
+        removePreferenceHeaderMenuItem.setEnabled(getNavigationPreferenceCount() != 0);
         MenuItem clearPreferenceHeadersMenuItem = menu.findItem(R.id.clear_preference_headers);
-        // TODO clearPreferenceHeadersMenuItem.setEnabled(getNumberOfPreferenceHeaders() != 0);
+        clearPreferenceHeadersMenuItem.setEnabled(getNavigationPreferenceCount() != 0);
 
         return true;
     }
@@ -116,13 +125,13 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
     public final boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_preference_header:
-                addPreferenceHeader();
+                addNavigationPreference();
                 return true;
             case R.id.remove_preference_header:
                 showRemovePreferenceHeaderDialog();
                 return true;
             case R.id.clear_preference_headers:
-                // TODO clearPreferenceHeaders();
+                clearNavigationPreference();
                 invalidateOptionsMenu();
                 return true;
             default:
@@ -130,12 +139,11 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
         }
     }
 
-    // TODO
-    /*
     @Override
-    protected final void onCreatePreferenceHeaders() {
-        addPreferenceHeader();
+    protected final void onCreateNavigation(
+            @NonNull final android.preference.PreferenceFragment fragment) {
+        fragment.addPreferencesFromResource(R.xml.dynamic_navigation);
+        addNavigationPreference();
     }
-    */
 
 }

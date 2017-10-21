@@ -25,6 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.R;
@@ -146,6 +149,43 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
+     * Notifies the callback, that a navigation preference has been unselected.
+     */
+    private void notifyOnNavigationPreferenceUnselected() {
+        if (adapterCallback != null) {
+            adapterCallback.onNavigationPreferenceUnselected();
+        }
+    }
+
+    /**
+     * Notifies the callback, that a navigation preference has been added.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been added, as an instance of the class {@link
+     *         NavigationPreference}. The navigation preference may not be null
+     */
+    private void notifyOnNavigationPreferenceAdded(
+            @NonNull final NavigationPreference navigationPreference) {
+        if (adapterCallback != null) {
+            adapterCallback.onNavigationPreferenceAdded(navigationPreference);
+        }
+    }
+
+    /**
+     * Notifies the callback, that a navigation preference has been removed.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which has been removed, as an instance of the class {@link
+     *         NavigationPreference}. The navigation preference may not be null
+     */
+    private void notifyOnNavigationPreferenceRemoved(
+            @NonNull final NavigationPreference navigationPreference) {
+        if (adapterCallback != null) {
+            adapterCallback.onNavigationPreferenceRemoved(navigationPreference);
+        }
+    }
+
+    /**
      * Sets the callback, which should be notified about the fragment's events.
      *
      * @param callback
@@ -189,6 +229,19 @@ public class NavigationFragment extends AbstractPreferenceFragment
      */
     public final int getNavigationPreferenceCount() {
         return adapter != null ? adapter.getNavigationPreferenceCount() : 0;
+    }
+
+    /**
+     * Returns a collection, which contains all navigation preferences, which are contained by the
+     * navigation.
+     *
+     * @return A collection, which contains all navigation preferences, which are contained by the
+     * navigation, as an instance of the type {@link Collection} or an empty collection, if no
+     * navigation preferences are contained by the navigation
+     */
+    public final Collection<NavigationPreference> getAllNavigationPreferences() {
+        return adapter != null ? adapter.getAllNavigationPreferences() :
+                Collections.<NavigationPreference>emptyList();
     }
 
     /**
@@ -286,6 +339,23 @@ public class NavigationFragment extends AbstractPreferenceFragment
             @NonNull final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
         notifyOnNavigationPreferenceSelected(navigationPreference, arguments);
+    }
+
+    @Override
+    public final void onNavigationPreferenceUnselected() {
+        notifyOnNavigationPreferenceUnselected();
+    }
+
+    @Override
+    public final void onNavigationPreferenceAdded(
+            @NonNull final NavigationPreference navigationPreference) {
+        notifyOnNavigationPreferenceAdded(navigationPreference);
+    }
+
+    @Override
+    public final void onNavigationPreferenceRemoved(
+            @NonNull final NavigationPreference navigationPreference) {
+        notifyOnNavigationPreferenceRemoved(navigationPreference);
     }
 
     @NonNull
