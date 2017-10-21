@@ -108,7 +108,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * <code>EXTRA_SHOW_FRAGMENT</code> to launch the activity to display a specific fragment that
      * the user has navigated to.
      */
-    public static final String EXTRA_NO_HEADERS = ":android:no_headers";
+    public static final String EXTRA_HIDE_NAVIGATION = ":android:no_headers";
 
     /**
      * When starting this activity, the invoking intent can contain this extra boolean to display
@@ -701,8 +701,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles extras of the intent, which has been used to start the activity, that allow to
-     * initially display a specific fragment.
+     * Handles intent extras, that allow to initially display a specific fragment.
      *
      * @return True, if a fragment is initially shown, false otherwise
      */
@@ -773,6 +772,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
+            handleHideNavigationIntent(extras);
             handleShowButtonBarIntent(extras);
             handleNextButtonTextIntent(extras);
             handleBackButtonTextIntent(extras);
@@ -784,8 +784,20 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies, whether the button bar should be shown, or not, of the
-     * intent, which has been used to start the activity.
+     * Handles the intent extra, which specifies, whether the navigation should be shown, or not.
+     *
+     * @param extras
+     *         The extras of the intent, which has been used to start the activity, as an instance
+     *         of the class {@link Bundle}. The bundle may not be null
+     */
+    private void handleHideNavigationIntent(@NonNull final Bundle extras) {
+        if (extras.containsKey(EXTRA_HIDE_NAVIGATION)) {
+            hideNavigation(extras.getBoolean(EXTRA_HIDE_NAVIGATION));
+        }
+    }
+
+    /**
+     * Handles the intent extra, which specifies, whether the button bar should be shown, or not.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
@@ -798,8 +810,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies the text of the next button, of the intent, which has been
-     * used to start the activity.
+     * Handles the intent extra, which specifies the text of the next button.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
@@ -814,8 +825,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies the text of the back button, of the intent, which has been
-     * used to start the activity.
+     * Handles the intent extra, which specifies the text of the back button.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
@@ -830,8 +840,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies the text of the finish button, of the intent, which has
-     * been used to start the activity.
+     * Handles the intent extra, which specifies the text of the finish button.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
@@ -846,8 +855,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies, whether the progress should be shown, when the activity
-     * is used as a wizard, or not, of the intent, which has been used to start the activity.
+     * Handles the intent extra, which specifies, whether the progress should be shown, when the
+     * activity is used as a wizard, or not.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
@@ -860,8 +869,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies the format of the progress, which is shown, when the
-     * activity is used as a wizard, of the intent, which has been used to start the activity.
+     * Handles the intent extra, which specifies the format of the progress, which is shown, when
+     * the activity is used as a wizard.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
@@ -876,7 +885,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Handles the extra, which specifies that no bread crumbs should be shown.
+     * Handles the intent extra, which specifies whether bread crumbs should be shown, not.
      *
      * @param extras
      *         The extras of the intent, which has been used to start the activity, as an instance
