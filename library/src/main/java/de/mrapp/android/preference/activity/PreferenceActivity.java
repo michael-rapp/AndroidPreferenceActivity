@@ -43,9 +43,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapter;
@@ -1044,7 +1044,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Removes the currently shown preference fragment, if the split screen layout is not used.
+     * Removes the currently shown preference fragment, if the split screen layout is not used and
+     * the navigation is not hidden.
      *
      * @return True, if a preference fragment has been removed, false otherwise
      */
@@ -2623,17 +2624,26 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Returns a collection, which contains all navigation preferences, which are contained by the
+     * Returns a list, which contains all navigation preferences, which are contained by the
      * activity.
      *
-     * @return A collection, which contains all navigation preferences, which are contained by the
-     * activity, as an instance of the type {@link Collection} or an empty collection, if no
-     * navigation preferences are contained by the activity
+     * @return A list, which contains all navigation preferences, which are contained by the
+     * activity, as an instance of the type {@link List} or an empty collection, if no navigation
+     * preferences are contained by the activity
      */
     @NonNull
-    public final Collection<NavigationPreference> getAllNavigationPreferences() {
+    public final List<NavigationPreference> getAllNavigationPreferences() {
         return navigationFragment != null ? navigationFragment.getAllNavigationPreferences() :
                 Collections.<NavigationPreference>emptyList();
+    }
+
+    /**
+     * Returns, whether a navigation preference is currently selected, or not.
+     *
+     * @return True, if a navigation preference is currently selected, false otherwise
+     */
+    public final boolean isNavigationPreferenceSelected() {
+        return getSelectedNavigationPreference() != null;
     }
 
     /**
@@ -2646,6 +2656,51 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public final NavigationPreference getSelectedNavigationPreference() {
         return navigationFragment != null ? navigationFragment.getSelectedNavigationPreference() :
                 null;
+    }
+
+    /**
+     * Selects a specific navigation preference.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which should be selected, as an instance of the class
+     *         {@link NavigationPreference}. The navigation preference may not be null
+     */
+    public final void selectNavigationPreference(
+            @NonNull final NavigationPreference navigationPreference) {
+        selectNavigationPreference(navigationPreference, null);
+    }
+
+    /**
+     * Selects a specific navigation preference.
+     *
+     * @param navigationPreference
+     *         The navigation preference, which should be selected, as an instance of the class
+     *         {@link NavigationPreference}. The navigation preference may not be null
+     * @param arguments
+     *         The arguments, which should be passed to the fragment, which is associated with the
+     *         navigation preference, as an instance of the class {@link Bundle} or null, if no
+     *         arguments should be passed to the fragment
+     */
+    public final void selectNavigationPreference(
+            @NonNull final NavigationPreference navigationPreference,
+            @Nullable final Bundle arguments) {
+        ensureNotNull(navigationPreference, "The navigation preference may not be null");
+
+        if (navigationFragment != null) {
+            int index = getAllNavigationPreferences().indexOf(navigationPreference);
+
+            if (index != -1) {
+                navigationFragment.selectNavigationPreference(index, arguments);
+            }
+        }
+    }
+
+    /**
+     * Unselects the currently selected navigation preference and hides the associated fragment, if
+     * the split screen layout is not used and the navigation is not hidden.
+     */
+    public final void unselectNavigationPreference() {
+        removePreferenceFragment();
     }
 
     /**

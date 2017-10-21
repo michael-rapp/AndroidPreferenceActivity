@@ -23,7 +23,6 @@ import android.view.View;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import de.mrapp.android.preference.activity.NavigationPreference;
@@ -277,15 +276,15 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     }
 
     /**
-     * Returns a collection, which contains all navigation preferences, which are contained by the
+     * Returns a list, which contains all navigation preferences, which are contained by the
      * adapter.
      *
-     * @return A collection, which contains all navigation preferences, which are contained by the
-     * adapter, as an instance of the type {@link Collection} or an empty collection, if no
-     * navigation preferences are contained by the adapter
+     * @return A list, which contains all navigation preferences, which are contained by the
+     * adapter, as an instance of the type {@link List} or an empty collection, if no navigation
+     * preferences are contained by the adapter
      */
     @NonNull
-    public final Collection<NavigationPreference> getAllNavigationPreferences() {
+    public final List<NavigationPreference> getAllNavigationPreferences() {
         return navigationPreferences;
     }
 
