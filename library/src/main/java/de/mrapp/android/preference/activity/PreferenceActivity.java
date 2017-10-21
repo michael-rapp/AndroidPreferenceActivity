@@ -335,10 +335,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private int buttonBarElevation;
 
     /**
-     * The visibility of the toolbar, which is used to show the bread crumb of the currently
-     * selected navigation preference.
+     * True, if the toolbar, which is used to show the bread crumb of the currently selected
+     * navigation preference, is hidden, false otherwise.
      */
-    private int breadCrumbVisibility;
+    private boolean hideBreadCrumb;
 
     /**
      * The background color fo the card view, which contains the currently shown preference
@@ -548,9 +548,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * selected navigation preference, from the activity's theme.
      */
     private void obtainBreadCrumbVisibility() {
-        int visibility = ThemeUtil.getInt(this, R.attr.breadCrumbVisibility, 0);
-        setBreadCrumbVisibility(
-                visibility == 0 ? View.VISIBLE : (visibility == 1 ? View.INVISIBLE : View.GONE));
+        boolean hide = ThemeUtil.getBoolean(this, R.attr.hideBreadCrumb, false);
+        hideBreadCrumb(hide);
     }
 
     /**
@@ -893,8 +892,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private void handleNoBreadcrumbsIntent(@NonNull final Bundle extras) {
         if (extras.containsKey(EXTRA_NO_BREAD_CRUMBS)) {
-            setBreadCrumbVisibility(
-                    extras.getBoolean(EXTRA_NO_BREAD_CRUMBS) ? View.GONE : View.VISIBLE);
+            hideBreadCrumb(extras.getBoolean(EXTRA_NO_BREAD_CRUMBS));
         }
     }
 
@@ -1454,7 +1452,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void adaptBreadCrumbVisibility(@Nullable final Bundle arguments) {
         if (arguments != null && arguments.containsKey(EXTRA_NO_BREAD_CRUMBS)) {
             boolean hideBreadCrumb = arguments.getBoolean(EXTRA_NO_BREAD_CRUMBS, false);
-            adaptBreadCrumbVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
+            adaptBreadCrumbVisibility(hideBreadCrumb);
         } else {
             adaptBreadCrumbVisibility();
         }
@@ -1465,28 +1463,27 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * selected navigation preference.
      */
     private void adaptBreadCrumbVisibility() {
-        adaptBreadCrumbVisibility(breadCrumbVisibility);
+        adaptBreadCrumbVisibility(hideBreadCrumb);
     }
 
     /**
      * Adapts the visibility of the toolbar, which is used to show the breadcrumb of the currently
      * selected navigation preference.
      *
-     * @param visibility
-     *         The visibility, which should be set, as an {@link Integer} value. The visibility may
-     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
-     *         <code>View.GONE</code>
+     * @param hideBreadCrumb
+     *         True, if the toolbar, which is used to show the bread crumb of the currently selected
+     *         navigation preference, should be hidden, false otherwise
      */
-    private void adaptBreadCrumbVisibility(final int visibility) {
+    private void adaptBreadCrumbVisibility(final boolean hideBreadCrumb) {
         if (isSplitScreen()) {
             if (breadCrumbToolbar != null && breadCrumbShadowView != null) {
-                breadCrumbToolbar.setVisibility(visibility);
-                breadCrumbShadowView.setVisibility(visibility);
+                breadCrumbToolbar.setVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
+                breadCrumbShadowView.setVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
             }
         } else {
             if (toolbar != null && toolbarShadowView != null) {
-                toolbar.setVisibility(visibility);
-                toolbarShadowView.setVisibility(visibility);
+                toolbar.setVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
+                toolbarShadowView.setVisibility(hideBreadCrumb ? View.GONE : View.VISIBLE);
             }
         }
     }
@@ -2314,29 +2311,26 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Returns the visibility of the toolbar, which is used to show the breadcrumb of the currently
-     * selected navigation preference.
+     * Returns, whether the toolbar, which is used to show the bread crumb of the currently selected
+     * navigation preference, is hidden, or not.
      *
-     * @return The visibility of the toolbar, which is used to show the breadcrumb of the currently
-     * selected navigation preference, as an {@link Integer} value. The visibility must either be
-     * <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or <code>View.GONE</code>
+     * @return True, if the toolbar, which is used to show the bread crumb of the currently selected
+     * navigation preference, is hidden, false otherwise
      */
-    public final int getBreadCrumbVisibility() {
-        return breadCrumbVisibility;
+    public final boolean isBreadCrumbHidden() {
+        return hideBreadCrumb;
     }
 
     /**
-     * Sets the visibility of the toolbar, which is used to show the breadcrumb of the currently
-     * selected navigation preference. This takes effect regardless of whether the split screen
-     * layout is used, or not.
+     * Sets, whether the toolbar, which is used to show the bread crumb of the currently selected
+     * navigation preference, should be hidden, or not.
      *
-     * @param visibility
-     *         The visibility, which should be set, as an {@link Integer} value. The visibility must
-     *         either be <code>View.VISIBLE</code>, <code>View.INVISIBLE</code> or
-     *         <code>View.GONE</code>
+     * @param hide
+     *         True, if the toolbar, which is used to show the bread crumb of the currently selected
+     *         navigation preference, should be hidden, false otherwise
      */
-    public final void setBreadCrumbVisibility(final int visibility) {
-        this.breadCrumbVisibility = visibility;
+    public final void hideBreadCrumb(final boolean hide) {
+        this.hideBreadCrumb = hide;
         adaptBreadCrumbVisibility();
     }
 

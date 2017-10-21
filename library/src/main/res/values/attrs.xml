@@ -25,11 +25,7 @@ License.
     <attr name="finishButtonText" format="string"/>
     <attr name="showProgress" format="boolean"/>
     <attr name="progressFormat" format="string"/>
-    <attr name="breadCrumbVisibility" format="integer">
-        <enum name="visible" value="0"/>
-        <enum name="invisible" value="1"/>
-        <enum name="gone" value="2"/>
-    </attr>
+    <attr name="hideBreadCrumb" format="boolean"/>
     <attr name="toolbarElevation" format="dimension"/>
     <attr name="breadCrumbElevation" format="dimension"/>
     <attr name="cardViewElevation" format="dimension"/>
