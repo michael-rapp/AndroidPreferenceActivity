@@ -368,6 +368,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private int navigationSelectionColor;
 
     /**
+     * The color of dividers, which are contained by the navigation.
+     */
+    private int navigationDividerColor;
+
+    /**
      * True, if the navigation icon of the activity's toolbar is shown by default, false otherwise.
      */
     private boolean displayHomeAsUp;
@@ -420,6 +425,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         obtainButtonBarBackground();
         obtainNavigationBackground();
         obtainNavigationSelectionColor();
+        obtainNavigationDividerColor();
     }
 
     /**
@@ -700,6 +706,21 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
+     * Obtains the color of the dividers, which are contained by the navigation.
+     */
+    private void obtainNavigationDividerColor() {
+        int color;
+
+        try {
+            color = ThemeUtil.getColor(this, R.attr.navigationDividerColor);
+        } catch (NotFoundException e) {
+            color = ContextCompat.getColor(this, R.color.preference_divider_color_light);
+        }
+
+        setNavigationDividerColor(color);
+    }
+
+    /**
      * Handles intent extras, that allow to initially display a specific fragment.
      *
      * @return True, if a fragment is initially shown, false otherwise
@@ -960,6 +981,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         navigationFragment.setAdapterCallback(this);
         preferenceFragment = getFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
         adaptNavigationSelectionColor();
+        adaptNavigationDividerColor();
         adaptNavigationEnabledState();
     }
 
@@ -1573,6 +1595,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void adaptNavigationSelectionColor() {
         if (navigationFragment != null) {
             navigationFragment.setSelectionColor(navigationSelectionColor);
+        }
+    }
+
+    /**
+     * Adapts the color of the divider's, which are contained by the navigation.
+     */
+    private void adaptNavigationDividerColor() {
+        if (navigationFragment != null) {
+            navigationFragment.setDividerColor(navigationDividerColor);
         }
     }
 
@@ -2596,6 +2627,28 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public final void setNavigationSelectionColor(@ColorInt final int color) {
         this.navigationSelectionColor = color;
         adaptNavigationSelectionColor();
+    }
+
+    /**
+     * Returns the color of the dividers, which are contained by the navigation.
+     *
+     * @return The color of the dividers, which are contained by the navigation, as an {@link
+     * Integer} value
+     */
+    @ColorInt
+    public final int getNavigationDividerColor() {
+        return navigationDividerColor;
+    }
+
+    /**
+     * Sets the color of the dividers, which are contained by the navigation.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setNavigationDividerColor(@ColorInt final int color) {
+        this.navigationDividerColor = color;
+        adaptNavigationDividerColor();
     }
 
     /**

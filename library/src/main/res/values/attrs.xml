@@ -35,6 +35,7 @@ License.
     <attr name="buttonBarBackground" format="reference|color"/>
     <attr name="navigationBackground" format="reference|color"/>
     <attr name="navigationSelectionColor" format="color"/>
+    <attr name="navigationDividerColor" format="color"/>
     <attr name="dividerColor" format="color"/>
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
