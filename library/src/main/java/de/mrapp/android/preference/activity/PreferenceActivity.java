@@ -488,7 +488,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             text = ThemeUtil.getText(this, R.attr.nextButtonText);
         } catch (NotFoundException e) {
-            text = getText(R.string.next_button_label);
+            text = getText(R.string.next_button_text);
         }
 
         setNextButtonText(text);
@@ -503,7 +503,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             text = ThemeUtil.getText(this, R.attr.backButtonText);
         } catch (NotFoundException e) {
-            text = getText(R.string.back_button_label);
+            text = getText(R.string.back_button_text);
         }
 
         setBackButtonText(text);
@@ -518,7 +518,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             text = ThemeUtil.getText(this, R.attr.finishButtonText);
         } catch (NotFoundException e) {
-            text = getText(R.string.finish_button_label);
+            text = getText(R.string.finish_button_text);
         }
 
         setFinishButtonText(text);

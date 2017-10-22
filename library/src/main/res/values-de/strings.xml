@@ -15,10 +15,10 @@ License.
 -->
 <resources>
 
-    <string name="back_button_label">ZURÜCK</string>
-    <string name="next_button_label">WEITER</string>
-    <string name="finish_button_label">FERTIG</string>
-    <string name="restore_defaults_button_label">STANDARD WIEDERHERSTELLEN</string>
+    <string name="back_button_text">ZURÜCK</string>
+    <string name="next_button_text">WEITER</string>
+    <string name="finish_button_text">FERTIG</string>
+    <string name="restore_defaults_button_text">STANDARD WIEDERHERSTELLEN</string>
     <string name="progress_format" formatted="false">Schritt %d von %d: %s</string>
 
 </resources>

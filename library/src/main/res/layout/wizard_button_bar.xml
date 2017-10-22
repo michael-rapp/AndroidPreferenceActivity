@@ -34,7 +34,7 @@ License.
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="@string/back_button_label"/>
+        android:text="@string/back_button_text"/>
 
     <Button
         android:id="@id/next_button"
@@ -44,7 +44,7 @@ License.
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/next_button_label"
+        android:text="@string/next_button_text"
         tools:ignore="RelativeOverlap"/>
 
     <Button
@@ -55,7 +55,7 @@ License.
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/finish_button_label"
+        android:text="@string/finish_button_text"
         android:visibility="gone"/>
 
 </RelativeLayout>

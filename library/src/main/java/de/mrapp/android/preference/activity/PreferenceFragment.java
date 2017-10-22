@@ -155,7 +155,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
                 new int[]{R.attr.restoreDefaultsButtonText});
         CharSequence text = typedArray.getText(0);
         setRestoreDefaultsButtonText(
-                !TextUtils.isEmpty(text) ? text : getText(R.string.restore_defaults_button_label));
+                !TextUtils.isEmpty(text) ? text : getText(R.string.restore_defaults_button_text));
     }
 
     /**

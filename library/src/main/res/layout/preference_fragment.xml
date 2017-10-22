@@ -57,7 +57,7 @@ License.
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/restore_defaults_button_label"/>
+                android:text="@string/restore_defaults_button_text"/>
         </RelativeLayout>
 
     </LinearLayout>
