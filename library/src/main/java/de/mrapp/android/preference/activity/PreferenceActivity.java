@@ -447,7 +447,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             navigationWidth = ThemeUtil.getDimensionPixelSize(this, R.attr.navigationWidth);
         } catch (NotFoundException e) {
             navigationWidth =
-                    getResources().getDimensionPixelSize(R.dimen.default_navigation_width);
+                    getResources().getDimensionPixelSize(R.dimen.navigation_width);
         }
 
         setNavigationWidth(navigationWidth);
@@ -567,7 +567,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.toolbarElevation);
         } catch (NotFoundException e) {
-            elevation = getResources().getDimensionPixelSize(R.dimen.default_toolbar_elevation);
+            elevation = getResources().getDimensionPixelSize(R.dimen.toolbar_elevation);
         }
 
         setToolbarElevation(pixelsToDp(this, elevation));
@@ -583,7 +583,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.breadCrumbElevation);
         } catch (NotFoundException e) {
-            elevation = getResources().getDimensionPixelSize(R.dimen.default_bread_crumb_elevation);
+            elevation = getResources().getDimensionPixelSize(R.dimen.bread_crumb_toolbar_elevation);
         }
 
         setBreadCrumbElevation(pixelsToDp(this, elevation));
@@ -600,7 +600,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.cardViewElevation);
         } catch (NotFoundException e) {
             elevation = getResources()
-                    .getDimensionPixelSize(R.dimen.default_preference_screen_elevation);
+                    .getDimensionPixelSize(R.dimen.card_view_elevation);
         }
 
         setCardViewElevation(pixelsToDp(this, elevation));
@@ -616,7 +616,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.buttonBarElevation);
         } catch (NotFoundException e) {
-            elevation = getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
+            elevation = getResources().getDimensionPixelSize(R.dimen.button_bar_elevation);
         }
 
         setButtonBarElevation(pixelsToDp(this, elevation));
@@ -1344,9 +1344,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
                         .setVisibility(isNavigationHidden() ? View.GONE : View.VISIBLE);
                 toolbarLarge.hideNavigation(isNavigationHidden());
                 int preferenceScreenHorizontalMargin = getResources()
-                        .getDimensionPixelSize(R.dimen.preference_screen_horizontal_margin);
+                        .getDimensionPixelSize(R.dimen.card_view_horizontal_margin);
                 int preferenceScreenMarginRight = getResources()
-                        .getDimensionPixelSize(R.dimen.preference_screen_margin_right);
+                        .getDimensionPixelSize(R.dimen.card_view_margin_right);
                 int cardViewIntrinsicMargin =
                         getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
                 FrameLayout.LayoutParams cardViewLayoutParams =

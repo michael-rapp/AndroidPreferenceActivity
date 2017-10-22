@@ -15,7 +15,10 @@ License.
 -->
 <resources>
 
-    <!-- Misc -->
+    <!-- Card view -->
+    <dimen name="card_view_margin_top">80dp</dimen>
+    <dimen name="card_view_container_vertical_offset">-8dp</dimen>
+    <dimen name="card_view_vertical_offset">8dp</dimen>
     <dimen name="card_view_intrinsic_margin">0dp</dimen>
 
 </resources>

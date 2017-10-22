@@ -15,43 +15,36 @@ License.
 -->
 <resources>
 
-    <!-- New -->
-    <dimen name="toolbar_elevation">4dp</dimen>
-    <dimen name="button_bar_elevation">2dp</dimen>
-
-    <!-- PreferenceActivity -->
-    <dimen name="activity_horizontal_margin">0dp</dimen>
-
     <!-- Preferences -->
     <dimen name="preference_min_height">64dp</dimen>
     <dimen name="preference_horizontal_padding">16dp</dimen>
     <dimen name="preference_vertical_padding">12dp</dimen>
     <dimen name="preference_category_top_margin">20dp</dimen>
     <dimen name="preference_category_bottom_margin">8dp</dimen>
-    <dimen name="preference_child_horizontal_padding">32dp</dimen>
+    <dimen name="preference_child_indent">32dp</dimen>
+    <dimen name="preference_icon_size">40dp</dimen>
 
-    <!-- Preference screen -->
-    <dimen name="preference_screen_horizontal_padding">0dp</dimen>
-    <dimen name="preference_screen_margin_right">0dp</dimen>
-    <dimen name="preference_screen_margin_top">0dp</dimen>
-    <dimen name="preference_screen_horizontal_margin">0dp</dimen>
-    <dimen name="preference_screen_container_vertical_offset">0dp</dimen>
-    <dimen name="preference_screen_vertical_offset">0dp</dimen>
-
-    <!-- List views -->
-    <dimen name="list_view_padding_top">8dp</dimen>
-    <dimen name="list_view_item_min_height">56dp</dimen>
-    <dimen name="list_view_item_horizontal_padding">16dp</dimen>
-    <dimen name="list_view_item_vertical_padding">16dp</dimen>
-    <dimen name="list_view_item_icon_size">40dp</dimen>
+    <!-- Card view -->
+    <dimen name="card_view_horizontal_padding">0dp</dimen>
+    <dimen name="card_view_margin_right">32dp</dimen>
+    <dimen name="card_view_margin_top">59dp</dimen>
+    <dimen name="card_view_horizontal_margin">64dp</dimen>
+    <dimen name="card_view_container_vertical_offset">-24dp</dimen>
+    <dimen name="card_view_vertical_offset">2dp</dimen>
+    <dimen name="card_view_intrinsic_margin">22dp</dimen>
+    <dimen name="card_view_corner_radius">2dp</dimen>
+    <dimen name="card_view_elevation">14dp</dimen>
 
     <!-- Toolbars -->
+    <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="toolbar_large_height">144dp</dimen>
-    <dimen name="navigation_toolbar_padding_left">0dp</dimen>
-    <dimen name="bread_crumb_toolbar_horizontal_padding">0dp</dimen>
+    <dimen name="navigation_toolbar_padding_left">56dp</dimen>
+    <dimen name="bread_crumb_toolbar_horizontal_padding">28dp</dimen>
+    <dimen name="bread_crumb_toolbar_elevation">2dp</dimen>
 
-    <!-- Buttons -->
+    <!-- Button bar -->
+    <dimen name="button_bar_elevation">2dp</dimen>
     <dimen name="button_bar_horizontal_padding">12dp</dimen>
     <dimen name="button_bar_vertical_padding">4dp</dimen>
     <dimen name="button_horizontal_padding">16dp</dimen>
@@ -59,15 +52,9 @@ License.
     <dimen name="button_min_width">88dp</dimen>
     <dimen name="button_min_height">54dp</dimen>
 
-    <!-- Default values -->
-    <dimen name="default_navigation_width">0dp</dimen>
-    <dimen name="default_toolbar_elevation">4dp</dimen>
-    <dimen name="default_button_bar_elevation">2dp</dimen>
-    <dimen name="default_bread_crumb_elevation">0dp</dimen>
-    <dimen name="default_preference_screen_elevation">0dp</dimen>
-
     <!-- Misc -->
-    <dimen name="card_view_intrinsic_margin">22dp</dimen>
-    <dimen name="card_view_corner_radius">2dp</dimen>
+    <dimen name="preference_activity_horizontal_margin">0dp</dimen>
+    <dimen name="navigation_width">384dp</dimen>
+    <dimen name="list_view_padding_top">8dp</dimen>
 
 </resources>

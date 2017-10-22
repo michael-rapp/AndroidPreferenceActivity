@@ -59,19 +59,19 @@ License.
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/preference_screen_container_vertical_offset"
-        android:layout_marginTop="@dimen/preference_screen_margin_top"
+        android:layout_marginBottom="@dimen/card_view_container_vertical_offset"
+        android:layout_marginTop="@dimen/card_view_margin_top"
         android:background="@color/card_view_background_light"
-        app:cardElevation="@dimen/default_preference_screen_elevation"
+        app:cardElevation="@dimen/card_view_elevation"
         app:cardPreventCornerOverlap="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/preference_screen_vertical_offset"
-            android:paddingEnd="@dimen/preference_screen_horizontal_padding"
-            android:paddingStart="@dimen/preference_screen_horizontal_padding">
+            android:paddingBottom="@dimen/card_view_vertical_offset"
+            android:paddingEnd="@dimen/card_view_horizontal_padding"
+            android:paddingStart="@dimen/card_view_horizontal_padding">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/bread_crumb_toolbar"

@@ -22,14 +22,14 @@ License.
               android:gravity="center_vertical"
               android:minHeight="@dimen/preference_min_height"
               android:paddingEnd="@dimen/preference_horizontal_padding"
-              android:paddingLeft="@dimen/preference_child_horizontal_padding"
+              android:paddingLeft="@dimen/preference_child_indent"
               android:paddingRight="@dimen/preference_horizontal_padding"
-              android:paddingStart="@dimen/preference_child_horizontal_padding">
+              android:paddingStart="@dimen/preference_child_indent">
 
     <ImageView
         android:id="@android:id/icon"
-        android:layout_width="@dimen/list_view_item_icon_size"
-        android:layout_height="@dimen/list_view_item_icon_size"
+        android:layout_width="@dimen/preference_icon_size"
+        android:layout_height="@dimen/preference_icon_size"
         android:layout_marginEnd="@dimen/preference_horizontal_padding"
         android:layout_marginRight="@dimen/preference_horizontal_padding"
         android:contentDescription="@null"

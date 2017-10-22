@@ -32,7 +32,7 @@ License.
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/navigation_toolbar"
-        android:layout_width="@dimen/default_navigation_width"
+        android:layout_width="@dimen/navigation_width"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"

@@ -28,8 +28,8 @@ License.
 
     <ImageView
         android:id="@android:id/icon"
-        android:layout_width="@dimen/list_view_item_icon_size"
-        android:layout_height="@dimen/list_view_item_icon_size"
+        android:layout_width="@dimen/preference_icon_size"
+        android:layout_height="@dimen/preference_icon_size"
         android:layout_marginEnd="@dimen/preference_horizontal_padding"
         android:layout_marginRight="@dimen/preference_horizontal_padding"
         android:contentDescription="@null"

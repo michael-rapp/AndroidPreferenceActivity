@@ -15,9 +15,8 @@ License.
 -->
 <resources>
 
-    <!-- Preference screen -->
-    <dimen name="preference_screen_margin_top">80dp</dimen>
-    <dimen name="preference_screen_container_vertical_offset">-8dp</dimen>
-    <dimen name="preference_screen_vertical_offset">8dp</dimen>
+    <!-- Card view -->
+    <dimen name="card_view_margin_right">128dp</dimen>
+    <dimen name="card_view_horizontal_margin">250dp</dimen>
 
 </resources>

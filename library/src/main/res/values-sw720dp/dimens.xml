@@ -15,23 +15,7 @@ License.
 -->
 <resources>
 
-    <!-- PreferenceActivity -->
+    <!-- Misc -->
     <dimen name="preference_activity_horizontal_margin">82dp</dimen>
-
-    <!-- Preference screen -->
-    <dimen name="preference_screen_margin_right">32dp</dimen>
-    <dimen name="preference_screen_margin_top">59dp</dimen>
-    <dimen name="preference_screen_horizontal_margin">64dp</dimen>
-    <dimen name="preference_screen_container_vertical_offset">-24dp</dimen>
-    <dimen name="preference_screen_vertical_offset">2dp</dimen>
-
-    <!-- Toolbars -->
-    <dimen name="navigation_toolbar_padding_left">56dp</dimen>
-    <dimen name="bread_crumb_toolbar_horizontal_padding">28dp</dimen>
-
-    <!-- Default values -->
-    <dimen name="default_navigation_width">384dp</dimen>
-    <dimen name="default_bread_crumb_elevation">2dp</dimen>
-    <dimen name="default_preference_screen_elevation">14dp</dimen>
 
 </resources>

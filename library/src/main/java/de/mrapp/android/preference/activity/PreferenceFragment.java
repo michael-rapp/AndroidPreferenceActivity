@@ -195,7 +195,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
         TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
                 new int[]{R.attr.restoreDefaultsButtonBarElevation});
         int defaultValue =
-                getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
+                getResources().getDimensionPixelSize(R.dimen.button_bar_elevation);
         int elevation = typedArray.getDimensionPixelSize(0, defaultValue);
         setButtonBarElevation(pixelsToDp(getActivity(), elevation));
     }
