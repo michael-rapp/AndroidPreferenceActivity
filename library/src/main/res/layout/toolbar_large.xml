@@ -14,7 +14,7 @@ implied. See the License for the specific language governing permissions and lim
 License.
 -->
 <RelativeLayout
-    android:id="@id/toolbar_background_view"
+    android:id="@+id/toolbar_background_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -22,7 +22,7 @@ License.
     android:background="?attr/colorPrimary">
 
     <android.support.v7.widget.Toolbar
-        android:id="@id/toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentTop="true"
@@ -31,7 +31,7 @@ License.
         app:theme="?attr/toolbarTheme"/>
 
     <android.support.v7.widget.Toolbar
-        android:id="@id/navigation_toolbar"
+        android:id="@+id/navigation_toolbar"
         android:layout_width="@dimen/default_navigation_width"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentBottom="true"

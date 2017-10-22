@@ -927,7 +927,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         navigationFragmentContainer = findViewById(R.id.navigation_fragment_container);
         cardView = findViewById(R.id.card_view);
         toolbar = findViewById(R.id.toolbar);
-        toolbarLarge = findViewById(R.id.toolbar_large);
+        toolbarLarge = findViewById(R.id.large_toolbar);
         breadCrumbToolbar = findViewById(R.id.bread_crumb_toolbar);
         buttonBar = findViewById(R.id.wizard_button_bar);
         nextButton = findViewById(R.id.next_button);

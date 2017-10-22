@@ -27,7 +27,7 @@ License.
         android:orientation="vertical">
 
         <de.mrapp.android.preference.activity.view.ToolbarLarge
-            android:id="@+id/toolbar_large"
+            android:id="@+id/large_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_large_height"
             android:visibility="gone"
@@ -74,7 +74,7 @@ License.
             android:paddingStart="@dimen/preference_screen_horizontal_padding">
 
             <android.support.v7.widget.Toolbar
-                android:id="@id/bread_crumb_toolbar"
+                android:id="@+id/bread_crumb_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 android:background="@drawable/breadcrumb_background"

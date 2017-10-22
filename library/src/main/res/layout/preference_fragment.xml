@@ -13,7 +13,7 @@ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e
 implied. See the License for the specific language governing permissions and limitations under the
 License.
 -->
-<FrameLayout android:id="@id/preference_fragment_frame_layout"
+<FrameLayout android:id="@+id/preference_fragment_frame_layout"
              xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:custom="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
@@ -35,14 +35,14 @@ License.
         android:visibility="gone">
 
         <de.mrapp.android.util.view.ElevationShadowView
-            android:id="@id/restore_defaults_button_bar_shadow_view"
+            android:id="@+id/restore_defaults_button_bar_shadow_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             custom:emulateParallelLight="true"
             custom:shadowOrientation="top"/>
 
         <RelativeLayout
-            android:id="@id/restore_defaults_button_bar"
+            android:id="@+id/restore_defaults_button_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/button_bar_background_light"
@@ -52,7 +52,7 @@ License.
             android:paddingTop="@dimen/button_bar_vertical_padding">
 
             <Button
-                android:id="@id/restore_defaults_button"
+                android:id="@+id/restore_defaults_button"
                 style="@style/PreferenceActivity.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
