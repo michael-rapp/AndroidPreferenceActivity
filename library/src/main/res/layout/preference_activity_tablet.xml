@@ -61,7 +61,7 @@ License.
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/preference_screen_container_vertical_offset"
         android:layout_marginTop="@dimen/preference_screen_margin_top"
-        android:background="@color/preference_screen_background_light"
+        android:background="@color/card_view_background_light"
         app:cardElevation="@dimen/default_preference_screen_elevation"
         app:cardPreventCornerOverlap="false">
 

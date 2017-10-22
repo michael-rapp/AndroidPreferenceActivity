@@ -20,13 +20,13 @@ License.
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="cardViewBackgroundColor">@color/preference_screen_background_light</item>
+        <item name="cardViewBackgroundColor">@color/card_view_background_light</item>
         <item name="breadCrumbBackgroundColor">@color/bread_crumb_background_light</item>
         <item name="buttonBarBackground">@color/button_bar_background_light</item>
         <item name="navigationBackground">@color/navigation_background_light</item>
-        <item name="navigationSelectionColor">@color/navigation_selection_color_light</item>
-        <item name="navigationDividerColor">@color/preference_divider_color_light</item>
-        <item name="dividerColor">@color/preference_divider_color_light</item>
+        <item name="navigationSelectionColor">@color/selection_color_light</item>
+        <item name="navigationDividerColor">@color/divider_color_light</item>
+        <item name="dividerColor">@color/divider_color_light</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_light</item>
         <item name="android:listDivider">@null</item>
     </style>
@@ -36,13 +36,13 @@ License.
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="invertedToolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="cardViewBackgroundColor">@color/preference_screen_background_dark</item>
+        <item name="cardViewBackgroundColor">@color/card_view_background_dark</item>
         <item name="breadCrumbBackgroundColor">@color/bread_crumb_background_dark</item>
         <item name="buttonBarBackground">@color/button_bar_background_dark</item>
         <item name="navigationBackground">@color/navigation_background_dark</item>
-        <item name="navigationSelectionColor">@color/navigation_selection_color_dark</item>
-        <item name="navigationDividerColor">@color/preference_divider_color_dark</item>
-        <item name="dividerColor">@color/preference_divider_color_dark</item>
+        <item name="navigationSelectionColor">@color/selection_color_dark</item>
+        <item name="navigationDividerColor">@color/divider_color_dark</item>
+        <item name="dividerColor">@color/divider_color_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="android:listDivider">@null</item>
     </style>

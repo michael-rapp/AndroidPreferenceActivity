@@ -632,7 +632,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             color = ThemeUtil.getColor(this, R.attr.cardViewBackgroundColor);
         } catch (NotFoundException e) {
-            color = ContextCompat.getColor(this, R.color.preference_screen_background_light);
+            color = ContextCompat.getColor(this, R.color.card_view_background_light);
         }
 
         setCardViewBackgroundColor(color);
@@ -699,7 +699,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             color = ThemeUtil.getColor(this, R.attr.navigationSelectionColor);
         } catch (NotFoundException e) {
-            color = ContextCompat.getColor(this, R.color.navigation_selection_color_light);
+            color = ContextCompat.getColor(this, R.color.selection_color_light);
         }
 
         setNavigationSelectionColor(color);
@@ -714,7 +714,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             color = ThemeUtil.getColor(this, R.attr.navigationDividerColor);
         } catch (NotFoundException e) {
-            color = ContextCompat.getColor(this, R.color.preference_divider_color_light);
+            color = ContextCompat.getColor(this, R.color.divider_color_light);
         }
 
         setNavigationDividerColor(color);
@@ -2787,11 +2787,25 @@ public abstract class PreferenceActivity extends AppCompatActivity
         navigationFragment.setCallback(null);
         adaptNavigationWidth();
         adaptNavigationVisibility();
-        adaptBreadCrumbVisibility();
         adaptButtonBarVisibility();
+        adaptWizardButtonVisibilities();
         adaptNextButtonText();
         adaptBackButtonText();
         adaptFinishButtonText();
+        adaptProgress();
+        adaptBreadCrumbVisibility();
+        adaptBreadCrumbVisibility();
+        adaptBreadCrumbVisibility();
+        adaptToolbarElevation();
+        adaptBreadCrumbElevation();
+        adaptCardViewElevation();
+        adaptButtonBarElevation();
+        adaptCardViewBackgroundColor();
+        adaptBreadCrumbBackgroundColor();
+        adaptButtonBarBackground();
+        adaptNavigationBackground();
+        adaptNavigationSelectionColor();
+        adaptNavigationDividerColor();
 
         if (!handleShowFragmentIntent() && navigationFragment.getNavigationPreferenceCount() > 0 &&
                 (isSplitScreen() || isButtonBarShown())) {
