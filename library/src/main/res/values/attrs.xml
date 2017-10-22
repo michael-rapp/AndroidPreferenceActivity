@@ -16,6 +16,10 @@ License.
 <resources>
 
     <!-- PreferenceActivity -->
+    <attr name="toolbarTheme" format="reference"/>
+    <attr name="toolbarPopupTheme" format="reference"/>
+    <attr name="invertedToolbarTheme" format="reference"/>
+    <attr name="invertedToolbarPopupTheme" format="reference"/>
     <attr name="useSplitScreen" format="boolean"/>
     <attr name="navigationWidth" format="dimension"/>
     <attr name="hideNavigation" format="boolean"/>
@@ -37,10 +41,6 @@ License.
     <attr name="navigationBackground" format="reference|color"/>
     <attr name="navigationSelectionColor" format="color"/>
     <attr name="navigationDividerColor" format="color"/>
-    <attr name="toolbarTheme" format="reference"/>
-    <attr name="toolbarPopupTheme" format="reference"/>
-    <attr name="invertedToolbarTheme" format="reference"/>
-    <attr name="invertedToolbarPopupTheme" format="reference"/>
 
     <!-- PreferenceFragment -->
     <attr name="dividerColor" format="color"/>
