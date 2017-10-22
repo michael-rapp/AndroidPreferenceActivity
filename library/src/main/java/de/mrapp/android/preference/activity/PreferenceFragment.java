@@ -127,7 +127,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      */
     private int buttonBarElevation;
 
-    /**
+    /**ŝ
      * Obtains, whether the button, which allows to restore the preferences' default values, should
      * be shown, or not, from a specific theme.
      *

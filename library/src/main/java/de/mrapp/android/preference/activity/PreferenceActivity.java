@@ -614,7 +614,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         int elevation;
 
         try {
-            elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.wizardButtonBarElevation);
+            elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.buttonBarElevation);
         } catch (NotFoundException e) {
             elevation = getResources().getDimensionPixelSize(R.dimen.default_button_bar_elevation);
         }
