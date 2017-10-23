@@ -103,8 +103,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public static final String EXTRA_SHOW_FRAGMENT_TITLE = ":android:show_fragment_title";
 
     /**
-     * When starting this activity, the invoking intent can contain this extra boolean that the
-     * header list should not be displayed. This is most often used in conjunction with
+     * When starting this activity, the invoking intent can contain this extra boolean to specify
+     * that the navigation should not be displayed. This is most often used in conjunction with
      * <code>EXTRA_SHOW_FRAGMENT</code> to launch the activity to display a specific fragment that
      * the user has navigated to.
      */
@@ -144,8 +144,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * When starting this activity, the invoking intent can contain this extra boolean that the
-     * toolbar, which is used to show the title of the currently selected preference header, should
-     * not be displayed.
+     * toolbar, which is used to show the title of the currently selected navigation preference,
+     * should not be displayed.
      */
     public static final String EXTRA_NO_BREAD_CRUMBS = ":extra_prefs_no_bread_crumbs";
 
@@ -245,7 +245,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * The view, which is used to draw a shadow below the toolbar, which is used to show the bread
-     * crumb of the currently selected preference header when using the split screen layout.
+     * crumb of the currently selected navigation preference when using the split screen layout.
      */
     private ElevationShadowView breadCrumbShadowView;
 
@@ -446,8 +446,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             navigationWidth = ThemeUtil.getDimensionPixelSize(this, R.attr.navigationWidth);
         } catch (NotFoundException e) {
-            navigationWidth =
-                    getResources().getDimensionPixelSize(R.dimen.navigation_width);
+            navigationWidth = getResources().getDimensionPixelSize(R.dimen.navigation_width);
         }
 
         setNavigationWidth(navigationWidth);
@@ -599,8 +598,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             elevation = ThemeUtil.getDimensionPixelSize(this, R.attr.cardViewElevation);
         } catch (NotFoundException e) {
-            elevation = getResources()
-                    .getDimensionPixelSize(R.dimen.card_view_elevation);
+            elevation = getResources().getDimensionPixelSize(R.dimen.card_view_elevation);
         }
 
         setCardViewElevation(pixelsToDp(this, elevation));
@@ -1343,10 +1341,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 navigationFragmentContainer
                         .setVisibility(isNavigationHidden() ? View.GONE : View.VISIBLE);
                 toolbarLarge.hideNavigation(isNavigationHidden());
-                int preferenceScreenHorizontalMargin = getResources()
-                        .getDimensionPixelSize(R.dimen.card_view_horizontal_margin);
-                int preferenceScreenMarginRight = getResources()
-                        .getDimensionPixelSize(R.dimen.card_view_margin_right);
+                int preferenceScreenHorizontalMargin =
+                        getResources().getDimensionPixelSize(R.dimen.card_view_horizontal_margin);
+                int preferenceScreenMarginRight =
+                        getResources().getDimensionPixelSize(R.dimen.card_view_margin_right);
                 int cardViewIntrinsicMargin =
                         getResources().getDimensionPixelSize(R.dimen.card_view_intrinsic_margin);
                 FrameLayout.LayoutParams cardViewLayoutParams =
@@ -2242,7 +2240,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * Returns the text of the finish button, which is shown, when the activity is used as a wizard
-     * and the last preference header is currently selected.
+     * and the last navigation preference is currently selected.
      *
      * @return The text of the finish button as an instance of the class {@link CharSequence}. The
      * text may neither be null, nor empty
@@ -2254,7 +2252,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * Sets the text of the next button, which is shown, when the activity is used as a wizard and
-     * the last preference header is currently selected.
+     * the last navigation preference is currently selected.
      *
      * @param resourceId
      *         The resource id of the text, which should be set, as an {@link Integer} value. The
@@ -2266,7 +2264,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * Sets the text of the next button, which is shown, when the activity is used as a wizard and
-     * the last preference header is currently selected.
+     * the last navigation preference is currently selected.
      *
      * @param text
      *         The text, which should be set, as an instance of the class {@link CharSequence}. The
@@ -2391,11 +2389,11 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * Returns the elevation of the toolbar, which is used to show the bread crumb of the currently
-     * selected preference header, when using the split screen layout.
+     * selected navigation preference, when using the split screen layout.
      *
      * @return The elevation of the toolbar, which is used to show the bread crumb of the currently
-     * selected preference header, when using the split screen layout, in dp as an {@link Integer}
-     * value
+     * selected navigation preference, when using the split screen layout, in dp as an {@link
+     * Integer} value
      */
     public final int getBreadCrumbElevation() {
         return breadCrumbElevation;
@@ -2403,7 +2401,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * Sets the elevation of the toolbar, which is used to show the bread crumb of the currently
-     * selected preference header, when using the split screen layout.
+     * selected navigation preference, when using the split screen layout.
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
