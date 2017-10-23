@@ -15,7 +15,6 @@ License.
 -->
 <resources>
 
-    <dimen name="activity_horizontal_margin">96dp</dimen>
     <dimen name="fragment_margin">32dp</dimen>
 
 </resources>
