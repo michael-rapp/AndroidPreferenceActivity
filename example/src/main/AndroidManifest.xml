@@ -55,9 +55,6 @@ License.
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.mrapp.android.preference.activity.example.MainActivity"/>
         </activity>
-        <activity
-            android:name="de.mrapp.android.preference.activity.example.IntentActivity"
-            android:label="@string/activity_intent_title"/>
     </application>
 
 </manifest>
