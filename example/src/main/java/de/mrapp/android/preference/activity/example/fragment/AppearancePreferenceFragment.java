@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.preference.activity.example.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -47,7 +48,9 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
 
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                getActivity().recreate();
+                Intent intent = getActivity().getIntent();
+                getActivity().finish();
+                startActivity(intent);
                 return true;
             }
 
