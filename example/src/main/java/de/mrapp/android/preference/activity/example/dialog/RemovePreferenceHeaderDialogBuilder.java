@@ -110,8 +110,8 @@ public class RemovePreferenceHeaderDialogBuilder extends AlertDialog.Builder {
      * Initializes the dialog's title and message.
      */
     private void initializeTitleAndMessage() {
-        setTitle(R.string.remove_preference_header_dialog_title);
-        setMessage(R.string.remove_preference_header_dialog_message);
+        setTitle(R.string.remove_navigation_preference_dialog_title);
+        setMessage(R.string.remove_navigation_preference_dialog_message);
     }
 
     /**

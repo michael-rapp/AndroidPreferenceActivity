@@ -23,7 +23,7 @@ License.
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="@string/new_preference_header_fragment_text"
+        android:text="@string/new_navigation_preference_fragment_text"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </RelativeLayout>

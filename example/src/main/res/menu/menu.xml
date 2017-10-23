@@ -17,14 +17,14 @@ License.
 
     <item
         android:id="@+id/add_preference_header"
-        android:title="@string/add_preference_header_menu_item"/>
+        android:title="@string/add_navigation_preference_menu_item"/>
     <item
         android:id="@+id/remove_preference_header"
         android:enabled="false"
-        android:title="@string/remove_preference_header_menu_item"/>
+        android:title="@string/remove_navigation_preference_menu_item"/>
     <item
         android:id="@+id/clear_preference_headers"
         android:enabled="false"
-        android:title="@string/clear_preference_headers_menu_item"/>
+        android:title="@string/clear_navigation_preference_menu_item"/>
 
 </menu>

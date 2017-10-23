@@ -67,7 +67,7 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
      * @return The title as an instance of the class {@link CharSequence}
      */
     private CharSequence getPreferenceHeaderTitle() {
-        CharSequence originalTitle = getText(R.string.new_preference_header_title);
+        CharSequence originalTitle = getText(R.string.new_navigation_preference_title);
         CharSequence title = originalTitle;
         int counter = 1;
 

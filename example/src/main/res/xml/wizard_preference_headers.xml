@@ -18,14 +18,14 @@ License.
     <header
         android:fragment="de.mrapp.android.preference.activity.example.fragment.IntroductionPreferenceFragment"
         android:icon="@drawable/introduction_icon"
-        android:title="@string/introduction_preference_header_title"/>
+        android:title="@string/introduction_navigation_preference_title"/>
     <header
         android:fragment="de.mrapp.android.preference.activity.example.fragment.AppearancePreferenceFragment"
         android:icon="@drawable/appearance_icon"
-        android:title="@string/appearance_preference_header_title"/>
+        android:title="@string/appearance_navigation_preference_title"/>
     <header
         android:fragment="de.mrapp.android.preference.activity.example.fragment.BehaviorPreferenceFragment"
         android:icon="@drawable/behavior_icon"
-        android:title="@string/behavior_preference_header_title"/>
+        android:title="@string/behavior_navigation_preference_title"/>
 
 </preference-headers>
