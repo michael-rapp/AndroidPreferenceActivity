@@ -84,8 +84,8 @@ License.
     <string name="alternative_title_preference_summary">The alternative title, which should be used when an initial fragment is shown</string>
     <string name="alternative_title_preference_default_value">This is an alternative title</string>
     <string name="alternative_title_preference_key">alternative_title_preference_key</string>
-    <string name="intent_navigation_preference_title">Intent</string>
-    <string name="intent_navigation_preference_summary">This navigation preference launches an other activity</string>
+    <string name="check_box_preference_title">Check box</string>
+    <string name="check_box_preference_summary">This is a regular preference</string>
     <string name="add_navigation_preference_menu_item">Add navigation item</string>
     <string name="remove_navigation_preference_menu_item">Remove navigation item</string>
     <string name="clear_navigation_preference_menu_item">Clear navigation items</string>

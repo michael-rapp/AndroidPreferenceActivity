@@ -42,8 +42,8 @@ License.
             android:value="@string/restore_defaults"/>
     </header>
     <header
-        android:summary="@string/intent_navigation_preference_summary"
-        android:title="@string/intent_navigation_preference_title">
+        android:summary="@string/check_box_preference_summary"
+        android:title="@string/check_box_preference_title">
         <intent
             android:targetClass="de.mrapp.android.preference.activity.example.IntentActivity"
             android:targetPackage="de.mrapp.android.preference.activity.example"/>

@@ -38,9 +38,9 @@ License.
 
     <PreferenceCategory>
 
-        <de.mrapp.android.preference.activity.NavigationPreference
-            android:summary="@string/intent_navigation_preference_summary"
-            android:title="@string/intent_navigation_preference_title"/>
+        <CheckBoxPreference
+            android:summary="@string/check_box_preference_summary"
+            android:title="@string/check_box_preference_title"/>
 
     </PreferenceCategory>
 
