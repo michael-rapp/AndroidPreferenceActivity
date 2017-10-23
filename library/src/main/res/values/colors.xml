@@ -23,9 +23,9 @@ License.
     <color name="bread_crumb_background_dark">#ff303030</color>
     <color name="button_bar_background_light">#fff3f3f3</color>
     <color name="button_bar_background_dark">#ff272727</color>
-    <color name="divider_color_light">#ffcecece</color>
-    <color name="divider_color_dark">#ff757575</color>
-    <color name="selection_color_light">#32000000</color>
-    <color name="selection_color_dark">#32ffffff</color>
+    <color name="preference_divider_color_light">#ffcecece</color>
+    <color name="preference_divider_color_dark">#ff757575</color>
+    <color name="preference_selection_color_light">#1f000000</color>
+    <color name="preference_selection_color_dark">#1f000000</color>
 
 </resources>

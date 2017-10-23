@@ -24,9 +24,9 @@ License.
         <item name="breadCrumbBackgroundColor">@color/bread_crumb_background_light</item>
         <item name="buttonBarBackground">@color/button_bar_background_light</item>
         <item name="navigationBackground">@color/navigation_background_light</item>
-        <item name="navigationSelectionColor">@color/selection_color_light</item>
-        <item name="navigationDividerColor">@color/divider_color_light</item>
-        <item name="dividerColor">@color/divider_color_light</item>
+        <item name="navigationSelectionColor">@color/preference_selection_color_light</item>
+        <item name="navigationDividerColor">@color/preference_divider_color_light</item>
+        <item name="dividerColor">@color/preference_divider_color_light</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_light</item>
         <item name="android:listDivider">@null</item>
     </style>
@@ -40,9 +40,9 @@ License.
         <item name="breadCrumbBackgroundColor">@color/bread_crumb_background_dark</item>
         <item name="buttonBarBackground">@color/button_bar_background_dark</item>
         <item name="navigationBackground">@color/navigation_background_dark</item>
-        <item name="navigationSelectionColor">@color/selection_color_dark</item>
-        <item name="navigationDividerColor">@color/divider_color_dark</item>
-        <item name="dividerColor">@color/divider_color_dark</item>
+        <item name="navigationSelectionColor">@color/preference_selection_color_dark</item>
+        <item name="navigationDividerColor">@color/preference_divider_color_dark</item>
+        <item name="dividerColor">@color/preference_divider_color_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="android:listDivider">@null</item>
     </style>

@@ -699,7 +699,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             color = ThemeUtil.getColor(this, R.attr.navigationSelectionColor);
         } catch (NotFoundException e) {
-            color = ContextCompat.getColor(this, R.color.selection_color_light);
+            color = ContextCompat.getColor(this, R.color.preference_selection_color_light);
         }
 
         setNavigationSelectionColor(color);
@@ -714,7 +714,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         try {
             color = ThemeUtil.getColor(this, R.attr.navigationDividerColor);
         } catch (NotFoundException e) {
-            color = ContextCompat.getColor(this, R.color.divider_color_light);
+            color = ContextCompat.getColor(this, R.color.preference_divider_color_light);
         }
 
         setNavigationDividerColor(color);

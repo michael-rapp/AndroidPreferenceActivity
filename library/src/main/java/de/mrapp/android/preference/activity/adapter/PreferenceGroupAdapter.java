@@ -100,7 +100,7 @@ public class PreferenceGroupAdapter extends BaseAdapter {
         int color = dividerColor;
 
         if (color == -1) {
-            color = ContextCompat.getColor(context, R.color.divider_color_light);
+            color = ContextCompat.getColor(context, R.color.preference_divider_color_light);
         }
 
         divider.setBackgroundColor(color);
