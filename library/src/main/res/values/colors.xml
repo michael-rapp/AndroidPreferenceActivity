@@ -26,6 +26,6 @@ License.
     <color name="preference_divider_color_light">#ffcecece</color>
     <color name="preference_divider_color_dark">#ff757575</color>
     <color name="preference_selection_color_light">#1f000000</color>
-    <color name="preference_selection_color_dark">#1f000000</color>
+    <color name="preference_selection_color_dark">#33ffffff</color>
 
 </resources>
