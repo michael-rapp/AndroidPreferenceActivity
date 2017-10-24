@@ -2,17 +2,22 @@
 
 ## Version 5.0.0 (Oct. 3rd 2017)
 
-A major release, which aims at adapting the library according to the use of preferences in Android 8.0. It introduces the following changes:
+A major release, which aims at adapting the library according to the use of preferences in Android 8.0 and at fixing some fundamental issues. This required to re-implement large parts of the library:
 
+- `NavigationPreference`s are now used as navigation items. This enables to use regular preferences and categories alongside with navigation items.
+- Many methods and theme attributes have been renamed. However, most of the functionality of the previous versions is still available.
+- Fixed situations where the state of fragments was not completely restored after orientation changes or after resuming the activity.
+- Fixed a possible crash when using Android 7's multi-window mode on tablets.
+- It is now possible to use the fullscreen layout instead of the split screen layout on tablets.
+- The appearance pf dividers has been changed. They are now only displayed above a `PreferenceCategory`. 
 - Changed the activity's background color on phones.
 - Changed the title text color of preferences and preference headers.
 - Paddings and icon sizes are now equal for phones and tablet devices.
-- Fixed a possible crash when using Android 7's multi-window mode on tablets.
 - Updated `targetSdkVersion` to API level 26 (Android 8.0).
 - Updated dependency "AndroidUtil" to version 1.18.0.
 - Updated AppCompat v7 support library to version 26.1.0.
 - Updated CardView v7 support library to version 26.1.0.
-- Updating the dependencies required to update the `minSdkVersion` to API level 14.
+- Updating the dependencies required to increase the `minSdkVersion` to API level 14.
 
 ## Version 4.2.11 (Apr. 28th 2017)
  
