@@ -151,19 +151,19 @@ In addition to specifying themes to be used for a `PreferenceActivity`'s toolbar
 
 | Attribute name            | Format          | Description                                                                                                                                                               |
 |---------------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| useSplitScreen            | boolean         | Whether the split screen layout should be used on tablets, or not                                                                                                         |
-| navigationWidth           | dimension       | The width of the navigation when using the split screen layout                                                                                                            |
-| hideNavigation            | boolean         | Wether the navigation should be hidden                                                                                                                                    |
-| overrideNavigationIcon    | boolean         | When set to true, clicking the toolbar's back button, while a navigation item is selected and the split screen layout is not used, brings the user back to the navigation |
-| hideBreadCrumb            | boolean         | Whether the toolbar, which displays the bread crumb of the currently selected `NavigationPreference`, when using the split screen layout, should be hidden                  |
-| toolbarElevation          | dimension       | The elevation of the toolbar, which displays the activity's title                                                                                                         |
-| breadCrumbElevation       | dimension       | The elevation of the toolbar, which displays the bread crumb of the currently selected `NavigationPreference`, when using the split screen layout                          |
-| cardViewElevation         | dimension       | The elevation of the `CardView`, which contains the currently shown fragment, when using the split screen layout                                                            |
-| cardViewBackgroundColor   | color           | The background color of the `CardView`, which contains the currently shown fragment, when using the split screen layout                                                     |
-| breadCrumbBackgroundColor | color           | The background color of the toolbar, which displays the bread crumb of the currently selected `NavigationPreference`, when using the split screen layout                    |
-| navigationBackground      | color/reference | The background of the navigation. When not using the split screen layout, this is the overall background of the activity                                                  |
-| navigationSelectionColor  | color           | The background color of the currently selected navigation item                                                                                                            |
-| navigationDividerColor    | color           | The colors of the dividers, which are contained by the navigation                                                                                                         |
+| `useSplitScreen`            | boolean         | Whether the split screen layout should be used on tablets, or not                                                                                                         |
+| `navigationWidth`           | dimension       | The width of the navigation when using the split screen layout                                                                                                            |
+| `hideNavigation`            | boolean         | Wether the navigation should be hidden                                                                                                                                    |
+| `overrideNavigationIcon`    | boolean         | When set to true, clicking the toolbar's back button, while a navigation item is selected and the split screen layout is not used, brings the user back to the navigation |
+| `hideBreadCrumb`            | boolean         | Whether the toolbar, which displays the bread crumb of the currently selected `NavigationPreference`, when using the split screen layout, should be hidden                  |
+| `toolbarElevation`          | dimension       | The elevation of the toolbar, which displays the activity's title                                                                                                         |
+| `breadCrumbElevation`       | dimension       | The elevation of the toolbar, which displays the bread crumb of the currently selected `NavigationPreference`, when using the split screen layout                          |
+| `cardViewElevation`         | dimension       | The elevation of the `CardView`, which contains the currently shown fragment, when using the split screen layout                                                            |
+| `cardViewBackgroundColor`   | color           | The background color of the `CardView`, which contains the currently shown fragment, when using the split screen layout                                                     |
+| `breadCrumbBackgroundColor` | color           | The background color of the toolbar, which displays the bread crumb of the currently selected `NavigationPreference`, when using the split screen layout                    |
+| `navigationBackground`      | color/reference | The background of the navigation. When not using the split screen layout, this is the overall background of the activity                                                  |
+| `navigationSelectionColor`  | color           | The background color of the currently selected navigation item                                                                                                            |
+| `navigationDividerColor`    | color           | The colors of the dividers, which are contained by the navigation                                                                                                         |
 
 For retrieving or setting the properties mentioned above, the class `PreferenceActivity` also provides getter and setter methods. 
 
@@ -179,13 +179,13 @@ When using the activity as a wizard, additional theme attributes beyond those th
 
 | Attribute name      | Format          | Description                                                                                                                             |
 |---------------------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| showButtonBar       | boolean         | Whether the activity should be used as a wizard                                                                                         |
-| nextButtonText      | string          | The text of the "next" button                                                                                                           |
-| backButtonText      | string          | The text of the "back" button                                                                                                           |
-| finishButtonText    | string          | The text of the "finish" button                                                                                                         |
-| showProgress        | boolean         | Whether the index of the currently selected navigation item, as well as the total number of items, should be displayed as a bread crumb |
-| progressFormat      | string          | The format, which should be used to format the progress, e.g. `No. %s of %s total - Title: %s`                                          |
-| buttonBarBackground | color/reference | The background of the button bar, which contains the "next", "back" and "finish" button                                                 |
+| `showButtonBar`       | boolean         | Whether the activity should be used as a wizard                                                                                         |
+| `nextButtonText`      | string          | The text of the "next" button                                                                                                           |
+| `backButtonText`      | string          | The text of the "back" button                                                                                                           |
+| `finishButtonText`    | string          | The text of the "finish" button                                                                                                         |
+| `showProgress`        | boolean         | Whether the index of the currently selected navigation item, as well as the total number of items, should be displayed as a bread crumb |
+| `progressFormat`      | string          | The format, which should be used to format the progress, e.g. `No. %s of %s total - Title: %s`                                          |
+| `buttonBarBackground` | color/reference | The background of the button bar, which contains the "next", "back" and "finish" button                                                 |
 
 #### Using the interface `WizardListener`
 
@@ -209,9 +209,9 @@ t is possible to use the `Intent`, which is passed to a `PreferenceActivity` whe
 
 | Key                           | Type                                       | Description                                                                                                                      |
 |-------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| EXTRA_SHOW_FRAGMENT           | `String`                                     | Specifies the `NavigationPreference`, which should initially be selected by giving the fully classified class name of its fragment |
-| EXTRA_SHOW_FRAGMENT_ARGUMENTS | `Bundle`                                     | The arguments which should be passed to the fragment, which is initially shown                                                   |
-| EXTRA_SHOW_FRAGMENT_TITLE     | `CharSequence` / `String` / string resource id | An alternative bread crumb for the fragment, which is initially shown                                                            |
+| `EXTRA_SHOW_FRAGMENT`           | `String`                                     | Specifies the `NavigationPreference`, which should initially be selected by giving the fully classified class name of its fragment |
+| `EXTRA_SHOW_FRAGMENT_ARGUMENTS` | `Bundle`                                     | The arguments which should be passed to the fragment, which is initially shown                                                   |
+| `EXTRA_SHOW_FRAGMENT_TITLE`     | `CharSequence` / `String` / string resource id | An alternative bread crumb for the fragment, which is initially shown                                                            |
 
 ### Using the class `PreferenceFragment`
 
