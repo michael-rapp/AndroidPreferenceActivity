@@ -198,9 +198,6 @@ public class PreferenceGroupAdapter extends BaseAdapter {
      */
     @NonNull
     public final Pair<Object, Integer> getItemInternal(final int position) {
-        if (position == 0) {
-            System.out.println("gotcha");
-        }
         ensureAtLeast(position, 0, null, IndexOutOfBoundsException.class);
         Object item = null;
         int offset = 0;
