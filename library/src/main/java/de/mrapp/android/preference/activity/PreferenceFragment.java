@@ -14,7 +14,7 @@
 package de.mrapp.android.preference.activity;
 
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -42,6 +42,7 @@ import java.util.Set;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.fragment.AbstractPreferenceFragment;
+import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.ViewUtil;
 import de.mrapp.android.util.view.ElevationShadowView;
 
@@ -127,7 +128,12 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      */
     private int buttonBarElevation;
 
-    /**ŝ
+    /**
+     * The color of dividers, which are contained by the fragment.
+     */
+    private int dividerColor;
+
+    /**
      * Obtains, whether the button, which allows to restore the preferences' default values, should
      * be shown, or not, from a specific theme.
      *
@@ -136,9 +142,9 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      *         Integer} value
      */
     private void obtainShowRestoreDefaultsButton(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
-                new int[]{R.attr.showRestoreDefaultsButton});
-        boolean show = typedArray.getBoolean(0, false);
+        boolean show = ThemeUtil
+                .getBoolean(getActivity(), themeResourceId, R.attr.showRestoreDefaultsButton,
+                        false);
         showRestoreDefaultsButton(show);
     }
 
@@ -151,11 +157,16 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      *         value
      */
     private void obtainRestoreDefaultsButtonText(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
-                new int[]{R.attr.restoreDefaultsButtonText});
-        CharSequence text = typedArray.getText(0);
-        setRestoreDefaultsButtonText(
-                !TextUtils.isEmpty(text) ? text : getText(R.string.restore_defaults_button_text));
+        CharSequence text;
+
+        try {
+            text = ThemeUtil
+                    .getText(getActivity(), themeResourceId, R.attr.restoreDefaultsButtonText);
+        } catch (NotFoundException e) {
+            text = getText(R.string.restore_defaults_button_text);
+        }
+
+        setRestoreDefaultsButtonText(text);
     }
 
     /**
@@ -166,14 +177,13 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      *         Integer} value
      */
     private void obtainButtonBarBackground(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
-                new int[]{R.attr.restoreDefaultsButtonBarBackground});
-        int color = typedArray.getColor(0, -1);
-
-        if (color != -1) {
+        try {
+            int color = ThemeUtil.getColor(getActivity(), themeResourceId,
+                    R.attr.restoreDefaultsButtonBarBackground);
             setButtonBarBackgroundColor(color);
-        } else {
-            int resourceId = typedArray.getResourceId(0, -1);
+        } catch (NotFoundException e) {
+            int resourceId = ThemeUtil.getResId(getActivity(), themeResourceId,
+                    R.attr.restoreDefaultsButtonBarBackground, -1);
 
             if (resourceId != -1) {
                 setButtonBarBackground(resourceId);
@@ -192,12 +202,36 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      *         Integer} value
      */
     private void obtainButtonBarElevation(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getActivity().getTheme().obtainStyledAttributes(themeResourceId,
-                new int[]{R.attr.restoreDefaultsButtonBarElevation});
-        int defaultValue =
-                getResources().getDimensionPixelSize(R.dimen.button_bar_elevation);
-        int elevation = typedArray.getDimensionPixelSize(0, defaultValue);
+        int elevation;
+
+        try {
+            elevation = ThemeUtil.getDimensionPixelSize(getActivity(), themeResourceId,
+                    R.attr.restoreDefaultsButtonBarElevation);
+        } catch (NotFoundException e) {
+            elevation = getResources().getDimensionPixelSize(R.dimen.button_bar_elevation);
+        }
+
         setButtonBarElevation(pixelsToDp(getActivity(), elevation));
+    }
+
+    /**
+     * Obtains the color of the dividers, which are contained by the fragment, from a specific
+     * theme.
+     *
+     * @param themeResourceId
+     *         The resource id of the theme, the color should be obtained from, as an {@link
+     *         Integer} value
+     */
+    private void obtainDividerColor(@StyleRes final int themeResourceId) {
+        int color;
+
+        try {
+            color = ThemeUtil.getColor(getActivity(), themeResourceId, R.attr.dividerColor);
+        } catch (NotFoundException e) {
+            color = ContextCompat.getColor(getActivity(), R.color.preference_divider_color_light);
+        }
+
+        setDividerColor(color);
     }
 
     /**
@@ -657,6 +691,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
         obtainRestoreDefaultsButtonText(themeResourceId);
         obtainButtonBarBackground(themeResourceId);
         obtainButtonBarElevation(themeResourceId);
+        obtainDividerColor(themeResourceId);
     }
 
 }
