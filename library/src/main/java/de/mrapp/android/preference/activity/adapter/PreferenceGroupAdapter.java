@@ -194,7 +194,7 @@ public class PreferenceGroupAdapter extends BaseAdapter {
      *         The position of the item, which should be returned, as an {@link Integer} value
      * @return A pair, which contains the item, which corresponds to the given position, as well as
      * the item's position in the encapsulated adapter, if the item is not a divider, as an instance
-     * of the class {@link Pair}. The pair may not be null
+     * of the class Pair. The pair may not be null
      */
     @NonNull
     public final Pair<Object, Integer> getItemInternal(final int position) {

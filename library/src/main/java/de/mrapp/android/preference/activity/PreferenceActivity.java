@@ -1983,8 +1983,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * split screen layout.
      *
      * @return The card view, which contains the currently shown preference fragment, when using the
-     * split screen layout, as an instance of the class {@link CardView} or null, if the activity
-     * has not been created yet or if the split screen layout is not used
+     * split screen layout, as an instance of the class CardView or null, if the activity has not
+     * been created yet or if the split screen layout is not used
      */
     public final CardView getCardView() {
         return cardView;
@@ -2377,7 +2377,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     *         must be at least 0 and at maximum 16
      */
     public final void setToolbarElevation(final int elevation) {
         ensureAtLeast(elevation, 0, "The elevation must be at least 0");
@@ -2405,7 +2405,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     *         must be at least 0 and at maximum 16
      */
     public final void setBreadCrumbElevation(final int elevation) {
         ensureAtLeast(elevation, 0, "The elevation must be at least 0");
@@ -2432,7 +2432,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     *         must be at least 0 and at maximum 16
      */
     public final void setCardViewElevation(final int elevation) {
         ensureAtLeast(elevation, 0, "The elevation must be at least 0");
@@ -2457,7 +2457,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param elevation
      *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
-     *         must be at least 0 and at maximum {@link ElevationUtil#MAX_ELEVATION}
+     *         must be at least 0 and at maximum 16
      */
     public final void setButtonBarElevation(final int elevation) {
         ensureAtLeast(elevation, 0, "The elevation must be at least 0");
