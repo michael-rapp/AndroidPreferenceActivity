@@ -61,7 +61,7 @@ public class PreferenceGroupAdapter extends BaseAdapter {
     /**
      * The color of the divider's which are shown above preference categories.
      */
-    private int dividerColor;
+    private int dividerColor = -1;
 
     /**
      * Creates and returns a data set observer, which notifies the adapter, when the

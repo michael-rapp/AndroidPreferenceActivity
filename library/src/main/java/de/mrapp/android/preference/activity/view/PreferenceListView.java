@@ -69,7 +69,7 @@ public class PreferenceListView extends ListView {
     /**
      * The color of the divider's which are shown above preference categories.
      */
-    private int dividerColor;
+    private int dividerColor = -1;
 
     /**
      * The adapter factory, which is used to create the list view's adapter.
