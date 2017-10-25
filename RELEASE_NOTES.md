@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.1 (Oct. 25th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- The divider color of a `PreferenceFragment` is now correctly obtained from the theme.
+
 ## Version 5.0.0 (Oct. 25th 2017)
 
 A major release, which aims at adapting the library according to the use of preferences in Android 8.0 and at fixing some fundamental issues. This required to re-implement large parts of the library:
