@@ -13,16 +13,13 @@
  */
 package de.mrapp.android.preference.activity.fragment;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.TypedArray;
+import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +27,7 @@ import android.widget.ListView;
 
 import de.mrapp.android.preference.activity.R;
 import de.mrapp.android.preference.activity.view.PreferenceListView;
+import de.mrapp.android.util.ThemeUtil;
 
 /**
  * An abstract base class for all fragments, which show multiple preferences.
@@ -47,48 +45,29 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
     /**
      * The color of the dividers which are shown above preference categories.
      */
-    private int dividerColor;
+    private int dividerColor = -1;
 
     /**
      * Obtains all relevant attributes from the activity's current theme.
      */
     private void obtainStyledAttributes() {
-        int themeResourceId = obtainThemeResourceId();
-
-        if (themeResourceId != -1) {
-            onObtainStyledAttributes(themeResourceId);
-        }
+        obtainDividerColor();
     }
 
     /**
-     * Obtains the resource id of the activity's current theme.
-     *
-     * @return The resource id of the activity's current theme as an {@link Integer} value or 0, if
-     * an error occurred while obtaining the theme
+     * Obtains the color of the dividers, which are shown above preference categories, from the
+     * activity's theme.
      */
-    private int obtainThemeResourceId() {
+    private void obtainDividerColor() {
+        int color;
+
         try {
-            String packageName = getActivity().getClass().getPackage().getName();
-            PackageInfo packageInfo = getActivity().getPackageManager()
-                    .getPackageInfo(packageName, PackageManager.GET_META_DATA);
-            return packageInfo.applicationInfo.theme;
-        } catch (NameNotFoundException e) {
-            return -1;
+            color = ThemeUtil.getColor(getActivity(), R.attr.dividerColor);
+        } catch (NotFoundException e) {
+            color = ContextCompat.getColor(getActivity(), R.color.preference_divider_color_light);
         }
-    }
 
-    /**
-     * Obtains the color of the dividers, which are shown above preference categories, from a
-     * specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the color should be obtained from, as an {@link
-     *         Integer} value
-     */
-    private void obtainDividerColor(@StyleRes final int themeResourceId) {
-        TypedArray typedArray = getActivity().getTheme()
-                .obtainStyledAttributes(themeResourceId, new int[]{R.attr.dividerColor});
-        setDividerColor(typedArray.getColor(0, -1));
+        setDividerColor(color);
     }
 
     /**
@@ -120,20 +99,6 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
     protected abstract View onInflateView(@NonNull final LayoutInflater inflater,
                                           @Nullable final ViewGroup parent,
                                           @Nullable final Bundle savedInstanceState);
-
-    /**
-     * The method, which is invoked in order to obtain relevant attributes from the activity's
-     * current theme. This method may be overriden by subclasses in order to obtain additional
-     * attributes.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the attributes should be obtained from, as an {@link
-     *         Integer} value
-     */
-    @CallSuper
-    protected void onObtainStyledAttributes(@StyleRes final int themeResourceId) {
-        obtainDividerColor(themeResourceId);
-    }
 
     /**
      * Returns the list view, which is used to show the fragment's preferences.

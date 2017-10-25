@@ -26,7 +26,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -129,39 +128,33 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
     private int buttonBarElevation;
 
     /**
-     * The color of dividers, which are contained by the fragment.
+     * Obtains all relevant attributes from the activity's current theme.
      */
-    private int dividerColor;
+    private void obtainStyledAttributes() {
+        obtainShowRestoreDefaultsButton();
+        obtainRestoreDefaultsButtonText();
+        obtainButtonBarBackground();
+        obtainButtonBarElevation();
+    }
 
     /**
      * Obtains, whether the button, which allows to restore the preferences' default values, should
-     * be shown, or not, from a specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the boolean value should be obtained from, as an {@link
-     *         Integer} value
+     * be shown, or not, from the activity's current theme.
      */
-    private void obtainShowRestoreDefaultsButton(@StyleRes final int themeResourceId) {
-        boolean show = ThemeUtil
-                .getBoolean(getActivity(), themeResourceId, R.attr.showRestoreDefaultsButton,
-                        false);
+    private void obtainShowRestoreDefaultsButton() {
+        boolean show = ThemeUtil.getBoolean(getActivity(), R.attr.showRestoreDefaultsButton, false);
         showRestoreDefaultsButton(show);
     }
 
     /**
      * Obtains the text of the button, which allows to restore the preferences' default values, from
-     * a specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the text should be obtained from, as an {@link Integer}
-     *         value
+     * the activity's current theme.
      */
-    private void obtainRestoreDefaultsButtonText(@StyleRes final int themeResourceId) {
+    private void obtainRestoreDefaultsButtonText() {
         CharSequence text;
 
         try {
-            text = ThemeUtil
-                    .getText(getActivity(), themeResourceId, R.attr.restoreDefaultsButtonText);
+            text = ThemeUtil.getText(getActivity(), R.attr.restoreDefaultsButtonText);
         } catch (NotFoundException e) {
             text = getText(R.string.restore_defaults_button_text);
         }
@@ -170,20 +163,16 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
     }
 
     /**
-     * Obtains the background of the button bar from a specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the background should be obtained from, as an {@link
-     *         Integer} value
+     * Obtains the background of the button bar from the activity's current theme.
      */
-    private void obtainButtonBarBackground(@StyleRes final int themeResourceId) {
+    private void obtainButtonBarBackground() {
         try {
-            int color = ThemeUtil.getColor(getActivity(), themeResourceId,
-                    R.attr.restoreDefaultsButtonBarBackground);
+            int color =
+                    ThemeUtil.getColor(getActivity(), R.attr.restoreDefaultsButtonBarBackground);
             setButtonBarBackgroundColor(color);
         } catch (NotFoundException e) {
-            int resourceId = ThemeUtil.getResId(getActivity(), themeResourceId,
-                    R.attr.restoreDefaultsButtonBarBackground, -1);
+            int resourceId = ThemeUtil
+                    .getResId(getActivity(), R.attr.restoreDefaultsButtonBarBackground, -1);
 
             if (resourceId != -1) {
                 setButtonBarBackground(resourceId);
@@ -195,43 +184,19 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
     }
 
     /**
-     * Obtains the elevation of the button bar from a specific theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the elevation should be obtained from, as an {@link
-     *         Integer} value
+     * Obtains the elevation of the button bar from the activity's current theme.
      */
-    private void obtainButtonBarElevation(@StyleRes final int themeResourceId) {
+    private void obtainButtonBarElevation() {
         int elevation;
 
         try {
-            elevation = ThemeUtil.getDimensionPixelSize(getActivity(), themeResourceId,
-                    R.attr.restoreDefaultsButtonBarElevation);
+            elevation = ThemeUtil
+                    .getDimensionPixelSize(getActivity(), R.attr.restoreDefaultsButtonBarElevation);
         } catch (NotFoundException e) {
             elevation = getResources().getDimensionPixelSize(R.dimen.button_bar_elevation);
         }
 
         setButtonBarElevation(pixelsToDp(getActivity(), elevation));
-    }
-
-    /**
-     * Obtains the color of the dividers, which are contained by the fragment, from a specific
-     * theme.
-     *
-     * @param themeResourceId
-     *         The resource id of the theme, the color should be obtained from, as an {@link
-     *         Integer} value
-     */
-    private void obtainDividerColor(@StyleRes final int themeResourceId) {
-        int color;
-
-        try {
-            color = ThemeUtil.getColor(getActivity(), themeResourceId, R.attr.dividerColor);
-        } catch (NotFoundException e) {
-            color = ContextCompat.getColor(getActivity(), R.color.preference_divider_color_light);
-        }
-
-        setDividerColor(color);
     }
 
     /**
@@ -654,6 +619,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        obtainStyledAttributes();
         handleArguments();
     }
 
@@ -682,16 +648,6 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
         shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
         shadowView.setShadowElevation(buttonBarElevation);
         return frameLayout;
-    }
-
-    @Override
-    protected final void onObtainStyledAttributes(@StyleRes final int themeResourceId) {
-        super.onObtainStyledAttributes(themeResourceId);
-        obtainShowRestoreDefaultsButton(themeResourceId);
-        obtainRestoreDefaultsButtonText(themeResourceId);
-        obtainButtonBarBackground(themeResourceId);
-        obtainButtonBarElevation(themeResourceId);
-        obtainDividerColor(themeResourceId);
     }
 
 }
