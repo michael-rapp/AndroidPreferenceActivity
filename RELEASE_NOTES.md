@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.2 (Oct. 25th 2017)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed an issue, which causes the attributes of a `PreferenceFragment` to be obtained from the wrong theme. 
+
 ## Version 5.0.1 (Oct. 25th 2017)
 
 A bugfix release, which fixes the following issues:
