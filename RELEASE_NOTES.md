@@ -5,7 +5,7 @@
 A minor release, which introduces the following changes:
 
 - Added `descendantFocusability` attribute to the layouts of preferences.
-- Fixed Lint errors
+- Fixed Lint errors, which occur in Lint 3.0.
 - Updated dependency "AndroidUtil" to version 1.18.1.
 - Updated AppCompat v7 support library to version 27.0.0.
 - Updated CardView v7 support library to version 27.0.0.
