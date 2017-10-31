@@ -1,5 +1,15 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.2 (Oct. 31th 2017)
+
+A minor release, which introduces the following changes:
+
+- Added `descendantFocusability` attribute to the layouts of preferences.
+- Fixed Lint errors
+- Updated dependency "AndroidUtil" to version 1.18.1.
+- Updated AppCompat v7 support library to version 27.0.0.
+- Updated CardView v7 support library to version 27.0.0.
+
 ## Version 5.0.2 (Oct. 25th 2017)
 
 A bugfix release, which fixes the following issues:
