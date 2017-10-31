@@ -1,6 +1,6 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
-## Version 5.0.2 (Oct. 31th 2017)
+## Version 5.0.3 (Oct. 31th 2017)
 
 A minor release, which introduces the following changes:
 
