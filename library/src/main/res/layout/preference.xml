@@ -19,6 +19,7 @@ License.
               android:background="?attr/selectableItemBackground"
               android:baselineAligned="false"
               android:clipToPadding="false"
+              android:descendantFocusability="blocksDescendants"
               android:gravity="center_vertical"
               android:minHeight="@dimen/preference_min_height"
               android:paddingEnd="@dimen/preference_horizontal_padding"
