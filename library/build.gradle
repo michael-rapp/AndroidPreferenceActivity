@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    // FIXME Temporarily disable Lint as there is an issue with Lint 3.0, which prevents the library from building
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
