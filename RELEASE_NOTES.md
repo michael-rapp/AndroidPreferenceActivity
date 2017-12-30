@@ -1,12 +1,20 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.5 (Dec. 30th 2017)
+
+A minor release, which introduces the following changes:
+
+- Updated dependency "AndroidUtil" to version 1.18.3.
+- Updated AppCompat v7 support library to version 27.0.2.
+- Updated CardView v7 support library to version 27.0.2
+
 ## Version 5.0.4 (Nov. 26th 2017)
 
 A minor release, which introduces the following changes:
 
 - Updated dependency "AndroidUtil" to version 1.18.2.
 - Updated AppCompat v7 support library to version 27.0.1.
-- Updated CardView v7 support library to version 27.0.1
+- Updated CardView v7 support library to version 27.0.1.
 
 ## Version 5.0.3 (Oct. 31th 2017)
 
