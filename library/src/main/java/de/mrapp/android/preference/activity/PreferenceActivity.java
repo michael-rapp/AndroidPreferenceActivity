@@ -173,8 +173,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * The name of the extra, which is used to store the arguments, which have been passed to the
      * currently shown preference fragment, within a bundle.
      */
-    private static final String PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA =
-            PreferenceActivity.class.getName() + "::PreferenceFragmentArguments";
+    private static final String SELECTED_PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA =
+            PreferenceActivity.class.getName() + "::SelectedPreferenceFragmentArguments";
+
+    /**
+     * The name of the extra, which is used to store the fully classified class name of the
+     * currently shown preference fragment within a bundle.
+     */
+    private static final String SELECTED_PREFERENCE_FRAGMENT_EXTRA =
+            PreferenceActivity.class.getName() + "::SelectedPreferenceFragment";
 
     /**
      * The activity's toolbar.
@@ -378,10 +385,15 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private boolean displayHomeAsUp;
 
     /**
+     * The fully classified class name of the currently shown preference fragment.
+     */
+    private String selectedPreferenceFragment;
+
+    /**
      * The arguments which have been passed to the currently shown preference fragment or null, if
      * no arguments have been passed to the fragment or no preference fragment is shown.
      */
-    private Bundle preferenceFragmentArguments;
+    private Bundle selectedPreferenceFragmentArguments;
 
     /**
      * A set, which contains the listeners, which have been registered to be notified, when the
@@ -725,7 +737,18 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     private boolean handleShowFragmentIntent() {
         String initialFragment = getIntent().getStringExtra(EXTRA_SHOW_FRAGMENT);
+        return showInitialFragment(initialFragment);
+    }
 
+    /**
+     * Initially displays a specific fragment.
+     *
+     * @param initialFragment
+     *         The fully classified class name of the preference fragment, which should be shown, as
+     *         a {@link String} or null, if no fragment should be initially shown
+     * @return True, if a fragment has been shown, false otherwise
+     */
+    private boolean showInitialFragment(@Nullable final String initialFragment) {
         if (!TextUtils.isEmpty(initialFragment)) {
             for (int i = 0; i < navigationFragment.getNavigationPreferenceCount(); i++) {
                 NavigationPreference navigationPreference =
@@ -974,6 +997,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
             transaction.add(R.id.navigation_fragment_container, navigationFragment,
                     NAVIGATION_FRAGMENT_TAG);
             transaction.commit();
+        } else if (!navigationFragment.isAdapterCreated()) {
+            navigationFragment.setCallback(this);
         }
 
         navigationFragment.setAdapterCallback(this);
@@ -1000,19 +1025,20 @@ public abstract class PreferenceActivity extends AppCompatActivity
             arguments.putAll(navigationPreference.getExtras());
         }
 
-        preferenceFragmentArguments =
+        selectedPreferenceFragment = navigationPreference.getFragment();
+        selectedPreferenceFragmentArguments =
                 arguments != null ? arguments : navigationPreference.getExtras();
 
-        if (!TextUtils.isEmpty(navigationPreference.getFragment())) {
+        if (!TextUtils.isEmpty(selectedPreferenceFragment)) {
             Fragment fragment = Fragment.instantiate(this, navigationPreference.getFragment(),
-                    preferenceFragmentArguments);
+                    selectedPreferenceFragmentArguments);
             showPreferenceFragment(navigationPreference, fragment);
-            showBreadCrumb(navigationPreference, preferenceFragmentArguments);
+            showBreadCrumb(navigationPreference, selectedPreferenceFragmentArguments);
         } else {
             removePreferenceFragmentUnconditionally();
 
             if (isSplitScreen()) {
-                showBreadCrumb(navigationPreference, preferenceFragmentArguments);
+                showBreadCrumb(navigationPreference, selectedPreferenceFragmentArguments);
             }
         }
 
@@ -1057,7 +1083,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         transaction.commit();
         this.preferenceFragment = fragment;
         showToolbarNavigationIcon();
-        adaptBreadCrumbVisibility(preferenceFragmentArguments);
+        adaptBreadCrumbVisibility(selectedPreferenceFragmentArguments);
         notifyOnPreferenceFragmentShown(navigationPreference, fragment);
     }
 
@@ -1072,7 +1098,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 !isButtonBarShown()) {
             navigationFragment.selectNavigationPreference(-1, null);
             removePreferenceFragmentUnconditionally();
-            preferenceFragmentArguments = null;
+            selectedPreferenceFragmentArguments = null;
             return true;
         }
 
@@ -1740,7 +1766,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             for (WizardListener listener : wizardListeners) {
                 Bundle bundle =
                         listener.onNextStep(selectedNavigationPreference, preferenceFragment,
-                                preferenceFragmentArguments);
+                                selectedPreferenceFragmentArguments);
 
                 if (bundle != null) {
                     if (result == null) {
@@ -1772,7 +1798,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             for (WizardListener listener : wizardListeners) {
                 Bundle bundle =
                         listener.onPreviousStep(selectedNavigationPreference, preferenceFragment,
-                                preferenceFragmentArguments);
+                                selectedPreferenceFragmentArguments);
 
                 if (bundle != null) {
                     if (result == null) {
@@ -1800,7 +1826,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (selectedNavigationPreference != null && preferenceFragment != null) {
             for (WizardListener listener : wizardListeners) {
                 result &= listener.onFinish(selectedNavigationPreference, preferenceFragment,
-                        preferenceFragmentArguments);
+                        selectedPreferenceFragmentArguments);
             }
         }
 
@@ -1820,7 +1846,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (selectedNavigationPreference != null && preferenceFragment != null) {
             for (WizardListener listener : wizardListeners) {
                 result &= listener.onSkip(selectedNavigationPreference, preferenceFragment,
-                        preferenceFragmentArguments);
+                        selectedPreferenceFragmentArguments);
             }
         }
 
@@ -2805,7 +2831,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
         adaptNavigationSelectionColor();
         adaptNavigationDividerColor();
 
-        if (!handleShowFragmentIntent() && navigationFragment.getNavigationPreferenceCount() > 0 &&
+        if (!showInitialFragment(selectedPreferenceFragment) && !handleShowFragmentIntent() &&
+                navigationFragment.getNavigationPreferenceCount() > 0 &&
                 (isSplitScreen() || isButtonBarShown())) {
             navigationFragment.selectNavigationPreference(0, null);
         }
@@ -2888,8 +2915,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             handleIntent();
         } else {
-            preferenceFragmentArguments =
-                    savedInstanceState.getBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
+            selectedPreferenceFragment =
+                    savedInstanceState.getString(SELECTED_PREFERENCE_FRAGMENT_EXTRA);
+            selectedPreferenceFragmentArguments =
+                    savedInstanceState.getBundle(SELECTED_PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA);
         }
 
         inflateLayout();
@@ -2900,7 +2929,9 @@ public abstract class PreferenceActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBundle(PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA, preferenceFragmentArguments);
+        outState.putString(SELECTED_PREFERENCE_FRAGMENT_EXTRA, selectedPreferenceFragment);
+        outState.putBundle(SELECTED_PREFERENCE_FRAGMENT_ARGUMENTS_EXTRA,
+                selectedPreferenceFragmentArguments);
     }
 
     @Override
@@ -2909,7 +2940,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         NavigationPreference selectedNavigationPreference = getSelectedNavigationPreference();
 
         if (selectedNavigationPreference != null) {
-            showBreadCrumb(selectedNavigationPreference, preferenceFragmentArguments);
+            showBreadCrumb(selectedNavigationPreference, selectedPreferenceFragmentArguments);
             showToolbarNavigationIcon();
         }
     }

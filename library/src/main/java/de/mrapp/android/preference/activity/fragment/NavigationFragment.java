@@ -228,7 +228,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * {@link Integer} value
      */
     public final int getNavigationPreferenceCount() {
-        return adapter != null ? adapter.getNavigationPreferenceCount() : 0;
+        return isAdapterCreated() ? adapter.getNavigationPreferenceCount() : 0;
     }
 
     /**
@@ -240,7 +240,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * preferences are contained by the navigation
      */
     public final List<NavigationPreference> getAllNavigationPreferences() {
-        return adapter != null ? adapter.getAllNavigationPreferences() :
+        return isAdapterCreated() ? adapter.getAllNavigationPreferences() :
                 Collections.<NavigationPreference>emptyList();
     }
 
@@ -255,7 +255,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * preferences, has not been initialized yet
      */
     public final NavigationPreference getNavigationPreference(final int index) {
-        return adapter != null ? adapter.getNavigationPreference(index) : null;
+        return isAdapterCreated() ? adapter.getNavigationPreference(index) : null;
     }
 
     /**
@@ -266,7 +266,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      */
     @Nullable
     public final NavigationPreference getSelectedNavigationPreference() {
-        return adapter != null ? adapter.getSelectedNavigationPreference() : null;
+        return isAdapterCreated()? adapter.getSelectedNavigationPreference() : null;
     }
 
     /**
@@ -277,7 +277,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * Integer} value or -1, if no navigation preference is selected
      */
     public final int getSelectedNavigationPreferenceIndex() {
-        return adapter != null ? adapter.getSelectedNavigationPreferenceIndex() : -1;
+        return isAdapterCreated() ? adapter.getSelectedNavigationPreferenceIndex() : -1;
     }
 
     /**
@@ -294,7 +294,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      */
     public final void selectNavigationPreference(final int index,
                                                  @Nullable final Bundle arguments) {
-        if (adapter != null) {
+        if (isAdapterCreated()) {
             adapter.selectNavigationPreference(index, arguments);
         }
     }
@@ -308,7 +308,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
     public final void setSelectionColor(@ColorInt final int color) {
         this.selectionColor = color;
 
-        if (adapter != null) {
+        if (isAdapterCreated()) {
             adapter.setSelectionColor(color);
         }
     }
@@ -323,9 +323,19 @@ public class NavigationFragment extends AbstractPreferenceFragment
     public final void setEnabled(final boolean enabled) {
         this.enabled = enabled;
 
-        if (adapter != null) {
+        if (isAdapterCreated()) {
             adapter.setEnabled(enabled);
         }
+    }
+
+    /**
+     * Returns, whether the adapter, which contains the navigation preferences, has been created
+     * yet, or not.
+     *
+     * @return True, if the adapter has been created yet, false otherwise
+     */
+    public final boolean isAdapterCreated() {
+        return adapter != null;
     }
 
     @Override
@@ -377,7 +387,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
     public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState == null) {
+        if (isAdapterCreated()) {
             notifyOnNavigationFragmentCreated();
         }
     }
