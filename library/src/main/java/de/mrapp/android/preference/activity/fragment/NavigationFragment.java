@@ -387,7 +387,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
     public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (isAdapterCreated()) {
+        if (!isAdapterCreated()) {
             notifyOnNavigationFragmentCreated();
         }
     }
