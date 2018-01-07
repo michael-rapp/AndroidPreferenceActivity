@@ -2,7 +2,7 @@
 
 ## Version 5.0.7 (Jan. 7th 2018)
 
-A re-release of the previous release 5.0.6, whose Maven artifacts are broken.
+A re-release of the previous release 5.0.6 with working Maven artifacts.
 
 ## Version 5.0.6 (Jan. 7th 2018)
 
