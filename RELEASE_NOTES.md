@@ -1,5 +1,9 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.7 (Jan. 7th 2018)
+
+A re-release of the previous release 5.0, which was initially broken.
+
 ## Version 5.0.6 (Jan. 7th 2018)
 
 A bugfix release, which fixes the following issues:
