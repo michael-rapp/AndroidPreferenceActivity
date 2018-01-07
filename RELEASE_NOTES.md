@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.6 (Jan. 7th 2018)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed an issue, which caused the state of the navigation getting lost when returning to a `PreferenceActivity` from another activity.
+
 ## Version 5.0.5 (Dec. 30th 2017)
 
 A minor release, which introduces the following changes:
