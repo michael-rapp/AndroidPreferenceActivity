@@ -2,9 +2,11 @@
 
 ## Version 5.0.7 (Jan. 7th 2018)
 
-A re-release of the previous release 5.0, which was initially broken.
+A re-release of the previous release 5.0.6, whose Maven artifacts are broken.
 
 ## Version 5.0.6 (Jan. 7th 2018)
+
+ATTENTION: THE MAVEN ARTIFACTS OF THIS RELEASE ARE BROKEN. THE LIBRARY DOES NOT PROPERLY WORK WHEN ADDING THIS RELEASE AS A MAVEN DEPENDENCY.
 
 A bugfix release, which fixes the following issues:
 
