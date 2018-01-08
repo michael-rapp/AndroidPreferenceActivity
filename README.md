@@ -235,7 +235,7 @@ The `onRestoreDefaultValuesRequested`-method is called when the user clicks the 
 
 ## Troubleshooting
 
-This library is incompatible with the [v7 Preference Support Library](https://developer.android.com/topic/libraries/support-library/features.html#v7-preference). Using both libraries together in one project may result in unexpected behavior, e.g. the preferences may become unclickable (see [this](https://github.com/michael-rapp/AndroidPreferenceActivity/issues/19) issue).
+This library is incompatible with the [v7 Preference Support Library](https://developer.android.com/topic/libraries/support-library/packages.html#v7-preference) and [v14 Preference Support Library](https://developer.android.com/topic/libraries/support-library/packages.html#v14-preference). Using both libraries together in one project may result in unexpected behavior, e.g. the preferences may become unclickable (see [this](https://github.com/michael-rapp/AndroidPreferenceActivity/issues/19) issue).
 
 ## Contact information
 
