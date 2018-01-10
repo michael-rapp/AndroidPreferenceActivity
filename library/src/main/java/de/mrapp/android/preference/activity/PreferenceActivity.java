@@ -2831,7 +2831,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         adaptNavigationSelectionColor();
         adaptNavigationDividerColor();
 
-        if (!showInitialFragment(selectedPreferenceFragment) && !handleShowFragmentIntent() &&
+        if (!handleShowFragmentIntent() && !showInitialFragment(selectedPreferenceFragment) &&
                 navigationFragment.getNavigationPreferenceCount() > 0 &&
                 (isSplitScreen() || isButtonBarShown())) {
             navigationFragment.selectNavigationPreference(0, null);
