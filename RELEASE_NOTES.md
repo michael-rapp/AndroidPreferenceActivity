@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.8 (Jan. 10th 2018)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed an issue, which caused the fragment of the first `NavigationPreference` to be shown instead of the one, which is specified via the extra `EXTRA_SHOW_FRAGMENT`, if the extra `EXTRA_HIDE_NAVIGATION` is specified as well.
+
 ## Version 5.0.7 (Jan. 7th 2018)
 
 A re-release of the previous release 5.0.6 with working Maven artifacts.
