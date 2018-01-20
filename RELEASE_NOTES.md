@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.9 (Jan. 20th 2018)
+
+A minor release, which introduces the following changes:
+
+- Added `performClick`-method to the `NavigationPreference`.
+
 ## Version 5.0.8 (Jan. 10th 2018)
 
 A bugfix release, which fixes the following issues:
