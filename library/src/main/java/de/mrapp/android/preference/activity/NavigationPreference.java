@@ -250,7 +250,7 @@ public class NavigationPreference extends Preference {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                notifyOnShowFragment();
+                performClick();
 
                 if (listener != null) {
                     listener.onPreferenceClick(preference);
@@ -447,6 +447,13 @@ public class NavigationPreference extends Preference {
      */
     public final void setExtras(@Nullable final Bundle extras) {
         this.extras = extras;
+    }
+
+    /**
+     * Performs a click on the preference.
+     */
+    public final void performClick() {
+        notifyOnShowFragment();
     }
 
     @Override
