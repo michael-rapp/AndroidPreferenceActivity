@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.0.10 (Jan. 21th 2018)
+
+A bugfix release, which fixes the following issues.
+
+- Fixed an issue, which caused the fragment of the last selected `NavigationPreference` to be shown instead of the navigation, when returning to a `PreferenceActivity` from another activity.
+
 ## Version 5.0.9 (Jan. 20th 2018)
 
 A minor release, which introduces the following changes:
