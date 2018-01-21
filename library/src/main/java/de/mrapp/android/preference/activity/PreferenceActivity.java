@@ -1098,6 +1098,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
                 !isButtonBarShown()) {
             navigationFragment.selectNavigationPreference(-1, null);
             removePreferenceFragmentUnconditionally();
+            selectedPreferenceFragment = null;
             selectedPreferenceFragmentArguments = null;
             return true;
         }
