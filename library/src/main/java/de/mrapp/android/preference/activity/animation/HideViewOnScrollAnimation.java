@@ -21,8 +21,7 @@ import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import de.mrapp.android.util.datastructure.ListenerList;
 
 import static de.mrapp.android.util.Condition.ensureGreater;
 import static de.mrapp.android.util.Condition.ensureNotNull;
@@ -101,7 +100,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
      * A set, which contains the listeners, which should be notified about the animation's internal
      * state.
      */
-    private Set<HideViewOnScrollAnimationListener> listeners;
+    private ListenerList<HideViewOnScrollAnimationListener> listeners;
 
     /**
      * Notifies all listeners, which have been registered to be notified about the animation's
@@ -231,7 +230,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
         this.animatedView = view;
         this.direction = direction;
         this.animationDuration = animationDuration;
-        this.listeners = new LinkedHashSet<>();
+        this.listeners = new ListenerList<>();
     }
 
     /**

@@ -44,9 +44,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapter;
 import de.mrapp.android.preference.activity.fragment.NavigationFragment;
@@ -56,6 +54,7 @@ import de.mrapp.android.util.DisplayUtil.DeviceType;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.ViewUtil;
+import de.mrapp.android.util.datastructure.ListenerList;
 import de.mrapp.android.util.view.ElevationShadowView;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -399,19 +398,20 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * A set, which contains the listeners, which have been registered to be notified, when the
      * currently shown preference fragment has changed.
      */
-    private Set<PreferenceFragmentListener> preferenceFragmentListeners = new LinkedHashSet<>();
+    private ListenerList<PreferenceFragmentListener> preferenceFragmentListeners =
+            new ListenerList<>();
 
     /**
      * A set, which contains the listeners, which have been registered to be notified, when the user
      * navigates within the activity, when it used as a wizard.
      */
-    private Set<WizardListener> wizardListeners = new LinkedHashSet<>();
+    private ListenerList<WizardListener> wizardListeners = new ListenerList<>();
 
     /**
      * A set, which contains the listeners, which have been registered to be notified, when
      * navigation preferences have been added or removed to/from the activity.
      */
-    private Set<NavigationListener> navigationListeners = new LinkedHashSet<>();
+    private ListenerList<NavigationListener> navigationListeners = new ListenerList<>();
 
     /**
      * Obtains all relevant attributes from the activity's theme.
