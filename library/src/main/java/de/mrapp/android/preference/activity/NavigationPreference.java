@@ -31,6 +31,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -235,6 +236,7 @@ public class NavigationPreference extends Preference {
         try {
             obtainBreadCrumbTitle(typedArray);
             obtainFragment(typedArray);
+            obtainIcon(typedArray);
             obtainTint(typedArray);
         } finally {
             typedArray.recycle();
@@ -262,6 +264,23 @@ public class NavigationPreference extends Preference {
      */
     private void obtainFragment(@NonNull final TypedArray typedArray) {
         setFragment(typedArray.getString(R.styleable.NavigationPreference_android_fragment));
+    }
+
+    /**
+     * Obtains the preference's icon from a specific typed array.
+     *
+     * @param typedArray
+     *         The typed array, the icon should be obtained from, as an instance of the class {@link
+     *         TypedArray}. The typed array may not be null
+     */
+    private void obtainIcon(@NonNull final TypedArray typedArray) {
+        int resourceId =
+                typedArray.getResourceId(R.styleable.NavigationPreference_android_icon, -1);
+
+        if (resourceId != -1) {
+            Drawable icon = AppCompatResources.getDrawable(getContext(), resourceId);
+            setIcon(icon);
+        }
     }
 
     /**
