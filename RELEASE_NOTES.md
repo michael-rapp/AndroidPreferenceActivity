@@ -1,5 +1,13 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.1.0 (Feb. 9th 2018)
+
+A feature release, which introduces the following changes:
+
+- Vector drawables can now be used as the icon of a `NavigationPreference` even on pre-Lollipop devices.
+- The icon of a `NavigationPreference` can now be tinted (also even on pre-Lollipop devices).
+- Updated dependency "AndroidUtil" to version 1.20.1.
+
 ## Version 5.0.11 (Jan. 26th 2018)
 
 A minor release, which introduces the following changes:
