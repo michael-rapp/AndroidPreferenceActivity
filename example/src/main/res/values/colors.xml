@@ -18,5 +18,6 @@ License.
     <color name="color_primary">#ffd64937</color>
     <color name="color_primary_dark">#ffbb4030</color>
     <color name="color_accent">#ffd64937</color>
+    <color name="icon_tint">#ff757575</color>
 
 </resources>

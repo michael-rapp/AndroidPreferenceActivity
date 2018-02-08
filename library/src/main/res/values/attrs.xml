@@ -52,6 +52,7 @@ License.
     <declare-styleable name="NavigationPreference">
         <attr name="android:breadCrumbTitle"/>
         <attr name="android:fragment"/>
+        <attr name="android:tint"/>
     </declare-styleable>
 
 </resources>

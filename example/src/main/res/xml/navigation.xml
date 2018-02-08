@@ -17,21 +17,24 @@ License.
 
     <de.mrapp.android.preference.activity.NavigationPreference
         android:fragment="de.mrapp.android.preference.activity.example.fragment.IntroductionPreferenceFragment"
-        android:icon="@drawable/introduction_icon"
+        android:icon="@drawable/ic_information_outline_24dp"
+        android:tint="@color/icon_tint"
         android:title="@string/introduction_navigation_preference_title"/>
 
     <PreferenceCategory android:title="@string/settings_category">
 
         <de.mrapp.android.preference.activity.NavigationPreference
             android:fragment="de.mrapp.android.preference.activity.example.fragment.AppearancePreferenceFragment"
-            android:icon="@drawable/appearance_icon"
+            android:icon="@drawable/ic_palette_24dp"
             android:key="@string/appearance_navigation_preference_key"
+            android:tint="@color/icon_tint"
             android:title="@string/appearance_navigation_preference_title"/>
 
         <de.mrapp.android.preference.activity.NavigationPreference
             android:fragment="de.mrapp.android.preference.activity.example.fragment.BehaviorPreferenceFragment"
-            android:icon="@drawable/behavior_icon"
+            android:icon="@drawable/ic_settings_24dp"
             android:key="@string/behavior_navigation_preference_key"
+            android:tint="@color/icon_tint"
             android:title="@string/behavior_navigation_preference_title"/>
 
     </PreferenceCategory>

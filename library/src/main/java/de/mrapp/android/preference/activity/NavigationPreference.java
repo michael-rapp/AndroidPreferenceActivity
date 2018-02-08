@@ -15,17 +15,22 @@ package de.mrapp.android.preference.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -85,17 +90,27 @@ public class NavigationPreference extends Preference {
         /**
          * The saved value of the attribute "breadCrumbTitle".
          */
-        public CharSequence breadCrumbTitle;
+        CharSequence breadCrumbTitle;
 
         /**
          * The saved value of the attribute "fragment".
          */
-        public String fragment;
+        String fragment;
 
         /**
          * The saved value of the attribute "extras".
          */
-        public Bundle extras;
+        Bundle extras;
+
+        /**
+         * The saved value of the attribute "tintList".
+         */
+        ColorStateList tintList;
+
+        /**
+         * The saved value of the attribute "tintMode".
+         */
+        PorterDuff.Mode tintMode;
 
         /**
          * Creates a new data structure, which allows to store the internal state of a {@link
@@ -106,7 +121,7 @@ public class NavigationPreference extends Preference {
          *         The state of the superclass of this view, as an instance of the type {@link
          *         Parcelable}. The state may not be null
          */
-        public SavedState(@NonNull final Parcelable superState) {
+        SavedState(@NonNull final Parcelable superState) {
             super(superState);
         }
 
@@ -119,20 +134,23 @@ public class NavigationPreference extends Preference {
          *         The parcel to read read from as a instance of the class {@link Parcel}. The
          *         parcel may not be null
          */
-        public SavedState(@NonNull final Parcel source) {
+        SavedState(@NonNull final Parcel source) {
             super(source);
             breadCrumbTitle = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
             fragment = source.readString();
             extras = source.readBundle(NavigationPreference.class.getClassLoader());
-
+            tintList = source.readParcelable(getClass().getClassLoader());
+            tintMode = (PorterDuff.Mode) source.readSerializable();
         }
 
         @Override
-        public final void writeToParcel(final Parcel destination, final int flags) {
-            super.writeToParcel(destination, flags);
-            TextUtils.writeToParcel(breadCrumbTitle, destination, flags);
-            destination.writeString(fragment);
-            destination.writeBundle(extras);
+        public final void writeToParcel(final Parcel dest, final int flags) {
+            super.writeToParcel(dest, flags);
+            TextUtils.writeToParcel(breadCrumbTitle, dest, flags);
+            dest.writeString(fragment);
+            dest.writeBundle(extras);
+            dest.writeParcelable(tintList, flags);
+            dest.writeSerializable(tintMode);
         }
 
     }
@@ -152,6 +170,16 @@ public class NavigationPreference extends Preference {
      * The arguments, which are passed to the fragment, which is associated with the preference.
      */
     private Bundle extras;
+
+    /**
+     * The color state list, which is used to tint the preference's icon.
+     */
+    private ColorStateList tintList;
+
+    /**
+     * The mode, which is used to tint the preference's icon.
+     */
+    private PorterDuff.Mode tintMode;
 
     /**
      * The callback, which is notified, when the fragment, which is associated with the preference,
@@ -176,6 +204,8 @@ public class NavigationPreference extends Preference {
      */
     private void initialize(final AttributeSet attributeSet, @AttrRes final int defaultStyle,
                             @StyleRes final int defaultStyleResource) {
+        this.tintList = null;
+        this.tintMode = PorterDuff.Mode.SRC_ATOP;
         setOnPreferenceClickListener(null);
         obtainStyledAttributes(attributeSet, defaultStyle, defaultStyleResource);
     }
@@ -205,6 +235,7 @@ public class NavigationPreference extends Preference {
         try {
             obtainBreadCrumbTitle(typedArray);
             obtainFragment(typedArray);
+            obtainTint(typedArray);
         } finally {
             typedArray.recycle();
         }
@@ -231,6 +262,30 @@ public class NavigationPreference extends Preference {
      */
     private void obtainFragment(@NonNull final TypedArray typedArray) {
         setFragment(typedArray.getString(R.styleable.NavigationPreference_android_fragment));
+    }
+
+    /**
+     * Obtains the color state list to tint the preference's icon from a specific typed array.
+     *
+     * @param typedArray
+     *         The typed array, the color state list should be obtained from, as an instance of the
+     *         class {@link TypedArray}. The typed array may not be null
+     */
+    private void obtainTint(@NonNull final TypedArray typedArray) {
+        setIconTintList(
+                typedArray.getColorStateList(R.styleable.NavigationPreference_android_tint));
+    }
+
+    /**
+     * Adapts the tint of the preference's icon.
+     */
+    private void adaptIconTint() {
+        Drawable icon = getIcon();
+
+        if (icon != null) {
+            DrawableCompat.setTintList(icon, tintList);
+            DrawableCompat.setTintMode(icon, tintMode);
+        }
     }
 
     /**
@@ -364,6 +419,13 @@ public class NavigationPreference extends Preference {
     }
 
     /**
+     * Performs a click on the preference.
+     */
+    public final void performClick() {
+        notifyOnShowFragment();
+    }
+
+    /**
      * Returns the breadcrumb title, which is shown, when showing the fragment, which is
      * associated with the preference.
      *
@@ -450,10 +512,63 @@ public class NavigationPreference extends Preference {
     }
 
     /**
-     * Performs a click on the preference.
+     * Returns the color state list, which is used to tint the preference's icon.
+     *
+     * @return The color state list, which is used to tint the preference's icon as an instance of
+     * the class {@link ColorStateList} or null, if no color state list has been set
      */
-    public final void performClick() {
-        notifyOnShowFragment();
+    public final ColorStateList getIconTintList() {
+        return tintList;
+    }
+
+    /**
+     * Sets the color, which should be used to tint the preference's icon.
+     *
+     * @param color
+     *         The color, which should be set, as an {@link Integer} value
+     */
+    public final void setIconTint(@ColorInt final int color) {
+        setIconTintList(ColorStateList.valueOf(color));
+    }
+
+    /**
+     * Sets the color state list, which should be used to tint the preference's icon.
+     *
+     * @param tintList
+     *         The color state list, which should be set, as an instance of the class {@link
+     *         ColorStateList} or null, if no color state list should be set
+     */
+    public final void setIconTintList(@Nullable final ColorStateList tintList) {
+        this.tintList = tintList;
+        adaptIconTint();
+    }
+
+    /**
+     * Returns the mode, which is used to tint the preference's icon.
+     *
+     * @return The mode, which is used to tint the preference's icon, as a value of the enum {@link
+     * PorterDuff.Mode} or null, if no mode has been set
+     */
+    public final PorterDuff.Mode getIconTintMode() {
+        return tintMode;
+    }
+
+    /**
+     * Sets the mode, which should be used to tint the preference's icon.
+     *
+     * @param tintMode
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode} or
+     *         null, if no mode should be set
+     */
+    public final void setIconTintMode(@Nullable final PorterDuff.Mode tintMode) {
+        this.tintMode = tintMode;
+        adaptIconTint();
+    }
+
+    @Override
+    public final void setIcon(final Drawable icon) {
+        super.setIcon(icon);
+        adaptIconTint();
     }
 
     @Override
@@ -471,6 +586,8 @@ public class NavigationPreference extends Preference {
             savedState.breadCrumbTitle = getBreadCrumbTitle();
             savedState.fragment = getFragment();
             savedState.extras = getExtras();
+            savedState.tintList = getIconTintList();
+            savedState.tintMode = getIconTintMode();
             return savedState;
         }
 
@@ -484,6 +601,8 @@ public class NavigationPreference extends Preference {
             setBreadCrumbTitle(savedState.breadCrumbTitle);
             setFragment(savedState.fragment);
             setExtras(savedState.extras);
+            setIconTintList(savedState.tintList);
+            setIconTintMode(savedState.tintMode);
             super.onRestoreInstanceState(savedState.getSuperState());
         } else {
             super.onRestoreInstanceState(state);
