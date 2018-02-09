@@ -37,6 +37,8 @@ import android.util.AttributeSet;
 
 import de.mrapp.android.util.view.AbstractSavedState;
 
+import static de.mrapp.android.util.Condition.ensureNotNull;
+
 /**
  * A preference, which allows to show a fragment within a {@link PreferenceActivity} when
  * clicked.
@@ -566,8 +568,9 @@ public class NavigationPreference extends Preference {
      * Returns the mode, which is used to tint the preference's icon.
      *
      * @return The mode, which is used to tint the preference's icon, as a value of the enum {@link
-     * PorterDuff.Mode} or null, if no mode has been set
+     * PorterDuff.Mode}. The mode may not be null
      */
+    @NonNull
     public final PorterDuff.Mode getIconTintMode() {
         return tintMode;
     }
@@ -576,10 +579,11 @@ public class NavigationPreference extends Preference {
      * Sets the mode, which should be used to tint the preference's icon.
      *
      * @param tintMode
-     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode} or
-     *         null, if no mode should be set
+     *         The mode, which should be set, as a value of the enum {@link PorterDuff.Mode}. The
+     *         mode may not be null
      */
-    public final void setIconTintMode(@Nullable final PorterDuff.Mode tintMode) {
+    public final void setIconTintMode(@NonNull final PorterDuff.Mode tintMode) {
+        ensureNotNull(tintMode, "The tint mode may not be null");
         this.tintMode = tintMode;
         adaptIconTint();
     }
