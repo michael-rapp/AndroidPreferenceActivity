@@ -585,7 +585,7 @@ public class NavigationPreference extends Preference {
     }
 
     @Override
-    public final void setIcon(final Drawable icon) {
+    public void setIcon(final Drawable icon) {
         super.setIcon(icon);
         adaptIconTint();
     }
