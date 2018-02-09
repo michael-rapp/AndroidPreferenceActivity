@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 5.1.1 (Feb. 9th 2018)
+
+A minor release, which introduces the following changes:
+
+- Removed `final` modifier from `setIcon`-method of the class `NavigationPreference`. 
+
 ## Version 5.1.0 (Feb. 9th 2018)
 
 A feature release, which introduces the following changes:
