@@ -17,11 +17,10 @@ android {
         }
     }
     lintOptions {
-            disable 'MissingTranslation'
+        disable 'MissingTranslation'
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library')
+    api project(':library')
 }
