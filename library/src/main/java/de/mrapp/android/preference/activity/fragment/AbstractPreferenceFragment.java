@@ -20,10 +20,10 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import de.mrapp.android.preference.activity.R;
 import de.mrapp.android.preference.activity.view.PreferenceListView;
@@ -35,7 +35,7 @@ import de.mrapp.android.util.ThemeUtil;
  * @author Michael Rapp
  * @since 5.0.0
  */
-public abstract class AbstractPreferenceFragment extends android.preference.PreferenceFragment {
+public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompat {
 
     /**
      * The list view, which is used to show the fragment's preferences.
@@ -101,16 +101,6 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
                                           @Nullable final Bundle savedInstanceState);
 
     /**
-     * Returns the list view, which is used to show the fragment's preferences.
-     *
-     * @return The list view, which is used to show the fragment's preferences, as an instance of
-     * the class {@link ListView} or null, if the fragment has not been created yet
-     */
-    public final ListView getListView() {
-        return listView;
-    }
-
-    /**
      * Returns the color of the dividers, which are shown above preference categories.
      *
      * @return The color of the dividers, which are shown above preference categories, as an {@link
@@ -140,6 +130,8 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
         obtainStyledAttributes();
     }
 
+    // TODO
+    /*
     @CallSuper
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup parent,
@@ -154,6 +146,12 @@ public abstract class AbstractPreferenceFragment extends android.preference.Pref
 
         adaptDividerColor();
         return view;
+    }
+    */
+
+    @Override
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        // TODO
     }
 
 }

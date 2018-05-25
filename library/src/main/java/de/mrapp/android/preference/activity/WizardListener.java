@@ -13,10 +13,10 @@
  */
 package de.mrapp.android.preference.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
 /**
  * Defines the interface a class, which should be notified when the user navigates within a {@link

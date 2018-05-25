@@ -15,6 +15,7 @@ package de.mrapp.android.preference.activity.example;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
@@ -33,10 +34,10 @@ public class SettingsActivity extends AbstractPreferenceActivity {
      *
      * @param fragment
      *         The fragment, which contains the preference, as an instance of the class {@link
-     *         android.preference.PreferenceFragment}. The fragment may not be null
+     *         PreferenceFragmentCompat}. The fragment may not be null
      */
     private void initializeAppearanceNavigationPreference(
-            @NonNull final android.preference.PreferenceFragment fragment) {
+            @NonNull final PreferenceFragmentCompat fragment) {
         String key = getString(R.string.appearance_navigation_preference_key);
         NavigationPreference navigationPreference =
                 (NavigationPreference) fragment.findPreference(key);
@@ -51,10 +52,10 @@ public class SettingsActivity extends AbstractPreferenceActivity {
      *
      * @param fragment
      *         The fragment, which contains the preference, as an instance of the class {@link
-     *         android.preference.PreferenceFragment}. The fragment may not be null
+     *         PreferenceFragmentCompat}. The fragment may not be null
      */
     private void initializeBehaviorNavigationPreference(
-            @NonNull final android.preference.PreferenceFragment fragment) {
+            @NonNull final PreferenceFragmentCompat fragment) {
         String key = getString(R.string.behavior_navigation_preference_key);
         NavigationPreference navigationPreference =
                 (NavigationPreference) fragment.findPreference(key);
@@ -64,8 +65,7 @@ public class SettingsActivity extends AbstractPreferenceActivity {
     }
 
     @Override
-    public final void onCreateNavigation(
-            @NonNull final android.preference.PreferenceFragment fragment) {
+    public final void onCreateNavigation(@NonNull final PreferenceFragmentCompat fragment) {
         fragment.addPreferencesFromResource(R.xml.navigation);
         initializeAppearanceNavigationPreference(fragment);
         initializeBehaviorNavigationPreference(fragment);

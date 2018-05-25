@@ -14,9 +14,9 @@
 package de.mrapp.android.preference.activity.example.fragment;
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.PreferenceFragment;
@@ -48,7 +48,8 @@ public class BehaviorPreferenceFragment extends AbstractPreferenceFragment
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
                 if (newValue != null) {
                     boolean overrideNavigationIcon = (boolean) newValue;
-                    ((PreferenceActivity) getActivity()).overrideNavigationIcon(overrideNavigationIcon);
+                    ((PreferenceActivity) getActivity())
+                            .overrideNavigationIcon(overrideNavigationIcon);
                 }
 
                 return true;

@@ -13,9 +13,10 @@
  */
 package de.mrapp.android.preference.activity.example;
 
-import android.preference.Preference;
-import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -140,8 +141,7 @@ public class DynamicSettingsActivity extends AbstractPreferenceActivity
     }
 
     @Override
-    protected final void onCreateNavigation(
-            @NonNull final android.preference.PreferenceFragment fragment) {
+    protected final void onCreateNavigation(@NonNull final PreferenceFragmentCompat fragment) {
         fragment.addPreferencesFromResource(R.xml.dynamic_navigation);
         addNavigationPreference();
     }

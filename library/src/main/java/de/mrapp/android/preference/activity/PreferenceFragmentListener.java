@@ -13,8 +13,8 @@
  */
 package de.mrapp.android.preference.activity;
 
-import android.app.Fragment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
 /**
  * Defines the interface, a class, which should be notified when the currently shown preference

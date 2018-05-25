@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.preference.Preference;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -32,6 +31,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.preference.Preference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -40,8 +40,7 @@ import de.mrapp.android.util.view.AbstractSavedState;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * A preference, which allows to show a fragment within a {@link PreferenceActivity} when
- * clicked.
+ * A preference, which allows to show a fragment within a {@link PreferenceActivity} when clicked.
  *
  * @author Michael Rapp
  * @since 5.0.0
@@ -447,8 +446,8 @@ public class NavigationPreference extends Preference {
     }
 
     /**
-     * Returns the breadcrumb title, which is shown, when showing the fragment, which is
-     * associated with the preference.
+     * Returns the breadcrumb title, which is shown, when showing the fragment, which is associated
+     * with the preference.
      *
      * @return The breadcrumb title, which is shown, when showing the fragment, which is associated
      * with the preference, as an instance of the type {@link CharSequence} or null, if no

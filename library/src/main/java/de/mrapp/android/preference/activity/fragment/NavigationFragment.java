@@ -16,10 +16,10 @@ package de.mrapp.android.preference.activity.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,10 +55,10 @@ public class NavigationFragment extends AbstractPreferenceFragment
          * activity.
          *
          * @param fragment
-         *         The navigation fragment as an instance of the class {@link PreferenceFragment}.
-         *         The fragment may not be null
+         *         The navigation fragment as an instance of the class {@link
+         *         PreferenceFragmentCompat}. The fragment may not be null
          */
-        void onNavigationFragmentCreated(@NonNull PreferenceFragment fragment);
+        void onNavigationFragmentCreated(@NonNull PreferenceFragmentCompat fragment);
 
         /**
          * The method, which is invoked, when the adapter, which contains the navigation items, has
@@ -129,8 +129,8 @@ public class NavigationFragment extends AbstractPreferenceFragment
     }
 
     /**
-     * Notifies the callback, that a {@link NavigationPreference}, which is
-     * contained by the fragment, has been selected.
+     * Notifies the callback, that a {@link NavigationPreference}, which is contained by the
+     * fragment, has been selected.
      *
      * @param navigationPreference
      *         The navigation preference, which has been selected, as an instance of the class
@@ -266,7 +266,7 @@ public class NavigationFragment extends AbstractPreferenceFragment
      */
     @Nullable
     public final NavigationPreference getSelectedNavigationPreference() {
-        return isAdapterCreated()? adapter.getSelectedNavigationPreference() : null;
+        return isAdapterCreated() ? adapter.getSelectedNavigationPreference() : null;
     }
 
     /**

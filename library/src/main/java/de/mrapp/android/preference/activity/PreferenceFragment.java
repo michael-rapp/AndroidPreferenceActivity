@@ -18,8 +18,6 @@ import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceGroup;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -27,6 +25,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceGroup;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +38,6 @@ import android.widget.FrameLayout;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
-import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation.Direction;
 import de.mrapp.android.preference.activity.fragment.AbstractPreferenceFragment;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.ViewUtil;
@@ -567,8 +565,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
 
     /**
      * Sets the background color of the view group, which contains the button, which allows to
-     * restore the preferences' default values.
-     * shown.
+     * restore the preferences' default values. shown.
      *
      * @param color
      *         The background color, which should be set, as an {@link Integer} value
@@ -627,8 +624,9 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getListView().setOnScrollListener(
-                new HideViewOnScrollAnimation(buttonBarParent, Direction.DOWN));
+        // TODO
+        // getListView().setOnScrollListener(
+        //        new HideViewOnScrollAnimation(buttonBarParent, Direction.DOWN));
     }
 
     @NonNull

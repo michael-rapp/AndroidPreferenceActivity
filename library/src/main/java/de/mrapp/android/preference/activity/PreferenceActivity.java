@@ -13,8 +13,6 @@
  */
 package de.mrapp.android.preference.activity;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.ColorDrawable;
@@ -29,10 +27,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -939,7 +940,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Inflates the activity's layout, depending on whether the split screen layout is used, or not.
+     * Inflates the activity's layout, depending on whether the split screen layout is used, or
+     * not.
      */
     private void inflateLayout() {
         setContentView(isSplitScreen() ? R.layout.preference_activity_tablet :
@@ -985,7 +987,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Initializes the activity's fragments.
      */
     private void initializeFragments() {
-        navigationFragment = (NavigationFragment) getFragmentManager()
+        navigationFragment = (NavigationFragment) getSupportFragmentManager()
                 .findFragmentByTag(NAVIGATION_FRAGMENT_TAG);
 
         if (navigationFragment == null) {
@@ -993,7 +995,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
                     .instantiate(this, NavigationFragment.class.getName());
             navigationFragment.setRetainInstance(true);
             navigationFragment.setCallback(this);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.navigation_fragment_container, navigationFragment,
                     NAVIGATION_FRAGMENT_TAG);
             transaction.commit();
@@ -1002,7 +1004,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
         }
 
         navigationFragment.setAdapterCallback(this);
-        preferenceFragment = getFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
+        preferenceFragment = getSupportFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
         adaptNavigationSelectionColor();
         adaptNavigationDividerColor();
         adaptNavigationEnabledState();
@@ -1059,7 +1061,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
                                         @NonNull final Fragment fragment) {
         fragment.setRetainInstance(true);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (!isSplitScreen()) {
             transaction.hide(navigationFragment);
@@ -1115,7 +1117,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
             resetTitle();
             hideToolbarNavigationIcon();
             adaptBreadCrumbVisibility();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.remove(preferenceFragment);
 
             if (!isSplitScreen()) {
@@ -1977,10 +1979,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Returns the preference fragment, which contains the activity's navigation.
      *
      * @return The preference fragment, which contains the activity's navigation, as an instance of
-     * the class {@link android.preference.PreferenceFragment} or null, if the navigation has not
-     * been created yet
+     * the class {@link PreferenceFragmentCompat} or null, if the navigation has not been created
+     * yet
      */
-    public final android.preference.PreferenceFragment getNavigationFragment() {
+    public final PreferenceFragmentCompat getNavigationFragment() {
         return navigationFragment;
     }
 
@@ -2154,8 +2156,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     /**
      * Sets, whether the behavior of the navigation icon of the activity's toolbar should be
-     * overridden in order to return to the navigation when a preference screen is currently
-     * shown and the split screen layout is used, or not.
+     * overridden in order to return to the navigation when a preference screen is currently shown
+     * and the split screen layout is used, or not.
      *
      * @param overrideNavigationIcon
      *         True, if the behavior of the navigation icon should be overridden, false otherwise
@@ -2556,7 +2558,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Sets the background of the button bar, which is shown, when the activity is used as a wizard.
+     * Sets the background of the button bar, which is shown, when the activity is used as a
+     * wizard.
      *
      * @param color
      *         The background color, which should be set, as an {@link Integer} value
@@ -2566,7 +2569,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Sets the background of the button bar, which is shown, when the activity is used as a wizard.
+     * Sets the background of the button bar, which is shown, when the activity is used as a
+     * wizard.
      *
      * @param resourceId
      *         The resource id of the background, which should be set, as an {@link Integer} value.
@@ -2577,7 +2581,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     }
 
     /**
-     * Sets the background of the button bar, which is shown, when the activity is used as a wizard.
+     * Sets the background of the button bar, which is shown, when the activity is used as a
+     * wizard.
      *
      * @param background
      *         The background, which should be set, as an instance of the class {@link Drawable} or
@@ -2782,11 +2787,10 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param fragment
      *         The preference fragment, which contains the navigation's preferences, as an instance
-     *         of the class {@link android.preference.PreferenceFragment}. The preference fragment
-     *         may not be null
+     *         of the class {@link PreferenceFragmentCompat}. The preference fragment may not be
+     *         null
      */
-    protected void onCreateNavigation(
-            @NonNull final android.preference.PreferenceFragment fragment) {
+    protected void onCreateNavigation(@NonNull final PreferenceFragmentCompat fragment) {
 
     }
 
@@ -2803,7 +2807,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
     @Override
     public final void onNavigationFragmentCreated(
-            @NonNull final android.preference.PreferenceFragment fragment) {
+            @NonNull final PreferenceFragmentCompat fragment) {
         onCreateNavigation(fragment);
     }
 

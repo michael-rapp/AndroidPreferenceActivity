@@ -15,9 +15,9 @@ package de.mrapp.android.preference.activity.example.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.PreferenceFragment;

@@ -29,6 +29,7 @@ License.
         <item name="dividerColor">@color/preference_divider_color_light</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_light</item>
         <item name="android:listDivider">@null</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="PreferenceActivity" parent="@style/Theme.AppCompat.NoActionBar">
@@ -45,6 +46,7 @@ License.
         <item name="dividerColor">@color/preference_divider_color_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
         <item name="android:listDivider">@null</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">

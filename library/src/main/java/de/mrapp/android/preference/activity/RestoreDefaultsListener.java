@@ -13,8 +13,8 @@
  */
 package de.mrapp.android.preference.activity;
 
-import android.preference.Preference;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.Preference;
 
 /**
  * Defines the interface, a class, which should be notified, when the default values of the
