@@ -16,9 +16,6 @@ android {
             minifyEnabled false
         }
     }
-    lintOptions {
-        disable 'MissingTranslation'
-    }
 }
 
 dependencies {
