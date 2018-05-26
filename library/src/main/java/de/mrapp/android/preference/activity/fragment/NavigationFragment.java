@@ -396,6 +396,11 @@ public class NavigationFragment extends AbstractPreferenceFragment
         }
     }
 
+    @Override
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+
+    }
+
     @NonNull
     @Override
     public final RecyclerView onCreateRecyclerView(final LayoutInflater inflater,

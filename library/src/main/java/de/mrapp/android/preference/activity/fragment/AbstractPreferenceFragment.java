@@ -287,11 +287,6 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
         return view;
     }
 
-    @Override
-    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        // TODO: Anything to do?
-    }
-
     @NonNull
     @Override
     protected final RecyclerView.Adapter<?> onCreateAdapter(

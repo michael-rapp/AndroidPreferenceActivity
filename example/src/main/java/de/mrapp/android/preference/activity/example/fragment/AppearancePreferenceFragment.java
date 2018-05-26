@@ -179,10 +179,8 @@ public class AppearancePreferenceFragment extends AbstractPreferenceFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.appearance_preferences);
-
         Preference themePreference = findPreference(getString(R.string.theme_preference_key));
         themePreference.setOnPreferenceChangeListener(createThemeChangeListener());
         Preference toolbarElevationPreference =

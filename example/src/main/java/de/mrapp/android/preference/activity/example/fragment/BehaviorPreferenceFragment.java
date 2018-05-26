@@ -82,8 +82,7 @@ public class BehaviorPreferenceFragment extends AbstractPreferenceFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.behavior_preferences);
         Preference overrideBackButtonPreference =
                 findPreference(getString(R.string.override_navigation_icon_preference_key));
