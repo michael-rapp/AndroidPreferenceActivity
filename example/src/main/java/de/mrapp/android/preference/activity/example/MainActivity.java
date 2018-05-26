@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializePreferenceInitialFragmentButton() {
         Button preferenceInitialFragmentButton =
-                (Button) findViewById(R.id.preference_initial_fragment_button);
+                findViewById(R.id.preference_initial_fragment_button);
         preferenceInitialFragmentButton
                 .setOnClickListener(createPreferenceInitialFragmentButtonListener());
     }
