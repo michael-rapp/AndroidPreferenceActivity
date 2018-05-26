@@ -474,7 +474,9 @@ public class NavigationPreferenceAdapter extends PreferenceAdapter
 
     @Override
     public final void onShowFragment(@NonNull final NavigationPreference navigationPreference) {
-        selectNavigationPreference(navigationPreference, null);
+        if (enabled) {
+            selectNavigationPreference(navigationPreference, null);
+        }
     }
 
     @Override
