@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
@@ -199,31 +198,6 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
 
         this.dividerDecoration.setDividerColor(dividerColor);
         this.dividerDecoration.setDividerHeight(DisplayUtil.dpToPixels(getActivity(), 1));
-    }
-
-    /*
-     * The method, which is invoked on implementing subclasses in order to inflate the fragment's
-     * layout.
-     *
-     * @param inflater
-     *         The layout inflater, which should be used, as an instance of the class {@link
-     *         LayoutInflater}. The layout inflater may not be null
-     * @param parent
-     *         The parent of the view, which should be inflated, as an instance of the class {@link
-     *         ViewGroup} or null, if no parent is available
-     * @param savedInstanceState
-     *         The saved instance state of the fragment as a {@link Bundle} or null, if no saved
-     *         instance state is available
-     * @return The view, which has been inflated, as an instance of the class {@link View}. The view
-     * may not be null
-     */
-    // TODO: Remove
-    @NonNull
-    @Deprecated
-    protected View onInflateView(@NonNull final LayoutInflater inflater,
-                                 @Nullable final ViewGroup parent,
-                                 @Nullable final Bundle savedInstanceState) {
-        return null;
     }
 
     /**

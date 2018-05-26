@@ -13,7 +13,6 @@
  */
 package de.mrapp.android.preference.activity.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -24,7 +23,6 @@ import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,8 +32,6 @@ import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.R;
 import de.mrapp.android.preference.activity.adapter.NavigationPreferenceAdapter;
 import de.mrapp.android.preference.activity.adapter.PreferenceAdapter;
-import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapterOld;
-import de.mrapp.android.preference.activity.view.PreferenceListView;
 
 /**
  * A fragment, which contains the navigation of a {@link PreferenceActivity}.
@@ -44,7 +40,7 @@ import de.mrapp.android.preference.activity.view.PreferenceListView;
  * @since 5.0.0
  */
 public class NavigationFragment extends AbstractPreferenceFragment
-        implements NavigationPreferenceAdapter.Callback, PreferenceListView.AdapterFactory {
+        implements NavigationPreferenceAdapter.Callback {
 
     /**
      * Defines the interface, a class, which should be notified about the fragment's events, must
@@ -367,24 +363,6 @@ public class NavigationFragment extends AbstractPreferenceFragment
     public final void onNavigationPreferenceRemoved(
             @NonNull final NavigationPreference navigationPreference) {
         notifyOnNavigationPreferenceRemoved(navigationPreference);
-    }
-
-    // TODO Remove
-    @NonNull
-    @Override
-    public final PreferenceGroupAdapterOld createAdapter(@NonNull final Context context,
-                                                         @NonNull final ListAdapter encapsulatedAdapter) {
-        /*
-        if (adapter == null) {
-            adapter = new NavigationPreferenceGroupAdapterOld(context, encapsulatedAdapter,
-                    NavigationFragment.this);
-            adapter.setSelectionColor(selectionColor);
-            adapter.setEnabled(enabled);
-            notifyOnNavigationAdapterCreated();
-        }
-        */
-
-        return null;
     }
 
     @Override

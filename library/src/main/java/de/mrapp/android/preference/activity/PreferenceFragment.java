@@ -629,12 +629,14 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
         //        new HideViewOnScrollAnimation(buttonBarParent, Direction.DOWN));
     }
 
-    @NonNull
+    @CallSuper
     @Override
-    protected final View onInflateView(@NonNull final LayoutInflater inflater,
-                                       @Nullable final ViewGroup container,
-                                       @Nullable final Bundle savedInstanceState) {
-        frameLayout =
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup parent,
+                             final Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, parent, savedInstanceState);
+        // TODO
+        /*
+          frameLayout =
                 (FrameLayout) inflater.inflate(R.layout.preference_fragment, container, false);
         buttonBarParent = frameLayout.findViewById(R.id.restore_defaults_button_bar_parent);
         buttonBarParent.setVisibility(showRestoreDefaultsButton ? View.VISIBLE : View.GONE);
@@ -645,7 +647,9 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
         restoreDefaultsButton.setText(restoreDefaultsButtonText);
         shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
         shadowView.setShadowElevation(buttonBarElevation);
-        return frameLayout;
+         */
+
+        return null;
     }
 
 }
