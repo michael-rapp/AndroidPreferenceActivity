@@ -13,20 +13,31 @@
  */
 package de.mrapp.android.preference.activity.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceGroup;
+import android.support.v7.preference.PreferenceGroupAdapter;
+import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import de.mrapp.android.preference.activity.R;
-import de.mrapp.android.preference.activity.view.PreferenceListView;
+import de.mrapp.android.util.DisplayUtil;
 import de.mrapp.android.util.ThemeUtil;
 
 /**
@@ -38,48 +49,159 @@ import de.mrapp.android.util.ThemeUtil;
 public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompat {
 
     /**
-     * The list view, which is used to show the fragment's preferences.
+     * An item decoration, which draws dividers above preference categories.
      */
-    private PreferenceListView listView;
+    private class DividerDecoration extends RecyclerView.ItemDecoration {
+
+        /**
+         * The paint, which is used to draw dividers.
+         */
+        private final Paint paint = new Paint();
+
+        /**
+         * The height of a divider in pixels.
+         */
+        private int dividerHeight = 0;
+
+        /**
+         * The color of a divider.
+         */
+        private int dividerColor = Color.TRANSPARENT;
+
+        /**
+         * Invalidates all item decorations.
+         */
+        private void invalidateItemDecorations() {
+            RecyclerView recyclerView = getListView();
+
+            if (recyclerView != null) {
+                recyclerView.invalidateItemDecorations();
+            }
+        }
+
+        /**
+         * Returns, whether a divider should be drawn above a view, or not.
+         *
+         * @param view
+         *         The view, which should be checked, as an instance of the class {@link View}. The
+         *         view may not be null
+         * @param recyclerView
+         *         The recycler view, the given view belongs to, as an instance of the class {@link
+         *         RecyclerView}. The recycler view may not be null
+         * @return True, if a divider should be drawn above the given view, false otherwise
+         */
+        private boolean shouldDrawDividerAbove(@NonNull final View view,
+                                               @NonNull final RecyclerView recyclerView) {
+            RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
+            int position = viewHolder.getAdapterPosition();
+            @SuppressLint("RestrictedApi") Preference preference = adapter.getItem(position);
+            return preference instanceof PreferenceGroup;
+        }
+
+        @Override
+        public void onDrawOver(final Canvas canvas, final RecyclerView parent,
+                               final RecyclerView.State state) {
+            paint.setColor(dividerColor);
+            int parentWidth = parent.getWidth();
+
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                View view = parent.getChildAt(i);
+
+                if (shouldDrawDividerAbove(view, parent)) {
+                    float top = view.getY();
+                    canvas.drawRect(0, top, parentWidth, top + dividerHeight, paint);
+                }
+            }
+        }
+
+        @Override
+        public void getItemOffsets(final Rect outRect, final View view, final RecyclerView parent,
+                                   final RecyclerView.State state) {
+            if (shouldDrawDividerAbove(view, parent)) {
+                outRect.bottom = dividerHeight;
+            }
+        }
+
+        /**
+         * Returns the divider color.
+         *
+         * @return The divider color as an {@link Integer} value
+         */
+        @ColorInt
+        public int getDividerColor() {
+            return dividerColor;
+        }
+
+        /**
+         * Sets the divider color.
+         *
+         * @param dividerColor
+         *         The color, which should be set, as an {@link Integer} value
+         */
+        public void setDividerColor(@ColorInt final int dividerColor) {
+            this.dividerColor = dividerColor;
+            invalidateItemDecorations();
+        }
+
+        /**
+         * Returns the divider height.
+         *
+         * @return The divider height in pixels as an {@link Integer} value
+         */
+        @Px
+        public int getDividerHeight() {
+            return dividerHeight;
+        }
+
+        /**
+         * Sets the divider height.
+         *
+         * @param dividerHeight
+         *         The height, which should be set, as an {@link Integer} value
+         */
+        public void setDividerHeight(@Px final int dividerHeight) {
+            this.dividerHeight = dividerHeight;
+            invalidateItemDecorations();
+        }
+
+    }
 
     /**
-     * The color of the dividers which are shown above preference categories.
+     * The item decoration, which is used to draw dividers above preference categories.
      */
-    private int dividerColor = -1;
+    private final DividerDecoration dividerDecoration = new DividerDecoration();
+
+    /**
+     * The adapter, which is used to manage the fragment's preferences.
+     */
+    private PreferenceGroupAdapter adapter;
 
     /**
      * Obtains all relevant attributes from the activity's current theme.
      */
     private void obtainStyledAttributes() {
-        obtainDividerColor();
+        obtainDividerDecoration();
     }
 
     /**
-     * Obtains the color of the dividers, which are shown above preference categories, from the
+     * Obtains the appearance of the dividers, which are shown above preference categories, from the
      * activity's theme.
      */
-    private void obtainDividerColor() {
-        int color;
+    private void obtainDividerDecoration() {
+        int dividerColor;
 
         try {
-            color = ThemeUtil.getColor(getActivity(), R.attr.dividerColor);
+            dividerColor = ThemeUtil.getColor(getActivity(), R.attr.dividerColor);
         } catch (NotFoundException e) {
-            color = ContextCompat.getColor(getActivity(), R.color.preference_divider_color_light);
+            dividerColor =
+                    ContextCompat.getColor(getActivity(), R.color.preference_divider_color_light);
         }
 
-        setDividerColor(color);
+        this.dividerDecoration.setDividerColor(dividerColor);
+        this.dividerDecoration.setDividerHeight(DisplayUtil.dpToPixels(getActivity(), 1));
     }
 
-    /**
-     * Adapts the divider color of the list view, which is used to show the fragment's preferences.
-     */
-    private void adaptDividerColor() {
-        if (listView != null) {
-            listView.setDividerColor(dividerColor);
-        }
-    }
-
-    /**
+    /*
      * The method, which is invoked on implementing subclasses in order to inflate the fragment's
      * layout.
      *
@@ -95,7 +217,9 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
      * @return The view, which has been inflated, as an instance of the class {@link View}. The view
      * may not be null
      */
+    // TODO: Remove
     @NonNull
+    @Deprecated
     protected abstract View onInflateView(@NonNull final LayoutInflater inflater,
                                           @Nullable final ViewGroup parent,
                                           @Nullable final Bundle savedInstanceState);
@@ -104,23 +228,21 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
      * Returns the color of the dividers, which are shown above preference categories.
      *
      * @return The color of the dividers, which are shown above preference categories, as an {@link
-     * Integer} value or -1, if the default color is used
+     * Integer} value
      */
     @ColorInt
     public final int getDividerColor() {
-        return dividerColor;
+        return dividerDecoration.getDividerColor();
     }
 
     /**
      * Sets the color of the dividers, which are shown above preference categories.
      *
      * @param color
-     *         The color, which should be set, as an {@link Integer} value or -1, if the default
-     *         color should be used
+     *         The color, which should be set, as an {@link Integer} value
      */
     public final void setDividerColor(@ColorInt final int color) {
-        this.dividerColor = color;
-        adaptDividerColor();
+        this.dividerDecoration.setDividerColor(color);
     }
 
     @CallSuper
@@ -130,28 +252,33 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
         obtainStyledAttributes();
     }
 
-    // TODO
-    /*
     @CallSuper
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup parent,
                              final Bundle savedInstanceState) {
-        View view = onInflateView(inflater, parent, savedInstanceState);
+        View view = super.onCreateView(inflater, parent, savedInstanceState);
+        RecyclerView recyclerView = getListView();
 
-        if (view instanceof ListView && view.getId() == android.R.id.list) {
-            listView = (PreferenceListView) view;
-        } else {
-            listView = view.findViewById(android.R.id.list);
+        for (int i = recyclerView.getItemDecorationCount() - 1; i >= 0; i--) {
+            recyclerView.removeItemDecorationAt(i);
         }
 
-        adaptDividerColor();
+        recyclerView.addItemDecoration(dividerDecoration);
         return view;
     }
-    */
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        // TODO
+        // TODO: Anything to do?
+    }
+
+    @CallSuper
+    @NonNull
+    @Override
+    protected RecyclerView.Adapter<?> onCreateAdapter(final PreferenceScreen preferenceScreen) {
+        adapter = (PreferenceGroupAdapter) super.onCreateAdapter(preferenceScreen);
+        // TODO: Wrap adapter
+        return adapter;
     }
 
 }
