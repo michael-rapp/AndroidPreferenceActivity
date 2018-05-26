@@ -36,7 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.mrapp.android.preference.activity.R;
-import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapterWrapper;
+import de.mrapp.android.preference.activity.adapter.PreferenceAdapter;
 import de.mrapp.android.util.DisplayUtil;
 import de.mrapp.android.util.ThemeUtil;
 
@@ -174,7 +174,7 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     /**
      * The adapter, which is used to manage the fragment's preferences.
      */
-    private PreferenceGroupAdapterWrapper adapter;
+    private PreferenceAdapter adapter;
 
     /**
      * Obtains all relevant attributes from the activity's current theme.
@@ -278,7 +278,7 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     @NonNull
     @Override
     protected RecyclerView.Adapter<?> onCreateAdapter(final PreferenceScreen preferenceScreen) {
-        this.adapter = new PreferenceGroupAdapterWrapper(preferenceScreen);
+        this.adapter = new PreferenceAdapter(preferenceScreen);
         // TODO: Allow to use a different adapter
         return adapter;
     }

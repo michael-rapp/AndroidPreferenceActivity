@@ -31,9 +31,8 @@ import android.text.TextUtils;
  * @author Michael Rapp
  * @since 6.0.0
  */
-// TODO Rename
 @SuppressLint("RestrictedApi")
-public class PreferenceGroupAdapterWrapper extends PreferenceGroupAdapter {
+public class PreferenceAdapter extends PreferenceGroupAdapter {
 
     /**
      * The method, which is invoked, when a specific preference is visualized. This method may be
@@ -66,7 +65,7 @@ public class PreferenceGroupAdapterWrapper extends PreferenceGroupAdapter {
      *         adapter, as an instance of the class {@link PreferenceScreen}. The preference screen
      *         may not be null
      */
-    public PreferenceGroupAdapterWrapper(@NonNull final PreferenceScreen preferenceScreen) {
+    public PreferenceAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         super(preferenceScreen);
     }
 
