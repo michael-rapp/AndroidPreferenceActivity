@@ -31,14 +31,16 @@ import de.mrapp.android.preference.activity.PreferenceActivity;
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
- * A {@link PreferenceGroupAdapter}, which is used to visualize the navigation preferences of a
+ * A {@link PreferenceGroupAdapterOld}, which is used to visualize the navigation preferences of a
  * {@link PreferenceActivity}. It allows to register a callback at the adapter's {@link
  * NavigationPreference}s
  *
  * @author Michael Rapp
  * @since 5.0.0
  */
-public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
+// TODO Remove
+@Deprecated
+public class NavigationPreferenceGroupAdapterOld extends PreferenceGroupAdapterOld
         implements NavigationPreference.Callback {
 
     /**
@@ -240,7 +242,7 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
     }
 
     /**
-     * Creates a new {@link PreferenceGroupAdapter}, which is used to visualize the navigation
+     * Creates a new {@link PreferenceGroupAdapterOld}, which is used to visualize the navigation
      * preferences of a {@link PreferenceActivity}.
      *
      * @param context
@@ -253,9 +255,9 @@ public class NavigationPreferenceGroupAdapter extends PreferenceGroupAdapter
      *         The callback, which should be notified about the adapter's events, as an instance of
      *         the type {@link Callback} or null, if no callback should be notified
      */
-    public NavigationPreferenceGroupAdapter(@NonNull final Context context,
-                                            @NonNull final ListAdapter encapsulatedAdapter,
-                                            @Nullable final Callback callback) {
+    public NavigationPreferenceGroupAdapterOld(@NonNull final Context context,
+                                               @NonNull final ListAdapter encapsulatedAdapter,
+                                               @Nullable final Callback callback) {
         super(context, encapsulatedAdapter);
         this.callback = callback;
         this.navigationPreferences = new ArrayList<>();

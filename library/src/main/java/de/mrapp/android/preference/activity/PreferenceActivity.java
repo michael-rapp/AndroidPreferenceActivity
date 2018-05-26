@@ -47,7 +47,7 @@ import android.widget.FrameLayout;
 import java.util.Collections;
 import java.util.List;
 
-import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapter;
+import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapterOld;
 import de.mrapp.android.preference.activity.fragment.NavigationFragment;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
 import de.mrapp.android.util.Condition;
@@ -81,7 +81,7 @@ import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
  * @since 1.0.0
  */
 public abstract class PreferenceActivity extends AppCompatActivity
-        implements NavigationFragment.Callback, NavigationPreferenceGroupAdapter.Callback {
+        implements NavigationFragment.Callback, NavigationPreferenceGroupAdapterOld.Callback {
 
     /**
      * When starting this activity, the invoking intent can contain this extra string to specify

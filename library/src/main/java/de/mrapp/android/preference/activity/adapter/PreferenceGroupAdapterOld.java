@@ -41,7 +41,9 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 5.0.0
  */
-public class PreferenceGroupAdapter extends BaseAdapter {
+// TODO Remove
+@Deprecated
+public class PreferenceGroupAdapterOld extends BaseAdapter {
 
     /**
      * The item, which represents a divider.
@@ -77,13 +79,13 @@ public class PreferenceGroupAdapter extends BaseAdapter {
             @Override
             public void onChanged() {
                 super.onChanged();
-                PreferenceGroupAdapter.this.notifyDataSetChanged();
+                PreferenceGroupAdapterOld.this.notifyDataSetChanged();
             }
 
             @Override
             public void onInvalidated() {
                 super.onInvalidated();
-                PreferenceGroupAdapter.this.notifyDataSetInvalidated();
+                PreferenceGroupAdapterOld.this.notifyDataSetInvalidated();
             }
 
         };
@@ -177,8 +179,8 @@ public class PreferenceGroupAdapter extends BaseAdapter {
      *         The adapter, which should be encapsulated, as an instance of the type {@link
      *         ListAdapter}. The adapter may not be null
      */
-    public PreferenceGroupAdapter(@NonNull final Context context,
-                                  @NonNull final ListAdapter encapsulatedAdapter) {
+    public PreferenceGroupAdapterOld(@NonNull final Context context,
+                                     @NonNull final ListAdapter encapsulatedAdapter) {
         ensureNotNull(context, "The context may not be null");
         ensureNotNull(encapsulatedAdapter, "The encapsulated adapter may not be null");
         this.context = context;

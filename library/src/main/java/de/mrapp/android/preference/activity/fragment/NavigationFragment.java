@@ -31,8 +31,8 @@ import java.util.List;
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.R;
-import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapter;
-import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapter;
+import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapterOld;
+import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapterOld;
 import de.mrapp.android.preference.activity.view.PreferenceListView;
 
 /**
@@ -42,7 +42,7 @@ import de.mrapp.android.preference.activity.view.PreferenceListView;
  * @since 5.0.0
  */
 public class NavigationFragment extends AbstractPreferenceFragment
-        implements NavigationPreferenceGroupAdapter.Callback, PreferenceListView.AdapterFactory {
+        implements NavigationPreferenceGroupAdapterOld.Callback, PreferenceListView.AdapterFactory {
 
     /**
      * Defines the interface, a class, which should be notified about the fragment's events, must
@@ -77,12 +77,12 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * The callback, which is notified, about the events of the adapter, which contains the
      * navigation items.
      */
-    private NavigationPreferenceGroupAdapter.Callback adapterCallback;
+    private NavigationPreferenceGroupAdapterOld.Callback adapterCallback;
 
     /**
      * The adapter, which contains the navigation preferences.
      */
-    private NavigationPreferenceGroupAdapter adapter;
+    private NavigationPreferenceGroupAdapterOld adapter;
 
     /**
      * The background color of the currently selected navigation preference.
@@ -213,11 +213,11 @@ public class NavigationFragment extends AbstractPreferenceFragment
      *
      * @param callback
      *         The callback, which should be set, as an instance of the type {@link
-     *         NavigationPreferenceGroupAdapter.Callback} or null, if no callback should be
+     *         NavigationPreferenceGroupAdapterOld.Callback} or null, if no callback should be
      *         notified
      */
     public final void setAdapterCallback(
-            @Nullable final NavigationPreferenceGroupAdapter.Callback callback) {
+            @Nullable final NavigationPreferenceGroupAdapterOld.Callback callback) {
         this.adapterCallback = callback;
     }
 
@@ -370,10 +370,10 @@ public class NavigationFragment extends AbstractPreferenceFragment
 
     @NonNull
     @Override
-    public final PreferenceGroupAdapter createAdapter(@NonNull final Context context,
-                                                      @NonNull final ListAdapter encapsulatedAdapter) {
+    public final PreferenceGroupAdapterOld createAdapter(@NonNull final Context context,
+                                                         @NonNull final ListAdapter encapsulatedAdapter) {
         if (adapter == null) {
-            adapter = new NavigationPreferenceGroupAdapter(context, encapsulatedAdapter,
+            adapter = new NavigationPreferenceGroupAdapterOld(context, encapsulatedAdapter,
                     NavigationFragment.this);
             adapter.setSelectionColor(selectionColor);
             adapter.setEnabled(enabled);

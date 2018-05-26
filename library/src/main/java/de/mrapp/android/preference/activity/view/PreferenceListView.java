@@ -29,7 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapter;
+import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapterOld;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -44,12 +44,12 @@ public class PreferenceListView extends ListView {
 
     /**
      * Defines the interface, a factory, which allows to create instances of the class {@link
-     * PreferenceGroupAdapter}, must implement.
+     * PreferenceGroupAdapterOld}, must implement.
      */
     public interface AdapterFactory {
 
         /**
-         * Creates and returns a {@link PreferenceGroupAdapter}.
+         * Creates and returns a {@link PreferenceGroupAdapterOld}.
          *
          * @param context
          *         The context, which should be used by the adapter, as an instance of the class
@@ -58,11 +58,11 @@ public class PreferenceListView extends ListView {
          *         The adapter, which should be encapsulated, as an instance of the type {@link
          *         ListAdapter}. The adapter may not be null
          * @return The adapter, which has been created, as an instance of the class {@link
-         * PreferenceGroupAdapter}. The adapter may not be null
+         * PreferenceGroupAdapterOld}. The adapter may not be null
          */
         @NonNull
-        PreferenceGroupAdapter createAdapter(@NonNull Context context,
-                                             @NonNull ListAdapter encapsulatedAdapter);
+        PreferenceGroupAdapterOld createAdapter(@NonNull Context context,
+                                                @NonNull ListAdapter encapsulatedAdapter);
 
     }
 
@@ -96,9 +96,9 @@ public class PreferenceListView extends ListView {
 
             @NonNull
             @Override
-            public PreferenceGroupAdapter createAdapter(@NonNull final Context context,
-                                                        @NonNull final ListAdapter encapsulatedAdapter) {
-                return new PreferenceGroupAdapter(context, encapsulatedAdapter);
+            public PreferenceGroupAdapterOld createAdapter(@NonNull final Context context,
+                                                           @NonNull final ListAdapter encapsulatedAdapter) {
+                return new PreferenceGroupAdapterOld(context, encapsulatedAdapter);
             }
 
         };
@@ -122,7 +122,7 @@ public class PreferenceListView extends ListView {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view,
                                     final int position, final long id) {
-                PreferenceGroupAdapter adapter = (PreferenceGroupAdapter) getAdapter();
+                PreferenceGroupAdapterOld adapter = (PreferenceGroupAdapterOld) getAdapter();
                 Pair<Object, Integer> pair = adapter.getItemInternal(position);
 
                 if (pair.first instanceof Preference) {
@@ -223,8 +223,8 @@ public class PreferenceListView extends ListView {
         this.dividerColor = color;
         ListAdapter adapter = getAdapter();
 
-        if (adapter instanceof PreferenceGroupAdapter) {
-            ((PreferenceGroupAdapter) adapter).setDividerColor(color);
+        if (adapter instanceof PreferenceGroupAdapterOld) {
+            ((PreferenceGroupAdapterOld) adapter).setDividerColor(color);
         }
     }
 
@@ -243,7 +243,7 @@ public class PreferenceListView extends ListView {
     @Override
     public final void setAdapter(@Nullable final ListAdapter adapter) {
         if (adapter != null) {
-            PreferenceGroupAdapter preferenceGroupAdapter =
+            PreferenceGroupAdapterOld preferenceGroupAdapter =
                     adapterFactory.createAdapter(getContext(), adapter);
             preferenceGroupAdapter.setDividerColor(dividerColor);
             super.setAdapter(preferenceGroupAdapter);
