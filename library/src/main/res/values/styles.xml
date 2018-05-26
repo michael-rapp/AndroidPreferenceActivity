@@ -28,7 +28,6 @@ License.
         <item name="navigationDividerColor">@color/preference_divider_color_light</item>
         <item name="dividerColor">@color/preference_divider_color_light</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_light</item>
-        <item name="android:listDivider">@null</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -45,7 +44,6 @@ License.
         <item name="navigationDividerColor">@color/preference_divider_color_dark</item>
         <item name="dividerColor">@color/preference_divider_color_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
-        <item name="android:listDivider">@null</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
