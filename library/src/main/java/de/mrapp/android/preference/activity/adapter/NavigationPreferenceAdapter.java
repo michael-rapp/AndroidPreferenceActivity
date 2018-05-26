@@ -14,7 +14,7 @@
 package de.mrapp.android.preference.activity.adapter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -29,6 +29,9 @@ import java.util.List;
 
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
+import de.mrapp.android.preference.activity.R;
+import de.mrapp.android.util.ThemeUtil;
+import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
 
@@ -482,9 +485,10 @@ public class NavigationPreferenceAdapter extends PreferenceAdapter
         if (preference instanceof NavigationPreference) {
             NavigationPreference navigationPreference = (NavigationPreference) preference;
             navigationPreference.setCallback(this);
-            viewHolder.itemView.setBackgroundColor(
-                    selectedNavigationPreference == navigationPreference ? selectionColor :
-                            Color.TRANSPARENT);
+            boolean selected = selectedNavigationPreference == navigationPreference;
+            ViewUtil.setBackground(viewHolder.itemView,
+                    selected ? new ColorDrawable(selectionColor) : ThemeUtil
+                            .getDrawable(preference.getContext(), R.attr.selectableItemBackground));
         }
     }
 
