@@ -40,6 +40,8 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 5.0.0
  */
+// TODO
+@Deprecated
 public class PreferenceListView extends ListView {
 
     /**
