@@ -247,6 +247,7 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     }
 
     @CallSuper
+    @NonNull
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup parent,
                              final Bundle savedInstanceState) {

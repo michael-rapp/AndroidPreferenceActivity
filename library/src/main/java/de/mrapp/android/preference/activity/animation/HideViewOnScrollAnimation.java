@@ -15,11 +15,10 @@ package de.mrapp.android.preference.activity.animation;
 
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 
 import de.mrapp.android.util.datastructure.ListenerList;
 
@@ -33,7 +32,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 2.0.0
  */
-public class HideViewOnScrollAnimation extends Animation implements OnScrollListener {
+public class HideViewOnScrollAnimation extends RecyclerView.OnScrollListener {
 
     /**
      * Contains all possible directions, which can be used to translate the animated view in order
@@ -75,21 +74,15 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
     private final long animationDuration;
 
     /**
-     * The observed list view's scroll position, when the listener was called the last time.
-     */
-    private int oldPosition;
-
-    /**
-     * The item, which was visible at top of the observed list view, when the listener was called
-     * the last time.
-     */
-    private int oldFirstVisibleItem;
-
-    /**
-     * True, if the observed list view was scrolled down, when the listener was called the last
+     * True, if the observed recycler view was scrolling up, when the listener was called the last
      * time.
      */
-    private boolean scrollingDown;
+    private Boolean scrollingUp;
+
+    /**
+     * True, if the animated view is currently hidden, false otherwise.
+     */
+    private boolean hidden;
 
     /**
      * The initial position of the view, which is animated by the listener.
@@ -140,8 +133,8 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
      * The method, which is invoked, when the observed list view is scrolling upwards.
      */
     private void onScrollingUp() {
-        if (scrollingDown) {
-            scrollingDown = false;
+        if (hidden) {
+            hidden = false;
 
             if (animatedView.getAnimation() == null) {
                 ObjectAnimator animator = createAnimator(false);
@@ -154,8 +147,8 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
      * The method, which is invoked, when the observed list view is scrolling downwards.
      */
     private void onScrollingDown() {
-        if (!scrollingDown) {
-            scrollingDown = true;
+        if (!hidden) {
+            hidden = true;
 
             if (animatedView.getAnimation() == null) {
                 ObjectAnimator animator = createAnimator(true);
@@ -238,7 +231,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
      */
     public final void showView() {
         if (animatedView.getAnimation() != null) {
-            cancel();
+            animatedView.getAnimation().cancel();
         }
 
         ObjectAnimator animator = createAnimator(false);
@@ -250,7 +243,7 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
      */
     public final void hideView() {
         if (animatedView.getAnimation() != null) {
-            cancel();
+            animatedView.getAnimation().cancel();
         }
 
         ObjectAnimator animator = createAnimator(true);
@@ -314,37 +307,21 @@ public class HideViewOnScrollAnimation extends Animation implements OnScrollList
     }
 
     @Override
-    public final void onScrollStateChanged(final AbsListView listView, final int scrollState) {
+    public final void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        if (ViewCompat.isLaidOut(animatedView)) {
+            boolean isScrollingUp = dy < 0;
 
-    }
+            if (this.scrollingUp == null || this.scrollingUp != isScrollingUp) {
+                this.scrollingUp = isScrollingUp;
 
-    @Override
-    public final void onScroll(final AbsListView listView, final int firstVisibleItem,
-                               final int visibleItemCount, final int totalItemCount) {
-        if (animatedView.getHeight() > 0) {
-            View view = listView.getChildAt(0);
-            int position = (view == null) ? 0 : view.getTop();
-
-            if (firstVisibleItem == oldFirstVisibleItem) {
-                if (position > oldPosition) {
+                if (scrollingUp) {
                     onScrollingUp();
-                    notifyOnScrollingUp(animatedView, position);
-                } else if (position < oldPosition) {
-                    onScrollingDown();
-                    notifyOnScrollingDown(animatedView, position);
-                }
-            } else {
-                if (firstVisibleItem < oldFirstVisibleItem) {
-                    onScrollingUp();
-                    notifyOnScrollingUp(animatedView, position);
+                    notifyOnScrollingUp(animatedView, dy);
                 } else {
                     onScrollingDown();
-                    notifyOnScrollingDown(animatedView, position);
+                    notifyOnScrollingDown(animatedView, dy);
                 }
             }
-
-            oldPosition = position;
-            oldFirstVisibleItem = firstVisibleItem;
         }
     }
 

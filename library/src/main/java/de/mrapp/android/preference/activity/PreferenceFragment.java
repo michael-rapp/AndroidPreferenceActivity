@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.AndroidResources;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceGroup;
 import android.text.TextUtils;
@@ -38,6 +39,7 @@ import android.widget.FrameLayout;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import de.mrapp.android.preference.activity.animation.HideViewOnScrollAnimation;
 import de.mrapp.android.preference.activity.fragment.AbstractPreferenceFragment;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.ViewUtil;
@@ -201,18 +203,24 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      * Handles the arguments, which have been passed to the fragment.
      */
     private void handleArguments() {
-        if (getArguments() != null) {
-            handleShowRestoreDefaultsButtonArgument();
-            handleRestoreDefaultsButtonTextArgument();
+        Bundle arguments = getArguments();
+
+        if (arguments != null) {
+            handleShowRestoreDefaultsButtonArgument(arguments);
+            handleRestoreDefaultsButtonTextArgument(arguments);
         }
     }
 
     /**
      * Handles the extra of the arguments, which have been passed to the fragment, that allows to
      * show the button, which allows to restore the preferences' default values.
+     *
+     * @param arguments
+     *         The arguments, which have been passed to the fragment, as an instance of the class
+     *         {@link Bundle}. The arguments may not be null
      */
-    private void handleShowRestoreDefaultsButtonArgument() {
-        boolean showButton = getArguments().getBoolean(EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false);
+    private void handleShowRestoreDefaultsButtonArgument(@NonNull final Bundle arguments) {
+        boolean showButton = arguments.getBoolean(EXTRA_SHOW_RESTORE_DEFAULTS_BUTTON, false);
         showRestoreDefaultsButton(showButton);
     }
 
@@ -220,9 +228,14 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      * Handles the extra of the arguments, which have been passed to the fragment, that allows to
      * specify a custom text for the button, which allows to restore the preferences' default
      * values.
+     *
+     * @param arguments
+     *         The arguments, which have been passed to the fragment, as an instance of the class
+     *         {@link Bundle}. The arguments may not be null
      */
-    private void handleRestoreDefaultsButtonTextArgument() {
-        CharSequence buttonText = getCharSequenceFromArguments(EXTRA_RESTORE_DEFAULTS_BUTTON_TEXT);
+    private void handleRestoreDefaultsButtonTextArgument(@NonNull final Bundle arguments) {
+        CharSequence buttonText =
+                getCharSequenceFromArguments(arguments, EXTRA_RESTORE_DEFAULTS_BUTTON_TEXT);
 
         if (!TextUtils.isEmpty(buttonText)) {
             setRestoreDefaultsButtonText(buttonText);
@@ -234,6 +247,9 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      * have been passed to the fragment. The char sequence can either be specified as a string or as
      * a resource id.
      *
+     * @param arguments
+     *         The arguments, which have been passed to the fragment, as an instance of the class
+     *         {@link Bundle}. The arguments may not be null
      * @param name
      *         The name of the extra, which specifies the char sequence, as a {@link String}. The
      *         name may not be null
@@ -241,11 +257,12 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
      * {@link CharSequence} or null, if the arguments do not specify a char sequence with the given
      * name
      */
-    private CharSequence getCharSequenceFromArguments(@NonNull final String name) {
-        CharSequence charSequence = getArguments().getCharSequence(name);
+    private CharSequence getCharSequenceFromArguments(@NonNull final Bundle arguments,
+                                                      @NonNull final String name) {
+        CharSequence charSequence = arguments.getCharSequence(name);
 
         if (charSequence == null) {
-            int resourceId = getArguments().getInt(name, -1);
+            int resourceId = arguments.getInt(name, -1);
 
             if (resourceId != -1) {
                 charSequence = getText(resourceId);
@@ -624,21 +641,27 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO
-        // getListView().setOnScrollListener(
-        //        new HideViewOnScrollAnimation(buttonBarParent, Direction.DOWN));
+        getListView().addOnScrollListener(new HideViewOnScrollAnimation(buttonBarParent,
+                HideViewOnScrollAnimation.Direction.DOWN));
     }
 
+    @NonNull
     @CallSuper
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup parent,
                              final Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, parent, savedInstanceState);
-        // TODO
-        /*
-          frameLayout =
-                (FrameLayout) inflater.inflate(R.layout.preference_fragment, container, false);
-        buttonBarParent = frameLayout.findViewById(R.id.restore_defaults_button_bar_parent);
+        View listContainer = view.findViewById(AndroidResources.ANDROID_R_LIST_CONTAINER);
+
+        if (!(listContainer instanceof FrameLayout)) {
+            throw new RuntimeException(
+                    "Fragment contains a view with id 'android.R.id.list_container' that is not a FrameLayout");
+        }
+
+        frameLayout = (FrameLayout) listContainer;
+        buttonBarParent = (ViewGroup) inflater
+                .inflate(R.layout.restore_defaults_button_bar, frameLayout, false);
+        frameLayout.addView(buttonBarParent);
         buttonBarParent.setVisibility(showRestoreDefaultsButton ? View.VISIBLE : View.GONE);
         buttonBar = buttonBarParent.findViewById(R.id.restore_defaults_button_bar);
         ViewUtil.setBackground(buttonBar, buttonBarBackground);
@@ -647,9 +670,7 @@ public abstract class PreferenceFragment extends AbstractPreferenceFragment {
         restoreDefaultsButton.setText(restoreDefaultsButtonText);
         shadowView = buttonBarParent.findViewById(R.id.restore_defaults_button_bar_shadow_view);
         shadowView.setShadowElevation(buttonBarElevation);
-         */
-
-        return null;
+        return view;
     }
 
 }
