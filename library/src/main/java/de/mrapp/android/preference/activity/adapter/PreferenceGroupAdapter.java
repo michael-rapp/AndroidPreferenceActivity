@@ -144,8 +144,8 @@ public class PreferenceGroupAdapter extends BaseAdapter {
             String resourceName = context.getResources().getResourceName(currentLayout);
 
             if (resourceName.startsWith("android:layout")) {
-                int layout = item instanceof PreferenceCategory ? R.layout.preference_category :
-                        R.layout.preference;
+                int layout = item instanceof PreferenceCategory ? R.layout.preference_category_layout :
+                        R.layout.preference_layout;
                 preference.setLayoutResource(layout);
             }
         }

@@ -29,7 +29,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceGroup;
-import android.support.v7.preference.PreferenceGroupAdapter;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.mrapp.android.preference.activity.R;
+import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapterWrapper;
 import de.mrapp.android.util.DisplayUtil;
 import de.mrapp.android.util.ThemeUtil;
 
@@ -174,7 +174,7 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     /**
      * The adapter, which is used to manage the fragment's preferences.
      */
-    private PreferenceGroupAdapter adapter;
+    private PreferenceGroupAdapterWrapper adapter;
 
     /**
      * Obtains all relevant attributes from the activity's current theme.
@@ -220,9 +220,11 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     // TODO: Remove
     @NonNull
     @Deprecated
-    protected abstract View onInflateView(@NonNull final LayoutInflater inflater,
-                                          @Nullable final ViewGroup parent,
-                                          @Nullable final Bundle savedInstanceState);
+    protected View onInflateView(@NonNull final LayoutInflater inflater,
+                                 @Nullable final ViewGroup parent,
+                                 @Nullable final Bundle savedInstanceState) {
+        return null;
+    }
 
     /**
      * Returns the color of the dividers, which are shown above preference categories.
@@ -276,8 +278,8 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     @NonNull
     @Override
     protected RecyclerView.Adapter<?> onCreateAdapter(final PreferenceScreen preferenceScreen) {
-        adapter = (PreferenceGroupAdapter) super.onCreateAdapter(preferenceScreen);
-        // TODO: Wrap adapter
+        this.adapter = new PreferenceGroupAdapterWrapper(preferenceScreen);
+        // TODO: Allow to use a different adapter
         return adapter;
     }
 

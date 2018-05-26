@@ -15,6 +15,8 @@ License.
 -->
 <resources>
 
+    <!-- View styles -->
+
     <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">@dimen/button_min_height</item>
         <item name="android:minWidth">@dimen/button_min_width</item>

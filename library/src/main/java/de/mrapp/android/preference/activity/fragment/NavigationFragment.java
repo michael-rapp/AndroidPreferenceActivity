@@ -20,8 +20,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
@@ -394,13 +394,17 @@ public class NavigationFragment extends AbstractPreferenceFragment
 
     @NonNull
     @Override
-    protected final View onInflateView(@NonNull final LayoutInflater inflater,
-                                       @Nullable final ViewGroup parent,
-                                       @Nullable final Bundle savedInstanceState) {
-        PreferenceListView listView =
-                (PreferenceListView) inflater.inflate(R.layout.navigation_fragment, parent, false);
-        listView.setAdapterFactory(this);
-        return listView;
+    public final RecyclerView onCreateRecyclerView(final LayoutInflater inflater,
+                                                   final ViewGroup parent,
+                                                   final Bundle savedInstanceState) {
+        RecyclerView recyclerView =
+                super.onCreateRecyclerView(inflater, parent, savedInstanceState);
+        recyclerView.setClipToPadding(false);
+        int paddingTop =
+                getActivity().getResources().getDimensionPixelSize(R.dimen.list_view_padding_top);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), paddingTop,
+                recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
+        return recyclerView;
     }
 
 }

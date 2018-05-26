@@ -51,7 +51,7 @@ License.
             android:fadingEdge="horizontal"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?android:textColorPrimary"/>
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@android:id/summary"

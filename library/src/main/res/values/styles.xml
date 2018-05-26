@@ -15,6 +15,8 @@ License.
 -->
 <resources>
 
+    <!-- Activity themes -->
+
     <style name="PreferenceActivity.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -28,7 +30,7 @@ License.
         <item name="navigationDividerColor">@color/preference_divider_color_light</item>
         <item name="dividerColor">@color/preference_divider_color_light</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_light</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceActivity.PreferenceTheme</item>
     </style>
 
     <style name="PreferenceActivity" parent="@style/Theme.AppCompat.NoActionBar">
@@ -44,8 +46,65 @@ License.
         <item name="navigationDividerColor">@color/preference_divider_color_dark</item>
         <item name="dividerColor">@color/preference_divider_color_dark</item>
         <item name="restoreDefaultsButtonBarBackground">@color/button_bar_background_dark</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceActivity.PreferenceTheme</item>
     </style>
+
+    <!-- Preference styles -->
+
+    <style name="PreferenceActivity.PreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="preferenceCategoryStyle">@style/PreferenceActivity.PreferenceCategoryStyle</item>
+        <item name="preferenceStyle">@style/PreferenceActivity.PreferenceStyle</item>
+        <item name="checkBoxPreferenceStyle">@style/PreferenceActivity.CheckBoxPreferenceStyle</item>
+        <item name="preferenceInformationStyle">@style/PreferenceActivity.InformationPreferenceStyle</item>
+        <item name="switchPreferenceCompatStyle">@style/PreferenceActivity.SwitchPreferenceCompatStyle</item>
+        <item name="switchPreferenceStyle">@style/PreferenceActivity.SwitchPreferenceStyle</item>
+        <item name="seekBarPreferenceStyle">@style/PreferenceActivity.SeekBarPreferenceStyle</item>
+        <item name="dialogPreferenceStyle">@style/PreferenceActivity.DialogPreferenceStyle</item>
+        <item name="editTextPreferenceStyle">@style/PreferenceActivity.EditTextPreferenceStyle</item>
+        <item name="dropdownPreferenceStyle">@style/PreferenceActivity.DropDownPreferenceStyle</item>
+    </style>
+
+    <style name="PreferenceActivity.PreferenceStyle" parent="@style/Preference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.CheckBoxPreferenceStyle" parent="@style/Preference.CheckBoxPreference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.InformationPreferenceStyle" parent="@style/Preference.Information.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.SwitchPreferenceCompatStyle" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.SwitchPreferenceStyle" parent="@style/Preference.SwitchPreference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.SeekBarPreferenceStyle" parent="@style/Preference.SeekBarPreference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.DialogPreferenceStyle" parent="@style/Preference.DialogPreference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.EditTextPreferenceStyle" parent="@style/Preference.DialogPreference.EditTextPreference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.DropDownPreferenceStyle" parent="@style/Preference.DropDown.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
+
+    <style name="PreferenceActivity.PreferenceCategoryStyle" parent="@style/Preference.Category.Material">
+        <item name="android:layout">@layout/preference_category_layout</item>
+    </style>
+
+    <!-- View styles -->
 
     <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">@dimen/button_min_height</item>
