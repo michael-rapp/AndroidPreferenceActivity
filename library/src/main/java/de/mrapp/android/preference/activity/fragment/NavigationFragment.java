@@ -20,6 +20,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -31,7 +32,8 @@ import java.util.List;
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.R;
-import de.mrapp.android.preference.activity.adapter.NavigationPreferenceGroupAdapterOld;
+import de.mrapp.android.preference.activity.adapter.NavigationPreferenceAdapter;
+import de.mrapp.android.preference.activity.adapter.PreferenceAdapter;
 import de.mrapp.android.preference.activity.adapter.PreferenceGroupAdapterOld;
 import de.mrapp.android.preference.activity.view.PreferenceListView;
 
@@ -42,7 +44,7 @@ import de.mrapp.android.preference.activity.view.PreferenceListView;
  * @since 5.0.0
  */
 public class NavigationFragment extends AbstractPreferenceFragment
-        implements NavigationPreferenceGroupAdapterOld.Callback, PreferenceListView.AdapterFactory {
+        implements NavigationPreferenceAdapter.Callback, PreferenceListView.AdapterFactory {
 
     /**
      * Defines the interface, a class, which should be notified about the fragment's events, must
@@ -77,12 +79,12 @@ public class NavigationFragment extends AbstractPreferenceFragment
      * The callback, which is notified, about the events of the adapter, which contains the
      * navigation items.
      */
-    private NavigationPreferenceGroupAdapterOld.Callback adapterCallback;
+    private NavigationPreferenceAdapter.Callback adapterCallback;
 
     /**
      * The adapter, which contains the navigation preferences.
      */
-    private NavigationPreferenceGroupAdapterOld adapter;
+    private NavigationPreferenceAdapter adapter;
 
     /**
      * The background color of the currently selected navigation preference.
@@ -213,11 +215,10 @@ public class NavigationFragment extends AbstractPreferenceFragment
      *
      * @param callback
      *         The callback, which should be set, as an instance of the type {@link
-     *         NavigationPreferenceGroupAdapterOld.Callback} or null, if no callback should be
-     *         notified
+     *         NavigationPreferenceAdapter.Callback} or null, if no callback should be notified
      */
     public final void setAdapterCallback(
-            @Nullable final NavigationPreferenceGroupAdapterOld.Callback callback) {
+            @Nullable final NavigationPreferenceAdapter.Callback callback) {
         this.adapterCallback = callback;
     }
 
@@ -368,10 +369,12 @@ public class NavigationFragment extends AbstractPreferenceFragment
         notifyOnNavigationPreferenceRemoved(navigationPreference);
     }
 
+    // TODO Remove
     @NonNull
     @Override
     public final PreferenceGroupAdapterOld createAdapter(@NonNull final Context context,
                                                          @NonNull final ListAdapter encapsulatedAdapter) {
+        /*
         if (adapter == null) {
             adapter = new NavigationPreferenceGroupAdapterOld(context, encapsulatedAdapter,
                     NavigationFragment.this);
@@ -379,8 +382,9 @@ public class NavigationFragment extends AbstractPreferenceFragment
             adapter.setEnabled(enabled);
             notifyOnNavigationAdapterCreated();
         }
+        */
 
-        return adapter;
+        return null;
     }
 
     @Override
@@ -405,6 +409,16 @@ public class NavigationFragment extends AbstractPreferenceFragment
         recyclerView.setPadding(recyclerView.getPaddingLeft(), paddingTop,
                 recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
         return recyclerView;
+    }
+
+    @NonNull
+    protected final PreferenceAdapter onCreatePreferenceAdapter(
+            @NonNull final PreferenceScreen preferenceScreen) {
+        this.adapter = new NavigationPreferenceAdapter(preferenceScreen, this);
+        this.adapter.setSelectionColor(selectionColor);
+        this.adapter.setEnabled(enabled);
+        notifyOnNavigationAdapterCreated();
+        return adapter;
     }
 
 }

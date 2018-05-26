@@ -247,6 +247,24 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
         this.dividerDecoration.setDividerColor(color);
     }
 
+    /**
+     * The method, which is invoked in order to create the adapter, which is used to manage the
+     * fragment's preferences. This method may be overridden by subclasses in order to use custom
+     * adapters.
+     *
+     * @param preferenceScreen
+     *         The preference screen, which contains the preferences, which should be managed by the
+     *         adapter, as an instance of the class {@link PreferenceScreen}. The preference screen
+     *         may not be null
+     * @return The adapter, which has been created, as an instance of the class {@link
+     * PreferenceAdapter}. The adapter may not be null
+     */
+    @NonNull
+    protected PreferenceAdapter onCreatePreferenceAdapter(
+            @NonNull final PreferenceScreen preferenceScreen) {
+        return new PreferenceAdapter(preferenceScreen);
+    }
+
     @CallSuper
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -274,12 +292,11 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
         // TODO: Anything to do?
     }
 
-    @CallSuper
     @NonNull
     @Override
-    protected RecyclerView.Adapter<?> onCreateAdapter(final PreferenceScreen preferenceScreen) {
-        this.adapter = new PreferenceAdapter(preferenceScreen);
-        // TODO: Allow to use a different adapter
+    protected final RecyclerView.Adapter<?> onCreateAdapter(
+            final PreferenceScreen preferenceScreen) {
+        this.adapter = onCreatePreferenceAdapter(preferenceScreen);
         return adapter;
     }
 
