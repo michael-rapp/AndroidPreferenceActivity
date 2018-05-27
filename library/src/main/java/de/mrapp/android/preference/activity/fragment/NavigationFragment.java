@@ -53,8 +53,8 @@ public class NavigationFragment extends AbstractPreferenceFragment
          * activity.
          *
          * @param fragment
-         *         The navigation fragment as an instance of the class {@link
-         *         PreferenceFragmentCompat}. The fragment may not be null
+         *         The navigation fragment as an instance of the class PreferenceFragmentCompat. The
+         *         fragment may not be null
          */
         void onNavigationFragmentCreated(@NonNull PreferenceFragmentCompat fragment);
 

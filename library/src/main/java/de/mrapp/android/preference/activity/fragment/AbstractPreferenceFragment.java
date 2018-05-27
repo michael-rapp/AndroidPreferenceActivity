@@ -228,8 +228,8 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
      *
      * @param preferenceScreen
      *         The preference screen, which contains the preferences, which should be managed by the
-     *         adapter, as an instance of the class {@link PreferenceScreen}. The preference screen
-     *         may not be null
+     *         adapter, as an instance of the class PreferenceScreen. The preference screen may not
+     *         be null
      * @return The adapter, which has been created, as an instance of the class {@link
      * PreferenceAdapter}. The adapter may not be null
      */

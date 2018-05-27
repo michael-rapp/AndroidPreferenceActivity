@@ -1055,8 +1055,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         as an instance of the class {@link NavigationPreference}. The navigation preference
      *         may not be null
      * @param fragment
-     *         The fragment, which should be shown, as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The fragment, which should be shown, as an instance of the class Fragment. The
+     *         fragment may not be null
      */
     private void showPreferenceFragment(@NonNull final NavigationPreference navigationPreference,
                                         @NonNull final Fragment fragment) {
@@ -1728,7 +1728,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         an instance of the class {@link NavigationPreference}. The navigation preference may
      *         not be null
      * @param fragment
-     *         The fragment, which has been shown, as an instance of the class {@link Fragment}. The
+     *         The fragment, which has been shown, as an instance of the class Fragment. The
      *         fragment may not be null
      */
     private void notifyOnPreferenceFragmentShown(
@@ -1743,8 +1743,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Notifies all registered listeners that a preference fragment has been hidden.
      *
      * @param fragment
-     *         The fragment, which has been hidden, as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The fragment, which has been hidden, as an instance of the class Fragment. The
+     *         fragment may not be null
      */
     private void notifyOnPreferenceFragmentHidden(@NonNull final Fragment fragment) {
         for (PreferenceFragmentListener listener : preferenceFragmentListeners) {
@@ -1979,8 +1979,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Returns the preference fragment, which contains the activity's navigation.
      *
      * @return The preference fragment, which contains the activity's navigation, as an instance of
-     * the class {@link PreferenceFragmentCompat} or null, if the navigation has not been created
-     * yet
+     * the class PreferenceFragmentCompat or null, if the navigation has not been created yet
      */
     public final PreferenceFragmentCompat getNavigationFragment() {
         return navigationFragment;
@@ -1989,8 +1988,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     /**
      * Returns the currently shown preference fragment.
      *
-     * @return The currently shown preference fragment as an instance of the class {@link Fragment}
-     * or null, if no preference fragment is currently shown
+     * @return The currently shown preference fragment as an instance of the class Fragment or null,
+     * if no preference fragment is currently shown
      */
     public final Fragment getPreferenceFragment() {
         return preferenceFragment;
@@ -2787,8 +2786,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *
      * @param fragment
      *         The preference fragment, which contains the navigation's preferences, as an instance
-     *         of the class {@link PreferenceFragmentCompat}. The preference fragment may not be
-     *         null
+     *         of the class PreferenceFragmentCompat. The preference fragment may not be null
      */
     protected void onCreateNavigation(@NonNull final PreferenceFragmentCompat fragment) {
 

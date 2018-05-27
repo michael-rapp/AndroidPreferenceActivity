@@ -25,8 +25,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 
 /**
- * A recycler view adapter, which extends the class {@link PreferenceGroupAdapter} in order to
- * modify the appearance of preferences.
+ * A recycler view adapter, which extends the class PreferenceGroupAdapter in order to modify the
+ * appearance of preferences.
  *
  * @author Michael Rapp
  * @since 6.0.0
@@ -39,11 +39,11 @@ public class PreferenceAdapter extends PreferenceGroupAdapter {
      * overridden by subclasses in order to modify the appearance of the preference.
      *
      * @param preference
-     *         The preference, which is visualized, as an instance of the class {@link Preference}.
-     *         The preference may not be null
+     *         The preference, which is visualized, as an instance of the class Preference. The
+     *         preference may not be null
      * @param viewHolder
      *         The view holder, which corresponds to the preference, as an instance of the class
-     *         {@link PreferenceViewHolder}. The view holder may not be null
+     *         PreferenceViewHolder. The view holder may not be null
      */
     @CallSuper
     protected void onVisualizePreference(@NonNull final Preference preference,
@@ -57,13 +57,13 @@ public class PreferenceAdapter extends PreferenceGroupAdapter {
     }
 
     /**
-     * Creates a new recycler view adapter, which extends the class {@link PreferenceGroupAdapter}
-     * in order to modify the appearance of preferences.
+     * Creates a new recycler view adapter, which extends the class PreferenceGroupAdapter in order
+     * to modify the appearance of preferences.
      *
      * @param preferenceScreen
      *         The preference screen, which contains the preferences, which should be managed by the
-     *         adapter, as an instance of the class {@link PreferenceScreen}. The preference screen
-     *         may not be null
+     *         adapter, as an instance of the class PreferenceScreen. The preference screen may not
+     *         be null
      */
     public PreferenceAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         super(preferenceScreen);

@@ -37,8 +37,8 @@ public interface WizardListener {
      *         The currently selected navigation preference as an instance of the class {@link
      *         NavigationPreference}. The navigation preference may not be null
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown preference fragment as an instance of the class Fragment. The
+     *         fragment may not be null
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
      *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
@@ -57,8 +57,8 @@ public interface WizardListener {
      *         The currently selected navigation preference as an instance of the class {@link
      *         NavigationPreference}. The navigation preference may not be null
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown preference fragment as an instance of the class Fragment. The
+     *         fragment may not be null
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
      *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
@@ -77,8 +77,8 @@ public interface WizardListener {
      *         The currently selected navigation preference as an instance of the class {@link
      *         NavigationPreference}. The navigation preference may not be null
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown preference fragment as an instance of the class Fragment. The
+     *         fragment may not be null
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
      *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no
@@ -95,8 +95,8 @@ public interface WizardListener {
      *         The currently selected navigation preference as an instance of the class {@link
      *         NavigationPreference}. The navigation preference may not be null
      * @param fragment
-     *         The currently shown preference fragment as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The currently shown preference fragment as an instance of the class Fragment. The
+     *         fragment may not be null
      * @param bundle
      *         A bundle, which contains the parameters, which have been passed to the currently
      *         shown preference fragment, as an instance of the class {@link Bundle} or null, if no

@@ -303,8 +303,8 @@ public class NavigationPreferenceAdapter extends PreferenceAdapter
      *
      * @param preferenceScreen
      *         The preference screen, which contains the preferences, which should be managed by the
-     *         adapter, as an instance of the class {@link PreferenceScreen}. The preference screen
-     *         may not be null
+     *         adapter, as an instance of the class PreferenceScreen. The preference screen may not
+     *         be null
      * @param callback
      *         The callback, which should be notified about the adapter's events, as an instance of
      *         the type {@link Callback} or null, if no callback should be notified

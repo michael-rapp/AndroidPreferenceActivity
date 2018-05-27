@@ -46,7 +46,7 @@ public interface RestoreDefaultsListener {
      *         an instance of the class {@link PreferenceFragment}
      * @param preference
      *         The preference, whose default value should be restored, as an instance of the class
-     *         {@link Preference}
+     *         Preference
      * @param currentValue
      *         The current value of the preference, whose default value should be restored, as an
      *         instance of the class {@link Object}
@@ -65,7 +65,7 @@ public interface RestoreDefaultsListener {
      *         an instance of the class {@link PreferenceFragment}
      * @param preference
      *         The preference, whose default value has been restored, as an instance of the class
-     *         {@link Preference}
+     *         Preference
      * @param oldValue
      *         The old value of the preference, whose default value has been restored, as an
      *         instance of the class {@link Object}

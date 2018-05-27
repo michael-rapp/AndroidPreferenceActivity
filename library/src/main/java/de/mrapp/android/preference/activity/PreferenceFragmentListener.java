@@ -33,7 +33,7 @@ public interface PreferenceFragmentListener {
      *         an instance of the class {@link NavigationPreference}. The navigation preference may
      *         not be null
      * @param fragment
-     *         The fragment, which has been shown, as an instance of the class {@link Fragment}. The
+     *         The fragment, which has been shown, as an instance of the class Fragment. The
      *         fragment may not be null
      */
     void onPreferenceFragmentShown(@NonNull NavigationPreference navigationPreference,
@@ -43,8 +43,8 @@ public interface PreferenceFragmentListener {
      * The method, which is invoked, when a previously shown preference fragment has been hidden.
      *
      * @param fragment
-     *         The fragment, which has been hidden, as an instance of the class {@link Fragment}.
-     *         The fragment may not be null
+     *         The fragment, which has been hidden, as an instance of the class Fragment. The
+     *         fragment may not be null
      */
     void onPreferenceFragmentHidden(@NonNull Fragment fragment);
 
