@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.preference.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -325,7 +326,7 @@ public class NavigationPreference extends Preference {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                performClick();
+                notifyOnShowFragment();
 
                 if (listener != null) {
                     listener.onPreferenceClick(preference);
@@ -436,13 +437,6 @@ public class NavigationPreference extends Preference {
      */
     public final void setCallback(@Nullable final Callback callback) {
         this.callback = callback;
-    }
-
-    /**
-     * Performs a click on the preference.
-     */
-    public final void performClick() {
-        notifyOnShowFragment();
     }
 
     /**
@@ -597,6 +591,16 @@ public class NavigationPreference extends Preference {
     public final void setOnPreferenceClickListener(
             @Nullable final OnPreferenceClickListener listener) {
         super.setOnPreferenceClickListener(createOnPreferenceClickListenerWrapper(listener));
+    }
+
+    /**
+     * Performs a click on the preference.
+     */
+    @SuppressLint("RestrictedApi")
+    @Override
+    public final void performClick() {
+        super.performClick();
+        notifyOnShowFragment();
     }
 
     @Override
