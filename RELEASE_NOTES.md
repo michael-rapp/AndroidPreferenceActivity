@@ -1,5 +1,14 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 6.0.0 (May 27th 2018)
+
+A major release, which provides the following changes:
+
+- Migrated the library to use the v14 Preference support library and v7 Fragment support library as the Android SDK's preference and fragment classes will be deprecated in Android P.
+- Updated the AppCompat v7 support library to version 27.1.1.
+- Updated CardView v7 support library to version 27.1.1.
+- Updated the dependency "AndroidUtil" to version 1.20.3.
+
 ## Version 5.1.1 (Feb. 9th 2018)
 
 A minor release, which introduces the following changes:
