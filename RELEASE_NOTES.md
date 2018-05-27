@@ -5,6 +5,7 @@
 A bugfix release, which fixes the following issues:
 
 - No dividers are drawn above a `PreferenceCategory` anymore, if it is the first preference.
+- Fixed an issue, which prevented `NavigationPreference`s from being clickable when a custom `OnPreferenceClickListener` is set.
 
 ## Version 6.0.0 (May 27th 2018)
 
