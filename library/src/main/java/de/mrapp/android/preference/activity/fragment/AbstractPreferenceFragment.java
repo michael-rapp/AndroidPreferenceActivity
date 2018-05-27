@@ -93,8 +93,13 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
                                                @NonNull final RecyclerView recyclerView) {
             RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
             int position = viewHolder.getAdapterPosition();
-            @SuppressLint("RestrictedApi") Preference preference = adapter.getItem(position);
-            return preference instanceof PreferenceGroup;
+
+            if (position > 0) {
+                @SuppressLint("RestrictedApi") Preference preference = adapter.getItem(position);
+                return preference instanceof PreferenceGroup;
+            }
+
+            return false;
         }
 
         @Override
