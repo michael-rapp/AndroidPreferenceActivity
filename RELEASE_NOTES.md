@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 6.0.2 (Jun. 25th 2018)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed an issue, which caused the bread crumb title to be wrong after orientation changes.
+
 ## Version 6.0.1 (May 27th 2018)
 
 A bugfix release, which fixes the following issues:
