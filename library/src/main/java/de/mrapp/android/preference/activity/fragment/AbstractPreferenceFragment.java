@@ -271,7 +271,10 @@ public abstract class AbstractPreferenceFragment extends PreferenceFragmentCompa
     @Override
     protected final RecyclerView.Adapter<?> onCreateAdapter(
             final PreferenceScreen preferenceScreen) {
-        this.adapter = onCreatePreferenceAdapter(preferenceScreen);
+        if (adapter == null) {
+            adapter = onCreatePreferenceAdapter(preferenceScreen);
+        }
+
         return adapter;
     }
 
