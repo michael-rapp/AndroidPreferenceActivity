@@ -36,7 +36,7 @@ Alternatively, the library can be added to your Android app as a Gradle dependen
 
 ```groovy
 dependencies {
-    implementation 'com.github.michael-rapp:android-preference-activity:6.0.2'
+    implementation 'com.github.michael-rapp:android-preference-activity:6.0.3'
 }
 ```
 
