@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 6.0.3 (Aug. 27th 2018)
+
+A minor release, which introduces the following changes:
+
+- Slightly increased the minimum height of preferences to ensure that preferences that contain no summary have the same height as preferences that contain one line of text as their summaries.
+
 ## Version 6.0.2 (Jun. 25th 2018)
 
 A bugfix release, which fixes the following issues:
