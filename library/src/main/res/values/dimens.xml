@@ -16,7 +16,7 @@ License.
 <resources>
 
     <!-- Preferences -->
-    <dimen name="preference_min_height">64dp</dimen>
+    <dimen name="preference_min_height">68dp</dimen>
     <dimen name="preference_horizontal_padding">16dp</dimen>
     <dimen name="preference_vertical_padding">12dp</dimen>
     <dimen name="preference_category_top_margin">20dp</dimen>
