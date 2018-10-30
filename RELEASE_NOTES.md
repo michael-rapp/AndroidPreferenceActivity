@@ -1,5 +1,14 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 7.0.0 (Oct. 31th 2018)
+
+A major release, which introduces the following changes:
+
+- Migrated library to Android X.
+- Replaced AppCompat themes with MaterialComponent themes.
+- Updated dependency "AndroidUtil" to version 2.0.0.
+- Updated targetSdkVersion to 28.
+
 ## Version 6.0.3 (Aug. 27th 2018)
 
 A minor release, which introduces the following changes:
