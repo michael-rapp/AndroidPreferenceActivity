@@ -17,7 +17,7 @@ License.
 
     <!-- Activity themes -->
 
-    <style name="PreferenceActivity.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="PreferenceActivity.Light" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -33,7 +33,7 @@ License.
         <item name="preferenceTheme">@style/PreferenceActivity.PreferenceTheme</item>
     </style>
 
-    <style name="PreferenceActivity" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="PreferenceActivity" parent="@style/Theme.MaterialComponents.NoActionBar">
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="invertedToolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
@@ -106,14 +106,11 @@ License.
 
     <!-- View styles -->
 
-    <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
+    <style name="PreferenceActivity.Button" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:minHeight">@dimen/button_min_height</item>
         <item name="android:minWidth">@dimen/button_min_width</item>
         <item name="android:paddingLeft">@dimen/button_horizontal_padding</item>
         <item name="android:paddingRight">@dimen/button_horizontal_padding</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="PreferenceActivity.PreferenceCategory">

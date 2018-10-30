@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+    api 'com.google.android.material:material:1.0.0'
     api 'androidx.appcompat:appcompat:1.0.0'
     api 'androidx.legacy:legacy-preference-v14:1.0.0'
     api 'androidx.cardview:cardview:1.0.0'

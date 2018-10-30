@@ -17,16 +17,6 @@ License.
 
     <!-- View styles -->
 
-    <style name="PreferenceActivity.Button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
-        <item name="android:minHeight">@dimen/button_min_height</item>
-        <item name="android:minWidth">@dimen/button_min_width</item>
-        <item name="android:paddingLeft">@dimen/button_horizontal_padding</item>
-        <item name="android:paddingRight">@dimen/button_horizontal_padding</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
     <style name="PreferenceActivity.PreferenceCategory">
         <item name="android:ellipsize">end</item>
         <item name="android:paddingLeft">@dimen/preference_horizontal_padding</item>
