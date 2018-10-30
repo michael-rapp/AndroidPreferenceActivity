@@ -15,10 +15,10 @@ package de.mrapp.android.preference.activity.example.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.PreferenceFragment;
 import de.mrapp.android.preference.activity.RestoreDefaultsListener;

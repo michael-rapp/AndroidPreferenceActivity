@@ -16,9 +16,9 @@ package de.mrapp.android.preference.activity.example;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.CallSuper;
-import android.support.v7.app.ActionBar;
 
+import androidx.annotation.CallSuper;
+import androidx.appcompat.app.ActionBar;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;

@@ -14,16 +14,14 @@
 package de.mrapp.android.preference.activity.animation;
 
 import android.animation.ObjectAnimator;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import de.mrapp.android.util.datastructure.ListenerList;
-
-import static de.mrapp.android.util.Condition.ensureGreater;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import de.mrapp.util.Condition;
+import de.mrapp.util.datastructure.ListenerList;
 
 /**
  * A scroll listener, which allows to animate a view to become hidden or shown depending on the
@@ -193,7 +191,8 @@ public class HideViewOnScrollAnimation extends RecyclerView.OnScrollListener {
      *         {@link View}. The view may not be null
      * @param direction
      *         The direction, which should be be used to translate the view in order to hide it, as
-     *         a value of the enum {@link Direction}. The direction may either be <code>UP</code> or
+     *         a value of the enum {@link Direction}. The direction may either be <code>UP</code>
+     *         or
      *         <code>DOWN</code>
      */
     public HideViewOnScrollAnimation(@NonNull final View view, @NonNull final Direction direction) {
@@ -209,7 +208,8 @@ public class HideViewOnScrollAnimation extends RecyclerView.OnScrollListener {
      *         {@link View}. The view may not be null
      * @param direction
      *         The direction, which should be be used to translate the view in order to hide it, as
-     *         a value of the enum {@link Direction}. The direction may either be <code>UP</code> or
+     *         a value of the enum {@link Direction}. The direction may either be <code>UP</code>
+     *         or
      *         <code>DOWN</code>
      * @param animationDuration
      *         The duration of the animation, which is used to show or hide the view, in
@@ -217,9 +217,10 @@ public class HideViewOnScrollAnimation extends RecyclerView.OnScrollListener {
      */
     public HideViewOnScrollAnimation(@NonNull final View view, @NonNull final Direction direction,
                                      final long animationDuration) {
-        ensureNotNull(view, "The view may not be null");
-        ensureNotNull(direction, "The direction may not be null");
-        ensureGreater(animationDuration, 0, "The animation duration must be greater than 0");
+        Condition.INSTANCE.ensureNotNull(view, "The view may not be null");
+        Condition.INSTANCE.ensureNotNull(direction, "The direction may not be null");
+        Condition.INSTANCE.ensureGreater(animationDuration, 0,
+                "The animation duration must be greater than 0");
         this.animatedView = view;
         this.direction = direction;
         this.animationDuration = animationDuration;
@@ -289,7 +290,7 @@ public class HideViewOnScrollAnimation extends RecyclerView.OnScrollListener {
      *         HideViewOnScrollAnimationListener}. The listener may not be null
      */
     public final void addListener(@NonNull final HideViewOnScrollAnimationListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         listeners.add(listener);
     }
 
@@ -302,7 +303,7 @@ public class HideViewOnScrollAnimation extends RecyclerView.OnScrollListener {
      *         HideViewOnScrollAnimationListener}. The listener may not be null
      */
     public final void removeListener(@NonNull final HideViewOnScrollAnimationListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         listeners.remove(listener);
     }
 

@@ -14,15 +14,16 @@
 package de.mrapp.android.preference.activity.adapter;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceGroupAdapter;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.PreferenceViewHolder;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A recycler view adapter, which extends the class PreferenceGroupAdapter in order to modify the

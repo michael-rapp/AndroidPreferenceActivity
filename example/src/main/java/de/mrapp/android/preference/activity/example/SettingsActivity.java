@@ -14,9 +14,9 @@
 package de.mrapp.android.preference.activity.example;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
+import androidx.annotation.NonNull;
+import androidx.preference.PreferenceFragmentCompat;
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.PreferenceFragment;

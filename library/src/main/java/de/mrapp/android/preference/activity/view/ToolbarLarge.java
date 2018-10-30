@@ -15,20 +15,19 @@ package de.mrapp.android.preference.activity.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Px;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Px;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import de.mrapp.android.preference.activity.R;
-
-import static de.mrapp.android.util.Condition.ensureGreater;
+import de.mrapp.util.Condition;
 
 /**
  * A custom view, which may be used to visualize a large toolbar on devices with a large screen.
@@ -227,7 +226,7 @@ public class ToolbarLarge extends FrameLayout {
      *         be greater than 0
      */
     public final void setNavigationWidth(@Px final int width) {
-        ensureGreater(width, 0, "The width must be greater than 0");
+        Condition.INSTANCE.ensureGreater(width, 0, "The width must be greater than 0");
         this.navigationWidth = width;
 
         if (!isNavigationHidden()) {

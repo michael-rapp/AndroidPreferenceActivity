@@ -13,7 +13,7 @@
  */
 package de.mrapp.android.preference.activity;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Defines the interface, a class, which should be notified when {@link NavigationPreference}s are

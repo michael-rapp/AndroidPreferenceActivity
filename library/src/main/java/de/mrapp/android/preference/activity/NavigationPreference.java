@@ -24,21 +24,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.preference.Preference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.preference.Preference;
 import de.mrapp.android.util.view.AbstractSavedState;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A preference, which allows to show a fragment within a {@link PreferenceActivity} when clicked.
@@ -576,7 +575,7 @@ public class NavigationPreference extends Preference {
      *         mode may not be null
      */
     public final void setIconTintMode(@NonNull final PorterDuff.Mode tintMode) {
-        ensureNotNull(tintMode, "The tint mode may not be null");
+        Condition.INSTANCE.ensureNotNull(tintMode, "The tint mode may not be null");
         this.tintMode = tintMode;
         adaptIconTint();
     }
@@ -622,7 +621,7 @@ public class NavigationPreference extends Preference {
 
     @Override
     protected final void onRestoreInstanceState(final Parcelable state) {
-        if (state != null && state instanceof SavedState) {
+        if (state instanceof SavedState) {
             SavedState savedState = (SavedState) state;
             setBreadCrumbTitle(savedState.breadCrumbTitle);
             setFragment(savedState.fragment);

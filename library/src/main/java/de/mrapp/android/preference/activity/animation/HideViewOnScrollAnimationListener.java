@@ -13,8 +13,9 @@
  */
 package de.mrapp.android.preference.activity.animation;
 
-import android.support.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 /**
  * Defines the interface, a class, which should be notified about the internal state of a {@link

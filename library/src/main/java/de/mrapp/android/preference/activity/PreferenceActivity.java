@@ -20,22 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Px;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -47,22 +31,33 @@ import android.widget.FrameLayout;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Px;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceFragmentCompat;
 import de.mrapp.android.preference.activity.adapter.NavigationPreferenceAdapter;
 import de.mrapp.android.preference.activity.fragment.NavigationFragment;
 import de.mrapp.android.preference.activity.view.ToolbarLarge;
-import de.mrapp.android.util.Condition;
 import de.mrapp.android.util.DisplayUtil.DeviceType;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.ViewUtil;
-import de.mrapp.android.util.datastructure.ListenerList;
 import de.mrapp.android.util.view.ElevationShadowView;
+import de.mrapp.util.Condition;
+import de.mrapp.util.datastructure.ListenerList;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.util.Condition.ensureGreater;
-import static de.mrapp.android.util.Condition.ensureNotEmpty;
-import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.getDeviceType;
 import static de.mrapp.android.util.DisplayUtil.getDisplayWidth;
@@ -968,7 +963,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      * Initializes the activity's toolbar.
      */
     private void initializeToolbar() {
-        Condition.ensureTrue(getSupportActionBar() == null,
+        Condition.INSTANCE.ensureTrue(getSupportActionBar() == null,
                 "An action bar is already attached to the activity. Use the theme " +
                         "\"@style/Theme.AppCompat.NoActionBar\" or " +
                         "\"@style/Theme.AppCompat.Light.NoActionBar\" as the activity's theme",
@@ -1896,7 +1891,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final void addPreferenceFragmentListener(
             @NonNull final PreferenceFragmentListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         preferenceFragmentListeners.add(listener);
     }
 
@@ -1910,7 +1905,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      */
     public final void removePreferenceFragmentListener(
             @NonNull final PreferenceFragmentListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         preferenceFragmentListeners.remove(listener);
     }
 
@@ -1923,7 +1918,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         WizardListener}. The listener may not be null
      */
     public final void addWizardListener(@NonNull final WizardListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         wizardListeners.add(listener);
     }
 
@@ -1936,7 +1931,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         WizardListener}. The listener may not be null
      */
     public final void removeWizardListener(@NonNull final WizardListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         wizardListeners.remove(listener);
     }
 
@@ -1949,7 +1944,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         NavigationListener}. The listener may not be null
      */
     public final void addNavigationListener(@NonNull final NavigationListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         navigationListeners.add(listener);
     }
 
@@ -1962,7 +1957,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         NavigationListener}. The listener may not be null
      */
     public final void removeNavigationListener(@NonNull final NavigationListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         navigationListeners.remove(listener);
     }
 
@@ -2116,7 +2111,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         be greater than 0
      */
     public final void setNavigationWidth(@Px final int width) {
-        ensureGreater(width, 0, "The width must be greater than 0");
+        Condition.INSTANCE.ensureGreater(width, 0, "The width must be greater than 0");
         this.navigationWidth = width;
         adaptNavigationWidth();
     }
@@ -2224,8 +2219,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         text may neither be null, nor empty
      */
     public final void setNextButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
+        Condition.INSTANCE.ensureNotNull(text, "The text may not be null");
+        Condition.INSTANCE.ensureNotEmpty(text, "The text may not be empty");
         this.nextButtonText = text;
         adaptNextButtonText();
     }
@@ -2260,8 +2255,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         text may neither null, nor empty
      */
     public final void setBackButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
+        Condition.INSTANCE.ensureNotNull(text, "The text may not be null");
+        Condition.INSTANCE.ensureNotEmpty(text, "The text may not be empty");
         this.backButtonText = text;
         adaptBackButtonText();
     }
@@ -2299,8 +2294,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         text may neither be null, nor empty
      */
     public final void setFinishButtonText(@NonNull final CharSequence text) {
-        ensureNotNull(text, "The text may not be null");
-        ensureNotEmpty(text, "The text may not be empty");
+        Condition.INSTANCE.ensureNotNull(text, "The text may not be null");
+        Condition.INSTANCE.ensureNotEmpty(text, "The text may not be empty");
         this.finishButtonText = text;
         adaptFinishButtonText();
     }
@@ -2361,8 +2356,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         nor empty. It must be formatted according to the following syntax: "*%d*%d*%s*"
      */
     public final void setProgressFormat(@NonNull final String progressFormat) {
-        ensureNotNull(progressFormat, "The progress format may not be null");
-        ensureNotEmpty(progressFormat, "The progress format may not be empty");
+        Condition.INSTANCE.ensureNotNull(progressFormat, "The progress format may not be null");
+        Condition.INSTANCE.ensureNotEmpty(progressFormat, "The progress format may not be empty");
         this.progressFormat = progressFormat;
         adaptProgress();
     }
@@ -2408,8 +2403,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 16
      */
     public final void setToolbarElevation(final int elevation) {
-        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
-        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+        Condition.INSTANCE.ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
                 "The elevation must at maximum " + ElevationUtil.MAX_ELEVATION);
         this.toolbarElevation = elevation;
         adaptToolbarElevation();
@@ -2436,8 +2431,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 16
      */
     public final void setBreadCrumbElevation(final int elevation) {
-        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
-        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+        Condition.INSTANCE.ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
                 "The elevation must at maximum " + ElevationUtil.MAX_ELEVATION);
         this.breadCrumbElevation = elevation;
         adaptBreadCrumbElevation();
@@ -2463,8 +2458,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 16
      */
     public final void setCardViewElevation(final int elevation) {
-        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
-        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+        Condition.INSTANCE.ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
                 "The elevation must be at maximum " + ElevationUtil.MAX_ELEVATION);
         this.cardViewElevation = elevation;
         adaptCardViewElevation();
@@ -2488,8 +2483,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
      *         must be at least 0 and at maximum 16
      */
     public final void setButtonBarElevation(final int elevation) {
-        ensureAtLeast(elevation, 0, "The elevation must be at least 0");
-        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+        Condition.INSTANCE.ensureAtLeast(elevation, 0, "The elevation must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
                 "The elevation must be at maximum " + ElevationUtil.MAX_ELEVATION);
         this.buttonBarElevation = elevation;
         adaptButtonBarElevation();
@@ -2760,7 +2755,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     public final void selectNavigationPreference(
             @NonNull final NavigationPreference navigationPreference,
             @Nullable final Bundle arguments) {
-        ensureNotNull(navigationPreference, "The navigation preference may not be null");
+        Condition.INSTANCE
+                .ensureNotNull(navigationPreference, "The navigation preference may not be null");
 
         if (navigationFragment != null) {
             int index = getAllNavigationPreferences().indexOf(navigationPreference);

@@ -18,9 +18,9 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v7.preference.Preference;
 
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
 import de.mrapp.android.preference.activity.PreferenceFragment;
 import de.mrapp.android.preference.activity.RestoreDefaultsListener;
 import de.mrapp.android.preference.activity.example.R;

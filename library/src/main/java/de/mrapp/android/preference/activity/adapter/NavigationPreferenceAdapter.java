@@ -16,24 +16,23 @@ package de.mrapp.android.preference.activity.adapter;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.PreferenceViewHolder;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
+import androidx.recyclerview.widget.RecyclerView;
 import de.mrapp.android.preference.activity.NavigationPreference;
 import de.mrapp.android.preference.activity.PreferenceActivity;
 import de.mrapp.android.preference.activity.R;
 import de.mrapp.android.util.ThemeUtil;
 import de.mrapp.android.util.ViewUtil;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A {@link PreferenceAdapter}, which is used to visualize the navigation preferences of a {@link
@@ -356,13 +355,14 @@ public class NavigationPreferenceAdapter extends PreferenceAdapter
      */
     public final int indexOfNavigationPreference(
             @NonNull final NavigationPreference navigationPreference) {
-        ensureNotNull(navigationPreference, "The navigation preference may not be null");
+        Condition.INSTANCE
+                .ensureNotNull(navigationPreference, "The navigation preference may not be null");
         return navigationPreferences.indexOf(navigationPreference);
     }
 
     /**
      * Returns the navigation preference, which corresponds to a specific index.
-     *
+     *Condition.INSTANCE.
      * @param index
      *         The index of the navigation preference, which should be returned, among all
      *         navigation preferences as an {@link Integer} value
