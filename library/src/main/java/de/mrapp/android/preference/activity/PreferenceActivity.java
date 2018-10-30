@@ -965,8 +965,8 @@ public abstract class PreferenceActivity extends AppCompatActivity
     private void initializeToolbar() {
         Condition.INSTANCE.ensureTrue(getSupportActionBar() == null,
                 "An action bar is already attached to the activity. Use the theme " +
-                        "\"@style/Theme.AppCompat.NoActionBar\" or " +
-                        "\"@style/Theme.AppCompat.Light.NoActionBar\" as the activity's theme",
+                        "\"@style/Theme.MaterialComponents.NoActionBar\" or " +
+                        "\"@style/Theme.MaterialComponents.Light.NoActionBar\" as the activity's theme",
                 IllegalStateException.class);
         if (isSplitScreen()) {
             toolbarLarge.setVisibility(View.VISIBLE);
