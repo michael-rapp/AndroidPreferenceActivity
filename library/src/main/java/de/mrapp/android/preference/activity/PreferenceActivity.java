@@ -2940,6 +2940,7 @@ public abstract class PreferenceActivity extends AppCompatActivity
 
         if (selectedNavigationPreference != null) {
             showBreadCrumb(selectedNavigationPreference, selectedPreferenceFragmentArguments);
+            adaptBreadCrumbVisibility(selectedPreferenceFragmentArguments);
             showToolbarNavigationIcon();
         }
     }
