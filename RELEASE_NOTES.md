@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 7.0.1 (Nov. 19th 2018)
+
+A bugfix release, which fixes the following issues:
+
+- Fixed the argument `PreferenceActivity.EXTRA_NO_BREAD_CRUMBS` being ignored after orientation changes.
+
 ## Version 7.0.0 (Oct. 31th 2018)
 
 A major release, which introduces the following changes:
