@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 7.0.2 (Feb. 23th 2019)
+
+A minor release, which introduces the following changes:
+
+- Updated dependency "AndroidUtil" to version 2.0.1.
+
 ## Version 7.0.1 (Nov. 19th 2018)
 
 A bugfix release, which fixes the following issues:
