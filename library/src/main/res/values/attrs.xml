@@ -41,6 +41,7 @@ License.
     <attr name="navigationBackground" format="reference|color"/>
     <attr name="navigationSelectionColor" format="color"/>
     <attr name="navigationDividerColor" format="color"/>
+    <attr name="categoryPreferenceStyle" format="reference"/>
 
     <!-- PreferenceFragment -->
     <attr name="dividerColor" format="color"/>

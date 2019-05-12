@@ -15,11 +15,16 @@ License.
 -->
 <TextView
     android:id="@android:id/title"
-    style="@style/PreferenceActivity.PreferenceCategory"
+    style="?attr/categoryPreferenceStyle"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:ellipsize="end"
     android:gravity="center_vertical|start"
+    android:maxLines="1"
     android:paddingBottom="@dimen/preference_category_bottom_margin"
+    android:paddingLeft="@dimen/preference_horizontal_padding"
+    android:paddingRight="@dimen/preference_horizontal_padding"
     android:paddingTop="@dimen/preference_category_top_margin"
+    android:textAppearance="@style/PreferenceActivity.PreferenceCategory.Text"
     android:textDirection="locale"/>

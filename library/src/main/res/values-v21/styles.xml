@@ -17,12 +17,7 @@ License.
 
     <!-- View styles -->
 
-    <style name="PreferenceActivity.PreferenceCategory">
-        <item name="android:ellipsize">end</item>
-        <item name="android:paddingLeft">@dimen/preference_horizontal_padding</item>
-        <item name="android:paddingRight">@dimen/preference_horizontal_padding</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
+    <style name="PreferenceActivity.PreferenceCategory.Text" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
