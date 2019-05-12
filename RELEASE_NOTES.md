@@ -1,5 +1,11 @@
 # AndroidPreferenceActivity - RELEASE NOTES
 
+## Version 7.0.3 (May 13th 2019)
+
+A minor release, which introduces the following changes:
+
+- Added the theme attribute `categoryPreferenceStyle`.
+
 ## Version 7.0.2 (Feb. 23th 2019)
 
 A minor release, which introduces the following changes:
