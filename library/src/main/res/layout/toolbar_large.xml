@@ -27,8 +27,8 @@ License.
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentTop="true"
         android:background="@android:color/transparent"
-        app:popupTheme="?attr/toolbarPopupTheme"
-        app:theme="?attr/toolbarTheme"/>
+        android:theme="?attr/toolbarTheme"
+        app:popupTheme="?attr/toolbarPopupTheme"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/navigation_toolbar"
@@ -40,7 +40,7 @@ License.
         android:layout_marginLeft="@dimen/navigation_toolbar_padding_left"
         android:layout_marginStart="@dimen/navigation_toolbar_padding_left"
         android:layout_marginTop="@dimen/toolbar_height"
-        app:popupTheme="?attr/toolbarPopupTheme"
-        app:theme="?attr/toolbarTheme"/>
+        android:theme="?attr/toolbarTheme"
+        app:popupTheme="?attr/toolbarPopupTheme"/>
 
 </RelativeLayout>
