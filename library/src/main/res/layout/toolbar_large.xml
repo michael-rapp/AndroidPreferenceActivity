@@ -23,6 +23,7 @@ License.
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        style="?attr/preferenceActivityToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentTop="true"
@@ -32,6 +33,7 @@ License.
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/navigation_toolbar"
+        style="?attr/preferenceActivityToolbarStyle"
         android:layout_width="@dimen/navigation_width"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentBottom="true"

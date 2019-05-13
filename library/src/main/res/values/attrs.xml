@@ -18,8 +18,10 @@ License.
     <!-- PreferenceActivity -->
     <attr name="toolbarTheme" format="reference"/>
     <attr name="toolbarPopupTheme" format="reference"/>
+    <attr name="preferenceActivityToolbarStyle" format="reference"/>
     <attr name="invertedToolbarTheme" format="reference"/>
     <attr name="invertedToolbarPopupTheme" format="reference"/>
+    <attr name="preferenceActivityInvertedToolbarStyle" format="reference"/>
     <attr name="useSplitScreen" format="boolean"/>
     <attr name="navigationWidth" format="dimension"/>
     <attr name="hideNavigation" format="boolean"/>

@@ -29,6 +29,7 @@ License.
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            style="?attr/preferenceActivityToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"

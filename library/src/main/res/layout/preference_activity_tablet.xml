@@ -28,6 +28,7 @@ License.
 
         <de.mrapp.android.preference.activity.view.ToolbarLarge
             android:id="@+id/large_toolbar"
+            style="?attr/preferenceActivityToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_large_height"
             android:theme="?attr/toolbarTheme"
@@ -75,6 +76,7 @@ License.
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/bread_crumb_toolbar"
+                style="?attr/preferenceActivityInvertedToolbarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 android:background="@drawable/breadcrumb_background"

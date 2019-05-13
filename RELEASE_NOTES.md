@@ -5,6 +5,7 @@
 A minor release, which introduces the following changes:
 
 - Added the theme attribute `categoryPreferenceStyle`.
+- Added the theme attribute `preferenceActivityToolbarStyle` and `preferenceActivityInvertedToolbarStyle`.
 
 ## Version 7.0.2 (Feb. 23th 2019)
 
